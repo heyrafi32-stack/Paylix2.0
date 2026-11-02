@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Sell & Micro Task Platform</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 { text-align: center; color: #333; }
+        .notice {
+            background: #fffaeb;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Account Sell & Earn Platform</h2>
+    
+    <div class="notice">
+        <strong>সতর্কতা ও নোটিশ:</strong> আমরা আপনাদেরকে ফ্রি আর্ন দিচ্ছি। কেউ চিটিং বা ভুয়া কাজ বা ফেক রেফার করার চেষ্টা করবেন না। করলে সাথে সাথে অ্যাকাউন্ট ব্যান করা হবে। প্রতি জিমেইলের রেট ১০ টাকা, কাজ ভালো করলে পরবর্তীতে রেট বাড়ানো হবে। এক আইপি থেকে একটির বেশি অ্যাকাউন্ট করা নিষেধ।
+    </div>
+
+    <form id="sellForm" onsubmit="sendToWhatsApp(event)">
+        <div class="form-group">
+            <label for="accType">একাউন্টের ধরণ নির্বাচন করুন:</label>
+            <select id="accType" required>
+                <option value="Gmail">Gmail Account</option>
+                <option value="Facebook">Facebook Account</option>
+                <option value="Instagram">Instagram Account</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="accDetails">জিমেইল / নাম্বার / নাম:</label>
+            <input type="text" id="accDetails" placeholder="যেমন: user@gmail.com বা নাম" required>
+        </div>
+
+        <div class="form-group">
+            <label for="accPass">পাসওয়ার্ড:</label>
+            <input type="text" id="accPass" placeholder="একাউন্টের পাসওয়ার্ড দিন" required>
+        </div>
+
+        <button type="submit">সরাসরি WhatsApp-এ সাবমিট করুন</button>
+    </form>
+</div>
+
+<script>
+    function sendToWhatsApp(event) {
+        event.preventDefault();
+        
+        let accType = document.getElementById('accType').value;
+        let accDetails = document.getElementById('accDetails').value;
+        let accPass = document.getElementById('accPass').value;
+
+        // আপনার WhatsApp নাম্বার এখানে দেওয়া আছে (01310127317)
+        let myWhatsAppNumber = "8801310127317"; 
+        
+        let message = `নতুন অ্যাকাউন্ট সাবমিট হয়েছে!%0A*ধরণ:* ${accType}%0A*তথ্য:* ${accDetails}%0A*পাসওয়ার্ড:* ${accPass}`;
+        
+        window.open(`https://wa.me/${myWhatsAppNumber}?text=${message}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
