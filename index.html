@@ -1,249 +1,486 @@
-
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PELIX 2.0</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-*{box-sizing:border-box}
-body{margin:0;background:#090817;color:#fff;font-family:Inter,'Hind Siliguri',sans-serif}
-header{height:68px;background:#141128;border-bottom:1px solid #393052;display:flex;align-items:center;justify-content:space-between;padding:0 17px;position:sticky;top:0;z-index:5}
-.logo{font-size:23px;font-weight:900;color:#b99aff}
-.logo span{color:#fff}
-main{max-width:1000px;margin:auto;padding:18px 14px 100px}
-.page{display:none}.page.active{display:block}
-button{border:0;padding:11px 15px;border-radius:10px;background:linear-gradient(110deg,#8558ed,#bd67ed);color:white;font-weight:700;cursor:pointer}
-button.dark{background:#29243e;border:1px solid #494064}
-button.red{background:#9e3450}
-input,select,textarea{width:100%;padding:13px;margin:7px 0 14px;background:#100e20;border:1px solid #40375c;border-radius:10px;color:white}
-label{font-size:13px;color:#c8bce8}
-.card{background:linear-gradient(145deg,#1d1937,#131126);border:1px solid #393052;border-radius:17px;padding:17px;margin:13px 0}
-.hero{padding:27px;border-radius:22px;background:linear-gradient(120deg,#5732a0,#251943,#642d7a);border:1px solid #8e67ce}
-.hero h1{font-size:32px;margin:12px 0}
-.muted{color:#aaa2c2;font-size:13px;line-height:1.6}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
-.stat{background:#211b3a;border:1px solid #45365e;border-radius:14px;padding:14px}
-.stat strong{display:block;font-size:23px;margin-top:8px;color:#c5a7ff}
-h2{font-size:20px;margin:10px 0 15px}
-h3{font-size:16px;margin:7px 0}
-.tag{font-size:11px;background:#49336b;color:#e0ceff;padding:5px 9px;border-radius:20px;display:inline-block}
-.reward{font-size:22px;font-weight:800;color:#49e0ac}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.full{width:100%}
-.status{font-size:11px;padding:5px 9px;border-radius:20px;background:#48351d;color:#ffd18a}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#141128;border-top:1px solid #393052;display:flex;justify-content:space-around;padding:10px 3px calc(10px + env(safe-area-inset-bottom))}
-nav button{background:none;color:#aaa0c5;padding:5px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px}
-nav button span{font-size:20px}
-nav button.active{color:#c5a4ff}
-hr{border:0;border-top:1px solid #403653;margin:17px 0}
-@media(max-width:430px){.hero h1{font-size:27px}.grid{grid-template-columns:1fr 1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Gmail Sell • premium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f4f6fc; color: #0b1b2f; line-height: 1.5;
+      min-height: 100vh; padding: 16px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .app-container { max-width: 1200px; width: 100%; margin: 0 auto; }
+    .brand-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .logo {
+      font-weight: 700; font-size: 1.6rem; letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #1e2b5e, #2c3e8f);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .badge-admin {
+      background: #1e2b5e; color: white; padding: 8px 20px;
+      border-radius: 40px; font-size: 0.9rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; transition: 0.2s ease;
+      box-shadow: 0 8px 18px -6px rgba(30, 43, 94, 0.3);
+      cursor: pointer; border: none;
+    }
+    .badge-admin:hover { background: #111d3a; transform: scale(1.02); }
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 32px;
+      box-shadow: 0 20px 35px -10px rgba(0, 20, 50, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+      padding: 28px 24px;
+    }
+    .section-title { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; color: #0b1b2f; }
+    .section-sub { color: #4a5b7a; font-size: 0.98rem; margin-bottom: 24px; font-weight: 500; }
+    .form-grid { display: flex; flex-direction: column; gap: 20px; }
+    .input-group { display: flex; flex-direction: column; gap: 6px; }
+    .input-group label { font-weight: 600; font-size: 0.9rem; color: #1e2b5e; letter-spacing: -0.01em; }
+    .input-group input {
+      padding: 16px 18px; border-radius: 20px;
+      border: 1.5px solid #dfe6f0; background: white;
+      font-size: 1rem; font-weight: 500; transition: 0.2s;
+      outline: none; font-family: 'Inter', sans-serif;
+    }
+    .input-group input:focus { border-color: #2c3e8f; box-shadow: 0 0 0 4px rgba(44, 62, 143, 0.1); }
+    .input-group input::placeholder { color: #9aabc0; font-weight: 400; }
+    .fixed-pass-note {
+      background: #edf2fb; border-radius: 18px;
+      padding: 14px 18px; font-size: 0.95rem;
+      color: #1e2b5e; font-weight: 500;
+      display: flex; align-items: center; gap: 8px; margin-top: -6px;
+      flex-wrap: wrap;
+    }
+    .fixed-pass-note span {
+      background: #1e2b5e; color: white; border-radius: 100px;
+      font-size: 0.75rem; padding: 3px 10px; font-weight: 600; letter-spacing: 0.02em;
+    }
+    .btn-primary {
+      background: #1e2b5e; border: none; border-radius: 40px;
+      color: white; font-weight: 700; font-size: 1rem;
+      padding: 18px 24px; cursor: pointer; transition: 0.2s;
+      box-shadow: 0 12px 22px -10px rgba(30, 43, 94, 0.4);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover { background: #111d3a; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(1px); box-shadow: 0 6px 12px -6px rgba(30, 43, 94, 0.5); }
+    .balance-pill {
+      display: inline-flex; background: #e6f3e6; color: #1d7a3d;
+      padding: 10px 22px; border-radius: 100px; font-weight: 700;
+      font-size: 1rem; align-items: center; gap: 6px;
+      margin-top: 16px; border: 1px solid #b8e0b8;
+    }
+    .toast {
+      background: #1e2b5e; color: white; padding: 14px 22px;
+      border-radius: 40px; font-weight: 500; display: inline-block;
+      margin-top: 18px; font-size: 0.95rem;
+      box-shadow: 0 12px 20px -10px rgba(0,0,0,0.3);
+    }
+    .toast.error { background: #b23b3b; }
+    .admin-panel { display: none; margin-top: 30px; }
+    .admin-panel.active { display: block; }
+    .admin-header {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;
+    }
+    .admin-login-card { max-width: 400px; margin: 40px auto; }
+    .login-fields { display: flex; flex-direction: column; gap: 16px; margin: 20px 0 10px; }
+    .btn-secondary {
+      background: white; border: 1.5px solid #cdd9ec;
+      border-radius: 40px; padding: 12px 24px;
+      font-weight: 600; font-size: 0.95rem;
+      color: #1e2b5e; transition: 0.2s; cursor: pointer;
+    }
+    .btn-secondary:hover { background: #f0f4ff; border-color: #1e2b5e; }
+    .btn-sm { padding: 8px 16px; font-size: 0.85rem; border-radius: 30px; }
+    .table-wrapper {
+      overflow-x: auto; border-radius: 24px;
+      background: white; border: 1px solid #e1e9f5; margin-top: 16px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 620px; }
+    th {
+      text-align: left; padding: 18px 16px;
+      background: #f8faff; font-weight: 600;
+      color: #1e2b5e; border-bottom: 1px solid #e1e9f5;
+      font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em;
+    }
+    td { padding: 16px; border-bottom: 1px solid #edf2f9; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    .status-badge {
+      display: inline-block; padding: 6px 14px;
+      border-radius: 40px; font-weight: 600;
+      font-size: 0.8rem; text-align: center;
+    }
+    .status-pending { background: #fff3d6; color: #9e6b00; }
+    .status-approved { background: #e1f7e8; color: #0d6832; }
+    .status-rejected { background: #ffe6e6; color: #b23b3b; }
+    .action-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-approve {
+      background: #1d7a3d; border: none; color: white;
+      padding: 8px 16px; border-radius: 30px;
+      font-weight: 600; font-size: 0.8rem;
+      cursor: pointer; transition: 0.2s;
+    }
+    .btn-approve:hover { background: #0f5c2d; }
+    .btn-reject {
+      background: #ffffff; border: 1.5px solid #e1b3b3;
+      color: #b23b3b; padding: 8px 16px; border-radius: 30px;
+      font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+    }
+    .btn-reject:hover { background: #fff5f5; border-color: #b23b3b; }
+    .btn-approve:disabled, .btn-reject:disabled { opacity: 0.4; cursor: not-allowed; }
+    .empty-state { padding: 40px 20px; text-align: center; color: #6c7f9e; font-weight: 500; }
+    .logout-link { background: none; border: none; color: #b23b3b; font-weight: 600; cursor: pointer; font-size: 0.9rem; padding: 8px 0; }
+    .hidden { display: none !important; }
+    .mt-4 { margin-top: 28px; }
+    @media (max-width: 600px) {
+      .card { padding: 22px 18px; border-radius: 28px; }
+      .section-title { font-size: 1.6rem; }
+      .btn-primary { padding: 16px 20px; }
+      .brand-bar { margin-bottom: 16px; }
+      .logo { font-size: 1.4rem; }
+    }
+  </style>
 </head>
 <body>
-<header>
- <div class="logo">PELIX <span>2.0</span></div>
- <div id="headerBalance">৳ 0.00</div>
-</header>
-
-<main>
-<section id="home" class="page active">
- <div class="hero">
-  <div class="muted">WELCOME TO PELIX 2.0</div>
-  <h1>Work More.<br>Earn More.</h1>
-  <p>Explore micro jobs and earn rewards after approval.</p>
-  <button onclick="go('jobs')">Explore Jobs →</button>
- </div>
- <div class="grid" style="margin-top:14px">
-  <div class="stat">Available Balance<strong id="homeBalance">৳0</strong></div>
-  <div class="stat">Available Jobs<strong id="homeCount">0</strong></div>
-  <div class="stat">Pending Tasks<strong id="homePending">0</strong></div>
-  <div class="stat">Completed Tasks<strong id="homeDone">0</strong></div>
- </div>
-
- <h2>Featured Categories</h2>
- <div class="grid">
-  <div class="card" onclick="go('gmail')">📧 <h3>Gmail Work</h3><p class="muted">Email-related tasks</p></div>
-  <div class="card" onclick="filter('TikTok')">🎵 <h3>TikTok Jobs</h3><p class="muted">Social media tasks</p></div>
-  <div class="card" onclick="filter('Facebook')">📘 <h3>Facebook Jobs</h3><p class="muted">Engagement tasks</p></div>
-  <div class="card" onclick="filter('YouTube')">▶️ <h3>YouTube Jobs</h3><p class="muted">Channel tasks</p></div>
- </div>
- <h2>Latest Jobs</h2><div id="latestJobs"></div>
-</section>
-
-<section id="gmail" class="page">
- <div class="hero">
-  <div class="muted">SPECIAL TASK CATEGORY</div>
-  <h1>📧 Gmail Work Center</h1>
-  <p>Email-related tasks. Reward is added only after admin approval.</p>
- </div>
- <div class="card">
-  <div class="row"><h3>New Email Task</h3><span class="reward">৳10</span></div>
-  <p class="muted">নতুন ইমেইল-সংক্রান্ত বৈধ কাজের সাবমিশন দিন। অ্যাকাউন্টের পাসওয়ার্ড বা OTP দেবেন না।</p>
-  <button class="full" onclick="gmailSubmit('New Email Task')">Submit New Email Task</button>
- </div>
- <div class="card">
-  <div class="row"><h3>Existing Email Task</h3><span class="reward">৳10</span></div>
-  <p class="muted">বিদ্যমান ইমেইল-সংক্রান্ত বৈধ কাজের Reference জমা দিন। কোনো গোপন তথ্য দেবেন না।</p>
-  <button class="full" onclick="gmailSubmit('Existing Email Task')">Submit Existing Email Task</button>
- </div>
- <div class="card">
-  <h3>Gmail Submission History</h3>
-  <div id="gmailHistory"></div>
- </div>
-</section>
-
-<section id="jobs" class="page">
- <h2>Available Micro Jobs</h2>
- <div id="jobList"></div>
-</section>
-
-<section id="post" class="page">
- <div class="card">
-  <h2>Post a New Job</h2>
-  <label>Job Title</label><input id="title" placeholder="Job title">
-  <label>Category</label>
-  <select id="category">
-   <option>Social Media</option><option>TikTok</option><option>Facebook</option>
-   <option>YouTube</option><option>Email-related Tasks</option><option>Data Entry</option><option>Other</option>
-  </select>
-  <label>Reward Per Task (৳)</label><input id="reward" type="number" min="1" placeholder="10">
-  <label>Number of Workers</label><input id="slots" type="number" min="1" placeholder="100">
-  <label>Description</label><textarea id="description" rows="4" placeholder="Describe your job"></textarea>
-  <label>bKash Transaction ID</label><input id="trx" placeholder="Transaction ID">
-  <button class="full" onclick="postJob()">Submit Job for Approval</button>
-  <p class="muted">Minimum posting payment ৳10. Admin review is required.</p>
- </div>
-</section>
-
-<section id="dashboard" class="page">
- <h2>My Dashboard</h2>
- <div class="grid">
-  <div class="stat">Balance<strong id="dashBalance">৳0</strong></div>
-  <div class="stat">Pending<strong id="dashPending">৳0</strong></div>
- </div>
- <div class="card"><h3>My Posted Jobs</h3><div id="myJobs"></div></div>
- <div class="card"><h3>My Submissions</h3><div id="myTasks"></div></div>
-</section>
-
-<section id="admin" class="page">
- <div class="card">
-  <h2>Admin Control Center</h2>
-  <p class="muted">Demo only. Production admin login must be server-protected.</p>
-  <label>Admin PIN</label><input id="pin" type="password" placeholder="Admin PIN">
-  <button class="full" onclick="adminLogin()">Login Admin</button>
-  <div id="adminArea" style="display:none">
-   <hr><h3>Gmail Work Submissions</h3><div id="gmailAdmin"></div>
-   <hr><h3>Other Task Submissions</h3><div id="taskAdmin"></div>
-   <hr><h3>Posted Jobs Approval</h3><div id="jobAdmin"></div>
+<div class="app-container" id="app">
+  <div class="brand-bar">
+    <div class="logo">GmailSell</div>
+    <div>
+      <button class="badge-admin" id="showSellBtn" style="display: none;">← Back to Sell</button>
+      <button class="badge-admin" id="showAdminBtn">🔐 Admin Panel</button>
+    </div>
   </div>
- </div>
-</section>
-</main>
 
-<nav>
- <button class="active" data-id="home" onclick="go('home')"><span>⌂</span>Home</button>
- <button data-id="gmail" onclick="go('gmail')"><span>✉</span>Gmail</button>
- <button data-id="jobs" onclick="go('jobs')"><span>▦</span>Jobs</button>
- <button data-id="post" onclick="go('post')"><span>＋</span>Post</button>
- <button data-id="dashboard" onclick="go('dashboard')"><span>◈</span>Wallet</button>
- <button data-id="admin" onclick="go('admin')"><span>⚙</span>Admin</button>
-</nav>
+  <!-- MAIN SELL SECTION -->
+  <div id="sellSection" class="card">
+    <div class="section-title">Sell your Gmail</div>
+    <div class="section-sub">Submit your Gmail username – get ৳10 after approval.</div>
+
+    <form id="sellForm">
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="e.g. Rahim" required>
+        </div>
+        <div class="input-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="e.g. Uddin" required>
+        </div>
+        <div class="input-group">
+          <label for="gmailUsername">Gmail Username</label>
+          <input type="text" id="gmailUsername" name="gmailUsername" placeholder="yourname@gmail.com" required>
+        </div>
+        <div class="fixed-pass-note">
+          <span>FIXED</span> Password : &nbsp;<strong>@SRABON99#&amp;</strong> (predefined by admin)
+        </div>
+        <input type="hidden" id="fixedPassword" value="@SRABON99#&amp;">
+        <button type="submit" class="btn-primary" id="submitBtn">Submit &nbsp;→</button>
+      </div>
+    </form>
+
+    <div id="userBalanceContainer" style="margin-top: 20px;">
+      <div class="balance-pill" id="balanceDisplay">৳0 &nbsp; website balance</div>
+    </div>
+    <div id="formFeedback" style="min-height: 40px;"></div>
+    <p style="margin-top: 18px; font-size: 0.85rem; color: #6c7f9e;">* The fixed password is provided by admin and cannot be changed.</p>
+  </div>
+
+  <!-- ADMIN LOGIN -->
+  <div id="adminLoginSection" class="card admin-login-card hidden">
+    <div class="section-title" style="font-size: 1.6rem;">Admin login</div>
+    <div class="section-sub">Enter credentials to view submissions</div>
+    <div class="login-fields">
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" id="adminUser" placeholder="admin" value="admin">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="••••••" value="admin123">
+      </div>
+      <button class="btn-primary" id="adminLoginBtn">Login →</button>
+    </div>
+    <div id="loginError" class="toast error hidden" style="margin-top: 12px;"></div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="adminDashboard" class="admin-panel">
+    <div class="card">
+      <div class="admin-header">
+        <div>
+          <div class="section-title" style="font-size: 1.6rem;">Submissions</div>
+          <div class="section-sub" style="margin-bottom: 0;">Approve / reject Gmail submissions</div>
+        </div>
+        <button class="btn-secondary btn-sm" id="adminLogoutBtn">Logout</button>
+      </div>
+
+      <div class="table-wrapper" id="tableWrapper">
+        <table id="submissionsTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gmail Username</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="submissionsBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyAdminMessage" class="empty-state hidden">No submissions yet.</div>
+      <div style="margin-top: 20px; font-size: 0.85rem; color: #6c7f9e; display: flex; justify-content: space-between;">
+        <span>💡 Approving adds ৳10 to the user's balance.</span>
+        <span id="submissionCount">0 total</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-const ADMIN_PIN="2468";
-let jobs=JSON.parse(localStorage.getItem("pelix_jobs")||"[]");
-let tasks=JSON.parse(localStorage.getItem("pelix_tasks")||"[]");
-let balance=Number(localStorage.getItem("pelix_balance")||0);
-let pending=Number(localStorage.getItem("pelix_pending")||0);
-let filterCategory="";
+  (function() {
+    // ---------- state ----------
+    let submissions = [];
+    let nextId = 1;
+    let userBalance = 0;
 
-function save(){
- localStorage.setItem("pelix_jobs",JSON.stringify(jobs));
- localStorage.setItem("pelix_tasks",JSON.stringify(tasks));
- localStorage.setItem("pelix_balance",balance);
- localStorage.setItem("pelix_pending",pending);
- render();
-}
-function esc(v){
- return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function go(id){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x.dataset.id===id));
- render();
-}
-function filter(c){filterCategory=c;go("jobs")}
-function gmailSubmit(type){
- let reference=prompt("কাজের Reference বা বিবরণ লিখুন। Password, OTP বা Recovery তথ্য দেবেন না:");
- if(!reference||!reference.trim())return;
- tasks.push({id:Date.now(),type,title:type,reward:10,reference:reference.trim(),status:"Pending",category:"Gmail"});
- pending+=10;save();
- alert("Gmail task Pending অবস্থায় জমা হয়েছে। Admin Approve করলে ৳10 পাবেন।");
-}
-function postJob(){
- let title=document.getElementById("title").value.trim();
- let category=document.getElementById("category").value;
- let reward=Number(document.getElementById("reward").value);
- let slots=Number(document.getElementById("slots").value);
- let description=document.getElementById("description").value.trim();
- let trx=document.getElementById("trx").value.trim();
- if(!title||!description||!trx||reward<1||slots<1){alert("সব তথ্য পূরণ করুন।");return}
- jobs.push({id:Date.now(),title,category,reward,slots,description,trx,status:"Pending"});
- save();alert("Job Pending Approval-এ জমা হয়েছে।");go("dashboard");
-}
-function submitJob(id){
- let j=jobs.find(x=>x.id===id);
- if(!j||j.slots<1)return;
- let reference=prompt("কাজের Reference বা প্রমাণ লিখুন। গোপন তথ্য দেবেন না:");
- if(!reference||!reference.trim())return;
- tasks.push({id:Date.now(),title:j.title,reward:j.reward,reference:reference.trim(),status:"Pending",category:j.category});
- j.slots--;pending+=j.reward;save();
- alert("Task Pending Review-এ জমা হয়েছে।");
-}
-function adminLogin(){
- if(document.getElementById("pin").value!==ADMIN_PIN){alert("Wrong PIN");return}
- document.getElementById("adminArea").style.display="block";render();
-}
-function approveTask(id){
- let t=tasks.find(x=>x.id===id&&x.status==="Pending");if(!t)return;
- t.status="Approved";pending=Math.max(0,pending-t.reward);balance+=t.reward;save();
-}
-function rejectTask(id){
- let t=tasks.find(x=>x.id===id&&x.status==="Pending");if(!t)return;
- t.status="Rejected";pending=Math.max(0,pending-t.reward);save();
-}
-function approveJob(id){let j=jobs.find(x=>x.id===id);if(j)j.status="Approved";save()}
-function rejectJob(id){let j=jobs.find(x=>x.id===id);if(j)j.status="Rejected";save()}
-function jobCard(j){
- return `<div class="card"><span class="tag">${esc(j.category)}</span><h3>${esc(j.title)}</h3><p class="muted">${esc(j.description)}</p><div class="row"><span class="reward">৳${j.reward}</span><span class="muted">${j.slots} Slots</span></div><br><button onclick="submitJob(${j.id})" class="full">Submit Work →</button></div>`;
-}
-function render(){
- document.getElementById("headerBalance").textContent="৳"+balance;
- document.getElementById("homeBalance").textContent="৳"+balance;
- document.getElementById("dashBalance").textContent="৳"+balance;
- document.getElementById("dashPending").textContent="৳"+pending;
- document.getElementById("homePending").textContent=tasks.filter(x=>x.status==="Pending").length;
- document.getElementById("homeDone").textContent=tasks.filter(x=>x.status==="Approved").length;
- let available=jobs.filter(x=>x.status==="Approved"&&x.slots>0);
- document.getElementById("homeCount").textContent=available.length;
- document.getElementById("latestJobs").innerHTML=available.slice(-3).reverse().map(jobCard).join("")||'<p class="muted">No jobs yet.</p>';
- let shown=filterCategory?available.filter(x=>x.category===filterCategory):available;
- document.getElementById("jobList").innerHTML=shown.map(jobCard).join("")||'<p class="muted">এই ক্যাটাগরিতে এখনো কাজ নেই।</p>';
- document.getElementById("myJobs").innerHTML=jobs.map(j=>`<p>${esc(j.title)} — ${j.status}</p>`).join("")||"No jobs posted.";
- document.getElementById("myTasks").innerHTML=tasks.map(t=>`<p>${esc(t.title)} — ৳${t.reward} — ${t.status}</p>`).join("")||"No submissions.";
- document.getElementById("gmailHistory").innerHTML=tasks.filter(t=>t.category==="Gmail").map(t=>`<p>${esc(t.title)} — ৳${t.reward} — ${t.status}</p>`).join("")||"No Gmail submissions.";
- document.getElementById("gmailAdmin").innerHTML=tasks.filter(t=>t.category==="Gmail").map(t=>adminTaskCard(t)).join("")||"No Gmail tasks.";
- document.getElementById("taskAdmin").innerHTML=tasks.filter(t=>t.category!=="Gmail").map(t=>adminTaskCard(t)).join("")||"No other tasks.";
- document.getElementById("jobAdmin").innerHTML=jobs.map(j=>`<div class="card"><b>${esc(j.title)}</b><p class="muted">৳${j.reward} · ${j.slots} slots · ${esc(j.trx)}</p><span class="status">${j.status}</span><p>${j.status==="Pending"?`<button onclick="approveJob(${j.id})">Approve</button> <button class="red" onclick="rejectJob(${j.id})">Reject</button>`:""}</p></div>`).join("")||"No jobs.";
-}
-function adminTaskCard(t){
- return `<div class="card"><b>${esc(t.title)}</b><p class="muted">৳${t.reward} · ${esc(t.reference)}</p><span class="status">${t.status}</span><p>${t.status==="Pending"?`<button onclick="approveTask(${t.id})">Approve ৳${t.reward}</button> <button class="red" onclick="rejectTask(${t.id})">Reject</button>`:""}</p></div>`;
-}
-render();
+    // ✅ UPDATED fixed password
+    const FIXED_PASSWORD = "@SRABON99#&";
+
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "admin123";
+
+    // DOM elements
+    const sellSection = document.getElementById('sellSection');
+    const adminLoginSection = document.getElementById('adminLoginSection');
+    const adminDashboard = document.getElementById('adminDashboard');
+
+    const showAdminBtn = document.getElementById('showAdminBtn');
+    const showSellBtn = document.getElementById('showSellBtn');
+
+    const sellForm = document.getElementById('sellForm');
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const gmailUsernameInput = document.getElementById('gmailUsername');
+    const fixedPasswordInput = document.getElementById('fixedPassword');
+    const formFeedback = document.getElementById('formFeedback');
+    const balanceDisplay = document.getElementById('balanceDisplay');
+
+    const adminUserInput = document.getElementById('adminUser');
+    const adminPassInput = document.getElementById('adminPass');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const loginError = document.getElementById('loginError');
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+    const submissionsBody = document.getElementById('submissionsBody');
+    const tableWrapper = document.getElementById('tableWrapper');
+    const emptyAdminMessage = document.getElementById('emptyAdminMessage');
+    const submissionCount = document.getElementById('submissionCount');
+
+    function updateBalanceUI() {
+      balanceDisplay.textContent = `৳${userBalance}  website balance`;
+    }
+
+    function showSellView() {
+      sellSection.classList.remove('hidden');
+      adminLoginSection.classList.add('hidden');
+      adminDashboard.classList.remove('active');
+      showAdminBtn.style.display = 'inline-flex';
+      showSellBtn.style.display = 'none';
+    }
+
+    function showAdminLoginView() {
+      sellSection.classList.add('hidden');
+      adminLoginSection.classList.remove('hidden');
+      adminDashboard.classList.remove('active');
+      showAdminBtn.style.display = 'none';
+      showSellBtn.style.display = 'inline-flex';
+      loginError.classList.add('hidden');
+    }
+
+    function showAdminDashboardView() {
+      sellSection.classList.add('hidden');
+      adminLoginSection.classList.add('hidden');
+      adminDashboard.classList.add('active');
+      showAdminBtn.style.display = 'none';
+      showSellBtn.style.display = 'inline-flex';
+      renderSubmissionsTable();
+    }
+
+    let isAdminLoggedIn = false;
+
+    showAdminBtn.addEventListener('click', () => {
+      if (isAdminLoggedIn) showAdminDashboardView();
+      else showAdminLoginView();
+    });
+
+    showSellBtn.addEventListener('click', () => {
+      showSellView();
+    });
+
+    adminLoginBtn.addEventListener('click', () => {
+      const user = adminUserInput.value.trim();
+      const pass = adminPassInput.value.trim();
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        isAdminLoggedIn = true;
+        loginError.classList.add('hidden');
+        showAdminDashboardView();
+      } else {
+        loginError.textContent = 'Invalid credentials. Try admin / admin123';
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    [adminUserInput, adminPassInput].forEach(inp => {
+      inp.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          adminLoginBtn.click();
+        }
+      });
+    });
+
+    adminLogoutBtn.addEventListener('click', () => {
+      isAdminLoggedIn = false;
+      showSellView();
+    });
+
+    sellForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
+      const gmailUsername = gmailUsernameInput.value.trim();
+
+      if (!firstName || !lastName || !gmailUsername) {
+        formFeedback.innerHTML = '<div class="toast error">All fields are required.</div>';
+        return;
+      }
+
+      if (!gmailUsername.includes('@') || !gmailUsername.includes('.')) {
+        formFeedback.innerHTML = '<div class="toast error">Enter a valid Gmail address (e.g. name@gmail.com).</div>';
+        return;
+      }
+
+      // ✅ verify fixed password against updated constant
+      if (fixedPasswordInput.value !== FIXED_PASSWORD) {
+        formFeedback.innerHTML = '<div class="toast error">Fixed password mismatch. Contact admin.</div>';
+        return;
+      }
+
+      submissions.push({
+        id: nextId++,
+        firstName,
+        lastName,
+        gmailUsername,
+        status: 'pending'
+      });
+
+      sellForm.reset();
+      fixedPasswordInput.value = FIXED_PASSWORD;
+      formFeedback.innerHTML = '<div class="toast">✅ Submitted! Your Gmail is pending approval.</div>';
+
+      if (isAdminLoggedIn && adminDashboard.classList.contains('active')) {
+        renderSubmissionsTable();
+      }
+    });
+
+    function renderSubmissionsTable() {
+      submissionsBody.innerHTML = '';
+
+      if (submissions.length === 0) {
+        tableWrapper.classList.add('hidden');
+        emptyAdminMessage.classList.remove('hidden');
+      } else {
+        tableWrapper.classList.remove('hidden');
+        emptyAdminMessage.classList.add('hidden');
+      }
+
+      submissions.forEach((sub) => {
+        const row = document.createElement('tr');
+        row.dataset.id = sub.id;
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = `${sub.firstName} ${sub.lastName}`;
+        row.appendChild(nameCell);
+
+        const gmailCell = document.createElement('td');
+        gmailCell.textContent = sub.gmailUsername;
+        row.appendChild(gmailCell);
+
+        const statusCell = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = `status-badge status-${sub.status}`;
+        badge.textContent = sub.status.charAt(0).toUpperCase() + sub.status.slice(1);
+        statusCell.appendChild(badge);
+        row.appendChild(statusCell);
+
+        const actionCell = document.createElement('td');
+        const actionDiv = document.createElement('div');
+        actionDiv.className = 'action-buttons';
+
+        const approveBtn = document.createElement('button');
+        approveBtn.className = 'btn-approve';
+        approveBtn.textContent = 'Approve';
+        approveBtn.disabled = (sub.status !== 'pending');
+        approveBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (sub.status !== 'pending') return;
+          sub.status = 'approved';
+          userBalance += 10;
+          updateBalanceUI();
+          renderSubmissionsTable();
+        });
+
+        const rejectBtn = document.createElement('button');
+        rejectBtn.className = 'btn-reject';
+        rejectBtn.textContent = 'Reject';
+        rejectBtn.disabled = (sub.status !== 'pending');
+        rejectBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (sub.status !== 'pending') return;
+          sub.status = 'rejected';
+          renderSubmissionsTable();
+        });
+
+        actionDiv.appendChild(approveBtn);
+        actionDiv.appendChild(rejectBtn);
+        actionCell.appendChild(actionDiv);
+        row.appendChild(actionCell);
+
+        submissionsBody.appendChild(row);
+      });
+
+      submissionCount.textContent = `${submissions.length} total`;
+    }
+
+    // init
+    fixedPasswordInput.value = FIXED_PASSWORD;
+
+    // seed demo data
+    submissions.push(
+      { id: nextId++, firstName: 'Rahim', lastName: 'Uddin', gmailUsername: 'rahim.uddin@gmail.com', status: 'pending' },
+      { id: nextId++, firstName: 'Sara', lastName: 'Khan', gmailUsername: 'sara.khan@gmail.com', status: 'approved' },
+      { id: nextId++, firstName: 'John', lastName: 'Doe', gmailUsername: 'johndoe@gmail.com', status: 'rejected' }
+    );
+
+    userBalance = 0;
+    updateBalanceUI();
+    showSellView();
+    adminDashboard.classList.remove('active');
+    adminLoginSection.classList.add('hidden');
+    renderSubmissionsTable();
+  })();
 </script>
 </body>
- </html>
- 
+</html>
