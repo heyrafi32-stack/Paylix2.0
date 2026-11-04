@@ -90,9 +90,7 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
 <div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
 <div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
 <div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
-</div>
-
-<div id="app">
+</div><div id="app">
 <div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
 <div class="ct">
 <div id="v-h" class="vw on">
@@ -272,4 +270,10 @@ function resetTaskForm(){
   document.getElementById('tDesc').value = '';
   document.getElementById('tPrice').value = '';
   document.getElementById('tSlots').value = '';
-  document.getElementById('taskFormTitle').innerText = "
+  document.getElementById('taskFormTitle').innerText = "Post New Task";
+  document.getElementById('taskSubmitBtn').innerText = "Post Task";
+}
+gc();
+</script>
+</body>
+</html>
