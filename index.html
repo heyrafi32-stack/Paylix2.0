@@ -1,404 +1,255 @@
-
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAYLIX - Login</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>পেলিক্স</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
+#auth,#adminScreen{position:fixed;inset:0;background:#f3f6f9;z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:24px}
+#adminScreen{display:none; z-index:10000; overflow-y:auto;}
+.lg{text-align:center;margin-bottom:24px}
+.li{width:60px;height:60px;border-radius:16px;margin:0 auto 8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#0a4536}
+.li img{width:100%;height:100%;object-fit:cover}
+.tb{display:flex;margin-bottom:20px;background:#e2e8f0;border-radius:12px;padding:4px}
+.tt{flex:1;text-align:center;padding:10px;font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;color:#64748b}
+.tt.on{background:#fff;color:#0a4536;box-shadow:0 2px 5px rgba(0,0,0,0.05)}
+.fb{display:none}.fb.on{display:block}
+.ig{margin-bottom:14px}
+.ig label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.ig input,.ig textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none}
+.ig textarea{height:80px;resize:vertical}
+.cp{display:flex;align-items:center;gap:10px;background:#e6f7ef;padding:10px;border-radius:12px;margin-bottom:14px}
+.cp input{width:80px;padding:8px;border-radius:8px;border:1px solid #e2e8f0;outline:none}
+.bt{width:100%;padding:16px;background:#0a4536;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
+.er{color:#ef4444;font-size:13px;text-align:center;margin-bottom:10px;display:none}
+#app{display:none}
+.hd{display:flex;justify-content:space-between;align-items:center;padding:16px}
+.hl{display:flex;align-items:center;gap:10px}
+.hi{width:32px;height:32px;border-radius:8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#0a4536}
+.hi img{width:100%;height:100%;object-fit:cover}
+.ct{padding:0 16px}
+.cd{background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0;margin-bottom:16px}
+.bn{background:linear-gradient(135deg,#0d4f3f,#0a3a2d);border-radius:16px;padding:20px;color:#fff;margin-bottom:16px}
+.ac{background:#0a4536;border-radius:20px;padding:20px;color:#fff;margin-bottom:20px}
+.aa{font-size:32px;font-weight:700;margin-bottom:16px}
+.ag{display:flex;gap:10px}
+.ab{flex:1;background:rgba(255,255,255,0.1);padding:12px;border-radius:12px}
+.sv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.si{background:#fff;padding:16px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;border:1px solid #e2e8f0;cursor:pointer}
+.sn{width:40px;height:40px;border-radius:12px;background:#e6f7ef;color:#047857;display:flex;justify-content:center;align-items:center;font-size:18px;margin-bottom:8px}
+.si span{font-size:12px;font-weight:600;text-align:center;line-height:1.2}
+.nv{position:fixed;bottom:0;left:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:10px 0 15px;border-radius:20px 20px 0 0;box-shadow:0 -4px 15px rgba(0,0,0,0.05);z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;color:#64748b;font-size:11px;cursor:pointer;width:60px}
+.ni.on{color:#10b981}
+.ni i{font-size:20px;margin-bottom:4px}
+.nc{width:50px;height:50px;background:#10b981;border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;transform:translateY(-15px);border:4px solid #f3f6f9}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;justify-content:center;align-items:flex-end}
+.md{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow-y:auto}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cl{background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer}
+.pb{background:#e6f7ef;padding:12px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:14px}
+.tabs{display:flex;gap:10px;margin-bottom:16px;border-bottom:1px solid #e2e8f0;padding-bottom:8px}
+.tab{font-weight:600;font-size:14px;cursor:pointer;color:#64748b}
+.tab.on{color:#0a4536;border-bottom:2px solid #0a4536;padding-bottom:8px}
+.vw{display:none}.vw.on{display:block}
+</style>
 </head>
-<body>
-
-<div class="auth-container">
-  <div class="logo">
-    <img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="PAYLIX Logo">
-    <h1>PAY<span>LIX</span></h1>
-    <p>Welcome to PAYLIX</p>
+<body><div id="adminScreen">
+  <div style="text-align:center; margin-bottom:24px;"><h1 style="color:#0a4536; font-size:24px;">Admin Control</h1><p style="font-size:13px; color:#64748b;">Secure login required</p></div>
+  <div id="adminLoginBox">
+    <div class="ig"><label>Username</label><input type="text" id="au" placeholder="Enter username"></div>
+    <div class="ig"><label>Password</label><input type="password" id="ap" placeholder="Enter password"></div>
+    <button class="bt" onclick="da()">Login</button>
   </div>
-
-  <div class="auth-box">
-
+  <div id="adminPanelBox" style="display:none;">
     <div class="tabs">
-      <button id="loginTab" class="active" type="button">Login</button>
-      <button id="signupTab" type="button">Sign Up</button>
+      <div class="tab on" id="tabSub" onclick="switchAdminTab('sub')">Submissions</div>
+      <div class="tab" id="tabTask" onclick="switchAdminTab('task')">Manage Tasks</div>
     </div>
-
-    <!-- Login Form -->
-    <form id="loginForm">
-      <h2>Welcome Back!</h2>
-      <p>Login to your account</p>
-
-      <label>Phone Number</label>
-      <input type="tel" id="loginPhone" placeholder="Enter phone number" required>
-
-      <label>Password</label>
-      <input type="password" id="loginPassword" placeholder="Enter password" required>
-
-      <button class="main-btn" type="submit">LOGIN</button>
-      <p id="loginMessage" class="message"></p>
-    </form>
-
-    <!-- Signup Form -->
-    <form id="signupForm" class="hidden">
-      <h2>Create Account</h2>
-      <p>Join PAYLIX today</p>
-
-      <label>Your Name</label>
-      <input type="text" id="signupName" placeholder="Enter your name" required>
-
-      <label>Phone Number</label>
-      <input type="tel" id="signupPhone" placeholder="Enter phone number" required>
-
-      <label>Password</label>
-      <input type="password" id="signupPassword" placeholder="Create password" minlength="6" required>
-
-      <label>Confirm Password</label>
-      <input type="password" id="confirmPassword" placeholder="Confirm password" required>
-
-      <div class="captcha">
-        <label>Math Captcha: <span id="captchaQuestion"></span></label>
-        <input type="number" id="captchaAnswer" placeholder="Your answer" required>
-      </div>
-
-      <button class="main-btn" type="submit">CREATE ACCOUNT</button>
-      <p id="signupMessage" class="message"></p>
-    </form>
-
+    <div id="adminSubView"><div id="al"></div></div>
+    <div id="adminTaskView" style="display:none">
+      <h3 id="taskFormTitle" style="margin-bottom:10px; font-size:16px;">Post New Task</h3>
+      <input type="hidden" id="tEditId" value="">
+      <div class="ig"><label>Task Title</label><input type="text" id="tTitle" placeholder="e.g. YouTube Like"></div>
+      <div class="ig"><label>Task Description</label><textarea id="tDesc" placeholder="ভিডিও দেখে লাইক করুন..."></textarea></div>
+      <div class="ig"><label>Price (৳)</label><input type="number" id="tPrice" placeholder="2.3"></div>
+      <div class="ig"><label>Total Slots</label><input type="number" id="tSlots" placeholder="100"></div>
+      <button class="bt" id="taskSubmitBtn" onclick="saveTask()">Post Task</button>
+      <div id="taskListAdmin" style="margin-top:20px;"></div>
+    </div>
+    <button class="bt" style="background:#ef4444; margin-top:10px;" onclick="logoutAdmin()">Logout Admin</button>
   </div>
-
-  <p class="footer">© 2026 PAYLIX. All Rights Reserved.</p>
 </div>
 
-<script src="script.js"></script>
-</body>
-</html>
+<div id="auth">
+<div class="lg"><div class="li"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><h1>পেলিক্স</h1></div>
+<div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
+<div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
+<div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
+</div>
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+<div id="app">
+<div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
+<div class="ct">
+<div id="v-h" class="vw on">
+<div class="bn"><h2>Welcome, <span id="un">User</span> 👋</h2><p style="font-size:13px;color:#a7f3d0">Start earning today</p></div>
+<div class="cd" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px"><div style="width:8px;height:8px;background:#10b981;border-radius:50%"></div> Account status</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Active</div></div>
+<div class="ac"><div style="display:flex;justify-content:space-between;font-size:13px;color:#a7f3d0;margin-bottom:8px"><span>Total asset value</span><span>BDT <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></span></div><div class="aa">৳ 0.00</div><div class="ag"><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Available</span><strong>৳ 0.00</strong></div><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Referral</span><strong>৳ 0.00</strong></div></div></div>
+<div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div><div class="si" onclick="gv('v-s')"><div class="sn"><i class="fa-solid fa-border-all"></i></div><span>More</span></div></div>
+</div>
+<div id="v-s" class="vw"><h2 style="font-size:20px;margin-bottom:16px">All Services</h2><div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div></div></div>
+<div id="v-w" class="vw"><h2 style="font-size:20px;margin-bottom:16px">My Wallet</h2><div class="ac" style="background:linear-gradient(135deg,#0d4f3f,#0a3a2d)"><div style="font-size:12px;color:#a7f3d0;margin-bottom:8px"><i class="fa-regular fa-credit-card"></i> DEPOSIT BALANCE</div><div style="font-size:36px;font-weight:700;margin-bottom:20px">৳ 0</div><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:#0a4536;font-weight:700">+ Deposit</button><button style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-weight:700">↓ Withdraw</button></div></div></div>
+<div id="v-t" class="vw"><h2 style="font-size:20px;margin-bottom:16px">Task</h2><div id="taskListContainer"></div></div>
+<div id="v-p" class="vw">
+<div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:#0a4536;color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">U</div><h2 style="font-size:20px" id="pn">User</h2><div style="font-size:13px;color:#64748b;margin-bottom:8px">ID: 10293</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳0.00</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳0.00</strong></div></div>
+<div class="cd"><div style="font-weight:700; color:#0a4536; margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div><div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid #e2e8f0;"><input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:#64748b; background:transparent;" value="https://pelix.com/ref/user123"><button onclick="copyRef()" style="background:#10b981; color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button></div></div>
+<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px"><div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div></div>
+</div>
+</div>
+<div class="nv"><div class="ni on" onclick="gv('v-h',this)"><i class="fa-solid fa-house"></i>Home</div><div class="ni" onclick="gv('v-w',this)"><i class="fa-solid fa-wallet"></i>Wallet</div><div class="nc" onclick="gv('v-t',this)"><i class="fa-solid fa-calendar-check"></i></div><div class="ni" onclick="gv('v-s',this)"><i class="fa-solid fa-border-all"></i>Services</div><div class="ni" onclick="gv('v-p',this)"><i class="fa-regular fa-user"></i>Profile</div></div>
+</div>
+
+<div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
+
+<div id="taskSubmitModal" class="ov" onclick="cm('taskSubmitModal')">
+  <div class="md" onclick="event.stopPropagation()">
+    <div class="mh"><h3>Submit Task Proof</h3><button class="cl" onclick="cm('taskSubmitModal')"><i class="fa-solid fa-xmark"></i></button></div>
+    <input type="hidden" id="submitTaskId" value="">
+    <input type="hidden" id="submitTaskPrice" value="">
+    <div class="ig"><label>Proof (Screenshot Link or Username)</label><input type="text" id="taskProof" placeholder="https://... or username"></div>
+    <button class="bt" onclick="submitTaskProof()">Send Proof</button>
+  </div>
+</div>
+
+<script>
+let users = JSON.parse(localStorage.getItem('pelix_users')) || [];
+let gs = JSON.parse(localStorage.getItem('pelix_gs')) || [];
+let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{id: 1, title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", slots: 100, icon: "fa-youtube", color: "#ff0000"}];
+let taskSubmissions = JSON.parse(localStorage.getItem('pelix_task_subs')) || [];
+
+if(users.length === 0) {
+  users.push({ phone: "01310127317", pass: "admin123", name: "Admin", role: "admin" });
+  saveData();
 }
 
-body {
-  min-height: 100vh;
-  background: #06140e;
-  font-family: Arial, sans-serif;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+let ca = 8;
+const fp = "@SRABON99#&";
+
+if(window.location.search.includes('admin=true')) {
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('adminScreen').style.display = 'flex';
 }
 
-.auth-container {
-  width: 100%;
-  max-width: 420px;
+function saveData() {
+  localStorage.setItem('pelix_users', JSON.stringify(users));
+  localStorage.setItem('pelix_gs', JSON.stringify(gs));
+  localStorage.setItem('pelix_tasks', JSON.stringify(tasks));
+  localStorage.setItem('pelix_task_subs', JSON.stringify(taskSubmissions));
 }
 
-.logo {
-  text-align: center;
-  margin-bottom: 25px;
-}
+function st(t){document.querySelectorAll('.tt').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));if(t==='l'){document.querySelectorAll('.tt')[0].classList.add('on');document.getElementById('lb').classList.add('on')}else{document.querySelectorAll('.tt')[1].classList.add('on');document.getElementById('rb').classList.add('on');gc()}}
+function gc(){let a=Math.floor(Math.random()*10)+1,b=Math.floor(Math.random()*10)+1;ca=a+b;document.getElementById('cn').innerText=a+' + '+b}
 
-.logo img {
-  width: 85px;
-  height: 85px;
-  object-fit: contain;
-  border-radius: 18px;
-}
-
-.logo h1 {
-  font-size: 32px;
-  color: #fff;
-  margin-top: 10px;
-  letter-spacing: 3px;
-}
-
-.logo h1 span {
-  color: #39ff88;
-}
-
-.logo p {
-  color: #91a99a;
-  margin-top: 7px;
-}
-
-.auth-box {
-  background: #10251a;
-  border: 1px solid #245b3c;
-  border-radius: 18px;
-  padding: 25px;
-  box-shadow: 0 0 25px rgba(35,255,120,0.08);
-}
-
-.tabs {
-  display: flex;
-  background: #07170e;
-  padding: 5px;
-  border-radius: 10px;
-  margin-bottom: 25px;
-}
-
-.tabs button {
-  width: 50%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: #a9c1b1;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.tabs button.active {
-  background: #26e879;
-  color: #062112;
-  font-weight: bold;
-}
-
-form h2 {
-  color: #39ff88;
-  margin-bottom: 8px;
-}
-
-form > p {
-  color: #9ab2a1;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-form label {
-  display: block;
-  margin: 15px 0 8px;
-  font-size: 14px;
-  color: #d8e9dd;
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-  background: #07170e;
-  border: 1px solid #28583b;
-  border-radius: 9px;
-  outline: none;
-  color: white;
-  font-size: 14px;
-}
-
-input:focus {
-  border-color: #39ff88;
-  box-shadow: 0 0 8px rgba(57,255,136,0.2);
-}
-
-input::placeholder {
-  color: #718c7a;
-}
-
-.main-btn {
-  width: 100%;
-  padding: 14px;
-  margin-top: 22px;
-  border: none;
-  border-radius: 9px;
-  background: #32f583;
-  color: #062112;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.main-btn:hover {
-  background: #19d968;
-}
-
-.hidden {
-  display: none;
-}
-
-.message {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.captcha {
-  margin-top: 15px;
-}
-
-.captcha span {
-  color: #39ff88;
-  font-weight: bold;
-}
-
-.footer {
-  text-align: center;
-  color: #708c7a;
-  font-size: 12px;
-  margin-top: 22px;
-}
-
-const loginTab = document.getElementById("loginTab");
-const signupTab = document.getElementById("signupTab");
-
-const loginForm = document.getElementById("loginForm");
-const signupForm = document.getElementById("signupForm");
-
-loginTab.addEventListener("click", () => {
-  loginForm.classList.remove("hidden");
-  signupForm.classList.add("hidden");
-
-  loginTab.classList.add("active");
-  signupTab.classList.remove("active");
-});
-
-signupTab.addEventListener("click", () => {
-  signupForm.classList.remove("hidden");
-  loginForm.classList.add("hidden");
-
-  signupTab.classList.add("active");
-  loginTab.classList.remove("active");
-
-  generateCaptcha();
-});
-
-// Math Captcha
-let captchaResult;
-
-function generateCaptcha() {
-  const a = Math.floor(Math.random() * 8) + 2;
-  const b = Math.floor(Math.random() * 8) + 2;
-
-  captchaResult = a + b;
-
-  document.getElementById("captchaQuestion").textContent =
-    `${a} + ${b} = ?`;
-}
-
-generateCaptcha();
-
-// Password Hash
-async function hashPassword(password) {
-  if (!crypto.subtle) {
-    throw new Error("Please use HTTPS or localhost.");
+function dl(){
+  let p = document.getElementById('lp').value.trim();
+  let s = document.getElementById('lps').value;
+  let foundUser = users.find(u => u.phone === p && u.pass === s);
+  if(foundUser){
+    document.getElementById('auth').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('un').innerText = foundUser.name;
+    document.getElementById('pn').innerText = foundUser.name;
+    renderTasks();
+  } else {
+    document.getElementById('le').style.display='block';
+    setTimeout(() => document.getElementById('le').style.display='none', 3000);
   }
-
-  const data = new TextEncoder().encode(password);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-
-  return Array.from(new Uint8Array(hash))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
 }
 
-// Signup
-signupForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+function dr(){
+  if(parseInt(document.getElementById('ca').value)!==ca){document.getElementById('re').style.display='block';gc();document.getElementById('ca').value='';return}
+  let p = document.getElementById('rp').value.trim();
+  let e = document.getElementById('rem').value.trim();
+  let s = document.getElementById('rps').value;
+  if(!p || !e || !s) { alert("সব ঘর পূরণ করুন!"); return; }
+  if(users.find(u => u.phone === p)) { alert("এই ফোন নম্বর দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!"); return; }
+  let newUser = { phone: p, email: e, pass: s, name: "User_" + p.slice(-4), role: "user" };
+  users.push(newUser);
+  saveData();
+  document.getElementById('auth').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('un').innerText = newUser.name;
+  document.getElementById('pn').innerText = newUser.name;
+  renderTasks();
+}
 
-  const name = document.getElementById("signupName").value.trim();
-  const phone = document.getElementById("signupPhone").value.trim();
-  const password = document.getElementById("signupPassword").value;
-  const confirm = document.getElementById("confirmPassword").value;
-  const answer = Number(document.getElementById("captchaAnswer").value);
+function gv(v,e=null){document.querySelectorAll('.vw').forEach(x=>x.classList.remove('on'));document.getElementById(v).classList.add('on');document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));if(e)e.classList.add('on');window.scrollTo(0,0)}
+function om(i){document.getElementById(i).style.display='flex'}function cm(i){document.getElementById(i).style.display='none'}
+function sg(){let f=document.getElementById('gf').value,l=document.getElementById('gl').value,u=document.getElementById('gu').value,p=document.getElementById('gp').value;if(!f||!l||!u){alert("সব ঘর পূরণ করুন!");return}if(p!==fp){alert("পাসওয়ার্ড ভুল!");return}gs.push({name:f+' '+l,email:u,status:'pending'});saveData();alert("সফলভাবে জমা হয়েছে!");cm('gm');}
 
-  const message = document.getElementById("signupMessage");
+function renderTasks(){
+  let c=document.getElementById('taskListContainer');c.innerHTML='';
+  if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:#64748b">কোনো কাজ নেই।</p>';return}
+  tasks.forEach(t=>{
+    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:#64748b;margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:#64748b;margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button onclick="openTaskSubmit(${t.id}, ${t.price})" style="flex:1;padding:12px;border-radius:10px;border:none;background:#10b981;color:#fff;font-weight:600">Submit Proof</button></div></div>`
+  })
+}
 
-  if (password.length < 6) {
-    message.textContent = "Password must be at least 6 characters!";
-    message.style.color = "#ff5555";
-    return;
-  }
+function openTaskSubmit(id, price) {
+  document.getElementById('submitTaskId').value = id;
+  document.getElementById('submitTaskPrice').value = price;
+  document.getElementById('taskProof').value = '';
+  om('taskSubmitModal');
+}
 
-  if (password !== confirm) {
-    message.textContent = "Passwords do not match!";
-    message.style.color = "#ff5555";
-    return;
-  }
+function submitTaskProof() {
+  let id = document.getElementById('submitTaskId').value;
+  let price = document.getElementById('submitTaskPrice').value;
+  let proof = document.getElementById('taskProof').value;
+  if(!proof) { alert("প্রমাণ দিন!"); return; }
+  taskSubmissions.push({taskId: id, price: price, proof: proof, status: 'pending', user: document.getElementById('un').innerText});
+  saveData();
+  alert("সফলভাবে জমা হয়েছে!");
+  cm('taskSubmitModal');
+}
 
-  if (answer !== captchaResult) {
-    message.textContent = "Wrong Math Captcha!";
-    message.style.color = "#ff5555";
-    generateCaptcha();
-    return;
-  }
+function copyRef() {let copyText = document.getElementById("myRefLink");copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);alert("রেফারেল লিংক কপি হয়েছে!");}
 
-  try {
-    const users = JSON.parse(
-      localStorage.getItem("paylix_users") || "[]"
-    );
+function da(){
+  let u = document.getElementById('au').value;
+  let p = document.getElementById('ap').value;
+  if(u === 'admin' && p === 'admin123'){
+    document.getElementById('adminLoginBox').style.display='none';
+    document.getElementById('adminPanelBox').style.display='block';
+    ra(); renderAdminTaskList();
+  }else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}
+}
+function logoutAdmin() {window.location.href = window.location.pathname;}
+function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';renderAdminTaskList();}}
 
-    if (users.some(user => user.phone === phone)) {
-      message.textContent = "Phone number already registered!";
-      message.style.color = "#ff5555";
-      return;
-    }
-
-    const passwordHash = await hashPassword(password);
-
-    users.push({
-      name,
-      phone,
-      passwordHash,
-      balance: 0,
-      referral: 0
+function ra(){
+  let b=document.getElementById('al');b.innerHTML='';
+  if(gs.length===0 && taskSubmissions.length===0){b.innerHTML='<p style="text-align:center;color:#64748b">কোনো সাবমিশন নেই।</p>';return}
+  
+  if(gs.length > 0) {
+    b.innerHTML += '<h4 style="margin-bottom:10px; font-size:14px; color:#0a4536;">Gmail Submissions</h4>';
+    gs.forEach((s,i)=>{
+      let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
+      let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:8px">${s.email}</div>`;
+      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}
+      b.innerHTML+=h+'</div>';
     });
-
-    localStorage.setItem("paylix_users", JSON.stringify(users));
-
-    message.textContent = "Account created successfully!";
-    message.style.color = "#39ff88";
-
-    signupForm.reset();
-    generateCaptcha();
-
-  } catch (error) {
-    message.textContent = error.message || "Something went wrong!";
-    message.style.color = "#ff5555";
   }
-});
-
-// Login
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const phone = document.getElementById("loginPhone").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  const message = document.getElementById("loginMessage");
-
-  try {
-    const users = JSON.parse(
-      localStorage.getItem("paylix_users") || "[]"
-    );
-
-    const user = users.find(u => u.phone === phone);
-
-    if (!user) {
-      message.textContent = "Account not found!";
-      message.style.color = "#ff5555";
-      return;
-    }
-
-    const passwordHash = await hashPassword(password);
-
-    if (user.passwordHash !== passwordHash) {
-      message.textContent = "Incorrect password!";
-      message.style.color = "#ff5555";
-      return;
-    }
-
-    localStorage.setItem("paylix_current_user", JSON.stringify({
-      name: user.name,
-      phone: user.phone
-    }));
-
-    message.textContent = "Login successful!";
-    message.style.color = "#39ff88";
-
-    // Dashboard will be connected in Part 2
-
-  } catch (error) {
-    message.textContent = error.message || "Login failed!";
-    message.style.color = "#ff5555";
-  }
-});
-    
+  
+  if(taskSubmissions.length > 0) {
+    b.innerHTML += '<h4 style="margin:15px 0 10px; font-size:14px; color:#0a4536;">Task Proofs</h4>';
+    taskSubmissions.forEach((s,i)=>{
+      let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
+      let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.user}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:4px;">প্রমাণ: ${s.proof}</div><div style="font-size:12px;color:#64748b;margin-bottom:8px;">৳${s.price}</div>`;
+      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="approveTaskSub(${i})" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="rejectTaskSub(${i})" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius
