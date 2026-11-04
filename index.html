@@ -14,6 +14,7 @@
     .card { background: linear-gradient(135deg, #064e3b, #059669); color: white; padding: 18px; border-radius: 12px; margin-bottom: 14px; }
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
     .item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px; cursor: pointer; }
+    .task-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
     .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 60px; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
     .nav-btn { text-align: center; font-size: 11px; cursor: pointer; color: #64748b; flex: 1; }
     .nav-btn.active { color: var(--primary); font-weight: 700; }
@@ -49,11 +50,12 @@
     </div>
   </div>
 
-  <!-- Dashboard View -->
+  <!-- Dashboard View (Home Tab) -->
   <div id="dashView" class="box hidden">
     <div class="card">
-      <div style="font-size:16px; font-weight:700;" id="wName">Welcome</div>
-      <div style="font-size:24px; font-weight:700; margin-top:10px;" id="tBal">৳0.00</div>
+      <div style="font-size:12px; opacity:0.85; margin-bottom:4px;" id="wName">Welcome, User 👋</div>
+      <div style="font-size:12px; opacity:0.9;">Available Balance</div>
+      <div style="font-size:24px; font-weight:700; margin-top:4px;" id="tBal">৳0.00</div>
     </div>
 
     <h3 style="font-size:14px; margin-bottom:10px;">সার্ভিস ও রেট</h3>
@@ -63,6 +65,12 @@
       <div class="item" onclick="openModal('Instagram', 1)"><b>📷 Instagram Sell</b><br><span style="font-size:11px; color:var(--success);">রেট: ১ টাকা</span></div>
       <div class="item" onclick="alert('উইথড্র সিস্টেম চালু আছে')"><b>💸 Withdraw</b><br><span style="font-size:11px; color:#64748b;">বিকাশ / নগদ</span></div>
     </div>
+  </div>
+
+  <!-- Task Tab View -->
+  <div id="taskView" class="box hidden">
+    <h3 style="font-size:16px; margin-bottom:12px;">মাইক্রো টাস্ক (Task List)</h3>
+    <div id="taskListContainer"></div>
   </div>
 
   <!-- Profile View -->
@@ -81,6 +89,7 @@
   <!-- Navigation -->
   <div class="nav hidden" id="navBar">
     <div class="nav-btn active" onclick="switchTab('home', event)">🏠<br>Home</div>
+    <div class="nav-btn" onclick="switchTab('task', event)">📋<br>Task</div>
     <div class="nav-btn" onclick="switchTab('profile', event)">👤<br>Profile</div>
   </div>
   </div>
@@ -100,6 +109,10 @@
 <script>
   let users = JSON.parse(localStorage.getItem('p_users')) || [];
   let user = JSON.parse(localStorage.getItem('p_cur')) || null;
+  let tasks = [
+    { id: 1, title: 'ইউটিউব ভিডিও লাইক ও সাবস্ক্রাইব করুন', reward: 2.00, desc: 'লিংকে গিয়ে ভিডিওটি সম্পূর্ণ দেখে লাইক ও সাবস্ক্রাইব করুন।' },
+    { id: 2, title: 'ফেসবুক পেজ ফলো করুন', reward: 1.50, desc: 'আমাদের নির্দিষ্ট ফেসবুক পেজে গিয়ে ফলো করুন।' }
+  ];
   let cAns = 0;
 
   window.onload = () => { genCap(); if(user) showDash(); }
@@ -154,14 +167,39 @@
     document.getElementById('tBal').innerText = `৳${user.bal.toFixed(2)}`;
     document.getElementById('pName').innerText = user.name;
     document.getElementById('pPhone').innerText = user.phone;
+    renderTasks();
+  }
+
+  function renderTasks() {
+    let html = '';
+    tasks.forEach(t => {
+      html += `<div class="task-card">
+        <div style="display:flex; justify-content:space-between;"><b style="font-size:12px;">${t.title}</b><span style="color:var(--success); font-weight:700;">৳${t.reward.toFixed(2)}</span></div>
+        <p style="font-size:11px; color:#64748b; margin:4px 0 8px;">${t.desc}</p>
+        <button onclick="completeTask(${t.reward})" style="padding:4px 10px; background:var(--success); color:white; border:none; border-radius:4px; font-size:11px;">কাজ জমা দিন</button>
+      </div>`;
+    });
+    document.getElementById('taskListContainer').innerHTML = html;
+  }
+
+  function completeTask(reward) {
+    user.bal += reward;
+    let idx = users.findIndex(u => u.phone === user.phone);
+    if(idx !== -1) users[idx].bal = user.bal;
+    localStorage.setItem('p_users', JSON.stringify(users));
+    localStorage.setItem('p_cur', JSON.stringify(user));
+    showDash();
+    alert(`টাস্ক সম্পন্ন হয়েছে! অ্যাকাউন্টে ৳${reward} যোগ হয়েছে।`);
   }
 
   function switchTab(t, e) {
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('dashView').classList.add('hidden');
+    document.getElementById('taskView').classList.add('hidden');
     document.getElementById('profView').classList.add('hidden');
 
     if(t === 'home') document.getElementById('dashView').classList.remove('hidden');
+    if(t === 'task') document.getElementById('taskView').classList.remove('hidden');
     if(t === 'profile') document.getElementById('profView').classList.remove('hidden');
     if(e && e.currentTarget) e.currentTarget.classList.add('active');
   }
