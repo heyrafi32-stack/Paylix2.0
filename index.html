@@ -1,310 +1,761 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paylix - পেলিক্স</title>
-  <style>
-    :root { --primary: #064e3b; --bg: #f0fdf4; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
-    .app { width: 100%; max-width: 480px; background: var(--card); min-height: 100vh; position: relative; padding-bottom: 70px; }
-    .header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 18px; font-weight: 700; background: var(--card); position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; }
-    .box { padding: 16px; }
-    .card { background: linear-gradient(135deg, #064e3b, #059669); color: white; padding: 18px; border-radius: 12px; margin-bottom: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
-    .item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px; cursor: pointer; }
-    .table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
-    .table th, .table td { border: 1px solid var(--border); padding: 6px; text-align: left; }
-    .table th { background: #f1f5f9; }
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 60px; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-    .nav-btn { text-align: center; font-size: 11px; cursor: pointer; color: #64748b; flex: 1; }
-    .nav-btn.active { color: var(--primary); font-weight: 700; }
-    .hidden { display: none !important; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pelix — Gmail Sell Marketplace</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-  <div class="header">
-    <span>Paylix - পেলিক্স</span>
-    <span id="adminNavBtn" class="hidden" onclick="showAdminPanel()" style="font-size:12px; background:var(--danger); color:white; padding:4px 8px; border-radius:4px; cursor:pointer;">Admin Panel</span>
-  </div>
 
-  <!-- Auth View -->
-  <div id="authView" class="box">
-    <div id="loginBox" style="margin-top: 30px;">
-      <h2 style="color: var(--primary); margin-bottom: 14px; text-align: center;">লগইন করুন</h2>
-      <form id="loginForm">
-        <div style="margin-bottom: 10px;"><label style="font-size:12px;">ফোন নম্বর</label><input type="text" id="lPhone" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
-        <div style="margin-bottom: 14px;"><label style="font-size:12px;">পাসওয়ার্ড</label><input type="password" id="lPass" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
-        <button type="submit" style="width:100%; padding:10px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:700;">লগইন</button>
-      </form>
-      <p style="text-align:center; margin-top:12px; font-size:12px;">অ্যাকাউন্ট নেই? <span onclick="toggleAuth('signup')" style="color:var(--primary); font-weight:700; cursor:pointer;">সাইন-আপ</span></p>
+<!-- ================= USER LOGIN / REGISTER ================= -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-box">
+    <h1 class="logo">Pelix<span>.</span></h1>
+    <p class="tagline">Gmail Sell Marketplace</p>
+
+    <div class="tabs">
+      <button id="tabLogin" class="tab active">লগইন</button>
+      <button id="tabRegister" class="tab">রেজিস্টার</button>
     </div>
 
-    <div id="signupBox" class="hidden" style="margin-top: 10px;">
-      <h2 style="color: var(--primary); margin-bottom: 14px; text-align: center;">সাইন-আপ</h2>
-      <form id="signupForm">
-        <div style="margin-bottom: 8px;"><label style="font-size:11px;">নাম</label><input type="text" id="sName" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-        <div style="margin-bottom: 8px;"><label style="font-size:11px;">ফোন</label><input type="text" id="sPhone" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-        <div style="margin-bottom: 8px;"><label style="font-size:11px;">পাসওয়ার্ড</label><input type="password" id="sPass" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-        <div style="margin-bottom: 12px;"><label id="capLbl" style="font-size:11px;"></label><input type="number" id="sCap" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-        <button type="submit" style="width:100%; padding:10px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:700;">তৈরি করুন</button>
-      </form>
-      <p style="text-align:center; margin-top:10px; font-size:12px;">লগইন করতে <span onclick="toggleAuth('login')" style="color:var(--primary); font-weight:700; cursor:pointer;">এখানে ক্লিক করুন</span></p>
-    </div>
-  </div>
-
-  <!-- Dashboard View (Home Tab) -->
-  <div id="dashView" class="box hidden">
-    <div class="card">
-      <div style="font-size:12px; opacity:0.85; margin-bottom:4px;" id="wName">Welcome, User 👋</div>
-      <div style="font-size:12px; opacity:0.9;">Available Balance</div>
-      <div style="font-size:24px; font-weight:700; margin-top:4px;" id="tBal">৳0.00</div>
-    </div>
-
-    <h3 style="font-size:14px; margin-bottom:10px;">সার্ভিস ও রেট (পেন্ডিং সিস্টেম চালিত)</h3>
-    <div class="grid">
-      <div class="item" onclick="openModal('Gmail', 10)"><b>📧 Gmail Sell</b><br><span style="font-size:11px; color:var(--success);">রেট: ১০ টাকা</span></div>
-      <div class="item" onclick="openModal('Facebook', 1)"><b>📘 Facebook Sell</b><br><span style="font-size:11px; color:var(--success);">রেট: ১ টাকা</span></div>
-      <div class="item" onclick="openModal('Instagram', 1)"><b>📷 Instagram Sell</b><br><span style="font-size:11px; color:var(--success);">রেট: ১ টাকা</span></div>
-      <div class="item" onclick="alert('উইথড্র সিস্টেম চালু আছে')"><b>💸 Withdraw</b><br><span style="font-size:11px; color:#64748b;">বিকাশ / নগদ</span></div>
-    </div>
-  </div>
-
-  <!-- Admin Panel View -->
-  <div id="adminView" class="box hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="font-size:16px; color:var(--danger);">অ্যাডমিন কন্ট্রোল প্যানেল</h3>
-      <button onclick="exitAdmin()" style="padding:4px 8px; background:#64748b; color:white; border:none; border-radius:4px; font-size:11px;">ইউজার মোড</button>
-    </div>
-    <p style="font-size:12px; color:#64748b; margin-bottom:8px;">ইউজারদের সাবমিশন চেক করুন:</p>
-    <div style="overflow-x:auto;">
-      <table class="table">
-        <thead>
-          <tr><th>টাইপ</th><th>ইউজার</th><th>ডিটেইলস</th><th>অ্যাকশন</th></tr>
-        </thead>
-        <tbody id="adminTableBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Profile View -->
-  <div id="profView" class="box hidden">
-    <h3 style="font-size:16px; margin-bottom:12px;">প্রোফাইল ও সাপোর্ট</h3>
-    <div class="item" onclick="window.open('https://t.me/Owner_Paylix', '_blank')" style="margin-bottom:12px;">
-      <b>💬 Live Support</b><br><span style="font-size:11px; color:#64748b;">টেলিগ্রাম: @Owner_Paylix</span>
-    </div>
-    <div style="background:white; border:1px solid var(--border); border-radius:10px; padding:12px;">
-      <p style="font-size:12px; margin-bottom:6px;">নাম: <span id="pName">-</span></p>
-      <p style="font-size:12px; margin-bottom:10px;">ফোন: <span id="pPhone">-</span></p>
-      <button onclick="logout()" style="width:100%; padding:8px; background:var(--danger); color:white; border:none; border-radius:6px; font-weight:700;">লগআউট</button>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <div class="nav hidden" id="navBar">
-    <div class="nav-btn active" onclick="switchTab('home', event)">🏠<br>Home</div>
-    <div class="nav-btn" onclick="switchTab('profile', event)">👤<br>Profile</div>
-  </div>
-  </div>
-  <!-- Sell Modal -->
-<div id="sellModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:200;">
-  <div style="background:white; width:90%; max-width:350px; padding:18px; border-radius:12px;">
-    <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><b id="mTitle">Sell</b><span onclick="closeModal()" style="cursor:pointer; font-size:18px;">&times;</span></div>
-    <form id="sellForm">
-      <input type="hidden" id="mType">
-      <input type="hidden" id="mRate">
-      <div style="margin-bottom:8px;"><label style="font-size:11px;">ইউজারনেম / ইমেইল</label><input type="text" id="mAcc" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-      <div style="margin-bottom:12px;"><label style="font-size:11px;">পাসওয়ার্ড</label><input type="text" id="mPass" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-      <button type="submit" style="width:100%; padding:9px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:700;">সাবমিট করুন (Pending)</button>
+    <!-- Login Form -->
+    <form id="loginForm" class="form">
+      <input type="text" id="loginUser" placeholder="নাম্বার / ইউজারনেম" required>
+      <input type="password" id="loginPass" placeholder="পাসওয়ার্ড" required>
+      <button type="submit" class="btn primary">লগইন করুন</button>
     </form>
+
+    <!-- Register Form -->
+    <form id="registerForm" class="form hidden">
+      <input type="text" id="regName" placeholder="আপনার নাম" required>
+      <input type="text" id="regPhone" placeholder="মোবাইল নাম্বার" required>
+      <input type="password" id="regPass" placeholder="পাসওয়ার্ড সেট করুন" required>
+      <button type="submit" class="btn primary">রেজিস্টার করুন</button>
+    </form>
+
+    <p id="authMsg" class="msg"></p>
+
+    <p class="support">সাপোর্ট: <a href="https://t.me/pelix_support" target="_blank">@pelix_support</a></p>
   </div>
 </div>
 
-<script>
-  let users = JSON.parse(localStorage.getItem('p_users')) || [];
-  let subs = JSON.parse(localStorage.getItem('p_subs')) || [];
-  let user = JSON.parse(localStorage.getItem('p_cur')) || null;
-  let cAns = 0;
+<!-- ================= USER DASHBOARD ================= -->
+<div id="userDashboard" class="dashboard hidden">
+  <header class="topbar">
+    <h1 class="logo">Pelix<span>.</span></h1>
+    <div class="user-info">
+      <span id="userNameDisplay"></span>
+      <span class="balance-badge">৳ <span id="userBalance">0</span></span>
+      <button id="logoutBtn" class="btn small">লগআউট</button>
+    </div>
+  </header>
 
-  window.onload = () => { genCap(); if(user) showDash(); }
+  <main class="main">
+    <!-- Job Posts -->
+    <section class="card">
+      <h2>📋 জব পোস্ট</h2>
+      <div id="jobList" class="job-list"></div>
+    </section>
 
-  function genCap() {
-    let n1 = Math.floor(Math.random()*5)+1, n2 = Math.floor(Math.random()*5)+1;
-    cAns = n1 + n2;
-    let l = document.getElementById('capLbl');
-    if(l) l.innerText = `ম্যাথ ক্যাপচা (${n1} + ${n2} = ?)`;
-  }
+    <!-- Submit Gmail -->
+    <section class="card">
+      <h2>📧 Gmail সাবমিট করুন</h2>
+      <p class="hint">প্রতি Gmail = ৳১০</p>
+      <form id="gmailForm" class="form">
+        <input type="email" id="gmailAddress" placeholder="Gmail address" required>
+        <input type="text" id="gmailPassword" placeholder="Gmail password" required>
+        <input type="text" id="gmailPhone" placeholder="আপনার মোবাইল নাম্বার" required>
+        <button type="submit" class="btn primary">সাবমিট করুন</button>
+      </form>
+      <p id="gmailMsg" class="msg"></p>
+    </section>
 
-  function toggleAuth(t) {
-    if(t === 'signup') {
-      document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('signupBox').classList.remove('hidden');
-      genCap();
-    } else {
-      document.getElementById('signupBox').classList.add('hidden');
-      document.getElementById('loginBox').classList.remove('hidden');
-    }
-  }
+    <!-- My Submissions -->
+    <section class="card">
+      <h2>📨 আমার সাবমিশন</h2>
+      <div id="mySubmissions" class="job-list"></div>
+    </section>
 
-  document.getElementById('signupForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    let name = document.getElementById('sName').value, phone = document.getElementById('sPhone').value, pass = document.getElementById('sPass').value;
-    if(parseInt(document.getElementById('sCap').value) !== cAns) { alert('ভুল ক্যাপচা!'); genCap(); return; }
-    if(users.find(u => u.phone === phone)) { alert('নম্বরটি আগে থেকেই রেজিস্টার্ড!'); return; }
-    
-    let u = { name, phone, pass, bal: 0 };
-    users.push(u); user = u;
-    saveData(); showDash();
-  });
+    <!-- Withdraw -->
+    <section class="card">
+      <h2>💸 উইথড্র</h2>
+      <p class="hint">মিনিমাম উইথড্র ৳৫০</p>
+      <form id="withdrawForm" class="form">
+        <input type="number" id="withdrawAmount" placeholder="টাকার পরিমাণ" min="50" required>
+        <input type="text" id="withdrawMethod" placeholder="পেমেন্ট মেথড (বিকাশ/নগদ)" required>
+        <input type="text" id="withdrawNumber" placeholder="একাউন্ট নাম্বার" required>
+        <button type="submit" class="btn primary">রিকোয়েস্ট করুন</button>
+      </form>
+      <p id="withdrawMsg" class="msg"></p>
+    </section>
+  </main>
+</div>
 
-  document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    let phone = document.getElementById('lPhone').value, pass = document.getElementById('lPass').value;
-    
-    // Admin shortcut login if phone is 'admin' and pass is 'admin123'
-    if(phone === 'admin' && pass === 'admin123') {
-      document.getElementById('authView').classList.add('hidden');
-      document.getElementById('adminView').classList.remove('hidden');
-      document.getElementById('navBar').classList.add('hidden');
-      renderAdminTable();
-      return;
-    }
+<!-- ================= ADMIN LOGIN ================= -->
+<div id="adminLoginScreen" class="auth-screen hidden">
+  <div class="auth-box">
+    <h1 class="logo">Pelix<span>.</span> Admin</h1>
+    <form id="adminLoginForm" class="form">
+      <input type="password" id="adminPass" placeholder="অ্যাডমিন পাসওয়ার্ড" required>
+      <button type="submit" class="btn primary">প্রবেশ করুন</button>
+    </form>
+    <p id="adminMsg" class="msg"></p>
+  </div>
+</div>
 
-    let found = users.find(u => u.phone === phone && u.pass === pass);
-    if(found) {
-      user = found;
-      localStorage.setItem('p_cur', JSON.stringify(user));
-      showDash();
-    } else { alert('ভুল ফোন বা পাসওয়ার্ড! (অ্যাডমিনের জন্য ফোন: admin, পাস: admin123)'); }
-  });
+<!-- ================= ADMIN PANEL ================= -->
+<div id="adminPanel" class="dashboard hidden">
+  <header class="topbar admin-bar">
+    <h1 class="logo">Pelix<span>.</span> Admin Panel</h1>
+    <button id="adminLogout" class="btn small">লগআউট</button>
+  </header>
 
-  function saveData() {
-    localStorage.setItem('p_users', JSON.stringify(users));
-    localStorage.setItem('p_subs', JSON.stringify(subs));
-    if(user) localStorage.setItem('p_cur', JSON.stringify(user));
-  }
+  <div class="admin-tabs">
+    <button class="atab active" data-tab="pending">📧 Gmail পেন্ডিং</button>
+    <button class="atab" data-tab="users">👥 ইউজার</button>
+    <button class="atab" data-tab="withdraws">💸 উইথড্র</button>
+    <button class="atab" data-tab="jobs">📋 জব পোস্ট</button>
+  </div>
 
-  function showDash() {
-    document.getElementById('authView').classList.add('hidden');
-    document.getElementById('dashView').classList.remove('hidden');
-    document.getElementById('navBar').classList.remove('hidden');
-    document.getElementById('adminNavBtn').classList.remove('hidden');
-    document.getElementById('wName').innerText = `Welcome, ${user.name} 👋`;
-    document.getElementById('tBal').innerText = `৳${user.bal.toFixed(2)}`;
-    document.getElementById('pName').innerText = user.name;
-    document.getElementById('pPhone').innerText = user.phone;
-  }
+  <main class="main">
+    <section id="tab-pending" class="card admin-tab-content">
+      <h2>পেন্ডিং Gmail সাবমিশন</h2>
+      <div id="pendingList" class="job-list"></div>
+    </section>
 
-  function switchTab(t, e) {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('dashView').classList.add('hidden');
-    document.getElementById('profView').classList.add('hidden');
-    document.getElementById('adminView').classList.add('hidden');
+    <section id="tab-users" class="card admin-tab-content hidden">
+      <h2>সব ইউজার</h2>
+      <div id="userList" class="job-list"></div>
+    </section>
 
-    if(t === 'home') document.getElementById('dashView').classList.remove('hidden');
-    if(t === 'profile') document.getElementById('profView').classList.remove('hidden');
-    if(e && e.currentTarget) e.currentTarget.classList.add('active');
-  }
+    <section id="tab-withdraws" class="card admin-tab-content hidden">
+      <h2>উইথড্র রিকোয়েস্ট</h2>
+      <div id="withdrawList" class="job-list"></div>
+    </section>
 
-  function showAdminPanel() {
-    document.getElementById('dashView').classList.add('hidden');
-    document.getElementById('profView').classList.add('hidden');
-    document.getElementById('authView').classList.add('hidden');
-    document.getElementById('navBar').classList.add('hidden');
-    document.getElementById('adminView').classList.remove('hidden');
-    renderAdminTable();
-  }
+    <section id="tab-jobs" class="card admin-tab-content hidden">
+      <h2>নতুন জব পোস্ট করুন</h2>
+      <form id="jobForm" class="form">
+        <input type="text" id="jobTitle" placeholder="জব টাইটেল" required>
+        <input type="text" id="jobDesc" placeholder="ডেসক্রিপশন" required>
+        <input type="number" id="jobQty" placeholder="Gmail Quantity" required>
+        <input type="number" id="jobRate" placeholder="প্রতি Gmail রেট (৳)" value="10" required>
+        <button type="submit" class="btn primary">পোস্ট করুন</button>
+      </form>
+      <div id="adminJobList" class="job-list"></div>
+    </section>
+  </main>
+</div>
 
-  function exitAdmin() {
-    document.getElementById('adminView').classList.add('hidden');
-    if(user) showDash();
-    else location.reload();
-  }
-
-  function openModal(type, rate) {
-    document.getElementById('mTitle').innerText = `${type} Sell (রেট: ৳${rate})`;
-    document.getElementById('mType').value = type;
-    document.getElementById('mRate').value = rate;
-    document.getElementById('sellModal').style.display = 'flex';
-  }
-  function closeModal() { document.getElementById('sellModal').style.display = 'none'; }
-
-  document.getElementById('sellForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    let type = document.getElementById('mType').value;
-    let rate = parseFloat(document.getElementById('mRate').value);
-    let acc = document.getElementById('mAcc').value;
-    let pass = document.getElementById('mPass').value;
-
-    subs.push({
-      id: Date.now(),
-      phone: user.phone,
-      type: type,
-      details: `Acc: ${acc}, Pass: ${pass}`,
-      rate: rate,
-      status: 'Pending'
-    });
-
-    saveData();
-    closeModal();
-    alert('সফলভাবে জমা হয়েছে! স্ট্যাটাস এখন Pending আছে। অ্যাডমিন চেক করে এপ্রুভ করলে আপনার ব্যালেন্সে টাকা যোগ হবে।');
-    e.target.reset();
-  });
-
-  function renderAdminTable() {
-    let tb = document.getElementById('adminTableBody');
-    tb.innerHTML = '';
-    if(subs.length === 0) {
-      tb.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:10px;">কোনো সাবমিশন নেই।</td></tr>';
-      return;
-    }
-    subs.forEach(s => {
-      let actionBtn = s.status === 'Pending' ? 
-        `<button onclick="approveSub(${s.id})" style="background:var(--success); color:white; border:none; padding:3px 6px; border-radius:3px; font-size:10px;">Approve</button> <button onclick="rejectSub(${s.id})" style="background:var(--danger); color:white; border:none; padding:3px 6px; border-radius:3px; font-size:10px;">Reject</button>` : 
-        `<b>${s.status}</b>`;
-
-      tb.innerHTML += `<tr>
-        <td>${s.type}</td>
-        <td>${s.phone}</td>
-        <td>${s.details} (৳${s.rate})</td>
-        <td>${actionBtn}</td>
-      </tr>`;
-    });
-  }
-
-  function approveSub(id) {
-    let s = subs.find(x => x.id === id);
-    if(!s || s.status !== 'Pending') return;
-
-    s.status = 'Approved';
-    let targetUser = users.find(u => u.phone === s.phone);
-    if(targetUser) {
-      targetUser.bal += s.rate;
-      if(user && user.phone === targetUser.phone) {
-        user.bal = targetUser.bal;
-        showDash();
-      }
-    }
-    saveData();
-    renderAdminTable();
-    alert('সাবমিশন এপ্রুভ করা হয়েছে এবং ইউজারের অ্যাকাউন্টে টাকা যোগ হয়েছে!');
-  }
-
-  function rejectSub(id) {
-    let s = subs.find(x => x.id === id);
-    if(!s) return;
-    s.status = 'Rejected';
-    saveData();
-    renderAdminTable();
-    alert('সাবমিশন রিজেক্ট করা হয়েছে।');
-  }
-
-  function logout() {
-    localStorage.removeItem('p_cur');
-    location.reload();
-  }
-</script>
+<!-- Hidden admin entry button (triple-click logo) -->
+<script src="app.js"></script>
 </body>
-</html>
+</html>* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+body {
+  background: #0a0e27;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(120, 80, 255, 0.25), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.2), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 150, 0.1), transparent 60%);
+  color: #e8eaff;
+  min-height: 100vh;
+}
+
+.hidden { display: none !important; }
+
+/* ===== AUTH SCREEN ===== */
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(20, 25, 55, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(120, 100, 255, 0.3);
+  border-radius: 24px;
+  padding: 40px 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(120, 80, 255, 0.15);
+  animation: fadeUp 0.6s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  font-size: 42px;
+  font-weight: 800;
+  text-align: center;
+  background: linear-gradient(135deg, #7c5cff, #00c8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+.logo span { color: #ff3d8b; -webkit-text-fill-color: #ff3d8b; }
+
+.tagline {
+  text-align: center;
+  color: #8b93c9;
+  margin-top: 6px;
+  margin-bottom: 28px;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  color: #8b93c9;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.tab.active {
+  background: linear-gradient(135deg, #7c5cff, #00c8ff);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(120, 80, 255, 0.4);
+}
+
+.form { display: flex; flex-direction: column; gap: 14px; }
+
+.form input {
+  padding: 15px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(120, 100, 255, 0.25);
+  background: rgba(0, 0, 0, 0.3);
+  color: #e8eaff;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+.form input:focus {
+  border-color: #7c5cff;
+  box-shadow: 0 0 0 3px rgba(120, 80, 255, 0.2);
+}
+.form input::placeholder { color: #5a628f; }
+
+.btn {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn.primary {
+  background: linear-gradient(135deg, #7c5cff, #00c8ff);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(120, 80, 255, 0.35);
+}
+.btn.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(120, 80, 255, 0.5); }
+.btn.small { padding: 8px 16px; font-size: 13px; background: rgba(255, 255, 255, 0.1); color: #e8eaff; }
+.btn.small:hover { background: rgba(255, 255, 255, 0.2); }
+
+.msg { text-align: center; font-size: 14px; margin-top: 12px; color: #ff6b9d; min-height: 18px; }
+.msg.success { color: #3dffa0; }
+
+.support { text-align: center; margin-top: 24px; font-size: 13px; color: #8b93c9; }
+.support a { color: #00c8ff; text-decoration: none; }
+
+/* ===== DASHBOARD ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  background: rgba(15, 20, 45, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(120, 100, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar .logo { font-size: 26px; }
+.admin-bar { border-bottom: 2px solid #ff3d8b; }
+
+.user-info { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+.balance-badge {
+  background: linear-gradient(135deg, #3dffa0, #00c8ff);
+  color: #001a10;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 800;
+  box-shadow: 0 4px 20px rgba(61, 255, 160, 0.3);
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 780px) { .main { grid-template-columns: 1fr; } }
+
+.card {
+  background: rgba(20, 25, 55, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(120, 100, 255, 0.2);
+  border-radius: 20px;
+  padding: 24px;
+  transition: 0.3s;
+}
+.card:hover { border-color: rgba(120, 100, 255, 0.5); box-shadow: 0 10px 40px rgba(120, 80, 255, 0.15); }
+
+.card h2 { font-size: 18px; margin-bottom: 16px; color: #c4ccff; }
+.hint { font-size: 13px; color: #8b93c9; margin-bottom: 12px; }
+
+.job-list { display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; }
+.job-list::-webkit-scrollbar { width: 6px; }
+.job-list::-webkit-scrollbar-thumb { background: rgba(120, 100, 255, 0.4); border-radius: 3px; }
+
+.job-item {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(120, 100, 255, 0.15);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.job-item:hover { border-color: rgba(120, 100, 255, 0.4); }
+.job-item .jt { font-weight: 700; color: #e8eaff; }
+.job-item .jd { font-size: 13px; color: #8b93c9; margin-top: 4px; }
+.job-item .meta { font-size: 12px; color: #00c8ff; margin-top: 6px; }
+.job-item .actions { display: flex; gap: 8px; }
+
+.btn-approve { background: linear-gradient(135deg, #3dffa0, #00c8ff); color: #001a10; padding: 8px 16px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+.btn-reject { background: linear-gradient(135deg, #ff3d8b, #ff6b3d); color: #fff; padding: 8px 16px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+.btn-block { background: linear-gradient(135deg, #ff3d3d, #ff6b6b); color: #fff; padding: 8px 16px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+.btn-unblock { background: linear-gradient(135deg, #3dffa0, #00c8ff); color: #001a10; padding: 8px 16px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+.btn-approve:hover, .btn-reject:hover, .btn-block:hover, .btn-unblock:hover { transform: translateY(-2px); }
+
+.status-badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; }
+.status-pending { background: rgba(255, 200, 0, 0.2); color: #ffc800; }
+.status-approved { background: rgba(61, 255, 160, 0.2); color: #3dffa0; }
+.status-rejected { background: rgba(255, 61, 139, 0.2); color: #ff3d8b; }
+
+/* ===== ADMIN TABS ===== */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 16px 28px;
+  background: rgba(15, 20, 45, 0.6);
+  border-bottom: 1px solid rgba(120, 100, 255, 0.15);
+  overflow-x: auto;
+}
+.atab {
+  padding: 10px 20px;
+  border: 1px solid rgba(120, 100, 255, 0.25);
+  background: transparent;
+  color: #8b93c9;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: 0.3s;
+}
+.atab.active { background: linear-gradient(135deg, #7c5cff, #00c8ff); color: #fff; border-color: transparent; }
+
+/* ===== ADMIN ENTRY (hidden button) ===== */
+#adminEntryBtn {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 61, 139, 0.15);
+  border: 1px solid rgba(255, 61, 139, 0.3);
+  color: rgba(255, 61, 139, 0.6);
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+  z-index: 999;
+}
+#adminEntryBtn:hover { background: rgba(255, 61, 139, 0.4); color: #fff; }/* ============================================================
+   PELIX — Gmail Sell Marketplace
+   সিঙ্গেল-ফাইল ডেমো (localStorage ভিত্তিক)
+   ============================================================ */
+
+const ADMIN_PASS = "admin123";
+const GMAIL_RATE = 10;
+const MIN_WITHDRAW = 50;
+
+// ---------- Storage Helpers ----------
+const DB = {
+  get: (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+};
+
+let users      = DB.get("pelix_users", []);        // {id,name,phone,pass,balance,blocked}
+let jobs       = DB.get("pelix_jobs", []);         // {id,title,desc,qty,rate}
+let submissions= DB.get("pelix_submissions", []);  // {id,userId,name,phone,gmail,pass,status,date}
+let withdraws  = DB.get("pelix_withdraws", []);    // {id,userId,name,phone,amount,method,number,status,date}
+
+function saveAll() {
+  DB.set("pelix_users", users);
+  DB.set("pelix_jobs", jobs);
+  DB.set("pelix_submissions", submissions);
+  DB.set("pelix_withdraws", withdraws);
+}
+
+let currentUser = null;
+let adminLogged = false;
+
+// ---------- DOM ----------
+const $ = id => document.getElementById(id);
+
+const authScreen = $("authScreen");
+const userDash   = $("userDashboard");
+const adminLogin = $("adminLoginScreen");
+const adminPanel = $("adminPanel");
+
+// ============================================================
+//  USER AUTH
+// ============================================================
+$("tabLogin").onclick = () => {
+  $("tabLogin").classList.add("active");
+  $("tabRegister").classList.remove("active");
+  $("loginForm").classList.remove("hidden");
+  $("registerForm").classList.add("hidden");
+};
+$("tabRegister").onclick = () => {
+  $("tabRegister").classList.add("active");
+  $("tabLogin").classList.remove("active");
+  $("registerForm").classList.remove("hidden");
+  $("loginForm").classList.add("hidden");
+};
+
+$("registerForm").onsubmit = e => {
+  e.preventDefault();
+  const name = $("regName").value.trim();
+  const phone = $("regPhone").value.trim();
+  const pass = $("regPass").value;
+
+  if (users.find(u => u.phone === phone)) {
+    showMsg("authMsg", "এই নাম্বার দিয়ে আগেই রেজিস্টার করা আছে!");
+    return;
+  }
+  const user = { id: Date.now(), name, phone, pass, balance: 0, blocked: false };
+  users.push(user); saveAll();
+  showMsg("authMsg", "রেজিস্ট্রেশন সফল! এখন লগইন করুন।", true);
+  $("registerForm").reset();
+};
+
+$("loginForm").onsubmit = e => {
+  e.preventDefault();
+  const phone = $("loginUser").value.trim();
+  const pass = $("loginPass").value;
+  const user = users.find(u => (u.phone === phone || u.name === phone) && u.pass === pass);
+
+  if (!user) { showMsg("authMsg", "নাম্বার/পাসওয়ার্ড ভুল!"); return; }
+  if (user.blocked) { showMsg("authMsg", "আপনার অ্যাকাউন্ট ব্লক করা হয়েছে!"); return; }
+
+  currentUser = user;
+  $("loginForm").reset();
+  showMsg("authMsg", "");
+  openUserDashboard();
+};
+
+function openUserDashboard() {
+  authScreen.classList.add("hidden");
+  userDash.classList.remove("hidden");
+  $("userNameDisplay").textContent = currentUser.name;
+  renderUserData();
+}
+
+$("logoutBtn").onclick = () => {
+  currentUser = null;
+  userDash.classList.add("hidden");
+  authScreen.classList.remove("hidden");
+};
+
+// ============================================================
+//  USER DASHBOARD RENDER
+// ============================================================
+function renderUserData() {
+  $("userBalance").textContent = currentUser.balance;
+
+  // Jobs
+  $("jobList").innerHTML = jobs.length
+    ? jobs.map(j => `
+      <div class="job-item">
+        <div>
+          <div class="jt">${esc(j.title)}</div>
+          <div class="jd">${esc(j.desc)}</div>
+          <div class="meta">প্রতি Gmail ৳${j.rate} · Quantity: ${j.qty}</div>
+        </div>
+      </div>`).join("")
+    : `<p class="hint">এখনো কোনো জব পোস্ট নেই।</p>`;
+
+  // My submissions
+  const mine = submissions.filter(s => s.userId === currentUser.id);
+  $("mySubmissions").innerHTML = mine.length
+    ? mine.map(s => `
+      <div class="job-item">
+        <div>
+          <div class="jt">${esc(s.gmail)}</div>
+          <div class="jd">${new Date(s.date).toLocaleString("bn-BD")}</div>
+        </div>
+        <span class="status-badge status-${s.status}">${statusBn(s.status)}</span>
+      </div>`).join("")
+    : `<p class="hint">এখনো কোনো সাবমিশন নেই।</p>`;
+}
+
+// Submit Gmail
+$("gmailForm").onsubmit = e => {
+  e.preventDefault();
+  const gmail = $("gmailAddress").value.trim();
+  const pass  = $("gmailPassword").value.trim();
+  const phone = $("gmailPhone").value.trim();
+
+  if (!gmail.includes("@")) { showMsg("gmailMsg", "সঠিক Gmail দিন!"); return; }
+  if (submissions.find(s => s.gmail === gmail)) { showMsg("gmailMsg", "এই Gmail আগেই সাবমিট করা হয়েছে!"); return; }
+
+  submissions.push({
+    id: Date.now(), userId: currentUser.id, name: currentUser.name,
+    phone, gmail, pass, status: "pending", date: Date.now()
+  });
+  saveAll();
+  $("gmailForm").reset();
+  showMsg("gmailMsg", "সাবমিট সফল! অ্যাডমিন অ্যাপ্রুভ করলে ব্যালেন্স যোগ হবে।", true);
+  renderUserData();
+};
+
+// Withdraw
+$("withdrawForm").onsubmit = e => {
+  e.preventDefault();
+  const amount = Number($("withdrawAmount").value);
+  const method = $("withdrawMethod").value.trim();
+  const number = $("withdrawNumber").value.trim();
+
+  if (amount < MIN_WITHDRAW) { showMsg("withdrawMsg", `মিনিমাম উইথড্র ৳${MIN_WITHDRAW}`); return; }
+  if (amount > currentUser.balance) { showMsg("withdrawMsg", "পর্যাপ্ত ব্যালেন্স নেই!"); return; }
+
+  withdraws.push({
+    id: Date.now(), userId: currentUser.id, name: currentUser.name,
+    phone: currentUser.phone, amount, method, number, status: "pending", date: Date.now()
+  });
+  currentUser.balance -= amount;
+  saveAll();
+  $("withdrawForm").reset();
+  showMsg("withdrawMsg", "উইথড্র রিকোয়েস্ট পাঠানো হয়েছে!", true);
+  renderUserData();
+};
+
+// ============================================================
+//  ADMIN — hidden entry button
+// ============================================================
+const adminBtn = document.createElement("button");
+adminBtn.id = "adminEntryBtn";
+adminBtn.textContent = "⚙";
+adminBtn.title = "Admin";
+document.body.appendChild(adminBtn);
+
+adminBtn.onclick = () => {
+  if (adminLogged) {
+    adminPanel.classList.remove("hidden");
+    authScreen.classList.add("hidden");
+    userDash.classList.add("hidden");
+    renderAdmin();
+  } else {
+    authScreen.classList.add("hidden");
+    userDash.classList.add("hidden");
+    adminPanel.classList.add("hidden");
+    adminLogin.classList.remove("hidden");
+  }
+};
+
+// Admin Login
+$("adminLoginForm").onsubmit = e => {
+  e.preventDefault();
+  if ($("adminPass").value === ADMIN_PASS) {
+    adminLogged = true;
+    $("adminPass").value = "";
+    adminLogin.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+    renderAdmin();
+  } else {
+    showMsg("adminMsg", "ভুল পাসওয়ার্ড!");
+  }
+};
+
+$("adminLogout").onclick = () => {
+  adminLogged = false;
+  adminPanel.classList.add("hidden");
+  authScreen.classList.remove("hidden");
+};
+
+// Admin tabs
+document.querySelectorAll(".atab").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".atab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".admin-tab-content").forEach(c => c.classList.add("hidden"));
+    $("tab-" + btn.dataset.tab).classList.remove("hidden");
+  };
+});
+
+// ============================================================
+//  ADMIN RENDER
+// ============================================================
+function renderAdmin() {
+  renderPending();
+  renderUsers();
+  renderWithdraws();
+  renderAdminJobs();
+}
+
+function renderPending() {
+  const pend = submissions.filter(s => s.status === "pending");
+  $("pendingList").innerHTML = pend.length
+    ? pend.map(s => `
+      <div class="job-item">
+        <div>
+          <div class="jt">${esc(s.gmail)}</div>
+          <div class="jd">🔑 Password: <b style="color:#00c8ff">${esc(s.pass)}</b></div>
+          <div class="jd">👤 ${esc(s.name)} · 📱 ${esc(s.phone)}</div>
+        </div>
+        <div class="actions">
+          <button class="btn-approve" onclick="approveSub(${s.id})">Approve</button>
+          <button class="btn-reject" onclick="rejectSub(${s.id})">Reject</button>
+        </div>
+      </div>`).join("")
+    : `<p class="hint">কোনো পেন্ডিং সাবমিশন নেই।</p>`;
+}
+
+window.approveSub = id => {
+  const s = submissions.find(x => x.id === id);
+  if (!s) return;
+  s.status = "approved";
+  const u = users.find(x => x.id === s.userId);
+  if (u) u.balance += GMAIL_RATE;
+  saveAll();
+  renderAdmin();
+  if (currentUser && currentUser.id === s.userId) { currentUser = u; renderUserData(); }
+};
+
+window.rejectSub = id => {
+  const s = submissions.find(x => x.id === id);
+  if (!s) return;
+  s.status = "rejected";
+  saveAll();
+  renderAdmin();
+};
+
+function renderUsers() {
+  $("userList").innerHTML = users.length
+    ? users.map(u => `
+      <div class="job-item">
+        <div>
+          <div class="jt">${esc(u.name)} ${u.blocked ? '<span class="status-badge status-rejected">Blocked</span>' : ''}</div>
+          <div class="jd">📱 ${esc(u.phone)} · 💰 ৳${u.balance}</div>
+        </div>
+        <div class="actions">
+          ${u.blocked
+            ? `<button class="btn-unblock" onclick="toggleBlock(${u.id})">Unblock</button>`
+            : `<button class="btn-block" onclick="toggleBlock(${u.id})">Block</button>`}
+        </div>
+      </div>`).join("")
+    : `<p class="hint">কোনো ইউজার নেই।</p>`;
+}
+
+window.toggleBlock = id => {
+  const u = users.find(x => x.id === id);
+  if (!u) return;
+  u.blocked = !u.blocked;
+  saveAll();
+  renderUsers();
+};
+
+function renderWithdraws() {
+  const list = withdraws.filter(w => w.status === "pending");
+  $("withdrawList").innerHTML = list.length
+    ? list.map(w => `
+      <div class="job-item">
+        <div>
+          <div class="jt">৳${w.amount} — ${esc(w.method)}</div>
+          <div class="jd">👤 ${esc(w.name)} · 📱 ${esc(w.phone)}</div>
+          <div class="jd">🏦 ${esc(w.number)}</div>
+        </div>
+        <div class="actions">
+          <button class="btn-approve" onclick="approveWithdraw(${w.id})">Approve</button>
+          <button class="btn-reject" onclick="rejectWithdraw(${w.id})">Reject</button>
+        </div>
+      </div>`).join("")
+    : `<p class="hint">কোনো উইথড্র রিকোয়েস্ট নেই।</p>`;
+}
+
+window.approveWithdraw = id => {
+  const w = withdraws.find(x => x.id === id);
+  if (!w) return;
+  w.status = "approved";
+  saveAll();
+  renderAdmin();
+};
+
+window.rejectWithdraw = id => {
+  const w = withdraws.find(x => x.id === id);
+  if (!w) return;
+  w.status = "rejected";
+  const u = users.find(x => x.id === w.userId);
+  if (u) u.balance += w.amount; // refund
+  saveAll();
+  renderAdmin();
+};
+
+// Job form
+$("jobForm").onsubmit = e => {
+  e.preventDefault();
+  jobs.push({
+    id: Date.now(),
+    title: $("jobTitle").value.trim(),
+    desc: $("jobDesc").value.trim(),
+    qty: Number($("jobQty").value),
+    rate: Number($("jobRate").value) || GMAIL_RATE,
+  });
+  saveAll();
+  $("jobForm").reset();
+  $("jobRate").value = GMAIL_RATE;
+  renderAdminJobs();
+};
+
+function renderAdminJobs() {
+  $("adminJobList").innerHTML = jobs.length
+    ? jobs.map(j => `
+      <div class="job-item">
+        <div>
+          <div class="jt">${esc(j.title)}</div>
+          <div class="jd">${esc(j.desc)}</div>
+          <div class="meta">৳${j.rate} · Qty: ${j.qty}</div>
+        </div>
+        <div class="actions">
+          <button class="btn-reject" onclick="deleteJob(${j.id})">Delete</button>
+        </div>
+      </div>`
