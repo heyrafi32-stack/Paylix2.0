@@ -58,7 +58,8 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
 .vw{display:none}.vw.on{display:block}
 </style>
 </head>
-<body><div id="adminScreen">
+<body><!-- ADMIN SCREEN -->
+<div id="adminScreen">
   <div style="text-align:center; margin-bottom:24px;"><h1 style="color:#0a4536; font-size:24px;">Admin Control</h1><p style="font-size:13px; color:#64748b;">Secure login required</p></div>
   <div id="adminLoginBox">
     <div class="ig"><label>Username</label><input type="text" id="au" placeholder="Enter username"></div>
@@ -85,6 +86,7 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
   </div>
 </div>
 
+<!-- AUTH SCREEN -->
 <div id="auth">
 <div class="lg"><div class="li"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><h1>পেলিক্স</h1></div>
 <div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
@@ -92,6 +94,7 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
 <div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
 </div>
 
+<!-- MAIN APP -->
 <div id="app">
 <div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
 <div class="ct">
@@ -114,6 +117,7 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
 <div class="nv"><div class="ni on" onclick="gv('v-h',this)"><i class="fa-solid fa-house"></i>Home</div><div class="ni" onclick="gv('v-w',this)"><i class="fa-solid fa-wallet"></i>Wallet</div><div class="nc" onclick="gv('v-t',this)"><i class="fa-solid fa-calendar-check"></i></div><div class="ni" onclick="gv('v-s',this)"><i class="fa-solid fa-border-all"></i>Services</div><div class="ni" onclick="gv('v-p',this)"><i class="fa-regular fa-user"></i>Profile</div></div>
 </div>
 
+<!-- MODALS -->
 <div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
 
 <div id="taskSubmitModal" class="ov" onclick="cm('taskSubmitModal')">
@@ -124,18 +128,13 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
     <div class="ig"><label>Proof (Screenshot Link or Username)</label><input type="text" id="taskProof" placeholder="https://... or username"></div>
     <button class="bt" onclick="submitTaskProof()">Send Proof</button>
   </div>
-</div>
-
-<script>
+</div><script>
 let users = JSON.parse(localStorage.getItem('pelix_users')) || [];
 let gs = JSON.parse(localStorage.getItem('pelix_gs')) || [];
 let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{id: 1, title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", slots: 100, icon: "fa-youtube", color: "#ff0000"}];
 let taskSubmissions = JSON.parse(localStorage.getItem('pelix_task_subs')) || [];
 
-if(users.length === 0) {
-  users.push({ phone: "01310127317", pass: "admin123", name: "Admin", role: "admin" });
-  saveData();
-}
+if(users.length === 0) { users.push({ phone: "01310127317", pass: "admin123", name: "Admin", role: "admin" }); saveData(); }
 
 let ca = 8;
 const fp = "@SRABON99#&";
@@ -180,8 +179,7 @@ function dr(){
   if(!p || !e || !s) { alert("সব ঘর পূরণ করুন!"); return; }
   if(users.find(u => u.phone === p)) { alert("এই ফোন নম্বর দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!"); return; }
   let newUser = { phone: p, email: e, pass: s, name: "User_" + p.slice(-4), role: "user" };
-  users.push(newUser);
-  saveData();
+  users.push(newUser); saveData();
   document.getElementById('auth').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('un').innerText = newUser.name;
@@ -214,9 +212,7 @@ function submitTaskProof() {
   let proof = document.getElementById('taskProof').value;
   if(!proof) { alert("প্রমাণ দিন!"); return; }
   taskSubmissions.push({taskId: id, price: price, proof: proof, status: 'pending', user: document.getElementById('un').innerText});
-  saveData();
-  alert("সফলভাবে জমা হয়েছে!");
-  cm('taskSubmitModal');
+  saveData(); alert("সফলভাবে জমা হয়েছে!"); cm('taskSubmitModal');
 }
 
 function copyRef() {let copyText = document.getElementById("myRefLink");copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);alert("রেফারেল লিংক কপি হয়েছে!");}
@@ -236,7 +232,6 @@ function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forE
 function ra(){
   let b=document.getElementById('al');b.innerHTML='';
   if(gs.length===0 && taskSubmissions.length===0){b.innerHTML='<p style="text-align:center;color:#64748b">কোনো সাবমিশন নেই।</p>';return}
-  
   if(gs.length > 0) {
     b.innerHTML += '<h4 style="margin-bottom:10px; font-size:14px; color:#0a4536;">Gmail Submissions</h4>';
     gs.forEach((s,i)=>{
@@ -246,10 +241,9 @@ function ra(){
       b.innerHTML+=h+'</div>';
     });
   }
-  
   if(taskSubmissions.length > 0) {
     b.innerHTML += '<h4 style="margin:15px 0 10px; font-size:14px; color:#0a4536;">Task Proofs</h4>';
     taskSubmissions.forEach((s,i)=>{
       let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
       let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.user}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:4px;">প্রমাণ: ${s.proof}</div><div style="font-size:12px;color:#64748b;margin-bottom:8px;">৳${s.price}</div>`;
-      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="approveTaskSub(${i})" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="rejectTaskSub(${i})" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius
+      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="approveTaskSub(${i})" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="rejectTaskSub(${i})" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`
