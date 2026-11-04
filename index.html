@@ -90,32 +90,11 @@ body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
 <div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
 <div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
 <div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
-</div><div id="app">
-<div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
-<div class="ct">
-<div id="v-h" class="vw on">
-<div class="bn"><h2>Welcome, <span id="un">User</span> 👋</h2><p style="font-size:13px;color:#a7f3d0">Start earning today</p></div>
-<div class="cd" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px"><div style="width:8px;height:8px;background:#10b981;border-radius:50%"></div> Account status</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Active</div></div>
-<div class="ac"><div style="display:flex;justify-content:space-between;font-size:13px;color:#a7f3d0;margin-bottom:8px"><span>Total asset value</span><span>BDT <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></span></div><div class="aa">৳ 0.00</div><div class="ag"><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Available</span><strong>৳ 0.00</strong></div><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Referral</span><strong>৳ 0.00</strong></div></div></div>
-<div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div><div class="si" onclick="gv('v-s')"><div class="sn"><i class="fa-solid fa-border-all"></i></div><span>More</span></div></div>
-</div>
-<div id="v-s" class="vw"><h2 style="font-size:20px;margin-bottom:16px">All Services</h2><div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div></div></div>
-<div id="v-w" class="vw"><h2 style="font-size:20px;margin-bottom:16px">My Wallet</h2><div class="ac" style="background:linear-gradient(135deg,#0d4f3f,#0a3a2d)"><div style="font-size:12px;color:#a7f3d0;margin-bottom:8px"><i class="fa-regular fa-credit-card"></i> DEPOSIT BALANCE</div><div style="font-size:36px;font-weight:700;margin-bottom:20px">৳ 0</div><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:#0a4536;font-weight:700">+ Deposit</button><button style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-weight:700">↓ Withdraw</button></div></div></div>
-<div id="v-t" class="vw"><h2 style="font-size:20px;margin-bottom:16px">Task</h2><div id="taskListContainer"></div></div>
-<div id="v-p" class="vw">
-<div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:#0a4536;color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">U</div><h2 style="font-size:20px" id="pn">User</h2><div style="font-size:13px;color:#64748b;margin-bottom:8px">ID: 10293</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳0.00</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳0.00</strong></div></div>
-<div class="cd"><div style="font-weight:700; color:#0a4536; margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div><div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid #e2e8f0;"><input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:#64748b; background:transparent;" value="https://pelix.com/ref/user123"><button onclick="copyRef()" style="background:#10b981; color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button></div></div>
-<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px"><div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div></div>
-</div>
-</div>
-<div class="nv"><div class="ni on" onclick="gv('v-h',this)"><i class="fa-solid fa-house"></i>Home</div><div class="ni" onclick="gv('v-w',this)"><i class="fa-solid fa-wallet"></i>Wallet</div><div class="nc" onclick="gv('v-t',this)"><i class="fa-solid fa-calendar-check"></i></div><div class="ni" onclick="gv('v-s',this)"><i class="fa-solid fa-border-all"></i>Services</div><div class="ni" onclick="gv('v-p',this)"><i class="fa-regular fa-user"></i>Profile</div></div>
-</div>
-<div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
-<script>
+</div><script>
 let users = JSON.parse(localStorage.getItem('pelix_users')) || [];
 let gs = JSON.parse(localStorage.getItem('pelix_gs')) || [];
 let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{id: 1, title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", slots: 100, icon: "fa-youtube", color: "#ff0000"}];
+let taskSubmissions = JSON.parse(localStorage.getItem('pelix_task_subs')) || [];
 
 if(users.length === 0) {
   users.push({ phone: "01310127317", pass: "admin123", name: "Admin", role: "admin" });
@@ -135,6 +114,7 @@ function saveData() {
   localStorage.setItem('pelix_users', JSON.stringify(users));
   localStorage.setItem('pelix_gs', JSON.stringify(gs));
   localStorage.setItem('pelix_tasks', JSON.stringify(tasks));
+  localStorage.setItem('pelix_task_subs', JSON.stringify(taskSubmissions));
 }
 
 function st(t){document.querySelectorAll('.tt').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));if(t==='l'){document.querySelectorAll('.tt')[0].classList.add('on');document.getElementById('lb').classList.add('on')}else{document.querySelectorAll('.tt')[1].classList.add('on');document.getElementById('rb').classList.add('on');gc()}}
@@ -181,8 +161,26 @@ function renderTasks(){
   let c=document.getElementById('taskListContainer');c.innerHTML='';
   if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:#64748b">কোনো কাজ নেই।</p>';return}
   tasks.forEach(t=>{
-    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:#64748b;margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:#64748b;margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:10px;border:1px solid #e2e8f0;background:transparent;font-weight:600">Start</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:#10b981;color:#fff;font-weight:600">Submit</button></div></div>`
+    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:#64748b;margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:#64748b;margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button onclick="openTaskSubmit(${t.id}, ${t.price})" style="flex:1;padding:12px;border-radius:10px;border:none;background:#10b981;color:#fff;font-weight:600">Submit Proof</button></div></div>`
   })
+}
+
+function openTaskSubmit(id, price) {
+  document.getElementById('submitTaskId').value = id;
+  document.getElementById('submitTaskPrice').value = price;
+  document.getElementById('taskProof').value = '';
+  om('taskSubmitModal');
+}
+
+function submitTaskProof() {
+  let id = document.getElementById('submitTaskId').value;
+  let price = document.getElementById('submitTaskPrice').value;
+  let proof = document.getElementById('taskProof').value;
+  if(!proof) { alert("প্রমাণ দিন!"); return; }
+  taskSubmissions.push({taskId: id, price: price, proof: proof, status: 'pending', user: document.getElementById('un').innerText});
+  saveData();
+  alert("সফলভাবে জমা হয়েছে!");
+  cm('taskSubmitModal');
 }
 
 function copyRef() {let copyText = document.getElementById("myRefLink");copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);alert("রেফারেল লিংক কপি হয়েছে!");}
@@ -198,82 +196,24 @@ function da(){
 }
 function logoutAdmin() {window.location.href = window.location.pathname;}
 function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';renderAdminTaskList();}}
-function ra(){let b=document.getElementById('al');b.innerHTML='';if(gs.length===0){b.innerHTML='<p style="text-align:center;color:#64748b">কোনো সাবমিশন নেই।</p>';return}gs.forEach((s,i)=>{let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:8px">${s.email}</div>`;if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}b.innerHTML+=h+'</div>'})}
-function aa(i,a){gs[i].status=a;saveData();ra()}
 
-function saveTask(){
-  let id = document.getElementById('tEditId').value;
-  let t = document.getElementById('tTitle').value;
-  let d = document.getElementById('tDesc').value;
-  let p = document.getElementById('tPrice').value;
-  let s = document.getElementById('tSlots').value;
-  if(!t || !d || !p || !s){alert("সব ঘর পূরণ করুন!");return}
-  if(id) {
-    let idx = tasks.findIndex(x => x.id == id);
-    if(idx > -1) { tasks[idx].title = t; tasks[idx].desc = d; tasks[idx].price = p; tasks[idx].slots = s; }
-    alert("কাজ সফলভাবে এডিট হয়েছে!");
-  } else {
-    tasks.unshift({id: Date.now(), title: t, desc: d, price: p, slots: s, icon: "fa-clipboard-list", color: "#10b981"});
-    alert("নতুন কাজ পোস্ট করা হয়েছে!");
+function ra(){
+  let b=document.getElementById('al');b.innerHTML='';
+  if(gs.length===0 && taskSubmissions.length===0){b.innerHTML='<p style="text-align:center;color:#64748b">কোনো সাবমিশন নেই।</p>';return}
+  
+  if(gs.length > 0) {
+    b.innerHTML += '<h4 style="margin-bottom:10px; font-size:14px; color:#0a4536;">Gmail Submissions</h4>';
+    gs.forEach((s,i)=>{
+      let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
+      let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:8px">${s.email}</div>`;
+      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}
+      b.innerHTML+=h+'</div>';
+    });
   }
-  saveData();
-  resetTaskForm();
-  renderAdminTaskList();
-  renderTasks();
-}
-
-function renderAdminTaskList(){
-  let box = document.getElementById('taskListAdmin');
-  box.innerHTML = '<h4 style="margin-bottom:10px; font-size:14px;">All Posted Tasks</h4>';
-  tasks.forEach((t, i) => {
-    box.innerHTML += `
-      <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid #e2e8f0;">
-        <div>
-          <strong style="font-size:13px;">${t.title}</strong>
-          <div style="font-size:11px; color:#64748b;">৳${t.price} • ${t.slots} slots</div>
-        </div>
-        <div style="display:flex; gap:6px;">
-          <button onclick="editTask(${t.id})" style="background:#3b82f6; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Edit</button>
-          <button onclick="deleteTask(${t.id})" style="background:#ef4444; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Delete</button>
-        </div>
-      </div>
-    `;
-  });
-}
-
-function editTask(id){
-  let t = tasks.find(x => x.id == id);
-  if(t) {
-    document.getElementById('tEditId').value = t.id;
-    document.getElementById('tTitle').value = t.title;
-    document.getElementById('tDesc').value = t.desc;
-    document.getElementById('tPrice').value = t.price;
-    document.getElementById('tSlots').value = t.slots;
-    document.getElementById('taskFormTitle').innerText = "Edit Task";
-    document.getElementById('taskSubmitBtn').innerText = "Update Task";
-    window.scrollTo(0,0);
-  }
-}
-
-function deleteTask(id){
-  if(confirm("আপনি কি সত্যিই এই কাজটি ডিলিট করতে চান?")) {
-    tasks = tasks.filter(x => x.id != id);
-    saveData();
-    renderAdminTaskList();
-    renderTasks();
-  }
-}
-
-function resetTaskForm(){
-  document.getElementById('tEditId').value = '';
-  document.getElementById('tTitle').value = '';
-  document.getElementById('tDesc').value = '';
-  document.getElementById('tPrice').value = '';
-  document.getElementById('tSlots').value = '';
-  document.getElementById('taskFormTitle').innerText = "Post New Task";
-  document.getElementById('taskSubmitBtn').innerText = "Post Task";
-}
-gc();
-</script>
-</body>
-</html>
+  
+  if(taskSubmissions.length > 0) {
+    b.innerHTML += '<h4 style="margin:15px 0 10px; font-size:14px; color:#0a4536;">Task Proofs</h4>';
+    taskSubmissions.forEach((s,i)=>{
+      let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
+      let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.user}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:4px;">প্রমাণ: ${s.proof}</div><div style="font-size:12px;color:#64748b;margin-bottom:8px;">৳${s.price}</div>`;
+      if(s.status==='pending'){h+=`<div
