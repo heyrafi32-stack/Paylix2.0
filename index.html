@@ -7,60 +7,59 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root{--m:#0a4536;--g:#10b981;--b:#f3f6f9;--w:#fff;--t:#1e293b;--gr:#64748b;--br:#e2e8f0}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highlight-color:transparent}
-#auth,#adminScreen{position:fixed;inset:0;background:var(--b);z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:24px}
+body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
+#auth,#adminScreen{position:fixed;inset:0;background:#f3f6f9;z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:24px}
 #adminScreen{display:none; z-index:10000; overflow-y:auto;}
 .lg{text-align:center;margin-bottom:24px}
-.li{width:60px;height:60px;background:var(--m);color:#fff;border-radius:16px;display:inline-flex;justify-content:center;align-items:center;font-size:30px;font-weight:bold;font-style:italic;margin-bottom:8px; overflow:hidden; border:none;}
-.li img{width:100%; height:100%; object-fit:cover;}
+.li{width:60px;height:60px;border-radius:16px;margin:0 auto 8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#0a4536}
+.li img{width:100%;height:100%;object-fit:cover}
 .tb{display:flex;margin-bottom:20px;background:#e2e8f0;border-radius:12px;padding:4px}
-.tt{flex:1;text-align:center;padding:10px;font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;color:var(--gr)}
-.tt.on{background:var(--w);color:var(--m);box-shadow:0 2px 5px rgba(0,0,0,0.05)}
+.tt{flex:1;text-align:center;padding:10px;font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;color:#64748b}
+.tt.on{background:#fff;color:#0a4536;box-shadow:0 2px 5px rgba(0,0,0,0.05)}
 .fb{display:none}.fb.on{display:block}
 .ig{margin-bottom:14px}
 .ig label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
-.ig input,.ig textarea{width:100%;padding:14px;border-radius:12px;border:1px solid var(--br);font-size:14px;outline:none;font-family:'Inter',sans-serif}
+.ig input,.ig textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none}
 .ig textarea{height:80px;resize:vertical}
 .cp{display:flex;align-items:center;gap:10px;background:#e6f7ef;padding:10px;border-radius:12px;margin-bottom:14px}
-.cp input{width:80px;padding:8px;border-radius:8px;border:1px solid var(--br);outline:none}
-.bt{width:100%;padding:16px;background:var(--m);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
+.cp input{width:80px;padding:8px;border-radius:8px;border:1px solid #e2e8f0;outline:none}
+.bt{width:100%;padding:16px;background:#0a4536;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
 .er{color:#ef4444;font-size:13px;text-align:center;margin-bottom:10px;display:none}
 #app{display:none}
 .hd{display:flex;justify-content:space-between;align-items:center;padding:16px}
 .hl{display:flex;align-items:center;gap:10px}
-.hi{width:32px;height:32px;border-radius:8px;background:var(--m);color:#fff;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;font-style:italic; overflow:hidden; border:none;}
-.hi img{width:100%; height:100%; object-fit:cover;}
+.hi{width:32px;height:32px;border-radius:8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#0a4536}
+.hi img{width:100%;height:100%;object-fit:cover}
 .ct{padding:0 16px}
-.cd{background:var(--w);border-radius:16px;padding:16px;border:1px solid var(--br);margin-bottom:16px}
+.cd{background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0;margin-bottom:16px}
 .bn{background:linear-gradient(135deg,#0d4f3f,#0a3a2d);border-radius:16px;padding:20px;color:#fff;margin-bottom:16px}
-.ac{background:var(--m);border-radius:20px;padding:20px;color:#fff;margin-bottom:20px}
+.ac{background:#0a4536;border-radius:20px;padding:20px;color:#fff;margin-bottom:20px}
 .aa{font-size:32px;font-weight:700;margin-bottom:16px}
 .ag{display:flex;gap:10px}
 .ab{flex:1;background:rgba(255,255,255,0.1);padding:12px;border-radius:12px}
 .sv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-.si{background:var(--w);padding:16px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;border:1px solid var(--br);cursor:pointer}
+.si{background:#fff;padding:16px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;border:1px solid #e2e8f0;cursor:pointer}
 .sn{width:40px;height:40px;border-radius:12px;background:#e6f7ef;color:#047857;display:flex;justify-content:center;align-items:center;font-size:18px;margin-bottom:8px}
 .si span{font-size:12px;font-weight:600;text-align:center;line-height:1.2}
-.nv{position:fixed;bottom:0;left:0;width:100%;background:var(--w);display:flex;justify-content:space-around;padding:10px 0 15px;border-radius:20px 20px 0 0;box-shadow:0 -4px 15px rgba(0,0,0,0.05);z-index:100}
-.ni{display:flex;flex-direction:column;align-items:center;color:var(--gr);font-size:11px;cursor:pointer;width:60px}
-.ni.on{color:var(--g)}
+.nv{position:fixed;bottom:0;left:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:10px 0 15px;border-radius:20px 20px 0 0;box-shadow:0 -4px 15px rgba(0,0,0,0.05);z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;color:#64748b;font-size:11px;cursor:pointer;width:60px}
+.ni.on{color:#10b981}
 .ni i{font-size:20px;margin-bottom:4px}
-.nc{width:50px;height:50px;background:var(--g);border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;transform:translateY(-15px);border:4px solid var(--b)}
+.nc{width:50px;height:50px;background:#10b981;border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;transform:translateY(-15px);border:4px solid #f3f6f9}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;justify-content:center;align-items:flex-end}
-.md{background:var(--w);width:100%;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow-y:auto}
+.md{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow-y:auto}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .cl{background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer}
 .pb{background:#e6f7ef;padding:12px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:14px}
-.tabs{display:flex;gap:10px;margin-bottom:16px;border-bottom:1px solid var(--br);padding-bottom:8px}
-.tab{font-weight:600;font-size:14px;cursor:pointer;color:var(--gr)}
-.tab.on{color:var(--m);border-bottom:2px solid var(--m);padding-bottom:8px}
+.tabs{display:flex;gap:10px;margin-bottom:16px;border-bottom:1px solid #e2e8f0;padding-bottom:8px}
+.tab{font-weight:600;font-size:14px;cursor:pointer;color:#64748b}
+.tab.on{color:#0a4536;border-bottom:2px solid #0a4536;padding-bottom:8px}
 .vw{display:none}.vw.on{display:block}
 </style>
 </head>
 <body><div id="adminScreen">
-  <div style="text-align:center; margin-bottom:24px;"><h1 style="color:var(--m); font-size:24px;">Admin Control</h1><p style="font-size:13px; color:var(--gr);">Secure login required</p></div>
+  <div style="text-align:center; margin-bottom:24px;"><h1 style="color:#0a4536; font-size:24px;">Admin Control</h1><p style="font-size:13px; color:#64748b;">Secure login required</p></div>
   <div id="adminLoginBox">
     <div class="ig"><label>Username</label><input type="text" id="au" placeholder="Enter username"></div>
     <div class="ig"><label>Password</label><input type="password" id="ap" placeholder="Enter password"></div>
@@ -78,7 +77,7 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
       <div class="ig"><label>Task Title</label><input type="text" id="tTitle" placeholder="e.g. YouTube Like"></div>
       <div class="ig"><label>Task Description</label><textarea id="tDesc" placeholder="ভিডিও দেখে লাইক করুন..."></textarea></div>
       <div class="ig"><label>Price (৳)</label><input type="number" id="tPrice" placeholder="2.3"></div>
-      <div class="ig"><label>Total Slots (কতজন করতে পারবে)</label><input type="number" id="tSlots" placeholder="100"></div>
+      <div class="ig"><label>Total Slots</label><input type="number" id="tSlots" placeholder="100"></div>
       <button class="bt" id="taskSubmitBtn" onclick="saveTask()">Post Task</button>
       <div id="taskListAdmin" style="margin-top:20px;"></div>
     </div>
@@ -94,21 +93,21 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 </div>
 
 <div id="app">
-<div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:var(--w);border-radius:10px;border:1px solid var(--br);display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
+<div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
 <div class="ct">
 <div id="v-h" class="vw on">
 <div class="bn"><h2>Welcome, <span id="un">User</span> 👋</h2><p style="font-size:13px;color:#a7f3d0">Start earning today</p></div>
-<div class="cd" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px"><div style="width:8px;height:8px;background:var(--g);border-radius:50%"></div> Account status</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Active</div></div>
+<div class="cd" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px"><div style="width:8px;height:8px;background:#10b981;border-radius:50%"></div> Account status</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Active</div></div>
 <div class="ac"><div style="display:flex;justify-content:space-between;font-size:13px;color:#a7f3d0;margin-bottom:8px"><span>Total asset value</span><span>BDT <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></span></div><div class="aa">৳ 0.00</div><div class="ag"><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Available</span><strong>৳ 0.00</strong></div><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Referral</span><strong>৳ 0.00</strong></div></div></div>
 <div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div><div class="si" onclick="gv('v-s')"><div class="sn"><i class="fa-solid fa-border-all"></i></div><span>More</span></div></div>
 </div>
 <div id="v-s" class="vw"><h2 style="font-size:20px;margin-bottom:16px">All Services</h2><div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div></div></div>
-<div id="v-w" class="vw"><h2 style="font-size:20px;margin-bottom:16px">My Wallet</h2><div class="ac" style="background:linear-gradient(135deg,#0d4f3f,#0a3a2d)"><div style="font-size:12px;color:#a7f3d0;margin-bottom:8px"><i class="fa-regular fa-credit-card"></i> DEPOSIT BALANCE</div><div style="font-size:36px;font-weight:700;margin-bottom:20px">৳ 0</div><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:var(--m);font-weight:700">+ Deposit</button><button style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-weight:700">↓ Withdraw</button></div></div></div>
+<div id="v-w" class="vw"><h2 style="font-size:20px;margin-bottom:16px">My Wallet</h2><div class="ac" style="background:linear-gradient(135deg,#0d4f3f,#0a3a2d)"><div style="font-size:12px;color:#a7f3d0;margin-bottom:8px"><i class="fa-regular fa-credit-card"></i> DEPOSIT BALANCE</div><div style="font-size:36px;font-weight:700;margin-bottom:20px">৳ 0</div><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:#0a4536;font-weight:700">+ Deposit</button><button style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-weight:700">↓ Withdraw</button></div></div></div>
 <div id="v-t" class="vw"><h2 style="font-size:20px;margin-bottom:16px">Task</h2><div id="taskListContainer"></div></div>
 <div id="v-p" class="vw">
-<div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:var(--m);color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">U</div><h2 style="font-size:20px" id="pn">User</h2><div style="font-size:13px;color:var(--gr);margin-bottom:8px">ID: 10293</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:var(--gr);display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳0.00</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:var(--gr);display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳0.00</strong></div></div>
-<div class="cd"><div style="font-weight:700; color:var(--m); margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div><div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid var(--br);"><input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:var(--gr); background:transparent;" value="https://pelix.com/ref/user123"><button onclick="copyRef()" style="background:var(--g); color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button></div></div>
+<div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:#0a4536;color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">U</div><h2 style="font-size:20px" id="pn">User</h2><div style="font-size:13px;color:#64748b;margin-bottom:8px">ID: 10293</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳0.00</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳0.00</strong></div></div>
+<div class="cd"><div style="font-weight:700; color:#0a4536; margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div><div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid #e2e8f0;"><input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:#64748b; background:transparent;" value="https://pelix.com/ref/user123"><button onclick="copyRef()" style="background:#10b981; color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button></div></div>
 <div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px"><div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div></div>
 </div>
 </div>
@@ -182,9 +181,9 @@ function sg(){let f=document.getElementById('gf').value,l=document.getElementByI
 
 function renderTasks(){
   let c=document.getElementById('taskListContainer');c.innerHTML='';
-  if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো কাজ নেই।</p>';return}
+  if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:#64748b">কোনো কাজ নেই।</p>';return}
   tasks.forEach(t=>{
-    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:var(--gr);margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:var(--gr);margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:10px;border:1px solid var(--br);background:transparent;font-weight:600">Start</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--g);color:#fff;font-weight:600">Submit</button></div></div>`
+    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:#64748b;margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:#64748b;margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:10px;border:1px solid #e2e8f0;background:transparent;font-weight:600">Start</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:#10b981;color:#fff;font-weight:600">Submit</button></div></div>`
   })
 }
 
@@ -201,7 +200,7 @@ function da(){
 }
 function logoutAdmin() {window.location.href = window.location.pathname;}
 function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';renderAdminTaskList();}}
-function ra(){let b=document.getElementById('al');b.innerHTML='';if(gs.length===0){b.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো সাবমিশন নেই।</p>';return}gs.forEach((s,i)=>{let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');let h=`<div style="border-bottom:1px solid var(--br);padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:var(--gr);margin-bottom:8px">${s.email}</div>`;if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:var(--g);color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}b.innerHTML+=h+'</div>'})}
+function ra(){let b=document.getElementById('al');b.innerHTML='';if(gs.length===0){b.innerHTML='<p style="text-align:center;color:#64748b">কোনো সাবমিশন নেই।</p>';return}gs.forEach((s,i)=>{let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:8px">${s.email}</div>`;if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}b.innerHTML+=h+'</div>'})}
 function aa(i,a){gs[i].status=a;saveData();ra()}
 
 function saveTask(){
@@ -230,10 +229,10 @@ function renderAdminTaskList(){
   box.innerHTML = '<h4 style="margin-bottom:10px; font-size:14px;">All Posted Tasks</h4>';
   tasks.forEach((t, i) => {
     box.innerHTML += `
-      <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--br);">
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid #e2e8f0;">
         <div>
           <strong style="font-size:13px;">${t.title}</strong>
-          <div style="font-size:11px; color:var(--gr);">৳${t.price} • ${t.slots} slots</div>
+          <div style="font-size:11px; color:#64748b;">৳${t.price} • ${t.slots} slots</div>
         </div>
         <div style="display:flex; gap:6px;">
           <button onclick="editTask(${t.id})" style="background:#3b82f6; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Edit</button>
@@ -271,4 +270,6 @@ function resetTaskForm(){
   document.getElementById('tEditId').value = '';
   document.getElementById('tTitle').value = '';
   document.getElementById('tDesc').value = '';
-  document.getElementById('tPrice').
+  document.getElementById('tPrice').value = '';
+  document.getElementById('tSlots').value = '';
+  document.getElementById('taskFormTitle').innerText = "
