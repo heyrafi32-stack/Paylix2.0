@@ -13,7 +13,8 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 #auth,#adminScreen{position:fixed;inset:0;background:var(--b);z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:24px}
 #adminScreen{display:none; z-index:10000; overflow-y:auto;}
 .lg{text-align:center;margin-bottom:24px}
-.li{width:60px;height:60px;background:var(--m);color:#fff;border-radius:16px;display:inline-flex;justify-content:center;align-items:center;font-size:30px;font-weight:bold;font-style:italic;margin-bottom:8px}
+.li{width:60px;height:60px;background:var(--m);color:#fff;border-radius:16px;display:inline-flex;justify-content:center;align-items:center;font-size:30px;font-weight:bold;font-style:italic;margin-bottom:8px; overflow:hidden; border:none;}
+.li img{width:100%; height:100%; object-fit:cover;}
 .tb{display:flex;margin-bottom:20px;background:#e2e8f0;border-radius:12px;padding:4px}
 .tt{flex:1;text-align:center;padding:10px;font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;color:var(--gr)}
 .tt.on{background:var(--w);color:var(--m);box-shadow:0 2px 5px rgba(0,0,0,0.05)}
@@ -29,7 +30,8 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 #app{display:none}
 .hd{display:flex;justify-content:space-between;align-items:center;padding:16px}
 .hl{display:flex;align-items:center;gap:10px}
-.hi{width:32px;height:32px;border-radius:8px;background:var(--m);color:#fff;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;font-style:italic}
+.hi{width:32px;height:32px;border-radius:8px;background:var(--m);color:#fff;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;font-style:italic; overflow:hidden; border:none;}
+.hi img{width:100%; height:100%; object-fit:cover;}
 .ct{padding:0 16px}
 .cd{background:var(--w);border-radius:16px;padding:16px;border:1px solid var(--br);margin-bottom:16px}
 .bn{background:linear-gradient(135deg,#0d4f3f,#0a3a2d);border-radius:16px;padding:20px;color:#fff;margin-bottom:16px}
@@ -83,14 +85,16 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
     <button class="bt" style="background:#ef4444; margin-top:10px;" onclick="logoutAdmin()">Logout Admin</button>
   </div>
 </div>
+
 <div id="auth">
-<div class="lg"><div class="li">P</div><h1>পেলিক্স</h1></div>
+<div class="lg"><div class="li"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><h1>পেলিক্স</h1></div>
 <div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
 <div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
 <div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
 </div>
+
 <div id="app">
-<div class="hd"><div class="hl"><div class="hi">P</div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:var(--w);border-radius:10px;border:1px solid var(--br);display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
+<div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:var(--w);border-radius:10px;border:1px solid var(--br);display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
 <div class="ct">
 <div id="v-h" class="vw on">
 <div class="bn"><h2>Welcome, <span id="un">User</span> 👋</h2><p style="font-size:13px;color:#a7f3d0">Start earning today</p></div>
@@ -268,11 +272,4 @@ function resetTaskForm(){
   document.getElementById('tTitle').value = '';
   document.getElementById('tDesc').value = '';
   document.getElementById('tPrice').value = '';
-  document.getElementById('tSlots').value = '';
-  document.getElementById('taskFormTitle').innerText = "Post New Task";
-  document.getElementById('taskSubmitBtn').innerText = "Post Task";
-}
-gc();
-</script>
-</body>
-</html>
+  document.getElementById('tSlots').value 
