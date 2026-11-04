@@ -6,16 +6,15 @@
   <title>Paylix - পেলিক্স</title>
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg: #f8fafc;
+      --primary: #064e3b;
+      --primary-light: #059669;
+      --bg: #f0fdf4;
       --card-bg: #ffffff;
       --text: #1e293b;
       --text-muted: #64748b;
       --border: #e2e8f0;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --warning: #ca8a04;
+      --success: #10b981;
+      --danger: #ef4444;
     }
 
     * {
@@ -40,7 +39,7 @@
       min-height: 100vh;
       position: relative;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-      padding-bottom: 70px;
+      padding-bottom: 75px;
     }
 
     /* Header */
@@ -48,7 +47,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px;
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border);
       background: var(--card-bg);
       position: sticky;
@@ -56,197 +55,205 @@
       z-index: 10;
     }
 
-    .brand-logo {
-      height: 38px;
-      object-fit: contain;
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .user-welcome {
-      font-size: 14px;
-      font-weight: 600;
+    .brand-logo {
+      width: 35px;
+      height: 35px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 700;
       color: var(--text);
     }
 
-    /* Auth Forms */
-    .auth-container {
-      padding: 24px 20px;
+    .header-icons {
+      display: flex;
+      gap: 12px;
     }
 
-    .auth-title {
-      font-size: 22px;
-      margin-bottom: 20px;
-      font-weight: 700;
-      text-align: center;
-      color: var(--primary);
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      background: #fff;
-    }
-
-    .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--primary);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--primary);
-      color: white;
+    .header-icon-btn {
+      background: #f1f5f9;
       border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 600;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: background 0.2s;
+      font-size: 16px;
     }
-
-    .btn:hover {
-      background: var(--primary-hover);
-    }
-
-    .btn-danger { background: var(--danger); }
-    .btn-success { background: var(--success); }
-    .btn-sm { padding: 6px 12px; font-size: 12px; width: auto; }
-
-    .auth-toggle {
-      text-align: center;
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .auth-toggle span {
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* Dashboard UI */
-    .dashboard-content {
+  </style>
+</head>
+<body>
+    <style>
+    /* Content Layout */
+    .content-body {
       padding: 16px;
     }
 
-    .balance-card {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    .welcome-card {
+      background: linear-gradient(135deg, #064e3b, #059669);
       color: white;
-      padding: 20px;
+      padding: 18px;
       border-radius: 14px;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
     }
 
-    .balance-item h4 {
-      font-size: 12px;
-      opacity: 0.8;
-      font-weight: 500;
+    .welcome-title {
+      font-size: 18px;
+      font-weight: 700;
       margin-bottom: 4px;
     }
 
-    .balance-item p {
-      font-size: 20px;
+    .welcome-subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    /* Asset Card */
+    .asset-card {
+      background: linear-gradient(135deg, #064e3b, #047857);
+      color: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .asset-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .asset-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .currency-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .asset-amount {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 12px;
+    }
+
+    .asset-sub-item h5 {
+      font-size: 11px;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+
+    .asset-sub-item p {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* Action Buttons (Deposit / Withdraw) */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .action-btn-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .action-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .action-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .action-icon {
+      width: 32px;
+      height: 32px;
+      background: #ecfdf5;
+      color: var(--primary-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: 700;
     }
 
-    .services-grid {
+    /* Services Grid (4x3) */
+    .services-grid-box {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
-    .service-card {
-      background: var(--card-bg);
+    .service-item {
+      background: white;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 12px 6px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.1s;
     }
 
-    .service-card:active {
-      transform: scale(0.96);
-    }
-
-    .service-icon {
-      font-size: 24px;
+    .service-icon-box {
+      font-size: 22px;
       margin-bottom: 6px;
-      display: block;
     }
 
-    .service-title {
+    .service-name {
       font-size: 11px;
       font-weight: 600;
       color: var(--text);
     }
 
-    /* Task List */
-    .section-header {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .task-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .task-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .task-title {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .task-reward {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--success);
-    }
-
-    .task-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    /* Bottom Navigation Bar */
-    .nav-bar {
+    /* Bottom Nav Bar */
+    .bottom-nav {
       position: fixed;
       bottom: 0;
       width: 100%;
       max-width: 480px;
-      height: 60px;
+      height: 65px;
       background: white;
       border-top: 1px solid var(--border);
       display: flex;
@@ -255,7 +262,7 @@
       z-index: 100;
     }
 
-    .nav-item {
+    .nav-link {
       text-align: center;
       color: var(--text-muted);
       cursor: pointer;
@@ -264,477 +271,332 @@
       flex: 1;
     }
 
-    .nav-item.active {
-      color: var(--primary);
+    .nav-link.active {
+      color: var(--primary-light);
     }
 
-    .nav-icon {
+    .nav-link span {
       font-size: 18px;
       display: block;
       margin-bottom: 2px;
     }
 
-    /* Modal Popup */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 200;
-    }
-
-    .modal {
-      background: white;
-      width: 90%;
-      max-width: 400px;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .modal-title {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .close-modal {
-      cursor: pointer;
-      font-size: 20px;
-      color: var(--text-muted);
-    }
-
-    /* Admin Tabs */
-    .admin-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 16px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      background: none;
-      border: none;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      color: var(--text-muted);
-    }
-
-    .tab-btn.active {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid var(--border);
-      text-align: left;
-    }
-
-    th {
-      background: #f1f5f9;
-    }
-
-    .status-badge {
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 600;
-      display: inline-block;
-    }
-
-    .status-pending { background: #fef08a; color: #854d0e; }
-    .status-approved { background: #bbf7d0; color: #166534; }
-    .status-rejected { background: #fecaca; color: #991b1b; }
-
     .hidden { display: none !important; }
   </style>
-</head>
-<body>
-  <div class="app-container">
+
+<div class="app-container">
 
   <!-- Header -->
   <header class="header" id="mainHeader">
-    <img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="Paylix Logo" class="brand-logo">
-    <div class="user-welcome hidden" id="userWelcomeText">Welcome, User</div>
+    <div class="brand-area">
+      <img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="Paylix Logo" class="brand-logo">
+      <span class="brand-name">Paylix</span>
+    </div>
+    <div class="header-icons">
+      <button class="header-icon-btn" onclick="location.reload()">🔄</button>
+      <button class="header-icon-btn" onclick="alert('Notification')">🔔</button>
+    </div>
   </header>
-
-  <!-- Auth View (Login / Signup) -->
-  <div id="authView" class="auth-container">
-    
-    <!-- Login Form -->
-    <div id="loginBox">
-      <h2 class="auth-title">লগইন করুন</h2>
+    <!-- Auth View -->
+  <div id="authView" class="content-body">
+    <div id="loginBox" style="margin-top: 40px;">
+      <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 20px; text-align: center;">পেলিক্স-এ লগইন করুন</h2>
       <form id="loginForm">
-        <div class="form-group">
-          <label>ফোন নম্বর</label>
-          <input type="text" id="loginPhone" placeholder="017XXXXXXXX" required>
+        <div style="margin-bottom: 14px;">
+          <label style="font-size: 13px; font-weight: 600;">ফোন নম্বর</label>
+          <input type="text" id="loginPhone" placeholder="017XXXXXXXX" required style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; margin-top:4px;">
         </div>
-        <div class="form-group">
-          <label>পাসওয়ার্ড</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        <div style="margin-bottom: 16px;">
+          <label style="font-size: 13px; font-weight: 600;">পাসওয়ার্ড</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; margin-top:4px;">
         </div>
-        <button type="submit" class="btn">লগইন</button>
+        <button type="submit" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">লগইন</button>
       </form>
-      <div class="auth-toggle">
-        অ্যাকাউন্ট নেই? <span onclick="toggleAuth('signup')">সাইন-আপ করুন</span>
-      </div>
+      <p style="text-align: center; margin-top: 16px; font-size: 13px;">অ্যাকাউন্ট নেই? <span onclick="toggleAuth('signup')" style="color: var(--primary-light); font-weight: 700; cursor: pointer;">সাইন-আপ করুন</span></p>
     </div>
 
-    <!-- Signup Form -->
-    <div id="signupBox" class="hidden">
-      <h2 class="auth-title">সাইন-আপ করুন</h2>
+    <div id="signupBox" class="hidden" style="margin-top: 20px;">
+      <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 20px; text-align: center;">নতুন অ্যাকাউন্ট</h2>
       <form id="signupForm">
-        <div class="form-group">
-          <label>পূর্ণ নাম</label>
-          <input type="text" id="signupName" placeholder="আপনার নাম" required>
-        </div>
-        <div class="form-group">
-          <label>ফোন নম্বর</label>
-          <input type="text" id="signupPhone" placeholder="017XXXXXXXX" required>
-        </div>
-        <div class="form-group">
-          <label>পাসওয়ার্ড</label>
-          <input type="password" id="signupPassword" placeholder="••••••••" required>
-        </div>
-        <div class="form-group">
-          <label id="captchaLabel">ম্যাথ ক্যাপচা (৩ + ৫ = ?)</label>
-          <input type="number" id="signupCaptcha" placeholder="উত্তর দিন" required>
-        </div>
-        <button type="submit" class="btn">সাইন-আপ</button>
+        <div style="margin-bottom: 12px;"><label style="font-size:13px; font-weight:600;">পূর্ণ নাম</label><input type="text" id="signupName" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px;"></div>
+        <div style="margin-bottom: 12px;"><label style="font-size:13px; font-weight:600;">ফোন নম্বর</label><input type="text" id="signupPhone" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px;"></div>
+        <div style="margin-bottom: 12px;"><label style="font-size:13px; font-weight:600;">পাসওয়ার্ড</label><input type="password" id="signupPassword" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px;"></div>
+        <div style="margin-bottom: 16px;"><label id="captchaLabel" style="font-size:13px; font-weight:600;"></label><input type="number" id="signupCaptcha" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px;"></div>
+        <button type="submit" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">সাইন-আপ</button>
       </form>
-      <div class="auth-toggle">
-        ইতিমধ্যে অ্যাকাউন্ট আছে? <span onclick="toggleAuth('login')">লগইন করুন</span>
-      </div>
+      <p style="text-align: center; margin-top: 14px; font-size: 13px;">রেজিস্টার্ড? <span onclick="toggleAuth('login')" style="color: var(--primary-light); font-weight: 700; cursor: pointer;">লগইন করুন</span></p>
     </div>
-
   </div>
 
   <!-- Admin Login View -->
-  <div id="adminAuthView" class="auth-container hidden">
-    <h2 class="auth-title">অ্যাডমিন লগইন</h2>
+  <div id="adminAuthView" class="content-body hidden" style="margin-top: 40px;">
+    <h2 style="color: var(--danger); text-align:center; margin-bottom:20px;">অ্যাডমিন প্যানেল</h2>
     <form id="adminLoginForm">
-      <div class="form-group">
-        <label>অ্যাডমিন ইউজারনেম</label>
-        <input type="text" id="adminUsername" required>
-      </div>
-      <div class="form-group">
-        <label>পাসওয়ার্ড</label>
-        <input type="password" id="adminPassword" required>
-      </div>
-      <button type="submit" class="btn btn-danger">লগইন করুন</button>
+      <div style="margin-bottom:14px;"><label>Username</label><input type="text" id="adminUsername" required style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px;"></div>
+      <div style="margin-bottom:16px;"><label>Password</label><input type="password" id="adminPassword" required style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px;"></div>
+      <button type="submit" style="width:100%; padding:12px; background:var(--danger); color:white; border:none; border-radius:8px; font-weight:700;">Login Admin</button>
     </form>
   </div>
 
-  <!-- Admin Panel Dashboard View -->
-  <div id="adminDashboardView" class="dashboard-content hidden">
-    <div class="admin-tabs">
-      <button class="tab-btn active" onclick="switchAdminTab('submissions')">Submissions</button>
-      <button class="tab-btn" onclick="switchAdminTab('tasks')">Manage Tasks</button>
+  <!-- Admin Dashboard View -->
+  <div id="adminDashboardView" class="content-body hidden">
+    <h3 style="margin-bottom:12px; color:var(--primary);">অ্যাডমিন কন্ট্রোল</h3>
+    <div style="display:flex; gap:10px; margin-bottom:16px;">
+      <button onclick="switchAdminTab('subs')" style="flex:1; padding:8px; background:var(--primary); color:white; border:none; border-radius:6px;">Submissions & Withdraw</button>
+      <button onclick="switchAdminTab('tasks')" style="flex:1; padding:8px; background:#64748b; color:white; border:none; border-radius:6px;">Manage Tasks</button>
     </div>
-
-    <!-- Submissions Tab -->
-    <div id="adminSubmissionsTab">
-      <h3 class="section-header">জমা দেওয়া তথ্যের তালিকা</h3>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>User</th>
-              <th>Details</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="submissionsTableBody">
-            <!-- Dynamic Submissions -->
-          </tbody>
+    
+    <div id="adminSubsSection">
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:11px;">
+          <thead><tr style="background:#f1f5f9;"><th style="padding:6px; border:1px solid #ccc;">Type</th><th style="padding:6px; border:1px solid #ccc;">User</th><th style="padding:6px; border:1px solid #ccc;">Details</th><th style="padding:6px; border:1px solid #ccc;">Action</th></tr></thead>
+          <tbody id="adminSubTableBody"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- Manage Tasks Tab -->
-    <div id="adminTasksTab" class="hidden">
-      <h3 class="section-header">নতুন কাজ যোগ করুন</h3>
-      <form id="createTaskForm" style="margin-bottom: 20px;">
-        <div class="form-group">
-          <label>কাজের শিরোনাম</label>
-          <input type="text" id="taskTitleInput" required>
-        </div>
-        <div class="form-group">
-          <label>পুরস্কার (টাকা/পয়সা)</label>
-          <input type="number" step="0.01" id="taskRewardInput" required>
-        </div>
-        <div class="form-group">
-          <label>বিস্তারিত বিবরণ</label>
-          <textarea id="taskDescInput" rows="2" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">কাজ পোস্ট করুন</button>
+    <div id="adminTasksSection" class="hidden">
+      <form id="adminTaskForm" style="margin-bottom:16px;">
+        <div style="margin-bottom:8px;"><input type="text" id="admTaskTitle" placeholder="কাজের নাম" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
+        <div style="margin-bottom:8px;"><input type="number" step="0.01" id="admTaskReward" placeholder="পুরস্কার (টাকা)" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
+        <div style="margin-bottom:8px;"><textarea id="admTaskDesc" placeholder="বিবরণ" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></textarea></div>
+        <button type="submit" style="width:100%; padding:8px; background:var(--success); color:white; border:none; border-radius:6px; font-weight:700;">নতুন কাজ যোগ করুন</button>
       </form>
-
-      <h3 class="section-header">বর্তমান কাজসমূহ</h3>
-      <div id="adminTaskList">
-        <!-- Dynamic Task List -->
-      </div>
+      <div id="adminTaskListContainer"></div>
     </div>
   </div>
 
-  <!-- Main App Dashboard View -->
-  <div id="dashboardView" class="dashboard-content hidden">
+  <!-- Main User Dashboard View -->
+  <div id="dashboardView" class="content-body hidden">
     
-    <!-- Balance Card -->
-    <div class="balance-card">
-      <div class="balance-item">
-        <h4>Available Balance</h4>
-        <p id="userBalance">৳0.00</p>
-      </div>
-      <div class="balance-item">
-        <h4>Referral Balance</h4>
-        <p id="userRefBalance">৳0.00</p>
-      </div>
-    </div>
-
-    <!-- Services Grid -->
-    <div class="services-grid">
-      <div class="service-card" onclick="switchTab('wallet')">
-        <span class="service-icon">👛</span>
-        <span class="service-title">Wallet</span>
-      </div>
-      <div class="service-card" onclick="switchTab('task')">
-        <span class="service-icon">📋</span>
-        <span class="service-title">Task</span>
-      </div>
-      <div class="service-card" onclick="openGmailModal()">
-        <span class="service-icon">📧</span>
-        <span class="service-title">Gmail Sell</span>
-      </div>
-      <div class="service-card" onclick="alert('আরো ফিচার শীঘ্রই আসছে!')">
-        <span class="service-icon">⚡</span>
-        <span class="service-title">More</span>
-      </div>
-    </div>
-
-    <!-- Main Content Area Dynamic -->
+    <!-- Tab Home -->
     <div id="tabHome">
-      <h3 class="section-header">চলতি কাজসমূহ</h3>
-      <div id="userTaskList">
-        <!-- Tasks render here -->
+      <div class="welcome-card">
+        <div class="welcome-title" id="welcomeUserText">Welcome, User 👋</div>
+        <div class="welcome-subtitle">পেলিক্স (Paylix)-এ আপনাকে স্বাগতম। কাজ করে আয় করুন!</div>
       </div>
-    </div>
 
-    <div id="tabWallet" class="hidden">
-      <h3 class="section-header">মাই ওয়ালেট</h3>
-      <div class="task-card">
-        <p>বর্তমান ব্যালেন্স: <b id="walletBalance">৳0.00</b></p>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">উইথড্র করার অপশন শীঘ্রই যুক্ত করা হবে।</p>
-      </div>
-    </div>
-
-    <div id="tabTask" class="hidden">
-      <h3 class="section-header">সব কাজ</h3>
-      <div id="userTaskListTab">
-        <!-- Tasks render here -->
-      </div>
-    </div>
-
-    <div id="tabServices" class="hidden">
-      <h3 class="section-header">আমাদের সার্ভিসেস</h3>
-      <div class="task-card" onclick="openGmailModal()" style="cursor:pointer;">
-        <b>📧 Gmail Sell</b>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">আপনার জিমেইল সেল করুন ফিক্সড পাসওয়ার্ড ব্যবহার করে।</p>
-      </div>
-    </div>
-
-    <div id="tabProfile" class="hidden">
-      <h3 class="section-header">আমার প্রোফাইল</h3>
-      <div class="task-card">
-        <p><b>নাম:</b> <span id="profileName">-</span></p>
-        <p><b>ফোন:</b> <span id="profilePhone">-</span></p>
-        <div style="margin-top: 14px;">
-          <label style="font-size: 12px; font-weight: 600;">রেফারেল লিংক:</label>
-          <div style="display: flex; gap: 6px; margin-top: 4px;">
-            <input type="text" id="refLinkInput" readonly style="font-size: 11px; padding: 6px;">
-            <button class="btn btn-sm" onclick="copyRefLink()">কপি</button>
+      <div class="asset-card">
+        <div class="asset-header">
+          <span class="asset-title">Total asset value</span>
+          <span class="currency-badge">BDT ></span>
+        </div>
+        <div class="asset-amount" id="totalAssetVal">৳0.00</div>
+        <div class="asset-grid">
+          <div class="asset-sub-item">
+            <h5>Available</h5>
+            <p id="availBal">৳0.00</p>
+          </div>
+          <div class="asset-sub-item">
+            <h5>Salary</h5>
+            <p>৳0</p>
+          </div>
+          <div class="asset-sub-item">
+            <h5>Referral</h5>
+            <p id="refBal">৳0.00</p>
           </div>
         </div>
-        <button class="btn btn-danger" style="margin-top: 16px;" onclick="logout()">লগআউট</button>
+      </div>
+
+      <div class="action-grid">
+        <div class="action-card-item" onclick="openWithdrawModal()" style="background:white; border:1px solid var(--border); border-radius:14px; padding:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+          <div><h4 style="font-size:13px; font-weight:700;">Withdraw</h4><p style="font-size:10px; color:var(--text-muted);">To your wallet</p></div>
+          <div style="width:28px; height:28px; background:#ecfdf5; color:var(--success); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">↓</div>
+        </div>
+        <div class="action-card-item" onclick="switchTab('task')" style="background:white; border:1px solid var(--border); border-radius:14px; padding:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+          <div><h4 style="font-size:13px; font-weight:700;">Earn Tasks</h4><p style="font-size:10px; color:var(--text-muted);">Complete & get paid</p></div>
+          <div style="width:28px; height:28px; background:#ecfdf5; color:var(--success); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">📋</div>
+        </div>
+      </div>
+
+      <div class="services-grid-box">
+        <div class="service-item" onclick="switchTab('wallet')">
+          <div class="service-icon-box">👛</div>
+          <div class="service-name">Wallet</div>
+        </div>
+        <div class="service-item" onclick="switchTab('task')">
+          <div class="service-icon-box">📋</div>
+          <div class="service-name">Task</div>
+        </div>
+        <div class="service-item" onclick="openGmailModal()">
+          <div class="service-icon-box">📧</div>
+          <div class="service-name">Gmail Sell</div>
+        </div>
+        <div class="service-item" onclick="openWithdrawModal()">
+          <div class="service-icon-box">💸</div>
+          <div class="service-name">Withdraw</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 10px;">চলমান কাজসমূহ</h3>
+      <div id="homeTaskList"></div>
+    </div>
+
+    <!-- Tab Wallet -->
+    <div id="tabWallet" class="hidden">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 14px;">My Wallet</h3>
+      <div class="asset-card" style="margin-bottom: 16px;">
+        <div class="asset-title">AVAILABLE BALANCE</div>
+        <div class="asset-amount" id="walletTabBal" style="margin-top:6px;">৳0.00</div>
+        <div style="display:flex; gap:10px;">
+          <button onclick="openWithdrawModal()" style="flex:1; padding:10px; background:white; color:var(--primary); border:none; border-radius:8px; font-weight:700;">Withdraw</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Task -->
+    <div id="tabTask" class="hidden">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 14px;">All Tasks</h3>
+      <div id="allTaskList"></div>
+    </div>
+
+    <!-- Tab Services -->
+    <div id="tabServices" class="hidden">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 14px;">Services</h3>
+      <div class="services-grid-box" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="service-item" onclick="openGmailModal()" style="padding:16px; text-align:left; display:flex; align-items:center; gap:12px;">
+          <span style="font-size:28px;">📧</span>
+          <div><div style="font-weight:700; font-size:13px;">Gmail Sell</div><div style="font-size:10px; color:var(--text-muted);">Fixed pass: @SRABON99#&</div></div>
+        </div>
+        <div class="service-item" onclick="openWithdrawModal()" style="padding:16px; text-align:left; display:flex; align-items:center; gap:12px;">
+          <span style="font-size:28px;">💸</span>
+          <div><div style="font-weight:700; font-size:13px;">Withdraw</div><div style="font-size:10px; color:var(--text-muted);">Bkash / Nagad</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Profile -->
+    <div id="tabProfile" class="hidden">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 14px;">Profile</h3>
+      <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:16px;">
+        <p style="margin-bottom:8px;"><b>নাম:</b> <span id="profName">-</span></p>
+        <p style="margin-bottom:12px;"><b>ফোন:</b> <span id="profPhone">-</span></p>
+        <div style="margin-bottom: 14px;">
+          <label style="font-size:12px; font-weight:600;">রেফারেল লিংক:</label>
+          <div style="display:flex; gap:6px; margin-top:4px;">
+            <input type="text" id="profRefLink" readonly style="flex:1; padding:8px; font-size:11px; border:1px solid var(--border); border-radius:6px;">
+            <button onclick="copyRef()" style="padding:8px 12px; background:var(--primary); color:white; border:none; border-radius:6px; font-size:12px;">কপি</button>
+          </div>
+        </div>
+        <button onclick="logout()" style="width:100%; padding:10px; background:var(--danger); color:white; border:none; border-radius:8px; font-weight:700;">লগআউট</button>
       </div>
     </div>
 
   </div>
 
-  <!-- Bottom Navigation -->
-  <nav class="nav-bar hidden" id="bottomNav">
-    <div class="nav-item active" onclick="switchTab('home')">
-      <span class="nav-icon">🏠</span>
-      Home
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav hidden" id="bottomNav">
+    <div class="nav-link active" onclick="switchTab('home')">
+      <span>🏠</span>Home
     </div>
-    <div class="nav-item" onclick="switchTab('wallet')">
-      <span class="nav-icon">👛</span>
-      Wallet
+    <div class="nav-link" onclick="switchTab('wallet')">
+      <span>👛</span>Wallet
     </div>
-    <div class="nav-item" onclick="switchTab('task')">
-      <span class="nav-icon">📋</span>
-      Task
+    <div class="nav-link" onclick="switchTab('task')">
+      <span>📋</span>Task
     </div>
-    <div class="nav-item" onclick="switchTab('services')">
-      <span class="nav-icon">🛠️</span>
-      Services
+    <div class="nav-link" onclick="switchTab('services')">
+      <span>🛠️</span>Services
     </div>
-    <div class="nav-item" onclick="switchTab('profile')">
-      <span class="nav-icon">👤</span>
-      Profile
+    <div class="nav-link" onclick="switchTab('profile')">
+      <span>👤</span>Profile
     </div>
   </nav>
 
 </div>
 
-<!-- Gmail Sell Modal -->
-<div class="modal-overlay" id="gmailModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Gmail Sell Form</div>
-      <span class="close-modal" onclick="closeModal('gmailModal')">&times;</span>
-    </div>
-    <form id="gmailSellForm">
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" id="gmailFirstName" required>
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" id="gmailLastName" required>
-      </div>
-      <div class="form-group">
-        <label>Gmail Username</label>
-        <input type="email" id="gmailUsername" placeholder="example@gmail.com" required>
-      </div>
-      <div class="form-group">
-        <label>Password (Fixed)</label>
-        <input type="text" value="@SRABON99#&" readonly style="background: #f1f5f9; font-weight: 600;">
-      </div>
-      <button type="submit" class="btn">সাবমিট করুন</button>
+<!-- Modals -->
+<div id="gmailModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:200;">
+  <div style="background:white; width:90%; max-width:380px; padding:20px; border-radius:14px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:14px;"><h3 style="font-size:16px;">Gmail Sell Form</h3><span onclick="closeModal('gmailModal')" style="cursor:pointer; font-size:20px;">&times;</span></div>
+    <form id="gmailForm">
+      <div style="margin-bottom:10px;"><label style="font-size:12px;">First Name</label><input type="text" id="gFirst" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
+      <div style="margin-bottom:10px;"><label style="font-size:12px;">Last Name</label><input type="text" id="gLast" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
+      <div style="margin-bottom:10px;"><label style="font-size:12px;">Gmail Username</label><input type="email" id="gEmail" placeholder="example@gmail.com" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
+      <div style="margin-bottom:14px;"><label style="font-size:12px;">Fixed Password</label><input type="text" value="@SRABON99#&" readonly style="width:100%; padding:10px; background:#f1f5f9; border:1px solid var(--border); border-radius:6px; font-weight:700;"></div>
+      <button type="submit" style="width:100%; padding:10px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:700;">সাবমিট করুন</button>
     </form>
   </div>
 </div>
 
-<!-- Task Proof Submit Modal -->
-<div class="modal-overlay" id="taskProofModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Submit Task Proof</div>
-      <span class="close-modal" onclick="closeModal('taskProofModal')">&times;</span>
-    </div>
+<div id="taskModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:200;">
+  <div style="background:white; width:90%; max-width:380px; padding:20px; border-radius:14px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:14px;"><h3 style="font-size:16px;">Submit Task Proof</h3><span onclick="closeModal('taskModal')" style="cursor:pointer; font-size:20px;">&times;</span></div>
     <form id="taskProofForm">
-      <input type="hidden" id="proofTaskId">
-      <div class="form-group">
-        <label>প্রমাণ (স্ক্রিনশট লিংক বা ইউজারনেম)</label>
-        <textarea id="taskProofInput" rows="3" placeholder="এখানে তথ্য লিখুন..." required></textarea>
-      </div>
-      <button type="submit" class="btn btn-success">জমা দিন</button>
+      <input type="hidden" id="modalTaskId">
+      <div style="margin-bottom:14px;"><label style="font-size:12px;">স্ক্রিনশট লিংক বা ইউজারনেম</label><textarea id="taskProofInput" rows="3" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></textarea></div>
+      <button type="submit" style="width:100%; padding:10px; background:var(--success); color:white; border:none; border-radius:6px; font-weight:700;">জমা দিন</button>
     </form>
   </div>
 </div>
-<script>
-  // Global State Initialization via LocalStorage
+
+<div id="withdrawModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:200;">
+  <div style="background:white; width:90%; max-width:380px; padding:20px; border-radius:14px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:14px;"><h3 style="font-size:16px;">টাকা উইথড্র করুন</h3><span onclick="closeModal('withdrawModal')" style="cursor:pointer; font-size:20px;">&times;</span></div>
+    <form id="withdrawForm">
+      <div style="margin-bottom:10px;"><label style="font-size:12px;">পেমেন্ট মেথড</label><select id="wMethod" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"><option value="Bkash">বিকাশ (Bkash)</option><option value="Nagad">নগদ (Nagad)</option></select></div>
+      <div style="margin-bottom:10px;"><label style="font-size:12px;">অ্যাকাউন্ট নম্বর</label><input type="text" id="wAcc" placeholder="017XXXXXXXX" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
+      <div style="margin-bottom:14px;"><label style="font-size:12px;">পরিমাণ (টাকা)</label><input type="number" step="0.01" id="wAmount" placeholder="৫০" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px;"></div>
+      <button type="submit" style="width:100%; padding:10px; background:var(--success); color:white; border:none; border-radius:6px; font-weight:700;">উইথড্র রিকোয়েস্ট পাঠান</button>
+    </form>
+  </div>
+        </div>
+                                    <script>
   let users = JSON.parse(localStorage.getItem('paylix_users')) || [];
   let tasks = JSON.parse(localStorage.getItem('paylix_tasks')) || [
-    { id: 1, title: 'ইউটিউব চ্যানেল সাবস্ক্রাইব', reward: 5.00, desc: 'ইউটিউব চ্যানেলে গিয়ে সাবস্ক্রাইব করে স্ক্রিনশট দিন।' }
+    { id: 1, title: 'ইউটিউব ভিডিও লাইক ও সাবস্ক্রাইব', reward: 5.00, desc: 'চ্যানেলটি সাবস্ক্রাইব করুন এবং ভিডিওতে লাইক দিন।' }
   ];
-  let submissions = JSON.parse(localStorage.getItem('paylix_submissions')) || [];
+  let submissions = JSON.parse(localStorage.getItem('paylix_subs')) || [];
   let currentUser = JSON.parse(localStorage.getItem('paylix_current_user')) || null;
-
   let captchaAns = 0;
 
-  // App Initialization
   window.addEventListener('DOMContentLoaded', () => {
-    checkAdminURL();
-    generateCaptcha();
-    if (currentUser) {
-      showDashboard();
-    }
+    checkAdminRoute();
+    genCaptcha();
+    if (currentUser) showDashboard();
   });
 
   function saveData() {
     localStorage.setItem('paylix_users', JSON.stringify(users));
     localStorage.setItem('paylix_tasks', JSON.stringify(tasks));
-    localStorage.setItem('paylix_submissions', JSON.stringify(submissions));
+    localStorage.setItem('paylix_subs', JSON.stringify(submissions));
     localStorage.setItem('paylix_current_user', JSON.stringify(currentUser));
   }
 
-  // Captcha Generator
-  function generateCaptcha() {
-    const num1 = Math.floor(Math.random() * 9) + 1;
-    const num2 = Math.floor(Math.random() * 9) + 1;
-    captchaAns = num1 + num2;
-    const lbl = document.getElementById('captchaLabel');
-    if(lbl) lbl.innerText = `ম্যাথ ক্যাপচা (${num1} + ${num2} = ?)`;
+  function genCaptcha() {
+    let n1 = Math.floor(Math.random() * 8) + 1;
+    let n2 = Math.floor(Math.random() * 8) + 1;
+    captchaAns = n1 + n2;
+    let lbl = document.getElementById('captchaLabel');
+    if(lbl) lbl.innerText = `ম্যাথ ক্যাপচা (${n1} + ${n2} = ?)`;
   }
 
-  // Auth Toggle
-  function toggleAuth(view) {
-    if (view === 'signup') {
+  function toggleAuth(type) {
+    if(type === 'signup') {
       document.getElementById('loginBox').classList.add('hidden');
       document.getElementById('signupBox').classList.remove('hidden');
-      generateCaptcha();
+      genCaptcha();
     } else {
       document.getElementById('signupBox').classList.add('hidden');
       document.getElementById('loginBox').classList.remove('hidden');
     }
   }
 
-  // Signup Submit
   document.getElementById('signupForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('signupName').value.trim();
-    const phone = document.getElementById('signupPhone').value.trim();
-    const password = document.getElementById('signupPassword').value;
-    const captcha = parseInt(document.getElementById('signupCaptcha').value);
+    let name = document.getElementById('signupName').value.trim();
+    let phone = document.getElementById('signupPhone').value.trim();
+    let password = document.getElementById('signupPassword').value;
+    let cap = parseInt(document.getElementById('signupCaptcha').value);
 
-    if (captcha !== captchaAns) {
-      alert('ভুল ক্যাপচা! আবার চেষ্টা করুন।');
-      generateCaptcha();
-      return;
+    if (cap !== captchaAns) {
+      alert('ভুল ক্যাপচা!'); genCaptcha(); return;
     }
-
     if (users.find(u => u.phone === phone)) {
-      alert('এই নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট তৈরি করা হয়েছে!');
-      return;
+      alert('এই নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে!'); return;
     }
 
-    const newUser = {
-      name,
-      phone,
-      password,
-      balance: 0.00,
-      refBalance: 0.00
-    };
-
+    let newUser = { name, phone, password, balance: 0, refBal: 0 };
     users.push(newUser);
     currentUser = newUser;
     saveData();
@@ -742,20 +604,18 @@
     showDashboard();
   });
 
-  // Login Submit
   document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const phone = document.getElementById('loginPhone').value.trim();
-    const password = document.getElementById('loginPassword').value;
+    let phone = document.getElementById('loginPhone').value.trim();
+    let password = document.getElementById('loginPassword').value;
+    let user = users.find(u => u.phone === phone && u.password === password);
 
-    const user = users.find(u => u.phone === phone && u.password === password);
-
-    if (user) {
+    if(user) {
       currentUser = user;
       saveData();
       showDashboard();
     } else {
-      alert('ভুল ফোন নম্বর অথবা পাসওয়ার্ড!');
+      alert('ভুল ফোন নম্বর বা পাসওয়ার্ড!');
     }
   });
 
@@ -763,295 +623,211 @@
     document.getElementById('authView').classList.add('hidden');
     document.getElementById('adminAuthView').classList.add('hidden');
     document.getElementById('adminDashboardView').classList.add('hidden');
-    
-    document.getElementById('mainHeader').classList.remove('hidden');
     document.getElementById('dashboardView').classList.remove('hidden');
     document.getElementById('bottomNav').classList.remove('hidden');
 
-    document.getElementById('userWelcomeText').innerText = `Welcome, ${currentUser.name}`;
-    document.getElementById('userWelcomeText').classList.remove('hidden');
-
-    updateUserUI();
-    renderUserTasks();
+    document.getElementById('welcomeUserText').innerText = `Welcome, ${currentUser.name} 👋`;
+    updateUI();
+    renderTasks();
   }
 
-  function updateUserUI() {
-    if (!currentUser) return;
-    document.getElementById('userBalance').innerText = `৳${currentUser.balance.toFixed(2)}`;
-    document.getElementById('userRefBalance').innerText = `৳${currentUser.refBalance.toFixed(2)}`;
-    document.getElementById('walletBalance').innerText = `৳${currentUser.balance.toFixed(2)}`;
+  function updateUI() {
+    if(!currentUser) return;
+    let total = currentUser.balance + currentUser.refBal;
+    document.getElementById('totalAssetVal').innerText = `৳${total.toFixed(2)}`;
+    document.getElementById('availBal').innerText = `৳${currentUser.balance.toFixed(2)}`;
+    document.getElementById('walletTabBal').innerText = `৳${currentUser.balance.toFixed(2)}`;
+    document.getElementById('refBal').innerText = `৳${currentUser.refBal.toFixed(2)}`;
 
-    document.getElementById('profileName').innerText = currentUser.name;
-    document.getElementById('profilePhone').innerText = currentUser.phone;
-
-    const currentDomain = window.location.origin + window.location.pathname;
-    document.getElementById('refLinkInput').value = `${currentDomain}?ref=${currentUser.phone}`;
+    document.getElementById('profName').innerText = currentUser.name;
+    document.getElementById('profPhone').innerText = currentUser.phone;
+    let domain = window.location.origin + window.location.pathname;
+    document.getElementById('profRefLink').value = `${domain}?ref=${currentUser.phone}`;
   }
 
-  function renderUserTasks() {
-    const list1 = document.getElementById('userTaskList');
-    const list2 = document.getElementById('userTaskListTab');
-
+  function renderTasks() {
     let html = '';
-    if (tasks.length === 0) {
-      html = '<p style="font-size: 13px; color: var(--text-muted);">বর্তমানে কোনো কাজ খালি নেই।</p>';
+    if(tasks.length === 0) {
+      html = '<p style="font-size:12px; color:var(--text-muted);">বর্তমানে কোনো কাজ নেই।</p>';
     } else {
       tasks.forEach(t => {
         html += `
-          <div class="task-card">
-            <div class="task-header">
-              <span class="task-title">${t.title}</span>
-              <span class="task-reward">৳${parseFloat(t.reward).toFixed(2)}</span>
-            </div>
-            <p class="task-desc">${t.desc}</p>
-            <button class="btn btn-sm btn-success" onclick="openTaskProofModal(${t.id})">Submit Proof</button>
+          <div style="background:white; border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><b style="font-size:13px;">${t.title}</b><span style="color:var(--success); font-weight:700;">৳${t.reward.toFixed(2)}</span></div>
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">${t.desc}</p>
+            <button onclick="openTaskModal(${t.id})" style="padding:6px 12px; background:var(--success); color:white; border:none; border-radius:6px; font-size:11px; font-weight:700;">Submit Proof</button>
           </div>
         `;
       });
     }
-
-    if (list1) list1.innerHTML = html;
-    if (list2) list2.innerHTML = html;
+    document.getElementById('homeTaskList').innerHTML = html;
+    document.getElementById('allTaskList').innerHTML = html;
   }
 
-  function switchTab(tab) {
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    
-    ['tabHome', 'tabWallet', 'tabTask', 'tabServices', 'tabProfile'].forEach(id => {
-      document.getElementById(id).classList.add('hidden');
-    });
+  function switchTab(tabName) {
+    document.querySelectorAll('.bottom-nav .nav-link').forEach(el => el.classList.remove('active'));
+    ['tabHome', 'tabWallet', 'tabTask', 'tabServices', 'tabProfile'].forEach(id => document.getElementById(id).classList.add('hidden'));
 
-    if (tab === 'home') {
+    if(tabName === 'home') {
       document.getElementById('tabHome').classList.remove('hidden');
       event.currentTarget.classList.add('active');
-    } else if (tab === 'wallet') {
+    } else if(tabName === 'wallet') {
       document.getElementById('tabWallet').classList.remove('hidden');
-      if (event) event.currentTarget.classList.add('active');
-    } else if (tab === 'task') {
+      event.currentTarget.classList.add('active');
+    } else if(tabName === 'task') {
       document.getElementById('tabTask').classList.remove('hidden');
-      if (event) event.currentTarget.classList.add('active');
-    } else if (tab === 'services') {
+      event.currentTarget.classList.add('active');
+    } else if(tabName === 'services') {
       document.getElementById('tabServices').classList.remove('hidden');
-      if (event) event.currentTarget.classList.add('active');
-    } else if (tab === 'profile') {
+      event.currentTarget.classList.add('active');
+    } else if(tabName === 'profile') {
       document.getElementById('tabProfile').classList.remove('hidden');
-      if (event) event.currentTarget.classList.add('active');
+      event.currentTarget.classList.add('active');
     }
   }
 
-  // Modals Controller
-  function openGmailModal() {
-    if (!currentUser) return alert('দয়া করে আগে লগইন করুন!');
-    document.getElementById('gmailModal').style.display = 'flex';
+  function openGmailModal() { document.getElementById('gmailModal').style.display = 'flex'; }
+  function openWithdrawModal() { document.getElementById('withdrawModal').style.display = 'flex'; }
+  function openTaskModal(id) {
+    document.getElementById('modalTaskId').value = id;
+    document.getElementById('taskModal').style.display = 'flex';
   }
+  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-  function openTaskProofModal(taskId) {
-    if (!currentUser) return alert('দয়া করে আগে লগইন করুন!');
-    document.getElementById('proofTaskId').value = taskId;
-    document.getElementById('taskProofModal').style.display = 'flex';
-  }
-
-  function closeModal(id) {
-    document.getElementById(id).style.display = 'none';
-  }
-
-  // Submit Gmail Sell Form
-  document.getElementById('gmailSellForm').addEventListener('submit', (e) => {
+  document.getElementById('gmailForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const fn = document.getElementById('gmailFirstName').value;
-    const ln = document.getElementById('gmailLastName').value;
-    const email = document.getElementById('gmailUsername').value;
+    let fn = document.getElementById('gFirst').value;
+    let ln = document.getElementById('gLast').value;
+    let em = document.getElementById('gEmail').value;
 
-    const sub = {
-      id: Date.now(),
-      type: 'Gmail Sell',
-      user: currentUser.phone,
-      details: `Name: ${fn} ${ln}, Email: ${email}, Pass: @SRABON99#&`,
-      status: 'Pending'
-    };
-
-    submissions.push(sub);
-    saveData();
-    closeModal('gmailModal');
-    alert('আপনার জিমেইল সফলভাবে জমা দেওয়া হয়েছে! রিভিউ শেষে ব্যালেন্স যোগ হবে।');
+    submissions.push({ id: Date.now(), type: 'Gmail Sell', user: currentUser.phone, details: `${fn} ${ln} (${em})`, status: 'Pending' });
+    saveData(); closeModal('gmailModal'); alert('জিমেইল সফলভাবে জমা হয়েছে!');
     e.target.reset();
   });
 
-  // Submit Task Proof Form
   document.getElementById('taskProofForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const taskId = document.getElementById('proofTaskId').value;
-    const proofText = document.getElementById('taskProofInput').value;
-    const task = tasks.find(t => t.id == taskId);
+    let tId = document.getElementById('modalTaskId').value;
+    let proof = document.getElementById('taskProofInput').value;
+    let tObj = tasks.find(x => x.id == tId);
 
-    const sub = {
-      id: Date.now(),
-      type: 'Task Proof',
-      user: currentUser.phone,
-      details: `Task: ${task ? task.title : 'Task'}, Proof: ${proofText}`,
-      reward: task ? task.reward : 0,
-      status: 'Pending'
-    };
-
-    submissions.push(sub);
-    saveData();
-    closeModal('taskProofModal');
-    alert('কাজের প্রমাণ জমা দেওয়া হয়েছে!');
+    submissions.push({ id: Date.now(), type: 'Task Proof', user: currentUser.phone, details: `Task: ${tObj ? tObj.title : ''}, Proof: ${proof}`, reward: tObj ? tObj.reward : 0, status: 'Pending' });
+    saveData(); closeModal('taskModal'); alert('কাজের প্রমাণ জমা দেওয়া হয়েছে!');
     e.target.reset();
   });
 
-  function copyRefLink() {
-    const input = document.getElementById('refLinkInput');
-    input.select();
-    document.execCommand('copy');
-    alert('রেফারেল লিংক কপি করা হয়েছে!');
+  document.getElementById('withdrawForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    let meth = document.getElementById('wMethod').value;
+    let acc = document.getElementById('wAcc').value;
+    let amt = parseFloat(document.getElementById('wAmount').value);
+
+    if(currentUser.balance < amt) { alert('পর্যাপ্ত ব্যালেন্স নেই!'); return; }
+    currentUser.balance -= amt;
+    let idx = users.findIndex(u => u.phone === currentUser.phone);
+    if(idx !== -1) users[idx].balance = currentUser.balance;
+
+    submissions.push({ id: Date.now(), type: 'Withdraw', user: currentUser.phone, details: `${meth}: ${acc}, Amt: ৳${amt}`, amount: amt, status: 'Pending' });
+    saveData(); closeModal('withdrawModal'); updateUI(); alert('উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!');
+    e.target.reset();
+  });
+
+  function copyRef() {
+    let inp = document.getElementById('profRefLink');
+    inp.select(); document.execCommand('copy'); alert('রেফারেল লিংক কপি হয়েছে!');
   }
 
   function logout() {
-    currentUser = null;
-    localStorage.removeItem('paylix_current_user');
-    location.reload();
+    currentUser = null; localStorage.removeItem('paylix_current_user'); location.reload();
   }
 
-  /* ---------------- ADMIN ROUTE & SYSTEM ---------------- */
-  function checkAdminURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('admin') === 'true') {
+  // Admin routing
+  function checkAdminRoute() {
+    let p = new URLSearchParams(window.location.search);
+    if(p.get('admin') === 'true') {
       document.getElementById('authView').classList.add('hidden');
-      document.getElementById('dashboardView').classList.add('hidden');
-      document.getElementById('bottomNav').classList.add('hidden');
       document.getElementById('adminAuthView').classList.remove('hidden');
     }
   }
 
   document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const u = document.getElementById('adminUsername').value;
-    const p = document.getElementById('adminPassword').value;
-
-    if (u === 'admin' && p === 'admin123') {
+    if(document.getElementById('adminUsername').value === 'admin' && document.getElementById('adminPassword').value === 'admin123') {
       document.getElementById('adminAuthView').classList.add('hidden');
       document.getElementById('adminDashboardView').classList.remove('hidden');
-      renderAdminSubmissions();
-      renderAdminTasks();
-    } else {
-      alert('ভুল অ্যাডমিন ইউজারনেম বা পাসওয়ার্ড!');
-    }
+      renderAdminSubs(); renderAdminTasks();
+    } else { alert('ভুল অ্যাডমিন তথ্য!'); }
   });
 
-  function switchAdminTab(tab) {
-    const btns = document.querySelectorAll('.admin-tabs .tab-btn');
-    btns.forEach(b => b.classList.remove('active'));
-
-    if (tab === 'submissions') {
-      btns[0].classList.add('active');
-      document.getElementById('adminSubmissionsTab').classList.remove('hidden');
-      document.getElementById('adminTasksTab').classList.add('hidden');
-    } else {
-      btns[1].classList.add('active');
-      document.getElementById('adminSubmissionsTab').classList.add('hidden');
-      document.getElementById('adminTasksTab').classList.remove('hidden');
-    }
-  }
-
-  function renderAdminSubmissions() {
-    const tbody = document.getElementById('submissionsTableBody');
-    tbody.innerHTML = '';
-
-    if (submissions.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">কোনো Submissions নেই।</td></tr>';
+  function renderAdminSubs() {
+    let tb = document.getElementById('adminSubTableBody');
+    tb.innerHTML = '';
+    if(submissions.length === 0) {
+      tb.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:10px;">কোনো সাবমিশন নেই।</td></tr>';
       return;
     }
-
     submissions.forEach(s => {
-      const tr = document.createElement('tr');
-      let statusClass = 'status-pending';
-      if(s.status === 'Approved') statusClass = 'status-approved';
-      if(s.status === 'Rejected') statusClass = 'status-rejected';
-
-      tr.innerHTML = `
-        <td>${s.type}</td>
-        <td>${s.user}</td>
-        <td style="max-width:140px; word-break:break-all;">${s.details}</td>
-        <td><span class="status-badge ${statusClass}">${s.status}</span></td>
-        <td>
-          ${s.status === 'Pending' ? `
-            <button class="btn btn-sm btn-success" onclick="updateSubmissionStatus(${s.id}, 'Approved')">✓</button>
-            <button class="btn btn-sm btn-danger" onclick="updateSubmissionStatus(${s.id}, 'Rejected')">✕</button>
-          ` : '-'}
-        </td>
+      tb.innerHTML += `
+        <tr>
+          <td style="padding:6px; border:1px solid #ccc;">${s.type}</td>
+          <td style="padding:6px; border:1px solid #ccc;">${s.user}</td>
+          <td style="padding:6px; border:1px solid #ccc; word-break:break-all;">${s.details}</td>
+          <td style="padding:6px; border:1px solid #ccc;">
+            ${s.status === 'Pending' ? `<button onclick="approveSub(${s.id})" style="background:var(--success); color:white; border:none; padding:2px 6px; border-radius:4px;">✓</button> <button onclick="rejectSub(${s.id})" style="background:var(--danger); color:white; border:none; padding:2px 6px; border-radius:4px;">✕</button>` : s.status}
+          </td>
+        </tr>
       `;
-      tbody.appendChild(tr);
     });
   }
 
-  function updateSubmissionStatus(id, status) {
-    const sub = submissions.find(s => s.id === id);
-    if (!sub) return;
-
-    sub.status = status;
-
-    // If approved and it has a reward, add balance to user
-    if (status === 'Approved' && sub.reward) {
-      const u = users.find(user => user.phone === sub.user);
-      if (u) {
-        u.balance += parseFloat(sub.reward);
-        if (currentUser && currentUser.phone === u.phone) {
-          currentUser.balance = u.balance;
-        }
-      }
+  function approveSub(id) {
+    let sub = submissions.find(x => x.id === id);
+    if(!sub) return;
+    sub.status = 'Approved';
+    if(sub.reward) {
+      let u = users.find(x => x.phone === sub.user);
+      if(u) u.balance += sub.reward;
     }
+    saveData(); renderAdminSubs(); updateUI();
+  }
 
-    saveData();
-    renderAdminSubmissions();
-    if (currentUser) updateUserUI();
+  function rejectSub(id) {
+    let sub = submissions.find(x => x.id === id);
+    if(!sub) return;
+    sub.status = 'Rejected';
+    if(sub.type === 'Withdraw') {
+      let u = users.find(x => x.phone === sub.user);
+      if(u) { u.balance += sub.amount; if(currentUser && currentUser.phone === u.phone) currentUser.balance = u.balance; }
+    }
+    saveData(); renderAdminSubs(); updateUI();
   }
 
   function renderAdminTasks() {
-    const list = document.getElementById('adminTaskList');
+    let list = document.getElementById('adminTaskListContainer');
     list.innerHTML = '';
-
     tasks.forEach(t => {
-      const card = document.createElement('div');
-      card.className = 'task-card';
-      card.innerHTML = `
-        <div class="task-header">
-          <span class="task-title">${t.title}</span>
-          <span class="task-reward">৳${parseFloat(t.reward).toFixed(2)}</span>
+      list.innerHTML += `
+        <div style="background:#f8fafc; border:1px solid var(--border); padding:8px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px;"><b>${t.title}</b> (৳${t.reward})</span>
+          <button onclick="delTask(${t.id})" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:4px; font-size:10px;">ডিলিট</button>
         </div>
-        <p class="task-desc">${t.desc}</p>
-        <button class="btn btn-sm btn-danger" onclick="deleteTask(${t.id})">ডিলিট করুন</button>
       `;
-      list.appendChild(card);
     });
   }
 
-  document.getElementById('createTaskForm').addEventListener('submit', (e) => {
+  document.getElementById('adminTaskForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const title = document.getElementById('taskTitleInput').value;
-    const reward = parseFloat(document.getElementById('taskRewardInput').value);
-    const desc = document.getElementById('taskDescInput').value;
+    let title = document.getElementById('admTaskTitle').value;
+    let reward = parseFloat(document.getElementById('admTaskReward').value);
+    let desc = document.getElementById('admTaskDesc').value;
 
-    const newTask = {
-      id: Date.now(),
-      title,
-      reward,
-      desc
-    };
-
-    tasks.push(newTask);
-    saveData();
-    renderAdminTasks();
-    renderUserTasks();
-    e.target.reset();
-    alert('কাজ পোস্ট করা হয়েছে!');
+    tasks.push({ id: Date.now(), title, reward, desc });
+    saveData(); renderAdminTasks(); renderTasks(); e.target.reset(); alert('কাজ যোগ হয়েছে!');
   });
 
-  function deleteTask(id) {
-    tasks = tasks.filter(t => t.id !== id);
-    saveData();
-    renderAdminTasks();
-    renderUserTasks();
+  function delTask(id) {
+    tasks = tasks.filter(x => x.id !== id);
+    saveData(); renderAdminTasks(); renderTasks();
   }
 </script>
 
