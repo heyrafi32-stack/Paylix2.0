@@ -9,12 +9,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
     body { background: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
     .app { width: 100%; max-width: 480px; background: var(--card); min-height: 100vh; position: relative; padding-bottom: 70px; }
-    .header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 18px; font-weight: 700; background: var(--card); position: sticky; top: 0; z-index: 10; }
+    .header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 18px; font-weight: 700; background: var(--card); position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; }
     .box { padding: 16px; }
     .card { background: linear-gradient(135deg, #064e3b, #059669); color: white; padding: 18px; border-radius: 12px; margin-bottom: 14px; }
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
     .item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px; cursor: pointer; }
-    .task-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+    .table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+    .table th, .table td { border: 1px solid var(--border); padding: 6px; text-align: left; }
+    .table th { background: #f1f5f9; }
     .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 60px; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
     .nav-btn { text-align: center; font-size: 11px; cursor: pointer; color: #64748b; flex: 1; }
     .nav-btn.active { color: var(--primary); font-weight: 700; }
@@ -23,7 +25,10 @@
 </head>
 <body>
   <div class="app">
-  <div class="header">Paylix - পেলিক্স</div>
+  <div class="header">
+    <span>Paylix - পেলিক্স</span>
+    <span id="adminNavBtn" class="hidden" onclick="showAdminPanel()" style="font-size:12px; background:var(--danger); color:white; padding:4px 8px; border-radius:4px; cursor:pointer;">Admin Panel</span>
+  </div>
 
   <!-- Auth View -->
   <div id="authView" class="box">
@@ -58,7 +63,7 @@
       <div style="font-size:24px; font-weight:700; margin-top:4px;" id="tBal">৳0.00</div>
     </div>
 
-    <h3 style="font-size:14px; margin-bottom:10px;">সার্ভিস ও রেট</h3>
+    <h3 style="font-size:14px; margin-bottom:10px;">সার্ভিস ও রেট (পেন্ডিং সিস্টেম চালিত)</h3>
     <div class="grid">
       <div class="item" onclick="openModal('Gmail', 10)"><b>📧 Gmail Sell</b><br><span style="font-size:11px; color:var(--success);">রেট: ১০ টাকা</span></div>
       <div class="item" onclick="openModal('Facebook', 1)"><b>📘 Facebook Sell</b><br><span style="font-size:11px; color:var(--success);">রেট: ১ টাকা</span></div>
@@ -67,10 +72,21 @@
     </div>
   </div>
 
-  <!-- Task Tab View -->
-  <div id="taskView" class="box hidden">
-    <h3 style="font-size:16px; margin-bottom:12px;">মাইক্রো টাস্ক (Task List)</h3>
-    <div id="taskListContainer"></div>
+  <!-- Admin Panel View -->
+  <div id="adminView" class="box hidden">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="font-size:16px; color:var(--danger);">অ্যাডমিন কন্ট্রোল প্যানেল</h3>
+      <button onclick="exitAdmin()" style="padding:4px 8px; background:#64748b; color:white; border:none; border-radius:4px; font-size:11px;">ইউজার মোড</button>
+    </div>
+    <p style="font-size:12px; color:#64748b; margin-bottom:8px;">ইউজারদের সাবমিশন চেক করুন:</p>
+    <div style="overflow-x:auto;">
+      <table class="table">
+        <thead>
+          <tr><th>টাইপ</th><th>ইউজার</th><th>ডিটেইলস</th><th>অ্যাকশন</th></tr>
+        </thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Profile View -->
@@ -89,7 +105,6 @@
   <!-- Navigation -->
   <div class="nav hidden" id="navBar">
     <div class="nav-btn active" onclick="switchTab('home', event)">🏠<br>Home</div>
-    <div class="nav-btn" onclick="switchTab('task', event)">📋<br>Task</div>
     <div class="nav-btn" onclick="switchTab('profile', event)">👤<br>Profile</div>
   </div>
   </div>
@@ -98,21 +113,19 @@
   <div style="background:white; width:90%; max-width:350px; padding:18px; border-radius:12px;">
     <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><b id="mTitle">Sell</b><span onclick="closeModal()" style="cursor:pointer; font-size:18px;">&times;</span></div>
     <form id="sellForm">
+      <input type="hidden" id="mType">
       <input type="hidden" id="mRate">
       <div style="margin-bottom:8px;"><label style="font-size:11px;">ইউজারনেম / ইমেইল</label><input type="text" id="mAcc" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
       <div style="margin-bottom:12px;"><label style="font-size:11px;">পাসওয়ার্ড</label><input type="text" id="mPass" required style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px;"></div>
-      <button type="submit" style="width:100%; padding:9px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:700;">সাবমিট</button>
+      <button type="submit" style="width:100%; padding:9px; background:var(--primary); color:white; border:none; border-radius:6px; font-weight:700;">সাবমিট করুন (Pending)</button>
     </form>
   </div>
 </div>
 
 <script>
   let users = JSON.parse(localStorage.getItem('p_users')) || [];
+  let subs = JSON.parse(localStorage.getItem('p_subs')) || [];
   let user = JSON.parse(localStorage.getItem('p_cur')) || null;
-  let tasks = [
-    { id: 1, title: 'ইউটিউব ভিডিও লাইক ও সাবস্ক্রাইব করুন', reward: 2.00, desc: 'লিংকে গিয়ে ভিডিওটি সম্পূর্ণ দেখে লাইক ও সাবস্ক্রাইব করুন।' },
-    { id: 2, title: 'ফেসবুক পেজ ফলো করুন', reward: 1.50, desc: 'আমাদের নির্দিষ্ট ফেসবুক পেজে গিয়ে ফলো করুন।' }
-  ];
   let cAns = 0;
 
   window.onload = () => { genCap(); if(user) showDash(); }
@@ -143,69 +156,76 @@
     
     let u = { name, phone, pass, bal: 0 };
     users.push(u); user = u;
-    localStorage.setItem('p_users', JSON.stringify(users));
-    localStorage.setItem('p_cur', JSON.stringify(user));
-    showDash();
+    saveData(); showDash();
   });
 
   document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
     let phone = document.getElementById('lPhone').value, pass = document.getElementById('lPass').value;
+    
+    // Admin shortcut login if phone is 'admin' and pass is 'admin123'
+    if(phone === 'admin' && pass === 'admin123') {
+      document.getElementById('authView').classList.add('hidden');
+      document.getElementById('adminView').classList.remove('hidden');
+      document.getElementById('navBar').classList.add('hidden');
+      renderAdminTable();
+      return;
+    }
+
     let found = users.find(u => u.phone === phone && u.pass === pass);
     if(found) {
       user = found;
       localStorage.setItem('p_cur', JSON.stringify(user));
       showDash();
-    } else { alert('ভুল ফোন বা পাসওয়ার্ড!'); }
+    } else { alert('ভুল ফোন বা পাসওয়ার্ড! (অ্যাডমিনের জন্য ফোন: admin, পাস: admin123)'); }
   });
+
+  function saveData() {
+    localStorage.setItem('p_users', JSON.stringify(users));
+    localStorage.setItem('p_subs', JSON.stringify(subs));
+    if(user) localStorage.setItem('p_cur', JSON.stringify(user));
+  }
 
   function showDash() {
     document.getElementById('authView').classList.add('hidden');
     document.getElementById('dashView').classList.remove('hidden');
     document.getElementById('navBar').classList.remove('hidden');
+    document.getElementById('adminNavBtn').classList.remove('hidden');
     document.getElementById('wName').innerText = `Welcome, ${user.name} 👋`;
     document.getElementById('tBal').innerText = `৳${user.bal.toFixed(2)}`;
     document.getElementById('pName').innerText = user.name;
     document.getElementById('pPhone').innerText = user.phone;
-    renderTasks();
-  }
-
-  function renderTasks() {
-    let html = '';
-    tasks.forEach(t => {
-      html += `<div class="task-card">
-        <div style="display:flex; justify-content:space-between;"><b style="font-size:12px;">${t.title}</b><span style="color:var(--success); font-weight:700;">৳${t.reward.toFixed(2)}</span></div>
-        <p style="font-size:11px; color:#64748b; margin:4px 0 8px;">${t.desc}</p>
-        <button onclick="completeTask(${t.reward})" style="padding:4px 10px; background:var(--success); color:white; border:none; border-radius:4px; font-size:11px;">কাজ জমা দিন</button>
-      </div>`;
-    });
-    document.getElementById('taskListContainer').innerHTML = html;
-  }
-
-  function completeTask(reward) {
-    user.bal += reward;
-    let idx = users.findIndex(u => u.phone === user.phone);
-    if(idx !== -1) users[idx].bal = user.bal;
-    localStorage.setItem('p_users', JSON.stringify(users));
-    localStorage.setItem('p_cur', JSON.stringify(user));
-    showDash();
-    alert(`টাস্ক সম্পন্ন হয়েছে! অ্যাকাউন্টে ৳${reward} যোগ হয়েছে।`);
   }
 
   function switchTab(t, e) {
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('dashView').classList.add('hidden');
-    document.getElementById('taskView').classList.add('hidden');
     document.getElementById('profView').classList.add('hidden');
+    document.getElementById('adminView').classList.add('hidden');
 
     if(t === 'home') document.getElementById('dashView').classList.remove('hidden');
-    if(t === 'task') document.getElementById('taskView').classList.remove('hidden');
     if(t === 'profile') document.getElementById('profView').classList.remove('hidden');
     if(e && e.currentTarget) e.currentTarget.classList.add('active');
   }
 
+  function showAdminPanel() {
+    document.getElementById('dashView').classList.add('hidden');
+    document.getElementById('profView').classList.add('hidden');
+    document.getElementById('authView').classList.add('hidden');
+    document.getElementById('navBar').classList.add('hidden');
+    document.getElementById('adminView').classList.remove('hidden');
+    renderAdminTable();
+  }
+
+  function exitAdmin() {
+    document.getElementById('adminView').classList.add('hidden');
+    if(user) showDash();
+    else location.reload();
+  }
+
   function openModal(type, rate) {
     document.getElementById('mTitle').innerText = `${type} Sell (রেট: ৳${rate})`;
+    document.getElementById('mType').value = type;
     document.getElementById('mRate').value = rate;
     document.getElementById('sellModal').style.display = 'flex';
   }
@@ -213,18 +233,73 @@
 
   document.getElementById('sellForm').addEventListener('submit', (e) => {
     e.preventDefault();
+    let type = document.getElementById('mType').value;
     let rate = parseFloat(document.getElementById('mRate').value);
-    user.bal += rate;
-    let idx = users.findIndex(u => u.phone === user.phone);
-    if(idx !== -1) users[idx].bal = user.bal;
-    
-    localStorage.setItem('p_users', JSON.stringify(users));
-    localStorage.setItem('p_cur', JSON.stringify(user));
+    let acc = document.getElementById('mAcc').value;
+    let pass = document.getElementById('mPass').value;
+
+    subs.push({
+      id: Date.now(),
+      phone: user.phone,
+      type: type,
+      details: `Acc: ${acc}, Pass: ${pass}`,
+      rate: rate,
+      status: 'Pending'
+    });
+
+    saveData();
     closeModal();
-    showDash();
-    alert(`সফল! আপনার অ্যাকাউন্টে ৳${rate} যোগ হয়েছে।`);
+    alert('সফলভাবে জমা হয়েছে! স্ট্যাটাস এখন Pending আছে। অ্যাডমিন চেক করে এপ্রুভ করলে আপনার ব্যালেন্সে টাকা যোগ হবে।');
     e.target.reset();
   });
+
+  function renderAdminTable() {
+    let tb = document.getElementById('adminTableBody');
+    tb.innerHTML = '';
+    if(subs.length === 0) {
+      tb.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:10px;">কোনো সাবমিশন নেই।</td></tr>';
+      return;
+    }
+    subs.forEach(s => {
+      let actionBtn = s.status === 'Pending' ? 
+        `<button onclick="approveSub(${s.id})" style="background:var(--success); color:white; border:none; padding:3px 6px; border-radius:3px; font-size:10px;">Approve</button> <button onclick="rejectSub(${s.id})" style="background:var(--danger); color:white; border:none; padding:3px 6px; border-radius:3px; font-size:10px;">Reject</button>` : 
+        `<b>${s.status}</b>`;
+
+      tb.innerHTML += `<tr>
+        <td>${s.type}</td>
+        <td>${s.phone}</td>
+        <td>${s.details} (৳${s.rate})</td>
+        <td>${actionBtn}</td>
+      </tr>`;
+    });
+  }
+
+  function approveSub(id) {
+    let s = subs.find(x => x.id === id);
+    if(!s || s.status !== 'Pending') return;
+
+    s.status = 'Approved';
+    let targetUser = users.find(u => u.phone === s.phone);
+    if(targetUser) {
+      targetUser.bal += s.rate;
+      if(user && user.phone === targetUser.phone) {
+        user.bal = targetUser.bal;
+        showDash();
+      }
+    }
+    saveData();
+    renderAdminTable();
+    alert('সাবমিশন এপ্রুভ করা হয়েছে এবং ইউজারের অ্যাকাউন্টে টাকা যোগ হয়েছে!');
+  }
+
+  function rejectSub(id) {
+    let s = subs.find(x => x.id === id);
+    if(!s) return;
+    s.status = 'Rejected';
+    saveData();
+    renderAdminTable();
+    alert('সাবমিশন রিজেক্ট করা হয়েছে।');
+  }
 
   function logout() {
     localStorage.removeItem('p_cur');
