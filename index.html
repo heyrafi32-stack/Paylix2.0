@@ -1,446 +1,425 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paylix 2.0 - Microjob & Earning Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pelix 2.0</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f2fa;color:#19152d;font-family:Arial,sans-serif}
+header{background:#17112f;color:white;padding:17px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.logo{font-size:24px;font-weight:bold;color:#bb91ff}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:11px 14px;cursor:pointer}
+nav button{background:#302653;color:white}
+.primary{background:#7028ed;color:white}
+.danger{background:#ffe5e5;color:#c22}
+.container{max-width:1100px;margin:auto;padding:16px}
+.page{display:none}
+.page.active{display:block}
+.form{max-width:480px;margin:25px auto;background:white;padding:23px;border-radius:15px;box-shadow:0 3px 15px #0001}
+input,select,textarea{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px}
+label{font-weight:bold}
+.hero{background:linear-gradient(120deg,#17112f,#6928d9);color:white;padding:35px 20px;border-radius:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
+.card{background:white;padding:18px;border-radius:12px;box-shadow:0 3px 12px #0001}
+.card h2{color:#7028ed}
+.tag{background:#eee5ff;color:#7028ed;padding:5px 9px;border-radius:15px}
+.notice{background:#fff0df;padding:14px;border-radius:10px;margin:15px 0}
+.captcha{background:#eee9ff;padding:13px;border-radius:8px;margin-bottom:12px}
+.hidden{display:none}
+footer{text-align:center;background:#17112f;color:white;padding:22px;margin-top:35px}
+</style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased pb-20">
+<body>
 
-    <!-- Top Header -->
-    <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center">
-        <h1 class="text-xl font-bold tracking-wide">Paylix 2.0</h1>
-        <div class="flex items-center gap-2">
-            <div class="flex items-center gap-1 bg-blue-700 px-2.5 py-1.5 rounded-full text-xs font-semibold shadow-inner">
-                <i class="fa-solid fa-wallet text-yellow-300"></i>
-                <span>৳ <span id="user-balance">0.00</span></span>
-            </div>
-            <button onclick="switchTab('tab-deposit')" class="bg-yellow-400 text-gray-900 px-2.5 py-1.5 rounded-full text-xs font-bold shadow hover:bg-yellow-50 transition">ডিপোজিট</button>
-            <button onclick="openAuthModal()" class="bg-white text-blue-600 px-2.5 py-1.5 rounded-full text-xs font-bold shadow">একাউন্ট</button>
-        </div>
-    </header>
+<header>
+<div class="logo">PELIX 2.0</div>
+<nav id="mainNav" class="hidden">
+<button onclick="page('home')">Home</button>
+<button onclick="page('jobs')">Jobs</button>
+<button onclick="page('post')">Post Job</button>
+<button onclick="page('dashboard')">Dashboard</button>
+<button onclick="page('account')">Account</button>
+<button onclick="logout()">Logout</button>
+</nav>
+</header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-md mx-auto p-4 space-y-4">
-        
-        <!-- Tab: Tasks / Home -->
-        <section id="tab-tasks" class="space-y-4">
-            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-5 rounded-2xl shadow-lg flex justify-between items-center">
-                <div>
-                    <h2 class="text-lg font-bold">মাইক্রো-জব মার্কেটপ্লেস</h2>
-                    <p class="text-xs text-blue-100 mt-1">টাকা ডিপোজিট করে কাজ পোস্ট করুন অথবা কাজ করে আয় করুন।</p>
-                </div>
-                <button onclick="switchTab('tab-post')" class="bg-white text-blue-600 px-3 py-2 rounded-xl text-xs font-bold shadow hover:bg-blue-50 transition whitespace-nowrap">
-                    <i class="fa-solid fa-plus"></i> কাজ পোস্ট
-                </button>
-            </div>
+<div class="container">
 
-            <div class="flex justify-between items-center mt-4">
-                <h3 class="font-bold text-gray-700 text-md">সকল উপলব্ধ কাজ (Available Tasks)</h3>
-                <span class="text-xs text-gray-500" id="task-count">০ টি কাজ</span>
-            </div>
-            
-            <!-- Dynamic Task List Container -->
-            <div id="tasks-container" class="space-y-3">
-                <!-- Tasks will load here dynamically -->
-            </div>
-        </section>
+<!-- AUTH -->
+<section id="auth" class="page active">
 
-        <!-- Tab: Deposit / Add Money (বিকাশ/নগদে টাকা অ্যাড করার প্যানেল) -->
-        <section id="tab-deposit" class="space-y-4 hidden">
-            <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-3">
-                <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-money-bill-transfer text-green-600"></i> ব্যালেন্স রিচার্জ / ডিপোজিট
-                </h3>
-                <p class="text-xs text-gray-500">বিজ্ঞাপন বা কাজ পোস্ট করার জন্য প্রথমে আপনার অ্যাকাউন্টে টাকা যোগ করুন।</p>
-                
-                <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl text-xs space-y-1 text-blue-900">
-                    <p class="font-bold">🎯 আমাদের মার্চেন্ট/পার্সোনাল নম্বর:</p>
-                    <p class="text-sm font-extrabold text-blue-700">বিকাশ/নগদ: 01710127317 (Personal)</p>
-                    <p class="text-[11px] text-gray-600">প্রথমে সেন্ড মানি করে নিচের বক্সে আপনার নম্বর ও ট্রানজাকশন আইডি দিন।</p>
-                </div>
+<div class="form" id="registerBox">
+<h2>Create New Account</h2>
 
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">যে মাধ্যম থেকে পাঠিয়েছেন</label>
-                        <select id="dep-method" class="w-full border rounded-lg px-3 py-2 text-sm mt-1 bg-white">
-                            <option value="bkash">bKash</option>
-                            <option value="nagad">Nagad</option>
-                            <option value="upay">Upay</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">আপনার প্রেরক নম্বর (Sender Number)</label>
-                        <input type="text" id="dep-sender" placeholder="01XXXXXXXXX" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">টাকার পরিমাণ (৳)</label>
-                        <input type="number" id="dep-amount" placeholder="100" min="10" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">ট্রানজাকশন আইডি (TrxID)</label>
-                        <input type="text" id="dep-trx" placeholder="TrxID লিখুন" class="w-full border rounded-lg px-3 py-2 text-sm mt-1 uppercase">
-                    </div>
-                    <button onclick="requestDeposit()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition">ডিপোজিট অনুরোধ পাঠান</button>
-                </div>
-            </div>
-        </section>
+<label>Your Name</label>
+<input id="regName" placeholder="Enter your name">
 
-        <!-- Tab: Post New Task (কাজ পোস্ট করার পেজ - ব্যালেন্স কাটবে) -->
-        <section id="tab-post" class="space-y-4 hidden">
-            <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-3">
-                <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-blue-600"></i> নতুন মাইক্রো-টাস্ক পোস্ট করুন
-                </h3>
-                <p class="text-xs text-gray-500">কাজ পোস্ট করলে আপনার ব্যালেন্স থেকে কাজের বাজেট কেটে নেওয়া হবে।</p>
-                
-                <form onsubmit="handlePostTask(event)" class="space-y-3 mt-2">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">কাজের শিরোনাম (Task Title)</label>
-                        <input type="text" id="post-title" placeholder="যেমন: YouTube Video Watch & Subscribe" required class="w-full border rounded-lg px-3 py-2 text-sm mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">কাজের বিবরণ ও নির্দেশিকা (Instructions)</label>
-                        <textarea id="post-desc" placeholder="ভিডিও পুরোপুরি দেখে সাবস্ক্রাইব করুন..." rows="2" required class="w-full border rounded-lg px-3 py-2 text-sm mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-xs font-semibold text-gray-600">প্রতি কাজের মজুরি (৳)</label>
-                            <input type="number" id="post-reward" placeholder="5" min="1" required class="w-full border rounded-lg px-3 py-2 text-sm mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="text-xs font-semibold text-gray-600">কাজের ক্যাটাগরি</label>
-                            <select id="post-category" class="w-full border rounded-lg px-3 py-2 text-sm mt-1 bg-white">
-                                <option value="Video">Video Watch</option>
-                                <option value="Social">Social Media</option>
-                                <option value="Gmail">Gmail Task</option>
-                                <option value="Other">Others</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition mt-2">টাস্ক পাবলিশ করুন (ব্যালেন্স থেকে কাটবে)</button>
-                </form>
-            </div>
-        </section>
+<label>Mobile Number</label>
+<input id="regMobile" type="tel" placeholder="01XXXXXXXXX">
 
-        <!-- Tab: Withdraw -->
-        <section id="tab-withdraw" class="space-y-4 hidden">
-            <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm">
-                <h3 class="font-bold text-gray-800 text-lg mb-2">টাকা উত্তোলন করুন (Withdraw)</h3>
-                <p class="text-xs text-gray-500 mb-4">সর্বনিম্ন উত্তোলন ৭৫ টাকা।</p>
-                
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">উত্তোলনের মাধ্যম</label>
-                        <select id="withdraw-method" class="w-full border rounded-lg px-3 py-2 text-sm mt-1 bg-white">
-                            <option value="bkash">bKash</option>
-                            <option value="nagad">Nagad</option>
-                            <option value="upay">Upay</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">একাউন্ট নাম্বার</label>
-                        <input type="text" id="withdraw-number" placeholder="01XXXXXXXXX" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-600">টাকার পরিমাণ (৳)</label>
-                        <input type="number" id="withdraw-amount" placeholder="0" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
-                    </div>
-                    <button onclick="requestWithdraw()" class="w-full bg-green-600 text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-green-700 transition mt-2">উত্তোলন অনুরোধ পাঠান</button>
-                </div>
-            </div>
-        </section>
+<label>Password</label>
+<input id="regPass" type="password" placeholder="Create password">
 
-        <!-- Tab: Refer -->
-        <section id="tab-refer" class="space-y-4 hidden">
-            <div class="bg-white border border-gray-200 p-5 rounded-2xl text-center shadow-sm">
-                <i class="fa-solid fa-users text-blue-600 text-3xl mb-2"></i>
-                <h3 class="font-bold text-gray-800 text-lg">বন্ধুদের রেফার করুন</h3>
-                <p class="text-xs text-gray-500 mt-1 mb-4">প্রতিটি সফল রেফারে আকর্ষণীয় বোনাস জিতে নিন!</p>
-                
-                <div class="flex gap-2">
-                    <input type="text" id="refer-link-input" readonly value="https://paylix20.vercel.app/?ref=rafi32" class="w-full border rounded-lg px-3 py-2 text-xs bg-gray-100 text-gray-600 select-all">
-                    <button onclick="copyReferLink()" class="bg-blue-600 text-white px-4 rounded-lg text-xs font-semibold hover:bg-blue-700 transition">কপি</button>
-                </div>
-            </div>
-        </section>
+<label>Confirm Password</label>
+<input id="regConfirm" type="password" placeholder="Confirm password">
 
-        <!-- Tab: History / Profile -->
-        <section id="tab-history" class="space-y-4 hidden">
-            <div class="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm">
-                <h3 class="font-bold text-gray-800 text-md mb-3">হিস্ট্রি ও ট্রানজাকশন (History)</h3>
-                <div id="history-list" class="space-y-2 text-xs text-gray-600">
-                    <p class="text-gray-400 text-center py-4">এখনো কোনো হিস্ট্রি নেই।</p>
-                </div>
-            </div>
-        </section>
+<label>Referral Code (Optional)</label>
+<input id="referral" placeholder="Enter referral code">
 
-    </main>
+<div class="captcha">
+<b>Security Captcha</b>
+<p id="captchaQuestion"></p>
+<input id="captchaAnswer" type="number" placeholder="Enter answer">
+</div>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-3 shadow-lg z-50">
-        <button onclick="switchTab('tab-tasks')" id="btn-tasks" class="flex flex-col items-center text-blue-600">
-            <i class="fa-solid fa-house text-lg"></i>
-            <span class="text-[10px] mt-1 font-medium">হোম</span>
-        </button>
-        <button onclick="switchTab('tab-deposit')" id="btn-deposit" class="flex flex-col items-center text-gray-400 hover:text-blue-600">
-            <i class="fa-solid fa-wallet text-lg"></i>
-            <span class="text-[10px] mt-1 font-medium">ডিপোজিট</span>
-        </button>
-        <button onclick="switchTab('tab-post')" id="btn-post" class="flex flex-col items-center text-gray-400 hover:text-blue-600">
-            <i class="fa-solid fa-circle-plus text-lg"></i>
-            <span class="text-[10px] mt-1 font-medium">পোস্ট</span>
-        </button>
-        <button onclick="switchTab('tab-withdraw')" id="btn-withdraw" class="flex flex-col items-center text-gray-400 hover:text-blue-600">
-            <i class="fa-solid fa-money-bill-wave text-lg"></i>
-            <span class="text-[10px] mt-1 font-medium">উত্তোলন</span>
-        </button>
-        <button onclick="switchTab('tab-history')" id="btn-history" class="flex flex-col items-center text-gray-400 hover:text-blue-600">
-            <i class="fa-solid fa-clock-rotate-left text-lg"></i>
-            <span class="text-[10px] mt-1 font-medium">হিস্ট্রি</span>
-        </button>
-    </nav>
+<button class="primary" style="width:100%" onclick="register()">Create Account</button>
+<p>Already have an account?
+<button onclick="showLogin()">Login</button></p>
+</div>
 
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-center items-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-5 space-y-4 shadow-xl relative">
-            <button onclick="closeAuthModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <h3 class="font-bold text-gray-800 text-lg text-center">একাউন্ট ফ্রি অ্যাক্টিভেশন</h3>
-            <p class="text-xs text-gray-500 text-center">আপনার নাম ও ফোন নম্বর দিয়ে একাউন্টভুক্তি সম্পন্ন করুন।</p>
-            
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs font-semibold text-gray-600">আপনার নাম</label>
-                    <input type="text" id="auth-name" placeholder="রাফি আহমেদ" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
-                </div>
-                <div>
-                    <label class="text-xs font-semibold text-gray-600">ফোন নম্বর (বিকাশ/নগদ)</label>
-                    <input type="text" id="auth-phone" placeholder="017xxxxxxxx" class="w-full border rounded-lg px-3 py-2 text-sm mt-1">
-                </div>
-                <button onclick="saveAccount()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-blue-700 transition">একাউন্ট সেভ করুন</button>
-            </div>
-        </div>
-    </div>
+<div class="form hidden" id="loginBox">
+<h2>Login to Pelix 2.0</h2>
+<label>Mobile Number</label>
+<input id="loginMobile" type="tel" placeholder="Mobile number">
+<label>Password</label>
+<input id="loginPass" type="password" placeholder="Password">
+<button class="primary" style="width:100%" onclick="login()">Login</button>
+<p>New user? <button onclick="showRegister()">Create Account</button></p>
+</div>
 
-    <!-- JavaScript Logic -->
-    <script>
-        let balance = 0.00;
-        let historyData = [];
-        
-        let tasksList = [
-            { id: 1, title: "YouTube Video Watch & Subscribe", desc: "ভিডিওটি পুরো ২ মিনিট দেখে সাবস্ক্রাইব করুন এবং স্ক্রিনশট দিন।", reward: 5.00, category: "Video" },
-            { id: 2, title: "Submit New Gmail Account", desc: "একটি ফ্রেশ নতুন জিমেইল একাউন্ট তৈরি করে সাবমিট করুন।", reward: 10.00, category: "Gmail" }
-        ];
+<div class="form hidden" id="bannedBox">
+<h2 style="color:red">ACCOUNT BANNED</h2>
+<p id="banMessage"></p>
+<p>আপনার অ্যাকাউন্ট পুনরুদ্ধার করতে অ্যাডমিনের সঙ্গে যোগাযোগ করুন।</p>
+<a id="recoveryLink" target="_blank">
+<button class="primary">Contact Admin on Telegram</button>
+</a>
+</div>
 
-        function updateBalance() {
-            document.getElementById('user-balance').innerText = balance.toFixed(2);
-        }
+</section>
 
-        function renderTasks() {
-            const container = document.getElementById('tasks-container');
-            document.getElementById('task-count').innerText = tasksList.length + ' টি কাজ';
-            
-            if (tasksList.length === 0) {
-                container.innerHTML = '<div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm text-center text-gray-400 text-xs py-8">কোনো কাজ নেই।</div>';
-                return;
-            }
+<!-- HOME -->
+<section id="home" class="page">
+<div class="hero">
+<h1>Welcome to Pelix 2.0</h1>
+<p>Post Jobs, Complete Tasks & Earn Rewards.</p>
+<button class="primary" onclick="page('jobs')">Explore Jobs</button>
+<button onclick="page('post')">Post a Job</button>
+</div>
+<div class="grid">
+<div class="card">👥 Total Users<h2 id="usersCount">0</h2></div>
+<div class="card">💼 Approved Jobs<h2 id="jobsCount">0</h2></div>
+<div class="card">📋 Submissions<h2 id="subCount">0</h2></div>
+</div>
+</section>
 
-            container.innerHTML = tasksList.map(task => `
-                <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm flex flex-col gap-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="bg-blue-50 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">${task.category}</span>
-                            <h4 class="font-bold text-gray-800 text-sm mt-1">${task.title}</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">${task.desc}</p>
-                        </div>
-                        <span class="text-blue-600 font-bold text-sm">+৳ ${task.reward.toFixed(2)}</span>
-                    </div>
-                    <div class="flex gap-2 mt-1">
-                        <input type="text" id="proof-${task.id}" placeholder="প্রুফ দিন (যেমন: আপনার নাম/জিমেইল)" class="w-full border rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
-                        <button onclick="completeTask(${task.id})" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-700 transition whitespace-nowrap">জমা দিন</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+<!-- JOBS -->
+<section id="jobs" class="page">
+<h2>Available Jobs</h2>
+<input id="search" placeholder="Search jobs..." oninput="renderJobs()">
+<div id="jobList" class="grid"></div>
+</section>
 
-        function requestDeposit() {
-            const amount = parseFloat(document.getElementById('dep-amount').value);
-            const trx = document.getElementById('dep-trx').value.trim();
-            const sender = document.getElementById('dep-sender').value.trim();
+<!-- POST -->
+<section id="post" class="page">
+<div class="form">
+<h2>Post a Job</h2>
+<div class="notice">
+<b>Minimum Posting Fee: ৳10</b>
+<p>bKash Send Money: YOUR_BKASH_NUMBER</p>
+</div>
+<label>Job Title</label>
+<input id="jobTitle">
+<label>Category</label>
+<select id="jobCategory">
+<option>Social Media</option>
+<option>YouTube</option>
+<option>Email-related Tasks</option>
+<option>Data Entry</option>
+<option>Design</option>
+<option>Other</option>
+</select>
+<label>Description</label>
+<textarea id="jobDescription"></textarea>
+<label>Reward</label>
+<input id="jobReward" type="number">
+<label>Workers</label>
+<input id="workers" type="number">
+<label>Transaction ID</label>
+<input id="trx">
+<button class="primary" onclick="postJob()">Submit Job</button>
+</div>
+</section>
 
-            if(!sender || isNaN(amount) || amount <= 0 || !trx) {
-                alert("দয়া করে সঠিক তথ্য এবং ট্রানজাকশন আইডি (TrxID) দিন।");
-                return;
-            }
+<!-- DASHBOARD -->
+<section id="dashboard" class="page">
+<h2>My Dashboard</h2>
+<div class="grid">
+<div class="card">My Jobs<h2 id="myJobsCount">0</h2></div>
+<div class="card">My Submissions<h2 id="mySubCount">0</h2></div>
+</div>
+<h3>My Jobs</h3>
+<div id="myJobs" class="grid"></div>
+</section>
 
-            // ইউজারের ব্যালেন্সে ডিপোজিট যোগ করা হলো (বা ক্লায়েন্ট পেমেন্ট সিস্টেম)
-            balance += amount;
-            updateBalance();
-            addHistory(`Deposit Approved`, amount, `TrxID: ${trx}`);
-            alert(`সফল! আপনার অ্যাকাউন্টে ৳${amount.toFixed(2)} ডিপোজিট সফলভাবে যোগ হয়েছে।`);
-            
-            document.getElementById('dep-amount').value = '';
-            document.getElementById('dep-trx').value = '';
-            document.getElementById('dep-sender').value = '';
-            switchTab('tab-tasks');
-        }
+<!-- ACCOUNT -->
+<section id="account" class="page">
+<div class="form">
+<h2>My Account</h2>
+<p id="profileInfo"></p>
+<button class="danger" onclick="logout()">Logout</button>
+</div>
+</section>
 
-        function handlePostTask(e) {
-            e.preventDefault();
-            const title = document.getElementById('post-title').value;
-            const desc = document.getElementById('post-desc').value;
-            const reward = parseFloat(document.getElementById('post-reward').value);
-            const category = document.getElementById('post-category').value;
+<!-- ADMIN -->
+<section id="admin" class="page">
+<div class="form" id="adminLoginBox">
+<h2>Admin Login</h2>
+<input id="adminPassword" type="password" placeholder="Admin password">
+<button class="primary" onclick="adminLogin()">Login</button>
+</div>
+<div id="adminPanel" class="hidden">
+<h2>Admin Control Panel</h2>
+<div class="grid">
+<div class="card">Users<h2 id="adminUsers">0</h2></div>
+<div class="card">Jobs<h2 id="adminJobsCount">0</h2></div>
+</div>
+<h3>User Management</h3>
+<div id="userList" class="grid"></div>
+<h3>Job Management</h3>
+<div id="adminJobs" class="grid"></div>
+</div>
+</section>
 
-            // ব্যালেন্স চেক: বিজ্ঞাপনদাতার একাউন্টে পর্যাপ্ত টাকা আছে কিনা
-            if (balance < reward) {
-                alert(`আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই! কাজ পোস্ট করতে হলে আগে 'ডিপোজিট' অপশন থেকে টাকা রিচার্জ করুন।`);
-                switchTab('tab-deposit');
-                return;
-            }
+</div>
 
-            // পোস্ট করার জন্য ইউজারের ব্যালেন্স থেকে টাকা কেটে নেওয়া হবে (এটাই আপনার লাভ/কমিশন সিস্টেম!)
-            balance -= reward;
-            updateBalance();
+<footer>
+<h2>Pelix 2.0</h2>
+<p>Micro Job Platform</p>
+</footer>
 
-            const newTask = {
-                id: Date.now(),
-                title,
-                desc,
-                reward,
-                category
-            };
+<script>
+const ADMIN_PASSWORD="CHANGE_THIS_PASSWORD";
+const TELEGRAM="YOUR_TELEGRAM_USERNAME";
 
-            tasksList.unshift(newTask);
-            renderTasks();
-            
-            addHistory(`Task Posted`, -reward, title);
-            alert(`টাস্ক সফলভাবে পাবলিশ হয়েছে! আপনার ব্যালেন্স থেকে ৳${reward.toFixed(2)} কেটে নেওয়া হয়েছে।`);
-            
-            document.getElementById('post-title').value = '';
-            document.getElementById('post-desc').value = '';
-            document.getElementById('post-reward').value = '';
-            switchTab('tab-tasks');
-        }
-            if(task) {
-                balance += task.reward;
-                updateBalance();
-                addHistory(`Task Complete: ${task.title}`, task.reward, `Proof: ${proofVal}`);
-                alert(`সফলভাবে কাজটি সম্পন্ন হয়েছে! আপনার একাউন্টে ৳${task.reward.toFixed(2)} যোগ হয়েছে।`);
-                proofInput.value = '';
-            }
-        }
+let users=JSON.parse(localStorage.getItem("pelix_users")||"[]");
+let jobs=JSON.parse(localStorage.getItem("pelix_jobs")||"[]");
+let current=JSON.parse(sessionStorage.getItem("pelix_current")||"null");
+let captcha=0;
 
-        function addHistory(title, amount, details) {
-            historyData.unshift({ title, amount, details, time: new Date().toLocaleTimeString() });
-            renderHistory();
-        }
+function save(){
+localStorage.setItem("pelix_users",JSON.stringify(users));
+localStorage.setItem("pelix_jobs",JSON.stringify(jobs));
+}
 
-        function renderHistory() {
-            const list = document.getElementById('history-list');
-            if (historyData.length === 0) {
-                list.innerHTML = '<p class="text-gray-400 text-center py-4">এখনো কোনো হিস্ট্রি নেই।</p>';
-                return;
-            }
-            list.innerHTML = historyData.map(item => `
-                <div class="bg-white p-2.5 rounded-lg border border-gray-100 flex justify-between items-center shadow-xs">
-                    <div>
-                        <p class="font-bold text-gray-800">${item.title}</p>
-                        <p class="text-[10px] text-gray-400">${item.details} • ${item.time}</p>
-                    </div>
-                    <span class="font-bold ${item.amount > 0 ? 'text-green-600' : 'text-red-600'}">${item.amount > 0 ? '+' : ''}৳${item.amount.toFixed(2)}</span>
-                </div>
-            `).join('');
-        }
+function makeCaptcha(){
+let a=Math.floor(Math.random()*9)+1;
+let b=Math.floor(Math.random()*9)+1;
+captcha=a+b;
+document.getElementById("captchaQuestion").innerText=a+" + "+b+" = ?";
+}
 
-        function switchTab(tabId) {
-            ['tab-tasks', 'tab-deposit', 'tab-post', 'tab-withdraw', 'tab-refer', 'tab-history'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            ['btn-tasks', 'btn-deposit', 'btn-post', 'btn-withdraw', 'btn-history'].forEach(id => {
-                document.getElementById(id).classList.remove('text-blue-600');
-                document.getElementById(id).classList.add('text-gray-400');
-            });
+function page(id){
+if(!current){showAuth();return;}
+if(current.banned){showBanned();return;}
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.getElementById("mainNav").classList.remove("hidden");
+if(id==="jobs")renderJobs();
+if(id==="dashboard")renderDashboard();
+if(id==="account")renderAccount();
+}
 
-            document.getElementById(tabId).classList.remove('hidden');
-            
-            let btnId = 'btn-' + tabId.split('-')[1];
-            document.getElementById(btnId).classList.remove('text-gray-400');
-            document.getElementById(btnId).classList.add('text-blue-600');
-        }
+function showAuth(){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById("auth").classList.add("active");
+document.getElementById("mainNav").classList.add("hidden");
+document.getElementById("registerBox").classList.remove("hidden");
+document.getElementById("loginBox").classList.add("hidden");
+document.getElementById("bannedBox").classList.add("hidden");
+makeCaptcha();
+}
 
-        function openAuthModal() {
-            document.getElementById('auth-modal').classList.remove('hidden');
-        }
+function showLogin(){
+document.getElementById("registerBox").classList.add("hidden");
+document.getElementById("loginBox").classList.remove("hidden");
+}
 
-        function closeAuthModal() {
-            document.getElementById('auth-modal').classList.add('hidden');
-        }
+function showRegister(){
+document.getElementById("registerBox").classList.remove("hidden");
+document.getElementById("loginBox").classList.add("hidden");
+makeCaptcha();
+}
 
-        function saveAccount() {
-            const name = document.getElementById('auth-name').value;
-            const phone = document.getElementById('auth-phone').value;
-            if(!name || !phone) {
-                alert("দয়া করে নাম ও ফোন নম্বর লিখুন।");
-                return;
-            }
-            alert(`স্বাগতম, ${name}! আপনার অ্যাকাউন্ট সফলভাবে সেভ হয়েছে।`);
-            closeAuthModal();
-        }
+function register(){
+let name=document.getElementById("regName").value.trim();
+let mobile=document.getElementById("regMobile").value.trim();
+let pass=document.getElementById("regPass").value;
+let confirm=document.getElementById("regConfirm").value;
+let answer=Number(document.getElementById("captchaAnswer").value);
+let ref=document.getElementById("referral").value.trim();
 
-        function copyReferLink() {
-            const referInput = document.getElementById('refer-link-input');
-            referInput.select();
-            referInput.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(referInput.value);
-            alert("রেফার লিংক কপি হয়েছে!");
-        }
+if(!name||!mobile||!pass||!confirm){alert("সব তথ্য পূরণ করুন");return;}
+if(!/^01[3-9]\d{8}$/.test(mobile)){alert("সঠিক বাংলাদেশি মোবাইল নম্বর দিন");return;}
+if(pass.length<8){alert("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে");return;}
+if(pass!==confirm){alert("পাসওয়ার্ড মিলছে না");return;}
+if(answer!==captcha){alert("Captcha ভুল হয়েছে");makeCaptcha();return;}
+if(users.some(u=>u.mobile===mobile)){alert("এই নম্বরে অ্যাকাউন্ট আছে");return;}
 
-        function requestWithdraw() {
-            const amount = parseFloat(document.getElementById('withdraw-amount').value);
-            const number = document.getElementById('withdraw-number').value;
-            
-            if (!number || isNaN(amount) || amount <= 0) {
-                alert("দয়া করে সঠিক তথ্য দিন।");
-                return;
-            }
-            if (amount < 75) {
-                alert("সর্বনিম্ন উত্তোলন ৭৫ টাকা।");
-                return;
-            }
-            if (amount > balance) {
-                alert("পর্যাপ্ত ব্যালেন্স নেই। উইথড্র দিতে গেলে দেখতে বলতেছে আরেকজনকে রেফার করতে হবে।");
-                return;
-            }
-            
-            balance -= amount;
-            updateBalance();
-            addHistory("Withdraw Request", -amount, number);
-            alert("উত্তোলন অনুরোধ সফল হয়েছে!");
-            document.getElementById('withdraw-amount').value = '';
-            document.getElementById('withdraw-number').value = '';
-        }
+let referrer=null;
+if(ref){
+referrer=users.find(u=>u.refCode===ref);
+if(!referrer){alert("Referral code সঠিক নয়");return;}
+if(referrer.mobile===mobile){
+alert("নিজের রেফারেল ব্যবহার করা যাবে না");return;
+}
+}
 
-        renderTasks();
-    </script>
+let newUser={
+id:Date.now(),name,mobile,password:pass,
+refCode:"PEL"+Math.random().toString(36).slice(2,8).toUpperCase(),
+referrer:referrer?referrer.id:null,
+banned:false
+};
+
+users.push(newUser);
+save();
+alert("Account created! এখন Login করুন।");
+showLogin();
+}
+
+function login(){
+let mobile=document.getElementById("loginMobile").value.trim();
+let pass=document.getElementById("loginPass").value;
+let u=users.find(x=>x.mobile===mobile&&x.password===pass);
+
+if(!u){alert("মোবাইল নম্বর অথবা পাসওয়ার্ড ভুল");return;}
+current=u;
+if(u.banned){showBanned();return;}
+sessionStorage.setItem("pelix_current",JSON.stringify(u));
+page("home");
+}
+
+function showBanned(){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById("auth").classList.add("active");
+document.getElementById("registerBox").classList.add("hidden");
+document.getElementById("loginBox").classList.add("hidden");
+document.getElementById("bannedBox").classList.remove("hidden");
+document.getElementById("banMessage").innerText=
+"আপনি Fake Referral করার চেষ্টা করছেন! আপনার অ্যাকাউন্টটি নিষিদ্ধ করা হয়েছে। Owner: @Owner_Paylix";
+document.getElementById("recoveryLink").href="https://t.me/"+TELEGRAM;
+document.getElementById("mainNav").classList.add("hidden");
+}
+
+function logout(){
+current=null;
+sessionStorage.removeItem("pelix_current");
+showAuth();
+}
+
+function postJob(){
+let title=jobTitle.value.trim();
+let description=jobDescription.value.trim();
+let reward=Number(jobReward.value);
+let workerCount=Number(workers.value);
+let transaction=trx.value.trim();
+
+if(!title||!description||reward<=0||workerCount<=0||!transaction){
+alert("সব তথ্য পূরণ করুন");return;
+}
+
+jobs.push({
+id:Date.now(),title,description,
+category:jobCategory.value,reward,
+workers:workerCount,transaction,
+owner:current.id,status:"Pending"
+});
+save();
+alert("Job জমা হয়েছে। Admin যাচাই করবেন।");
+page("dashboard");
+}
+
+function renderJobs(){
+let q=search.value.toLowerCase();
+let list=jobs.filter(j=>j.status==="Approved"&&j.title.toLowerCase().includes(q));
+jobList.innerHTML=list.map(j=>`
+<div class="card">
+<span class="tag">${j.category}</span>
+<h3>${j.title}</h3><p>${j.description}</p>
+<h2>৳${j.reward}</h2>
+</div>`).join("")||"কোনো Job পাওয়া যায়নি";
+}
+
+function renderDashboard(){
+let mine=jobs.filter(j=>j.owner===current.id);
+myJobsCount.innerText=mine.length;
+mySubCount.innerText=0;
+myJobs.innerHTML=mine.map(j=>`
+<div class="card"><h3>${j.title}</h3><p>${j.status}</p></div>`).join("");
+}
+
+function renderAccount(){
+profileInfo.innerText="Name: "+current.name+" | Mobile: "+current.mobile+" | Referral: "+current.refCode;
+}
+
+function adminLogin(){
+if(adminPassword.value!==ADMIN_PASSWORD){alert("Wrong password");return;}
+adminLoginBox.classList.add("hidden");
+adminPanel.classList.remove("hidden");
+showAdmin();
+}
+
+function showAdmin(){
+adminUsers.innerText=users.length;
+adminJobsCount.innerText=jobs.length;
+
+userList.innerHTML=users.map(u=>`
+<div class="card">
+<h3>${u.name}</h3><p>${u.mobile}</p>
+<p>Referral: ${u.refCode}</p>
+<p>Status: ${u.banned?"Banned":"Active"}</p>
+<button class="danger" onclick="banUser(${u.id})">Ban</button>
+<button class="primary" onclick="unbanUser(${u.id})">Unban</button>
+</div>`).join("");
+
+adminJobs.innerHTML=jobs.map(j=>`
+<div class="card">
+<h3>${j.title}</h3>
+<p>Transaction: ${j.transaction}</p>
+<p>Status: ${j.status}</p>
+<button class="primary" onclick="approveJob(${j.id})">Approve</button>
+<button class="danger" onclick="rejectJob(${j.id})">Reject</button>
+</div>`).join("");
+}
+
+function banUser(id){
+let u=users.find(x=>x.id===id);
+if(u){u.banned=true;save();showAdmin();}
+}
+function unbanUser(id){
+let u=users.find(x=>x.id===id);
+if(u){u.banned=false;save();showAdmin();}
+}
+function approveJob(id){
+let j=jobs.find(x=>x.id===id);
+if(j){j.status="Approved";save();showAdmin();}
+}
+function rejectJob(id){
+let j=jobs.find(x=>x.id===id);
+if(j){j.status="Rejected";save();showAdmin();}
+}
+
+if(current){
+let fresh=users.find(u=>u.id===current.id);
+current=fresh||null;
+if(current&&current.banned)showBanned();
+else if(current)page("home");
+else showAuth();
+}else showAuth();
+</script>
 </body>
 </html>
-
-        function completeTask(taskId) {
-            const proofInput = document.getElementById(`proof-${taskId}`);
-            const proofVal = proofInput.value.trim();
-            if(!proofVal) {
-                alert("দয়া করে কাজের প্রমাণ (Proof) প্রদান করুন।");
-                return;
-            }
-
-            const task = tasksList.find(t => t.id === taskId);
-            if(task) {
-                balance += task.reward;
-                updateBalance();
-                addHistory(`Task Complete: ${task.title}`, task.reward, `Proof: ${proofVal}`);
-              
