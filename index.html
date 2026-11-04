@@ -828,7 +828,18 @@
   function delTask(id) {
     tasks = tasks.filter(x => x.id !== id);
     saveData(); renderAdminTasks(); renderTasks();
-  }
+  }<!-- Support Section Update (প্রোফাইল বা সার্ভিস পেজে বসানোর জন্য) -->
+<div style="background:white; border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;" onclick="window.open('https://t.me/Owner_Paylix', '_blank')">
+  <div style="display:flex; align-items:center; gap:12px;">
+    <span style="font-size:24px;">💬</span>
+    <div>
+      <div style="font-weight:700; font-size:14px;">Live Support</div>
+      <div style="font-size:11px; color:var(--text-muted);">টেলিগ্রামে যোগাযোগ করুন (@Owner_Paylix)</div>
+    </div>
+  </div>
+  <span style="color:var(--text-muted);">&rsaquo;</span>
+</div>
+                                      
 </script>
 
 </body>
