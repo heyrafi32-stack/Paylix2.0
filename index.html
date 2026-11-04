@@ -112,28 +112,70 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 </div>
 <div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
 <script>
+let users = JSON.parse(localStorage.getItem('pelix_users')) || [];
 let gs = JSON.parse(localStorage.getItem('pelix_gs')) || [];
 let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{id: 1, title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", slots: 100, icon: "fa-youtube", color: "#ff0000"}];
+
+if(users.length === 0) {
+  users.push({ phone: "01310127317", pass: "admin123", name: "Admin", role: "admin" });
+  saveData();
+}
+
 let ca = 8;
 const fp = "@SRABON99#&";
+
 if(window.location.search.includes('admin=true')) {
   document.getElementById('auth').style.display = 'none';
   document.getElementById('app').style.display = 'none';
   document.getElementById('adminScreen').style.display = 'flex';
 }
+
 function saveData() {
+  localStorage.setItem('pelix_users', JSON.stringify(users));
   localStorage.setItem('pelix_gs', JSON.stringify(gs));
   localStorage.setItem('pelix_tasks', JSON.stringify(tasks));
 }
+
 function st(t){document.querySelectorAll('.tt').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));if(t==='l'){document.querySelectorAll('.tt')[0].classList.add('on');document.getElementById('lb').classList.add('on')}else{document.querySelectorAll('.tt')[1].classList.add('on');document.getElementById('rb').classList.add('on');gc()}}
 function gc(){let a=Math.floor(Math.random()*10)+1,b=Math.floor(Math.random()*10)+1;ca=a+b;document.getElementById('cn').innerText=a+' + '+b}
-function dl(){let p = document.getElementById('lp').value;let s = document.getElementById('lps').value;if(p.length > 5 && s.length > 3){document.getElementById('auth').style.display='none';document.getElementById('app').style.display='block';document.getElementById('un').innerText='User';document.getElementById('pn').innerText='User';renderTasks();} else {document.getElementById('le').style.display='block';}}
-function dr(){if(parseInt(document.getElementById('ca').value)!==ca){document.getElementById('re').style.display='block';gc();document.getElementById('ca').value='';return}document.getElementById('auth').style.display='none';document.getElementById('app').style.display='block';document.getElementById('un').innerText='New User';document.getElementById('pn').innerText='New User';renderTasks();}
+
+function dl(){
+  let p = document.getElementById('lp').value.trim();
+  let s = document.getElementById('lps').value;
+  let foundUser = users.find(u => u.phone === p && u.pass === s);
+  if(foundUser){
+    document.getElementById('auth').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('un').innerText = foundUser.name;
+    document.getElementById('pn').innerText = foundUser.name;
+    renderTasks();
+  } else {
+    document.getElementById('le').style.display='block';
+    setTimeout(() => document.getElementById('le').style.display='none', 3000);
+  }
+}
+
+function dr(){
+  if(parseInt(document.getElementById('ca').value)!==ca){document.getElementById('re').style.display='block';gc();document.getElementById('ca').value='';return}
+  let p = document.getElementById('rp').value.trim();
+  let e = document.getElementById('rem').value.trim();
+  let s = document.getElementById('rps').value;
+  if(!p || !e || !s) { alert("সব ঘর পূরণ করুন!"); return; }
+  if(users.find(u => u.phone === p)) { alert("এই ফোন নম্বর দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!"); return; }
+  let newUser = { phone: p, email: e, pass: s, name: "User_" + p.slice(-4), role: "user" };
+  users.push(newUser);
+  saveData();
+  document.getElementById('auth').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('un').innerText = newUser.name;
+  document.getElementById('pn').innerText = newUser.name;
+  renderTasks();
+}
+
 function gv(v,e=null){document.querySelectorAll('.vw').forEach(x=>x.classList.remove('on'));document.getElementById(v).classList.add('on');document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));if(e)e.classList.add('on');window.scrollTo(0,0)}
 function om(i){document.getElementById(i).style.display='flex'}function cm(i){document.getElementById(i).style.display='none'}
 function sg(){let f=document.getElementById('gf').value,l=document.getElementById('gl').value,u=document.getElementById('gu').value,p=document.getElementById('gp').value;if(!f||!l||!u){alert("সব ঘর পূরণ করুন!");return}if(p!==fp){alert("পাসওয়ার্ড ভুল!");return}gs.push({name:f+' '+l,email:u,status:'pending'});saveData();alert("সফলভাবে জমা হয়েছে!");cm('gm');}
 
-// ইউজারদের টাস্ক রেন্ডার (স্লট সহ)
 function renderTasks(){
   let c=document.getElementById('taskListContainer');c.innerHTML='';
   if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো কাজ নেই।</p>';return}
@@ -144,36 +186,35 @@ function renderTasks(){
 
 function copyRef() {let copyText = document.getElementById("myRefLink");copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);alert("রেফারেল লিংক কপি হয়েছে!");}
 
-// অ্যাডমিন ফাংশন
-function da(){let u=document.getElementById('au').value;let p=document.getElementById('ap').value;if(u==='admin'&&p==='admin123'){document.getElementById('adminLoginBox').style.display='none';document.getElementById('adminPanelBox').style.display='block';ra();renderAdminTaskList();}else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}}
+function da(){
+  let u = document.getElementById('au').value;
+  let p = document.getElementById('ap').value;
+  if(u === 'admin' && p === 'admin123'){
+    document.getElementById('adminLoginBox').style.display='none';
+    document.getElementById('adminPanelBox').style.display='block';
+    ra(); renderAdminTaskList();
+  }else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}
+}
 function logoutAdmin() {window.location.href = window.location.pathname;}
 function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';renderAdminTaskList();}}
 function ra(){let b=document.getElementById('al');b.innerHTML='';if(gs.length===0){b.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো সাবমিশন নেই।</p>';return}gs.forEach((s,i)=>{let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');let h=`<div style="border-bottom:1px solid var(--br);padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:var(--gr);margin-bottom:8px">${s.email}</div>`;if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:var(--g);color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}b.innerHTML+=h+'</div>'})}
 function aa(i,a){gs[i].status=a;saveData();ra()}
 
-// টাস্ক পোস্ট, এডিট এবং ডিলিট সিস্টেম
 function saveTask(){
   let id = document.getElementById('tEditId').value;
   let t = document.getElementById('tTitle').value;
   let d = document.getElementById('tDesc').value;
   let p = document.getElementById('tPrice').value;
   let s = document.getElementById('tSlots').value;
-  
   if(!t || !d || !p || !s){alert("সব ঘর পূরণ করুন!");return}
-
   if(id) {
-    // এডিট
     let idx = tasks.findIndex(x => x.id == id);
-    if(idx > -1) {
-      tasks[idx].title = t; tasks[idx].desc = d; tasks[idx].price = p; tasks[idx].slots = s;
-    }
+    if(idx > -1) { tasks[idx].title = t; tasks[idx].desc = d; tasks[idx].price = p; tasks[idx].slots = s; }
     alert("কাজ সফলভাবে এডিট হয়েছে!");
   } else {
-    // নতুন
     tasks.unshift({id: Date.now(), title: t, desc: d, price: p, slots: s, icon: "fa-clipboard-list", color: "#10b981"});
     alert("নতুন কাজ পোস্ট করা হয়েছে!");
   }
-  
   saveData();
   resetTaskForm();
   renderAdminTaskList();
@@ -234,4 +275,4 @@ function resetTaskForm(){
 gc();
 </script>
 </body>
-  </html>
+</html>
