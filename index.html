@@ -60,6 +60,161 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 <div class="lg"><div class="li">P</div><h1>পেলিক্স</h1></div>
 <div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
 <div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
+<div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="ig"><label>Referral Code (Optional)</label><input type="text" id="refCode" placeholder="Enter friend's code"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
+</div>
+<div id="app">
+<div class="hd"><div class="hl"><div class="hi">P</div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:var(--w);border-radius:10px;border:1px solid var(--br);display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
+<div class="ct">
+<div id="v-h" class="vw on">
+<div class="bn"><h2>Welcome, <span id="un">MD</span> 👋</h2><p style="font-size:13px;color:#a7f3d0">Refer 3 people today to unlock a bonus</p></div>
+<div class="cd" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px"><div style="width:8px;height:8px;background:var(--g);border-radius:50%"></div> Account status</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Active</div></div>
+<div class="ac"><div style="display:flex;justify-content:space-between;font-size:13px;color:#a7f3d0;margin-bottom:8px"><span>Total asset value</span><span>BDT <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></span></div><div class="aa">৳ 113.46</div><div class="ag"><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Available</span><strong>৳ 9.98</strong></div><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Referral</span><strong>৳ 103.48</strong></div></div></div>
+<div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div><div class="si" onclick="gv('v-s')"><div class="sn"><i class="fa-solid fa-border-all"></i></div><span>More</span></div></div>
+</div>
+<div id="v-s" class="vw"><h2 style="font-size:20px;margin-bottom:16px">All Services</h2><div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div></div></div>
+<div id="v-w" class="vw"><h2 style="font-size:20px;margin-bottom:16px">My Wallet</h2><div class="ac" style="background:linear-gradient(135deg,#0d4f3f,#0a3a2d)"><div style="font-size:12px;color:#a7f3d0;margin-bottom:8px"><i class="fa-regular fa-credit-card"></i> DEPOSIT BALANCE</div><div style="font-size:36px;font-weight:700;margin-bottom:20px">৳ 0</div><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:var(--m);font-weight:700">+ Deposit</button><button style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-weight:700">↓ Withdraw</button></div></div></div>
+<div id="v-t" class="vw"><h2 style="font-size:20px;margin-bottom:16px">Task</h2><div id="taskListContainer"></div></div>
+<div id="v-p" class="vw">
+<div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:var(--m);color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">M</div><h2 style="font-size:20px" id="pn">MD Rafi</h2><div style="font-size:13px;color:var(--gr);margin-bottom:8px">PB-UKON7M · Silver</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:var(--gr);display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳9.98</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:var(--gr);display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳103.48</strong></div></div>
+
+<!-- Referral Box -->
+<div class="cd" style="background:#e6f7ef; border:1px dashed var(--g);">
+  <div style="font-weight:700; color:var(--m); margin-bottom:8px;"><i class="fa-solid fa-share-nodes"></i> Refer & Earn</div>
+  <p style="font-size:12px; color:var(--gr); margin-bottom:12px;">আপনার বন্ধুদের সাথে এই কোডটি শেয়ার করুন। তারা সাইন-আপ করলে আপনি বোনাস পাবেন।</p>
+  <div style="display:flex; gap:8px; align-items:center; background:white; padding:10px; border-radius:10px; border:1px solid var(--br);">
+    <input type="text" id="myRefCode" readonly style="border:none; outline:none; flex:1; font-weight:700; color:var(--m);" value="REF123">
+    <button onclick="copyRef()" style="background:var(--g); color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button>
+  </div>
+</div>
+
+<div id="adminBtnBox" style="display:none;">
+<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px">
+<div onclick="om('am')" style="display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--br);cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600"><div style="width:32px;height:32px;background:#f1f5f9;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-lock" style="color:#475569"></i></div> Admin Panel</div><i class="fa-solid fa-chevron-right" style="color:var(--gr)"></i></div>
+</div>
+</div>
+<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px">
+<div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div>
+</div>
+</div>
+</div>
+<div class="nv"><div class="ni on" onclick="gv('v-h',this)"><i class="fa-solid fa-house"></i>Home</div><div class="ni" onclick="gv('v-w',this)"><i class="fa-solid fa-wallet"></i>Wallet</div><div class="nc" onclick="gv('v-t',this)"><i class="fa-solid fa-calendar-check"></i></div><div class="ni" onclick="gv('v-s',this)"><i class="fa-solid fa-border-all"></i>Services</div><div class="ni" onclick="gv('v-p',this)"><i class="fa-regular fa-user"></i>Profile</div></div>
+</div>
+<div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
+<div id="am" class="ov" onclick="cm('am')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Admin Dashboard</h3><button class="cl" onclick="cm('am')"><i class="fa-solid fa-xmark"></i></button></div>
+<div id="alb">
+<div class="ig"><label>Username</label><input type="text" id="au" placeholder="Enter username"></div>
+<div class="ig"><label>Password</label><input type="password" id="ap" placeholder="Enter password"></div>
+<button class="bt" onclick="da()">Login</button>
+</div>
+<div id="adb" style="display:none">
+  <div class="tabs">
+    <div class="tab on" id="tabSub" onclick="switchAdminTab('sub')">Submissions</div>
+    <div class="tab" id="tabTask" onclick="switchAdminTab('task')">Post Task</div>
+  </div>
+  <div id="adminSubView"><div id="al"></div></div>
+  <div id="adminTaskView" style="display:none">
+    <div class="ig"><label>Task Title</label><input type="text" id="tTitle" placeholder="e.g. YouTube Like"></div>
+    <div class="ig"><label>Task Description</label><textarea id="tDesc" placeholder="ভিডিও দেখে লাইক করুন..."></textarea></div>
+    <div class="ig"><label>Price (৳)</label><input type="number" id="tPrice" placeholder="2.3"></div>
+    <button class="bt" onclick="postTask()">Post Task</button>
+  </div>
+  <button class="bt" style="background:#ef4444;margin-top:10px" onclick="cm('am')">Close</button>
+</div>
+</div></div>
+<script>
+let gs=[],ia=!1,fp="@SRABON99#&",ca=8;
+let tasks = [{title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", icon: "fa-youtube", color: "#ff0000"}];
+const MY_PHONE = '01310127317'; 
+
+function st(t){document.querySelectorAll('.tt').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));if(t==='l'){document.querySelectorAll('.tt')[0].classList.add('on');document.getElementById('lb').classList.add('on')}else{document.querySelectorAll('.tt')[1].classList.add('on');document.getElementById('rb').classList.add('on');gc()}}
+function gc(){let a=Math.floor(Math.random()*10)+1,b=Math.floor(Math.random()*10)+1;ca=a+b;document.getElementById('cn').innerText=a+' + '+b}
+function dl(){let p=document.getElementById('lp').value;let s=document.getElementById('lps').value;if(p.length>5&&s.length>3){document.getElementById('auth').style.display='none';document.getElementById('app').style.display='block';renderTasks();if(p===MY_PHONE){document.getElementById('adminBtnBox').style.display='block'}}else{document.getElementById('le').style.display='block'}}
+function dr(){if(parseInt(document.getElementById('ca').value)!==ca){document.getElementById('re').style.display='block';gc();document.getElementById('ca').value='';return}document.getElementById('auth').style.display='none';document.getElementById('app').style.display='block';renderTasks()}
+function gv(v,e=null){document.querySelectorAll('.vw').forEach(x=>x.classList.remove('on'));document.getElementById(v).classList.add('on');document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));if(e)e.classList.add('on');window.scrollTo(0,0)}
+function om(i){document.getElementById(i).style.display='flex'}function cm(i){document.getElementById(i).style.display='none'}
+function sg(){let f=document.getElementById('gf').value,l=document.getElementById('gl').value,u=document.getElementById('gu').value,p=document.getElementById('gp').value;if(!f||!l||!u){alert("সব ঘর পূরণ করুন!");return}if(p!==fp){alert("পাসওয়ার্ড ভুল!");return}gs.push({name:f+' '+l,email:u,status:'pending'});alert("সফলভাবে জমা হয়েছে!");cm('gm');if(ia)ra()}
+function da(){let u=document.getElementById('au').value;let p=document.getElementById('ap').value;if(u==='admin'&&p==='admin123'){ia=!0;document.getElementById('alb').style.display='none';document.getElementById('adb').style.display='block';ra()}else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}}
+function switchAdminTab(t){document.querySelectorAll('#adb .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none'}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block'}}
+function ra(){let b=document.getElementById('al');b.innerHTML='';if(gs.length===0){b.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো সাবমিশন নেই।</p>';return}gs.forEach((s,i)=>{let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');let h=`<div style="border-bottom:1px solid var(--br);padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:var(--gr);margin-bottom:8px">${s.email}</div>`;if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:var(--g);color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}b.innerHTML+=h+'</div>'})}
+function aa(i,a){gs[i].status=a;ra()}
+function postTask(){let t=document.getElementById('tTitle').value,d=document.getElementById('tDesc').value,p=document.getElementById('tPrice').value;if(!t||!d||!p){alert("সব ঘর পূরণ করুন!");return}tasks.unshift({title:t,desc:d,price:p,icon:"fa-clipboard-list",color:"#10b981"});alert("নতুন কাজ পোস্ট করা হয়েছে!");document.getElementById('tTitle').value='';document.getElementById('tDesc').value='';document.getElementById('tPrice').value='';switchAdminTab('sub');renderTasks()}
+function renderTasks(){let c=document.getElementById('taskListContainer');c.innerHTML='';if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো কাজ নেই।</p>';return}tasks.forEach(t=>{c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:var(--gr);margin-bottom:12px">${t.desc}</p><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:10px;border:1px solid var(--br);background:transparent;font-weight:600">Start</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--g);color:#fff;font-weight:600">Submit</button></div></div>`})}
+
+// Referral Logic
+function copyRef() {
+  let copyText = document.getElementById("myRefCode");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+  navigator.clipboard.writeText(copyText.value);
+  alert("রেফারেল কোড কপি হয়েছে: " + copyText.value);
+}
+
+gc();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>পেলিক্স</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--m:#0a4536;--g:#10b981;--b:#f3f6f9;--w:#fff;--t:#1e293b;--gr:#64748b;--br:#e2e8f0}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highlight-color:transparent}
+#auth{position:fixed;inset:0;background:var(--b);z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:24px}
+.lg{text-align:center;margin-bottom:24px}
+.li{width:60px;height:60px;background:var(--m);color:#fff;border-radius:16px;display:inline-flex;justify-content:center;align-items:center;font-size:30px;font-weight:bold;font-style:italic;margin-bottom:8px}
+.tb{display:flex;margin-bottom:20px;background:#e2e8f0;border-radius:12px;padding:4px}
+.tt{flex:1;text-align:center;padding:10px;font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;color:var(--gr)}
+.tt.on{background:var(--w);color:var(--m);box-shadow:0 2px 5px rgba(0,0,0,0.05)}
+.fb{display:none}.fb.on{display:block}
+.ig{margin-bottom:14px}
+.ig label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.ig input,.ig textarea{width:100%;padding:14px;border-radius:12px;border:1px solid var(--br);font-size:14px;outline:none;font-family:'Inter',sans-serif}
+.ig textarea{height:80px;resize:vertical}
+.cp{display:flex;align-items:center;gap:10px;background:#e6f7ef;padding:10px;border-radius:12px;margin-bottom:14px}
+.cp input{width:80px;padding:8px;border-radius:8px;border:1px solid var(--br);outline:none}
+.bt{width:100%;padding:16px;background:var(--m);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
+.er{color:#ef4444;font-size:13px;text-align:center;margin-bottom:10px;display:none}
+#app{display:none}
+.hd{display:flex;justify-content:space-between;align-items:center;padding:16px}
+.hl{display:flex;align-items:center;gap:10px}
+.hi{width:32px;height:32px;border-radius:8px;background:var(--m);color:#fff;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;font-style:italic}
+.ct{padding:0 16px}
+.cd{background:var(--w);border-radius:16px;padding:16px;border:1px solid var(--br);margin-bottom:16px}
+.bn{background:linear-gradient(135deg,#0d4f3f,#0a3a2d);border-radius:16px;padding:20px;color:#fff;margin-bottom:16px}
+.ac{background:var(--m);border-radius:20px;padding:20px;color:#fff;margin-bottom:20px}
+.aa{font-size:32px;font-weight:700;margin-bottom:16px}
+.ag{display:flex;gap:10px}
+.ab{flex:1;background:rgba(255,255,255,0.1);padding:12px;border-radius:12px}
+.sv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.si{background:var(--w);padding:16px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;border:1px solid var(--br);cursor:pointer}
+.sn{width:40px;height:40px;border-radius:12px;background:#e6f7ef;color:#047857;display:flex;justify-content:center;align-items:center;font-size:18px;margin-bottom:8px}
+.si span{font-size:12px;font-weight:600;text-align:center;line-height:1.2}
+.nv{position:fixed;bottom:0;left:0;width:100%;background:var(--w);display:flex;justify-content:space-around;padding:10px 0 15px;border-radius:20px 20px 0 0;box-shadow:0 -4px 15px rgba(0,0,0,0.05);z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;color:var(--gr);font-size:11px;cursor:pointer;width:60px}
+.ni.on{color:var(--g)}
+.ni i{font-size:20px;margin-bottom:4px}
+.nc{width:50px;height:50px;background:var(--g);border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;transform:translateY(-15px);border:4px solid var(--b)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;justify-content:center;align-items:flex-end}
+.md{background:var(--w);width:100%;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow-y:auto}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cl{background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer}
+.pb{background:#e6f7ef;padding:12px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:14px}
+.tabs{display:flex;gap:10px;margin-bottom:16px;border-bottom:1px solid var(--br);padding-bottom:8px}
+.tab{font-weight:600;font-size:14px;cursor:pointer;color:var(--gr)}
+.tab.on{color:var(--m);border-bottom:2px solid var(--m);padding-bottom:8px}
+.vw{display:none}.vw.on{display:block}
+</style>
+</head>
+<body><div id="auth">
+<div class="lg"><div class="li">P</div><h1>পেলিক্স</h1></div>
+<div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
+<div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
 <div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
 </div>
 <div id="app">
