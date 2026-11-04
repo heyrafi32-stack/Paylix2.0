@@ -1,249 +1,1059 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>পেলিক্স</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-body{background:#f3f6f9;color:#1e293b;padding-bottom:70px}
-#auth,#adminScreen{position:fixed;inset:0;background:#f3f6f9;z-index:9999;display:flex;flex-direction:column;justify-content:center;padding:24px}
-#adminScreen{display:none; z-index:10000; overflow-y:auto;}
-.lg{text-align:center;margin-bottom:24px}
-.li{width:60px;height:60px;border-radius:16px;margin:0 auto 8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#0a4536}
-.li img{width:100%;height:100%;object-fit:cover}
-.tb{display:flex;margin-bottom:20px;background:#e2e8f0;border-radius:12px;padding:4px}
-.tt{flex:1;text-align:center;padding:10px;font-weight:600;font-size:14px;border-radius:8px;cursor:pointer;color:#64748b}
-.tt.on{background:#fff;color:#0a4536;box-shadow:0 2px 5px rgba(0,0,0,0.05)}
-.fb{display:none}.fb.on{display:block}
-.ig{margin-bottom:14px}
-.ig label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
-.ig input,.ig textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none}
-.ig textarea{height:80px;resize:vertical}
-.cp{display:flex;align-items:center;gap:10px;background:#e6f7ef;padding:10px;border-radius:12px;margin-bottom:14px}
-.cp input{width:80px;padding:8px;border-radius:8px;border:1px solid #e2e8f0;outline:none}
-.bt{width:100%;padding:16px;background:#0a4536;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
-.er{color:#ef4444;font-size:13px;text-align:center;margin-bottom:10px;display:none}
-#app{display:none}
-.hd{display:flex;justify-content:space-between;align-items:center;padding:16px}
-.hl{display:flex;align-items:center;gap:10px}
-.hi{width:32px;height:32px;border-radius:8px;overflow:hidden;display:flex;justify-content:center;align-items:center;background:#0a4536}
-.hi img{width:100%;height:100%;object-fit:cover}
-.ct{padding:0 16px}
-.cd{background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0;margin-bottom:16px}
-.bn{background:linear-gradient(135deg,#0d4f3f,#0a3a2d);border-radius:16px;padding:20px;color:#fff;margin-bottom:16px}
-.ac{background:#0a4536;border-radius:20px;padding:20px;color:#fff;margin-bottom:20px}
-.aa{font-size:32px;font-weight:700;margin-bottom:16px}
-.ag{display:flex;gap:10px}
-.ab{flex:1;background:rgba(255,255,255,0.1);padding:12px;border-radius:12px}
-.sv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-.si{background:#fff;padding:16px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;border:1px solid #e2e8f0;cursor:pointer}
-.sn{width:40px;height:40px;border-radius:12px;background:#e6f7ef;color:#047857;display:flex;justify-content:center;align-items:center;font-size:18px;margin-bottom:8px}
-.si span{font-size:12px;font-weight:600;text-align:center;line-height:1.2}
-.nv{position:fixed;bottom:0;left:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:10px 0 15px;border-radius:20px 20px 0 0;box-shadow:0 -4px 15px rgba(0,0,0,0.05);z-index:100}
-.ni{display:flex;flex-direction:column;align-items:center;color:#64748b;font-size:11px;cursor:pointer;width:60px}
-.ni.on{color:#10b981}
-.ni i{font-size:20px;margin-bottom:4px}
-.nc{width:50px;height:50px;background:#10b981;border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;transform:translateY(-15px);border:4px solid #f3f6f9}
-.ov{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;justify-content:center;align-items:flex-end}
-.md{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow-y:auto}
-.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.cl{background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer}
-.pb{background:#e6f7ef;padding:12px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:14px}
-.tabs{display:flex;gap:10px;margin-bottom:16px;border-bottom:1px solid #e2e8f0;padding-bottom:8px}
-.tab{font-weight:600;font-size:14px;cursor:pointer;color:#64748b}
-.tab.on{color:#0a4536;border-bottom:2px solid #0a4536;padding-bottom:8px}
-.vw{display:none}.vw.on{display:block}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paylix - পেলিক্স</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #ca8a04;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      padding-bottom: 70px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--card-bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand-logo {
+      height: 38px;
+      object-fit: contain;
+    }
+
+    .user-welcome {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Auth Forms */
+    .auth-container {
+      padding: 24px 20px;
+    }
+
+    .auth-title {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-danger { background: var(--danger); }
+    .btn-success { background: var(--success); }
+    .btn-sm { padding: 6px 12px; font-size: 12px; width: auto; }
+
+    .auth-toggle {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .auth-toggle span {
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Dashboard UI */
+    .dashboard-content {
+      padding: 16px;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      padding: 20px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .balance-item h4 {
+      font-size: 12px;
+      opacity: 0.8;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .balance-item p {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .service-card:active {
+      transform: scale(0.96);
+    }
+
+    .service-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .service-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Task List */
+    .section-header {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .task-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .task-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .task-reward {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--success);
+    }
+
+    .task-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* Bottom Navigation Bar */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      height: 60px;
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Modal Popup */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .modal {
+      background: white;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .close-modal {
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--text-muted);
+    }
+
+    /* Admin Tabs */
+    .admin-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+    }
+
+    .tab-btn.active {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+    }
+
+    .status-badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-pending { background: #fef08a; color: #854d0e; }
+    .status-approved { background: #bbf7d0; color: #166534; }
+    .status-rejected { background: #fecaca; color: #991b1b; }
+
+    .hidden { display: none !important; }
+  </style>
 </head>
-<body><!-- ADMIN SCREEN -->
-<div id="adminScreen">
-  <div style="text-align:center; margin-bottom:24px;"><h1 style="color:#0a4536; font-size:24px;">Admin Control</h1><p style="font-size:13px; color:#64748b;">Secure login required</p></div>
-  <div id="adminLoginBox">
-    <div class="ig"><label>Username</label><input type="text" id="au" placeholder="Enter username"></div>
-    <div class="ig"><label>Password</label><input type="password" id="ap" placeholder="Enter password"></div>
-    <button class="bt" onclick="da()">Login</button>
-  </div>
-  <div id="adminPanelBox" style="display:none;">
-    <div class="tabs">
-      <div class="tab on" id="tabSub" onclick="switchAdminTab('sub')">Submissions</div>
-      <div class="tab" id="tabTask" onclick="switchAdminTab('task')">Manage Tasks</div>
+<body>
+  <div class="app-container">
+
+  <!-- Header -->
+  <header class="header" id="mainHeader">
+    <img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="Paylix Logo" class="brand-logo">
+    <div class="user-welcome hidden" id="userWelcomeText">Welcome, User</div>
+  </header>
+
+  <!-- Auth View (Login / Signup) -->
+  <div id="authView" class="auth-container">
+    
+    <!-- Login Form -->
+    <div id="loginBox">
+      <h2 class="auth-title">লগইন করুন</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>ফোন নম্বর</label>
+          <input type="text" id="loginPhone" placeholder="017XXXXXXXX" required>
+        </div>
+        <div class="form-group">
+          <label>পাসওয়ার্ড</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn">লগইন</button>
+      </form>
+      <div class="auth-toggle">
+        অ্যাকাউন্ট নেই? <span onclick="toggleAuth('signup')">সাইন-আপ করুন</span>
+      </div>
     </div>
-    <div id="adminSubView"><div id="al"></div></div>
-    <div id="adminTaskView" style="display:none">
-      <h3 id="taskFormTitle" style="margin-bottom:10px; font-size:16px;">Post New Task</h3>
-      <input type="hidden" id="tEditId" value="">
-      <div class="ig"><label>Task Title</label><input type="text" id="tTitle" placeholder="e.g. YouTube Like"></div>
-      <div class="ig"><label>Task Description</label><textarea id="tDesc" placeholder="ভিডিও দেখে লাইক করুন..."></textarea></div>
-      <div class="ig"><label>Price (৳)</label><input type="number" id="tPrice" placeholder="2.3"></div>
-      <div class="ig"><label>Total Slots</label><input type="number" id="tSlots" placeholder="100"></div>
-      <button class="bt" id="taskSubmitBtn" onclick="saveTask()">Post Task</button>
-      <div id="taskListAdmin" style="margin-top:20px;"></div>
+
+    <!-- Signup Form -->
+    <div id="signupBox" class="hidden">
+      <h2 class="auth-title">সাইন-আপ করুন</h2>
+      <form id="signupForm">
+        <div class="form-group">
+          <label>পূর্ণ নাম</label>
+          <input type="text" id="signupName" placeholder="আপনার নাম" required>
+        </div>
+        <div class="form-group">
+          <label>ফোন নম্বর</label>
+          <input type="text" id="signupPhone" placeholder="017XXXXXXXX" required>
+        </div>
+        <div class="form-group">
+          <label>পাসওয়ার্ড</label>
+          <input type="password" id="signupPassword" placeholder="••••••••" required>
+        </div>
+        <div class="form-group">
+          <label id="captchaLabel">ম্যাথ ক্যাপচা (৩ + ৫ = ?)</label>
+          <input type="number" id="signupCaptcha" placeholder="উত্তর দিন" required>
+        </div>
+        <button type="submit" class="btn">সাইন-আপ</button>
+      </form>
+      <div class="auth-toggle">
+        ইতিমধ্যে অ্যাকাউন্ট আছে? <span onclick="toggleAuth('login')">লগইন করুন</span>
+      </div>
     </div>
-    <button class="bt" style="background:#ef4444; margin-top:10px;" onclick="logoutAdmin()">Logout Admin</button>
+
+  </div>
+
+  <!-- Admin Login View -->
+  <div id="adminAuthView" class="auth-container hidden">
+    <h2 class="auth-title">অ্যাডমিন লগইন</h2>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label>অ্যাডমিন ইউজারনেম</label>
+        <input type="text" id="adminUsername" required>
+      </div>
+      <div class="form-group">
+        <label>পাসওয়ার্ড</label>
+        <input type="password" id="adminPassword" required>
+      </div>
+      <button type="submit" class="btn btn-danger">লগইন করুন</button>
+    </form>
+  </div>
+
+  <!-- Admin Panel Dashboard View -->
+  <div id="adminDashboardView" class="dashboard-content hidden">
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchAdminTab('submissions')">Submissions</button>
+      <button class="tab-btn" onclick="switchAdminTab('tasks')">Manage Tasks</button>
+    </div>
+
+    <!-- Submissions Tab -->
+    <div id="adminSubmissionsTab">
+      <h3 class="section-header">জমা দেওয়া তথ্যের তালিকা</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>User</th>
+              <th>Details</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="submissionsTableBody">
+            <!-- Dynamic Submissions -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Manage Tasks Tab -->
+    <div id="adminTasksTab" class="hidden">
+      <h3 class="section-header">নতুন কাজ যোগ করুন</h3>
+      <form id="createTaskForm" style="margin-bottom: 20px;">
+        <div class="form-group">
+          <label>কাজের শিরোনাম</label>
+          <input type="text" id="taskTitleInput" required>
+        </div>
+        <div class="form-group">
+          <label>পুরস্কার (টাকা/পয়সা)</label>
+          <input type="number" step="0.01" id="taskRewardInput" required>
+        </div>
+        <div class="form-group">
+          <label>বিস্তারিত বিবরণ</label>
+          <textarea id="taskDescInput" rows="2" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">কাজ পোস্ট করুন</button>
+      </form>
+
+      <h3 class="section-header">বর্তমান কাজসমূহ</h3>
+      <div id="adminTaskList">
+        <!-- Dynamic Task List -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Dashboard View -->
+  <div id="dashboardView" class="dashboard-content hidden">
+    
+    <!-- Balance Card -->
+    <div class="balance-card">
+      <div class="balance-item">
+        <h4>Available Balance</h4>
+        <p id="userBalance">৳0.00</p>
+      </div>
+      <div class="balance-item">
+        <h4>Referral Balance</h4>
+        <p id="userRefBalance">৳0.00</p>
+      </div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="services-grid">
+      <div class="service-card" onclick="switchTab('wallet')">
+        <span class="service-icon">👛</span>
+        <span class="service-title">Wallet</span>
+      </div>
+      <div class="service-card" onclick="switchTab('task')">
+        <span class="service-icon">📋</span>
+        <span class="service-title">Task</span>
+      </div>
+      <div class="service-card" onclick="openGmailModal()">
+        <span class="service-icon">📧</span>
+        <span class="service-title">Gmail Sell</span>
+      </div>
+      <div class="service-card" onclick="alert('আরো ফিচার শীঘ্রই আসছে!')">
+        <span class="service-icon">⚡</span>
+        <span class="service-title">More</span>
+      </div>
+    </div>
+
+    <!-- Main Content Area Dynamic -->
+    <div id="tabHome">
+      <h3 class="section-header">চলতি কাজসমূহ</h3>
+      <div id="userTaskList">
+        <!-- Tasks render here -->
+      </div>
+    </div>
+
+    <div id="tabWallet" class="hidden">
+      <h3 class="section-header">মাই ওয়ালেট</h3>
+      <div class="task-card">
+        <p>বর্তমান ব্যালেন্স: <b id="walletBalance">৳0.00</b></p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">উইথড্র করার অপশন শীঘ্রই যুক্ত করা হবে।</p>
+      </div>
+    </div>
+
+    <div id="tabTask" class="hidden">
+      <h3 class="section-header">সব কাজ</h3>
+      <div id="userTaskListTab">
+        <!-- Tasks render here -->
+      </div>
+    </div>
+
+    <div id="tabServices" class="hidden">
+      <h3 class="section-header">আমাদের সার্ভিসেস</h3>
+      <div class="task-card" onclick="openGmailModal()" style="cursor:pointer;">
+        <b>📧 Gmail Sell</b>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">আপনার জিমেইল সেল করুন ফিক্সড পাসওয়ার্ড ব্যবহার করে।</p>
+      </div>
+    </div>
+
+    <div id="tabProfile" class="hidden">
+      <h3 class="section-header">আমার প্রোফাইল</h3>
+      <div class="task-card">
+        <p><b>নাম:</b> <span id="profileName">-</span></p>
+        <p><b>ফোন:</b> <span id="profilePhone">-</span></p>
+        <div style="margin-top: 14px;">
+          <label style="font-size: 12px; font-weight: 600;">রেফারেল লিংক:</label>
+          <div style="display: flex; gap: 6px; margin-top: 4px;">
+            <input type="text" id="refLinkInput" readonly style="font-size: 11px; padding: 6px;">
+            <button class="btn btn-sm" onclick="copyRefLink()">কপি</button>
+          </div>
+        </div>
+        <button class="btn btn-danger" style="margin-top: 16px;" onclick="logout()">লগআউট</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="nav-bar hidden" id="bottomNav">
+    <div class="nav-item active" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      Home
+    </div>
+    <div class="nav-item" onclick="switchTab('wallet')">
+      <span class="nav-icon">👛</span>
+      Wallet
+    </div>
+    <div class="nav-item" onclick="switchTab('task')">
+      <span class="nav-icon">📋</span>
+      Task
+    </div>
+    <div class="nav-item" onclick="switchTab('services')">
+      <span class="nav-icon">🛠️</span>
+      Services
+    </div>
+    <div class="nav-item" onclick="switchTab('profile')">
+      <span class="nav-icon">👤</span>
+      Profile
+    </div>
+  </nav>
+
+</div>
+
+<!-- Gmail Sell Modal -->
+<div class="modal-overlay" id="gmailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Gmail Sell Form</div>
+      <span class="close-modal" onclick="closeModal('gmailModal')">&times;</span>
+    </div>
+    <form id="gmailSellForm">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" id="gmailFirstName" required>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="gmailLastName" required>
+      </div>
+      <div class="form-group">
+        <label>Gmail Username</label>
+        <input type="email" id="gmailUsername" placeholder="example@gmail.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password (Fixed)</label>
+        <input type="text" value="@SRABON99#&" readonly style="background: #f1f5f9; font-weight: 600;">
+      </div>
+      <button type="submit" class="btn">সাবমিট করুন</button>
+    </form>
   </div>
 </div>
 
-<!-- AUTH SCREEN -->
-<div id="auth">
-<div class="lg"><div class="li"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><h1>পেলিক্স</h1></div>
-<div class="tb"><div class="tt on" onclick="st('l')">Login</div><div class="tt" onclick="st('r')">Sign Up</div></div>
-<div id="lb" class="fb on"><div class="er" id="le">ভুল ফোন বা পাসওয়ার্ড!</div><div class="ig"><label>Phone</label><input type="text" id="lp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Password</label><input type="password" id="lps" placeholder="••••••"></div><button class="bt" onclick="dl()">Login</button></div>
-<div id="rb" class="fb"><div class="er" id="re">ক্যাপচা ভুল!</div><div class="ig"><label>Phone</label><input type="text" id="rp" placeholder="01XXXXXXXXX"></div><div class="ig"><label>Email</label><input type="email" id="rem" placeholder="ex@mail.com"></div><div class="ig"><label>Password</label><input type="password" id="rps" placeholder="••••••"></div><div class="cp"><span id="cn">3+5</span>=<input type="number" id="ca" placeholder="Ans"></div><button class="bt" onclick="dr()">Create Account</button></div>
-</div>
-
-<!-- MAIN APP -->
-<div id="app">
-<div class="hd"><div class="hl"><div class="hi"><img src="https://i.postimg.cc/DfBS7HDc/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg"></div><div style="font-weight:700;font-size:20px">পেলিক্স</div></div><div style="width:36px;height:36px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;display:flex;justify-content:center;align-items:center"><i class="fa-regular fa-bell"></i></div></div>
-<div class="ct">
-<div id="v-h" class="vw on">
-<div class="bn"><h2>Welcome, <span id="un">User</span> 👋</h2><p style="font-size:13px;color:#a7f3d0">Start earning today</p></div>
-<div class="cd" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px"><div style="width:8px;height:8px;background:#10b981;border-radius:50%"></div> Account status</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Active</div></div>
-<div class="ac"><div style="display:flex;justify-content:space-between;font-size:13px;color:#a7f3d0;margin-bottom:8px"><span>Total asset value</span><span>BDT <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></span></div><div class="aa">৳ 0.00</div><div class="ag"><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Available</span><strong>৳ 0.00</strong></div><div class="ab"><span style="font-size:11px;color:#a7f3d0;display:block;margin-bottom:4px">Referral</span><strong>৳ 0.00</strong></div></div></div>
-<div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div><div class="si" onclick="gv('v-s')"><div class="sn"><i class="fa-solid fa-border-all"></i></div><span>More</span></div></div>
-</div>
-<div id="v-s" class="vw"><h2 style="font-size:20px;margin-bottom:16px">All Services</h2><div class="sv"><div class="si" onclick="gv('v-w')"><div class="sn"><i class="fa-solid fa-wallet"></i></div><span>Wallet</span></div><div class="si" onclick="gv('v-t')"><div class="sn"><i class="fa-solid fa-clipboard-list"></i></div><span>Task</span></div><div class="si" onclick="om('gm')"><div class="sn" style="background:#ffebee;color:#d32f2f"><i class="fa-solid fa-at"></i></div><span>Gmail Sell</span></div></div></div>
-<div id="v-w" class="vw"><h2 style="font-size:20px;margin-bottom:16px">My Wallet</h2><div class="ac" style="background:linear-gradient(135deg,#0d4f3f,#0a3a2d)"><div style="font-size:12px;color:#a7f3d0;margin-bottom:8px"><i class="fa-regular fa-credit-card"></i> DEPOSIT BALANCE</div><div style="font-size:36px;font-weight:700;margin-bottom:20px">৳ 0</div><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:12px;border:none;background:#fff;color:#0a4536;font-weight:700">+ Deposit</button><button style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-weight:700">↓ Withdraw</button></div></div></div>
-<div id="v-t" class="vw"><h2 style="font-size:20px;margin-bottom:16px">Task</h2><div id="taskListContainer"></div></div>
-<div id="v-p" class="vw">
-<div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:#0a4536;color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">U</div><h2 style="font-size:20px" id="pn">User</h2><div style="font-size:13px;color:#64748b;margin-bottom:8px">ID: 10293</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳0.00</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:#64748b;display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳0.00</strong></div></div>
-<div class="cd"><div style="font-weight:700; color:#0a4536; margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div><div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid #e2e8f0;"><input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:#64748b; background:transparent;" value="https://pelix.com/ref/user123"><button onclick="copyRef()" style="background:#10b981; color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button></div></div>
-<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px"><div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div></div>
-</div>
-</div>
-<div class="nv"><div class="ni on" onclick="gv('v-h',this)"><i class="fa-solid fa-house"></i>Home</div><div class="ni" onclick="gv('v-w',this)"><i class="fa-solid fa-wallet"></i>Wallet</div><div class="nc" onclick="gv('v-t',this)"><i class="fa-solid fa-calendar-check"></i></div><div class="ni" onclick="gv('v-s',this)"><i class="fa-solid fa-border-all"></i>Services</div><div class="ni" onclick="gv('v-p',this)"><i class="fa-regular fa-user"></i>Profile</div></div>
-</div>
-
-<!-- MODALS -->
-<div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
-
-<div id="taskSubmitModal" class="ov" onclick="cm('taskSubmitModal')">
-  <div class="md" onclick="event.stopPropagation()">
-    <div class="mh"><h3>Submit Task Proof</h3><button class="cl" onclick="cm('taskSubmitModal')"><i class="fa-solid fa-xmark"></i></button></div>
-    <input type="hidden" id="submitTaskId" value="">
-    <input type="hidden" id="submitTaskPrice" value="">
-    <div class="ig"><label>Proof (Screenshot Link or Username)</label><input type="text" id="taskProof" placeholder="https://... or username"></div>
-    <button class="bt" onclick="submitTaskProof()">Send Proof</button>
+<!-- Task Proof Submit Modal -->
+<div class="modal-overlay" id="taskProofModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Submit Task Proof</div>
+      <span class="close-modal" onclick="closeModal('taskProofModal')">&times;</span>
+    </div>
+    <form id="taskProofForm">
+      <input type="hidden" id="proofTaskId">
+      <div class="form-group">
+        <label>প্রমাণ (স্ক্রিনশট লিংক বা ইউজারনেম)</label>
+        <textarea id="taskProofInput" rows="3" placeholder="এখানে তথ্য লিখুন..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-success">জমা দিন</button>
+    </form>
   </div>
-</div><script>
-let users = JSON.parse(localStorage.getItem('pelix_users')) || [];
-let gs = JSON.parse(localStorage.getItem('pelix_gs')) || [];
-let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{id: 1, title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", slots: 100, icon: "fa-youtube", color: "#ff0000"}];
-let taskSubmissions = JSON.parse(localStorage.getItem('pelix_task_subs')) || [];
+</div>
+<script>
+  // Global State Initialization via LocalStorage
+  let users = JSON.parse(localStorage.getItem('paylix_users')) || [];
+  let tasks = JSON.parse(localStorage.getItem('paylix_tasks')) || [
+    { id: 1, title: 'ইউটিউব চ্যানেল সাবস্ক্রাইব', reward: 5.00, desc: 'ইউটিউব চ্যানেলে গিয়ে সাবস্ক্রাইব করে স্ক্রিনশট দিন।' }
+  ];
+  let submissions = JSON.parse(localStorage.getItem('paylix_submissions')) || [];
+  let currentUser = JSON.parse(localStorage.getItem('paylix_current_user')) || null;
 
-if(users.length === 0) { users.push({ phone: "01310127317", pass: "admin123", name: "Admin", role: "admin" }); saveData(); }
+  let captchaAns = 0;
 
-let ca = 8;
-const fp = "@SRABON99#&";
+  // App Initialization
+  window.addEventListener('DOMContentLoaded', () => {
+    checkAdminURL();
+    generateCaptcha();
+    if (currentUser) {
+      showDashboard();
+    }
+  });
 
-if(window.location.search.includes('admin=true')) {
-  document.getElementById('auth').style.display = 'none';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('adminScreen').style.display = 'flex';
-}
-
-function saveData() {
-  localStorage.setItem('pelix_users', JSON.stringify(users));
-  localStorage.setItem('pelix_gs', JSON.stringify(gs));
-  localStorage.setItem('pelix_tasks', JSON.stringify(tasks));
-  localStorage.setItem('pelix_task_subs', JSON.stringify(taskSubmissions));
-}
-
-function st(t){document.querySelectorAll('.tt').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));if(t==='l'){document.querySelectorAll('.tt')[0].classList.add('on');document.getElementById('lb').classList.add('on')}else{document.querySelectorAll('.tt')[1].classList.add('on');document.getElementById('rb').classList.add('on');gc()}}
-function gc(){let a=Math.floor(Math.random()*10)+1,b=Math.floor(Math.random()*10)+1;ca=a+b;document.getElementById('cn').innerText=a+' + '+b}
-
-function dl(){
-  let p = document.getElementById('lp').value.trim();
-  let s = document.getElementById('lps').value;
-  let foundUser = users.find(u => u.phone === p && u.pass === s);
-  if(foundUser){
-    document.getElementById('auth').style.display='none';
-    document.getElementById('app').style.display='block';
-    document.getElementById('un').innerText = foundUser.name;
-    document.getElementById('pn').innerText = foundUser.name;
-    renderTasks();
-  } else {
-    document.getElementById('le').style.display='block';
-    setTimeout(() => document.getElementById('le').style.display='none', 3000);
+  function saveData() {
+    localStorage.setItem('paylix_users', JSON.stringify(users));
+    localStorage.setItem('paylix_tasks', JSON.stringify(tasks));
+    localStorage.setItem('paylix_submissions', JSON.stringify(submissions));
+    localStorage.setItem('paylix_current_user', JSON.stringify(currentUser));
   }
-}
 
-function dr(){
-  if(parseInt(document.getElementById('ca').value)!==ca){document.getElementById('re').style.display='block';gc();document.getElementById('ca').value='';return}
-  let p = document.getElementById('rp').value.trim();
-  let e = document.getElementById('rem').value.trim();
-  let s = document.getElementById('rps').value;
-  if(!p || !e || !s) { alert("সব ঘর পূরণ করুন!"); return; }
-  if(users.find(u => u.phone === p)) { alert("এই ফোন নম্বর দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!"); return; }
-  let newUser = { phone: p, email: e, pass: s, name: "User_" + p.slice(-4), role: "user" };
-  users.push(newUser); saveData();
-  document.getElementById('auth').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('un').innerText = newUser.name;
-  document.getElementById('pn').innerText = newUser.name;
-  renderTasks();
-}
+  // Captcha Generator
+  function generateCaptcha() {
+    const num1 = Math.floor(Math.random() * 9) + 1;
+    const num2 = Math.floor(Math.random() * 9) + 1;
+    captchaAns = num1 + num2;
+    const lbl = document.getElementById('captchaLabel');
+    if(lbl) lbl.innerText = `ম্যাথ ক্যাপচা (${num1} + ${num2} = ?)`;
+  }
 
-function gv(v,e=null){document.querySelectorAll('.vw').forEach(x=>x.classList.remove('on'));document.getElementById(v).classList.add('on');document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));if(e)e.classList.add('on');window.scrollTo(0,0)}
-function om(i){document.getElementById(i).style.display='flex'}function cm(i){document.getElementById(i).style.display='none'}
-function sg(){let f=document.getElementById('gf').value,l=document.getElementById('gl').value,u=document.getElementById('gu').value,p=document.getElementById('gp').value;if(!f||!l||!u){alert("সব ঘর পূরণ করুন!");return}if(p!==fp){alert("পাসওয়ার্ড ভুল!");return}gs.push({name:f+' '+l,email:u,status:'pending'});saveData();alert("সফলভাবে জমা হয়েছে!");cm('gm');}
+  // Auth Toggle
+  function toggleAuth(view) {
+    if (view === 'signup') {
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('signupBox').classList.remove('hidden');
+      generateCaptcha();
+    } else {
+      document.getElementById('signupBox').classList.add('hidden');
+      document.getElementById('loginBox').classList.remove('hidden');
+    }
+  }
 
-function renderTasks(){
-  let c=document.getElementById('taskListContainer');c.innerHTML='';
-  if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:#64748b">কোনো কাজ নেই।</p>';return}
-  tasks.forEach(t=>{
-    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:#64748b;margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:#64748b;margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button onclick="openTaskSubmit(${t.id}, ${t.price})" style="flex:1;padding:12px;border-radius:10px;border:none;background:#10b981;color:#fff;font-weight:600">Submit Proof</button></div></div>`
-  })
-}
+  // Signup Submit
+  document.getElementById('signupForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('signupName').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const captcha = parseInt(document.getElementById('signupCaptcha').value);
 
-function openTaskSubmit(id, price) {
-  document.getElementById('submitTaskId').value = id;
-  document.getElementById('submitTaskPrice').value = price;
-  document.getElementById('taskProof').value = '';
-  om('taskSubmitModal');
-}
+    if (captcha !== captchaAns) {
+      alert('ভুল ক্যাপচা! আবার চেষ্টা করুন।');
+      generateCaptcha();
+      return;
+    }
 
-function submitTaskProof() {
-  let id = document.getElementById('submitTaskId').value;
-  let price = document.getElementById('submitTaskPrice').value;
-  let proof = document.getElementById('taskProof').value;
-  if(!proof) { alert("প্রমাণ দিন!"); return; }
-  taskSubmissions.push({taskId: id, price: price, proof: proof, status: 'pending', user: document.getElementById('un').innerText});
-  saveData(); alert("সফলভাবে জমা হয়েছে!"); cm('taskSubmitModal');
-}
+    if (users.find(u => u.phone === phone)) {
+      alert('এই নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট তৈরি করা হয়েছে!');
+      return;
+    }
 
-function copyRef() {let copyText = document.getElementById("myRefLink");copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);alert("রেফারেল লিংক কপি হয়েছে!");}
+    const newUser = {
+      name,
+      phone,
+      password,
+      balance: 0.00,
+      refBalance: 0.00
+    };
 
-function da(){
-  let u = document.getElementById('au').value;
-  let p = document.getElementById('ap').value;
-  if(u === 'admin' && p === 'admin123'){
-    document.getElementById('adminLoginBox').style.display='none';
-    document.getElementById('adminPanelBox').style.display='block';
-    ra(); renderAdminTaskList();
-  }else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}
-}
-function logoutAdmin() {window.location.href = window.location.pathname;}
-function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';renderAdminTaskList();}}
+    users.push(newUser);
+    currentUser = newUser;
+    saveData();
+    alert('সাইন-আপ সফল হয়েছে!');
+    showDashboard();
+  });
 
-function ra(){
-  let b=document.getElementById('al');b.innerHTML='';
-  if(gs.length===0 && taskSubmissions.length===0){b.innerHTML='<p style="text-align:center;color:#64748b">কোনো সাবমিশন নেই।</p>';return}
-  if(gs.length > 0) {
-    b.innerHTML += '<h4 style="margin-bottom:10px; font-size:14px; color:#0a4536;">Gmail Submissions</h4>';
-    gs.forEach((s,i)=>{
-      let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
-      let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:8px">${s.email}</div>`;
-      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}
-      b.innerHTML+=h+'</div>';
+  // Login Submit
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const phone = document.getElementById('loginPhone').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const user = users.find(u => u.phone === phone && u.password === password);
+
+    if (user) {
+      currentUser = user;
+      saveData();
+      showDashboard();
+    } else {
+      alert('ভুল ফোন নম্বর অথবা পাসওয়ার্ড!');
+    }
+  });
+
+  function showDashboard() {
+    document.getElementById('authView').classList.add('hidden');
+    document.getElementById('adminAuthView').classList.add('hidden');
+    document.getElementById('adminDashboardView').classList.add('hidden');
+    
+    document.getElementById('mainHeader').classList.remove('hidden');
+    document.getElementById('dashboardView').classList.remove('hidden');
+    document.getElementById('bottomNav').classList.remove('hidden');
+
+    document.getElementById('userWelcomeText').innerText = `Welcome, ${currentUser.name}`;
+    document.getElementById('userWelcomeText').classList.remove('hidden');
+
+    updateUserUI();
+    renderUserTasks();
+  }
+
+  function updateUserUI() {
+    if (!currentUser) return;
+    document.getElementById('userBalance').innerText = `৳${currentUser.balance.toFixed(2)}`;
+    document.getElementById('userRefBalance').innerText = `৳${currentUser.refBalance.toFixed(2)}`;
+    document.getElementById('walletBalance').innerText = `৳${currentUser.balance.toFixed(2)}`;
+
+    document.getElementById('profileName').innerText = currentUser.name;
+    document.getElementById('profilePhone').innerText = currentUser.phone;
+
+    const currentDomain = window.location.origin + window.location.pathname;
+    document.getElementById('refLinkInput').value = `${currentDomain}?ref=${currentUser.phone}`;
+  }
+
+  function renderUserTasks() {
+    const list1 = document.getElementById('userTaskList');
+    const list2 = document.getElementById('userTaskListTab');
+
+    let html = '';
+    if (tasks.length === 0) {
+      html = '<p style="font-size: 13px; color: var(--text-muted);">বর্তমানে কোনো কাজ খালি নেই।</p>';
+    } else {
+      tasks.forEach(t => {
+        html += `
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-title">${t.title}</span>
+              <span class="task-reward">৳${parseFloat(t.reward).toFixed(2)}</span>
+            </div>
+            <p class="task-desc">${t.desc}</p>
+            <button class="btn btn-sm btn-success" onclick="openTaskProofModal(${t.id})">Submit Proof</button>
+          </div>
+        `;
+      });
+    }
+
+    if (list1) list1.innerHTML = html;
+    if (list2) list2.innerHTML = html;
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    
+    ['tabHome', 'tabWallet', 'tabTask', 'tabServices', 'tabProfile'].forEach(id => {
+      document.getElementById(id).classList.add('hidden');
+    });
+
+    if (tab === 'home') {
+      document.getElementById('tabHome').classList.remove('hidden');
+      event.currentTarget.classList.add('active');
+    } else if (tab === 'wallet') {
+      document.getElementById('tabWallet').classList.remove('hidden');
+      if (event) event.currentTarget.classList.add('active');
+    } else if (tab === 'task') {
+      document.getElementById('tabTask').classList.remove('hidden');
+      if (event) event.currentTarget.classList.add('active');
+    } else if (tab === 'services') {
+      document.getElementById('tabServices').classList.remove('hidden');
+      if (event) event.currentTarget.classList.add('active');
+    } else if (tab === 'profile') {
+      document.getElementById('tabProfile').classList.remove('hidden');
+      if (event) event.currentTarget.classList.add('active');
+    }
+  }
+
+  // Modals Controller
+  function openGmailModal() {
+    if (!currentUser) return alert('দয়া করে আগে লগইন করুন!');
+    document.getElementById('gmailModal').style.display = 'flex';
+  }
+
+  function openTaskProofModal(taskId) {
+    if (!currentUser) return alert('দয়া করে আগে লগইন করুন!');
+    document.getElementById('proofTaskId').value = taskId;
+    document.getElementById('taskProofModal').style.display = 'flex';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  // Submit Gmail Sell Form
+  document.getElementById('gmailSellForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fn = document.getElementById('gmailFirstName').value;
+    const ln = document.getElementById('gmailLastName').value;
+    const email = document.getElementById('gmailUsername').value;
+
+    const sub = {
+      id: Date.now(),
+      type: 'Gmail Sell',
+      user: currentUser.phone,
+      details: `Name: ${fn} ${ln}, Email: ${email}, Pass: @SRABON99#&`,
+      status: 'Pending'
+    };
+
+    submissions.push(sub);
+    saveData();
+    closeModal('gmailModal');
+    alert('আপনার জিমেইল সফলভাবে জমা দেওয়া হয়েছে! রিভিউ শেষে ব্যালেন্স যোগ হবে।');
+    e.target.reset();
+  });
+
+  // Submit Task Proof Form
+  document.getElementById('taskProofForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const taskId = document.getElementById('proofTaskId').value;
+    const proofText = document.getElementById('taskProofInput').value;
+    const task = tasks.find(t => t.id == taskId);
+
+    const sub = {
+      id: Date.now(),
+      type: 'Task Proof',
+      user: currentUser.phone,
+      details: `Task: ${task ? task.title : 'Task'}, Proof: ${proofText}`,
+      reward: task ? task.reward : 0,
+      status: 'Pending'
+    };
+
+    submissions.push(sub);
+    saveData();
+    closeModal('taskProofModal');
+    alert('কাজের প্রমাণ জমা দেওয়া হয়েছে!');
+    e.target.reset();
+  });
+
+  function copyRefLink() {
+    const input = document.getElementById('refLinkInput');
+    input.select();
+    document.execCommand('copy');
+    alert('রেফারেল লিংক কপি করা হয়েছে!');
+  }
+
+  function logout() {
+    currentUser = null;
+    localStorage.removeItem('paylix_current_user');
+    location.reload();
+  }
+
+  /* ---------------- ADMIN ROUTE & SYSTEM ---------------- */
+  function checkAdminURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      document.getElementById('authView').classList.add('hidden');
+      document.getElementById('dashboardView').classList.add('hidden');
+      document.getElementById('bottomNav').classList.add('hidden');
+      document.getElementById('adminAuthView').classList.remove('hidden');
+    }
+  }
+
+  document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const u = document.getElementById('adminUsername').value;
+    const p = document.getElementById('adminPassword').value;
+
+    if (u === 'admin' && p === 'admin123') {
+      document.getElementById('adminAuthView').classList.add('hidden');
+      document.getElementById('adminDashboardView').classList.remove('hidden');
+      renderAdminSubmissions();
+      renderAdminTasks();
+    } else {
+      alert('ভুল অ্যাডমিন ইউজারনেম বা পাসওয়ার্ড!');
+    }
+  });
+
+  function switchAdminTab(tab) {
+    const btns = document.querySelectorAll('.admin-tabs .tab-btn');
+    btns.forEach(b => b.classList.remove('active'));
+
+    if (tab === 'submissions') {
+      btns[0].classList.add('active');
+      document.getElementById('adminSubmissionsTab').classList.remove('hidden');
+      document.getElementById('adminTasksTab').classList.add('hidden');
+    } else {
+      btns[1].classList.add('active');
+      document.getElementById('adminSubmissionsTab').classList.add('hidden');
+      document.getElementById('adminTasksTab').classList.remove('hidden');
+    }
+  }
+
+  function renderAdminSubmissions() {
+    const tbody = document.getElementById('submissionsTableBody');
+    tbody.innerHTML = '';
+
+    if (submissions.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">কোনো Submissions নেই।</td></tr>';
+      return;
+    }
+
+    submissions.forEach(s => {
+      const tr = document.createElement('tr');
+      let statusClass = 'status-pending';
+      if(s.status === 'Approved') statusClass = 'status-approved';
+      if(s.status === 'Rejected') statusClass = 'status-rejected';
+
+      tr.innerHTML = `
+        <td>${s.type}</td>
+        <td>${s.user}</td>
+        <td style="max-width:140px; word-break:break-all;">${s.details}</td>
+        <td><span class="status-badge ${statusClass}">${s.status}</span></td>
+        <td>
+          ${s.status === 'Pending' ? `
+            <button class="btn btn-sm btn-success" onclick="updateSubmissionStatus(${s.id}, 'Approved')">✓</button>
+            <button class="btn btn-sm btn-danger" onclick="updateSubmissionStatus(${s.id}, 'Rejected')">✕</button>
+          ` : '-'}
+        </td>
+      `;
+      tbody.appendChild(tr);
     });
   }
-  if(taskSubmissions.length > 0) {
-    b.innerHTML += '<h4 style="margin:15px 0 10px; font-size:14px; color:#0a4536;">Task Proofs</h4>';
-    taskSubmissions.forEach((s,i)=>{
-      let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');
-      let h=`<div style="border-bottom:1px solid #e2e8f0;padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.user}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:#64748b;margin-bottom:4px;">প্রমাণ: ${s.proof}</div><div style="font-size:12px;color:#64748b;margin-bottom:8px;">৳${s.price}</div>`;
-      if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="approveTaskSub(${i})" style="flex:1;padding:6px;background:#10b981;color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="rejectTaskSub(${i})" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`
+
+  function updateSubmissionStatus(id, status) {
+    const sub = submissions.find(s => s.id === id);
+    if (!sub) return;
+
+    sub.status = status;
+
+    // If approved and it has a reward, add balance to user
+    if (status === 'Approved' && sub.reward) {
+      const u = users.find(user => user.phone === sub.user);
+      if (u) {
+        u.balance += parseFloat(sub.reward);
+        if (currentUser && currentUser.phone === u.phone) {
+          currentUser.balance = u.balance;
+        }
+      }
+    }
+
+    saveData();
+    renderAdminSubmissions();
+    if (currentUser) updateUserUI();
+  }
+
+  function renderAdminTasks() {
+    const list = document.getElementById('adminTaskList');
+    list.innerHTML = '';
+
+    tasks.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'task-card';
+      card.innerHTML = `
+        <div class="task-header">
+          <span class="task-title">${t.title}</span>
+          <span class="task-reward">৳${parseFloat(t.reward).toFixed(2)}</span>
+        </div>
+        <p class="task-desc">${t.desc}</p>
+        <button class="btn btn-sm btn-danger" onclick="deleteTask(${t.id})">ডিলিট করুন</button>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  document.getElementById('createTaskForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('taskTitleInput').value;
+    const reward = parseFloat(document.getElementById('taskRewardInput').value);
+    const desc = document.getElementById('taskDescInput').value;
+
+    const newTask = {
+      id: Date.now(),
+      title,
+      reward,
+      desc
+    };
+
+    tasks.push(newTask);
+    saveData();
+    renderAdminTasks();
+    renderUserTasks();
+    e.target.reset();
+    alert('কাজ পোস্ট করা হয়েছে!');
+  });
+
+  function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    saveData();
+    renderAdminTasks();
+    renderUserTasks();
+  }
+</script>
+
+</body>
+</html>
