@@ -58,10 +58,7 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 </style>
 </head>
 <body><div id="adminScreen">
-  <div style="text-align:center; margin-bottom:24px;">
-    <h1 style="color:var(--m); font-size:24px;">Admin Control</h1>
-    <p style="font-size:13px; color:var(--gr);">Secure login required</p>
-  </div>
+  <div style="text-align:center; margin-bottom:24px;"><h1 style="color:var(--m); font-size:24px;">Admin Control</h1><p style="font-size:13px; color:var(--gr);">Secure login required</p></div>
   <div id="adminLoginBox">
     <div class="ig"><label>Username</label><input type="text" id="au" placeholder="Enter username"></div>
     <div class="ig"><label>Password</label><input type="password" id="ap" placeholder="Enter password"></div>
@@ -70,14 +67,18 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
   <div id="adminPanelBox" style="display:none;">
     <div class="tabs">
       <div class="tab on" id="tabSub" onclick="switchAdminTab('sub')">Submissions</div>
-      <div class="tab" id="tabTask" onclick="switchAdminTab('task')">Post Task</div>
+      <div class="tab" id="tabTask" onclick="switchAdminTab('task')">Manage Tasks</div>
     </div>
     <div id="adminSubView"><div id="al"></div></div>
     <div id="adminTaskView" style="display:none">
+      <h3 id="taskFormTitle" style="margin-bottom:10px; font-size:16px;">Post New Task</h3>
+      <input type="hidden" id="tEditId" value="">
       <div class="ig"><label>Task Title</label><input type="text" id="tTitle" placeholder="e.g. YouTube Like"></div>
       <div class="ig"><label>Task Description</label><textarea id="tDesc" placeholder="ভিডিও দেখে লাইক করুন..."></textarea></div>
       <div class="ig"><label>Price (৳)</label><input type="number" id="tPrice" placeholder="2.3"></div>
-      <button class="bt" onclick="postTask()">Post Task</button>
+      <div class="ig"><label>Total Slots (কতজন করতে পারবে)</label><input type="number" id="tSlots" placeholder="100"></div>
+      <button class="bt" id="taskSubmitBtn" onclick="saveTask()">Post Task</button>
+      <div id="taskListAdmin" style="margin-top:20px;"></div>
     </div>
     <button class="bt" style="background:#ef4444; margin-top:10px;" onclick="logoutAdmin()">Logout Admin</button>
   </div>
@@ -103,16 +104,8 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 <div id="v-p" class="vw">
 <div style="text-align:center;padding:20px 0"><div style="width:80px;height:80px;background:var(--m);color:#fff;border-radius:50%;display:inline-flex;justify-content:center;align-items:center;font-size:32px;font-weight:700;margin-bottom:10px">U</div><h2 style="font-size:20px" id="pn">User</h2><div style="font-size:13px;color:var(--gr);margin-bottom:8px">ID: 10293</div><div style="background:#e6f7ef;color:#047857;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;display:inline-block">Active</div></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px"><div class="cd" style="padding:12px"><span style="font-size:12px;color:var(--gr);display:block;margin-bottom:4px">Main balance</span><strong style="font-size:18px">৳0.00</strong></div><div class="cd" style="padding:12px"><span style="font-size:12px;color:var(--gr);display:block;margin-bottom:4px">Referral</span><strong style="font-size:18px">৳0.00</strong></div></div>
-<div class="cd">
-  <div style="font-weight:700; color:var(--m); margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div>
-  <div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid var(--br);">
-    <input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:var(--gr); background:transparent;" value="https://pelix.com/ref/user123">
-    <button onclick="copyRef()" style="background:var(--g); color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button>
-  </div>
-</div>
-<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px">
-<div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div>
-</div>
+<div class="cd"><div style="font-weight:700; color:var(--m); margin-bottom:8px;"><i class="fa-solid fa-link"></i> Your Referral Link</div><div style="display:flex; gap:8px; align-items:center; background:#f8fafc; padding:10px; border-radius:10px; border:1px solid var(--br);"><input type="text" id="myRefLink" readonly style="border:none; outline:none; flex:1; font-size:12px; color:var(--gr); background:transparent;" value="https://pelix.com/ref/user123"><button onclick="copyRef()" style="background:var(--g); color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;">Copy</button></div></div>
+<div class="cd" style="padding:0;overflow:hidden;margin-bottom:12px"><div onclick="location.reload()" style="display:flex;justify-content:space-between;align-items:center;padding:16px;cursor:pointer"><div style="display:flex;gap:12px;align-items:center;font-weight:600;color:#ef4444"><div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;justify-content:center;align-items:center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Log out</div></div></div>
 </div>
 </div>
 <div class="nv"><div class="ni on" onclick="gv('v-h',this)"><i class="fa-solid fa-house"></i>Home</div><div class="ni" onclick="gv('v-w',this)"><i class="fa-solid fa-wallet"></i>Wallet</div><div class="nc" onclick="gv('v-t',this)"><i class="fa-solid fa-calendar-check"></i></div><div class="ni" onclick="gv('v-s',this)"><i class="fa-solid fa-border-all"></i>Services</div><div class="ni" onclick="gv('v-p',this)"><i class="fa-regular fa-user"></i>Profile</div></div>
@@ -120,7 +113,7 @@ body{background:var(--b);color:var(--t);padding-bottom:70px;-webkit-tap-highligh
 <div id="gm" class="ov" onclick="cm('gm')"><div class="md" onclick="event.stopPropagation()"><div class="mh"><h3>Gmail Sell</h3><button class="cl" onclick="cm('gm')"><i class="fa-solid fa-xmark"></i></button></div><div class="ig"><label>First Name</label><input type="text" id="gf" placeholder="Rahim"></div><div class="ig"><label>Last Name</label><input type="text" id="gl" placeholder="Uddin"></div><div class="ig"><label>Gmail Username</label><input type="email" id="gu" placeholder="yourname@gmail.com"></div><div class="pb"><i class="fa-solid fa-key"></i> Fixed Pass: <strong>@SRABON99#&</strong></div><div class="ig"><label>Enter Fixed Password</label><input type="password" id="gp" placeholder="Type password"></div><button class="bt" onclick="sg()">Submit</button></div></div>
 <script>
 let gs = JSON.parse(localStorage.getItem('pelix_gs')) || [];
-let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", icon: "fa-youtube", color: "#ff0000"}];
+let tasks = JSON.parse(localStorage.getItem('pelix_tasks')) || [{id: 1, title: "ইউটিউব লাইক", desc: "ভিডিও দেখে লাইক করুন এবং প্রমাণ জমা দিন।", price: "2.3", slots: 100, icon: "fa-youtube", color: "#ff0000"}];
 let ca = 8;
 const fp = "@SRABON99#&";
 if(window.location.search.includes('admin=true')) {
@@ -139,15 +132,106 @@ function dr(){if(parseInt(document.getElementById('ca').value)!==ca){document.ge
 function gv(v,e=null){document.querySelectorAll('.vw').forEach(x=>x.classList.remove('on'));document.getElementById(v).classList.add('on');document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));if(e)e.classList.add('on');window.scrollTo(0,0)}
 function om(i){document.getElementById(i).style.display='flex'}function cm(i){document.getElementById(i).style.display='none'}
 function sg(){let f=document.getElementById('gf').value,l=document.getElementById('gl').value,u=document.getElementById('gu').value,p=document.getElementById('gp').value;if(!f||!l||!u){alert("সব ঘর পূরণ করুন!");return}if(p!==fp){alert("পাসওয়ার্ড ভুল!");return}gs.push({name:f+' '+l,email:u,status:'pending'});saveData();alert("সফলভাবে জমা হয়েছে!");cm('gm');}
-function renderTasks(){let c=document.getElementById('taskListContainer');c.innerHTML='';if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো কাজ নেই।</p>';return}tasks.forEach(t=>{c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:var(--gr);margin-bottom:12px">${t.desc}</p><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:10px;border:1px solid var(--br);background:transparent;font-weight:600">Start</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--g);color:#fff;font-weight:600">Submit</button></div></div>`})}
+
+// ইউজারদের টাস্ক রেন্ডার (স্লট সহ)
+function renderTasks(){
+  let c=document.getElementById('taskListContainer');c.innerHTML='';
+  if(tasks.length===0){c.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো কাজ নেই।</p>';return}
+  tasks.forEach(t=>{
+    c.innerHTML+=`<div class="cd"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="display:flex;gap:10px;align-items:center;font-weight:700"><div style="width:36px;height:36px;background:${t.color};border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center"><i class="fa-solid ${t.icon}"></i></div> ${t.title}</div><div style="background:#e6f7ef;color:#047857;padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700">৳${t.price}</div></div><p style="font-size:13px;color:var(--gr);margin-bottom:8px">${t.desc}</p><p style="font-size:12px;color:var(--gr);margin-bottom:12px;"><strong>${t.slots}</strong> slots left</p><div style="display:flex;gap:10px"><button style="flex:1;padding:12px;border-radius:10px;border:1px solid var(--br);background:transparent;font-weight:600">Start</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--g);color:#fff;font-weight:600">Submit</button></div></div>`
+  })
+}
+
 function copyRef() {let copyText = document.getElementById("myRefLink");copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);alert("রেফারেল লিংক কপি হয়েছে!");}
-function da(){let u=document.getElementById('au').value;let p=document.getElementById('ap').value;if(u==='admin'&&p==='admin123'){document.getElementById('adminLoginBox').style.display='none';document.getElementById('adminPanelBox').style.display='block';ra();}else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}}
+
+// অ্যাডমিন ফাংশন
+function da(){let u=document.getElementById('au').value;let p=document.getElementById('ap').value;if(u==='admin'&&p==='admin123'){document.getElementById('adminLoginBox').style.display='none';document.getElementById('adminPanelBox').style.display='block';ra();renderAdminTaskList();}else{alert("ভুল অ্যাডমিন পাসওয়ার্ড!")}}
 function logoutAdmin() {window.location.href = window.location.pathname;}
-function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';}}
+function switchAdminTab(t){document.querySelectorAll('#adminPanelBox .tab').forEach(x=>x.classList.remove('on'));if(t==='sub'){document.getElementById('tabSub').classList.add('on');document.getElementById('adminSubView').style.display='block';document.getElementById('adminTaskView').style.display='none';}else{document.getElementById('tabTask').classList.add('on');document.getElementById('adminSubView').style.display='none';document.getElementById('adminTaskView').style.display='block';renderAdminTaskList();}}
 function ra(){let b=document.getElementById('al');b.innerHTML='';if(gs.length===0){b.innerHTML='<p style="text-align:center;color:var(--gr)">কোনো সাবমিশন নেই।</p>';return}gs.forEach((s,i)=>{let c=s.status==='pending'?'#d97706':(s.status==='approved'?'#047857':'#ef4444'),bg=s.status==='pending'?'#fef3c7':(s.status==='approved'?'#d1fae5':'#fee2e2');let h=`<div style="border-bottom:1px solid var(--br);padding:10px 0;margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><strong>${s.name}</strong><span style="background:${bg};color:${c};padding:2px 8px;border-radius:10px;font-size:11px">${s.status.toUpperCase()}</span></div><div style="font-size:13px;color:var(--gr);margin-bottom:8px">${s.email}</div>`;if(s.status==='pending'){h+=`<div style="display:flex;gap:8px"><button onclick="aa(${i},'approved')" style="flex:1;padding:6px;background:var(--g);color:#fff;border:none;border-radius:6px;font-size:12px">Approve</button><button onclick="aa(${i},'rejected')" style="flex:1;padding:6px;background:#ef4444;color:#fff;border:none;border-radius:6px;font-size:12px">Reject</button></div>`}b.innerHTML+=h+'</div>'})}
 function aa(i,a){gs[i].status=a;saveData();ra()}
-function postTask(){let t=document.getElementById('tTitle').value,d=document.getElementById('tDesc').value,p=document.getElementById('tPrice').value;if(!t||!d||!p){alert("সব ঘর পূরণ করুন!");return}tasks.unshift({title:t,desc:d,price:p,icon:"fa-clipboard-list",color:"#10b981"});saveData();alert("নতুন কাজ পোস্ট করা হয়েছে!");document.getElementById('tTitle').value='';document.getElementById('tDesc').value='';document.getElementById('tPrice').value='';switchAdminTab('sub');}
+
+// টাস্ক পোস্ট, এডিট এবং ডিলিট সিস্টেম
+function saveTask(){
+  let id = document.getElementById('tEditId').value;
+  let t = document.getElementById('tTitle').value;
+  let d = document.getElementById('tDesc').value;
+  let p = document.getElementById('tPrice').value;
+  let s = document.getElementById('tSlots').value;
+  
+  if(!t || !d || !p || !s){alert("সব ঘর পূরণ করুন!");return}
+
+  if(id) {
+    // এডিট
+    let idx = tasks.findIndex(x => x.id == id);
+    if(idx > -1) {
+      tasks[idx].title = t; tasks[idx].desc = d; tasks[idx].price = p; tasks[idx].slots = s;
+    }
+    alert("কাজ সফলভাবে এডিট হয়েছে!");
+  } else {
+    // নতুন
+    tasks.unshift({id: Date.now(), title: t, desc: d, price: p, slots: s, icon: "fa-clipboard-list", color: "#10b981"});
+    alert("নতুন কাজ পোস্ট করা হয়েছে!");
+  }
+  
+  saveData();
+  resetTaskForm();
+  renderAdminTaskList();
+  renderTasks();
+}
+
+function renderAdminTaskList(){
+  let box = document.getElementById('taskListAdmin');
+  box.innerHTML = '<h4 style="margin-bottom:10px; font-size:14px;">All Posted Tasks</h4>';
+  tasks.forEach((t, i) => {
+    box.innerHTML += `
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--br);">
+        <div>
+          <strong style="font-size:13px;">${t.title}</strong>
+          <div style="font-size:11px; color:var(--gr);">৳${t.price} • ${t.slots} slots</div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button onclick="editTask(${t.id})" style="background:#3b82f6; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Edit</button>
+          <button onclick="deleteTask(${t.id})" style="background:#ef4444; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Delete</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function editTask(id){
+  let t = tasks.find(x => x.id == id);
+  if(t) {
+    document.getElementById('tEditId').value = t.id;
+    document.getElementById('tTitle').value = t.title;
+    document.getElementById('tDesc').value = t.desc;
+    document.getElementById('tPrice').value = t.price;
+    document.getElementById('tSlots').value = t.slots;
+    document.getElementById('taskFormTitle').innerText = "Edit Task";
+    document.getElementById('taskSubmitBtn').innerText = "Update Task";
+    window.scrollTo(0,0);
+  }
+}
+
+function deleteTask(id){
+  if(confirm("আপনি কি সত্যিই এই কাজটি ডিলিট করতে চান?")) {
+    tasks = tasks.filter(x => x.id != id);
+    saveData();
+    renderAdminTaskList();
+    renderTasks();
+  }
+}
+
+function resetTaskForm(){
+  document.getElementById('tEditId').value = '';
+  document.getElementById('tTitle').value = '';
+  document.getElementById('tDesc').value = '';
+  document.getElementById('tPrice').value = '';
+  document.getElementById('tSlots').value = '';
+  document.getElementById('taskFormTitle').innerText = "Post New Task";
+  document.getElementById('taskSubmitBtn').innerText = "Post Task";
+}
 gc();
 </script>
 </body>
-</html>
+  </html>
