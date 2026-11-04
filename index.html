@@ -3,289 +3,247 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pelix 2.0 - Micro Jobs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PELIX 2.0</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap');
 *{box-sizing:border-box}
-body{margin:0;background:#0c0b18;color:#f5f3ff;font-family:Arial,sans-serif}
-header{background:#17142a;padding:17px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #30294c}
-.logo{font-size:23px;font-weight:bold;color:#b99aff}
-button{border:0;border-radius:9px;padding:11px 14px;background:#8055e8;color:white;font-weight:bold;cursor:pointer}
-button.secondary{background:#29243e}
-button.danger{background:#a83250}
-input,select,textarea{width:100%;padding:12px;margin:7px 0 13px;background:#17152a;border:1px solid #40365e;border-radius:8px;color:white}
-nav{display:flex;gap:8px;overflow:auto;padding:12px;background:#121020}
-nav button{white-space:nowrap}
-main{padding:15px;max-width:850px;margin:auto}
-.card{background:#19162c;border:1px solid #30294b;border-radius:13px;padding:15px;margin:12px 0}
-h2{font-size:19px;color:#c7aaff}
-h3{margin:5px 0 10px}
-small,.muted{color:#aaa2c1}
-.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.stat{background:#211b38;border-radius:10px;padding:14px;flex:1;min-width:100px}
-.stat strong{display:block;font-size:21px;color:#c8aaff;margin-top:7px}
-.tag{display:inline-block;background:#33264f;padding:5px 9px;border-radius:20px;font-size:12px;color:#d5c2ff}
-.hidden{display:none!important}
-hr{border:0;border-top:1px solid #39314e;margin:15px 0}
-label{font-size:13px;color:#c9c1df}
+body{margin:0;background:#090817;color:#fff;font-family:Inter,'Hind Siliguri',sans-serif}
+header{height:68px;background:#141128;border-bottom:1px solid #393052;display:flex;align-items:center;justify-content:space-between;padding:0 17px;position:sticky;top:0;z-index:5}
+.logo{font-size:23px;font-weight:900;color:#b99aff}
+.logo span{color:#fff}
+main{max-width:1000px;margin:auto;padding:18px 14px 100px}
+.page{display:none}.page.active{display:block}
+button{border:0;padding:11px 15px;border-radius:10px;background:linear-gradient(110deg,#8558ed,#bd67ed);color:white;font-weight:700;cursor:pointer}
+button.dark{background:#29243e;border:1px solid #494064}
+button.red{background:#9e3450}
+input,select,textarea{width:100%;padding:13px;margin:7px 0 14px;background:#100e20;border:1px solid #40375c;border-radius:10px;color:white}
+label{font-size:13px;color:#c8bce8}
+.card{background:linear-gradient(145deg,#1d1937,#131126);border:1px solid #393052;border-radius:17px;padding:17px;margin:13px 0}
+.hero{padding:27px;border-radius:22px;background:linear-gradient(120deg,#5732a0,#251943,#642d7a);border:1px solid #8e67ce}
+.hero h1{font-size:32px;margin:12px 0}
+.muted{color:#aaa2c2;font-size:13px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.stat{background:#211b3a;border:1px solid #45365e;border-radius:14px;padding:14px}
+.stat strong{display:block;font-size:23px;margin-top:8px;color:#c5a7ff}
+h2{font-size:20px;margin:10px 0 15px}
+h3{font-size:16px;margin:7px 0}
+.tag{font-size:11px;background:#49336b;color:#e0ceff;padding:5px 9px;border-radius:20px;display:inline-block}
+.reward{font-size:22px;font-weight:800;color:#49e0ac}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.full{width:100%}
+.status{font-size:11px;padding:5px 9px;border-radius:20px;background:#48351d;color:#ffd18a}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#141128;border-top:1px solid #393052;display:flex;justify-content:space-around;padding:10px 3px calc(10px + env(safe-area-inset-bottom))}
+nav button{background:none;color:#aaa0c5;padding:5px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px}
+nav button span{font-size:20px}
+nav button.active{color:#c5a4ff}
+hr{border:0;border-top:1px solid #403653;margin:17px 0}
+@media(max-width:430px){.hero h1{font-size:27px}.grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-
 <header>
- <div class="logo">✦ PELIX 2.0</div>
- <div id="topBalance">৳ 0.00</div>
+ <div class="logo">PELIX <span>2.0</span></div>
+ <div id="headerBalance">৳ 0.00</div>
 </header>
 
-<nav>
- <button onclick="show('home')">Home</button>
- <button onclick="show('jobs')">Available Jobs</button>
- <button onclick="show('post')">Post a Job</button>
- <button onclick="show('dashboard')">Dashboard</button>
- <button onclick="show('admin')">Admin</button>
-</nav>
-
 <main>
+<section id="home" class="page active">
+ <div class="hero">
+  <div class="muted">WELCOME TO PELIX 2.0</div>
+  <h1>Work More.<br>Earn More.</h1>
+  <p>Explore micro jobs and earn rewards after approval.</p>
+  <button onclick="go('jobs')">Explore Jobs →</button>
+ </div>
+ <div class="grid" style="margin-top:14px">
+  <div class="stat">Available Balance<strong id="homeBalance">৳0</strong></div>
+  <div class="stat">Available Jobs<strong id="homeCount">0</strong></div>
+  <div class="stat">Pending Tasks<strong id="homePending">0</strong></div>
+  <div class="stat">Completed Tasks<strong id="homeDone">0</strong></div>
+ </div>
 
-<section id="home">
- <div class="card">
-  <h2>Welcome to Pelix 2.0</h2>
-  <p>কাজ খুঁজুন, কাজ পোস্ট করুন এবং অনুমোদনের মাধ্যমে রিওয়ার্ড অর্জন করুন।</p>
-  <button onclick="show('jobs')">Explore Jobs</button>
-  <button class="secondary" onclick="show('post')">Post a Job</button>
+ <h2>Featured Categories</h2>
+ <div class="grid">
+  <div class="card" onclick="go('gmail')">📧 <h3>Gmail Work</h3><p class="muted">Email-related tasks</p></div>
+  <div class="card" onclick="filter('TikTok')">🎵 <h3>TikTok Jobs</h3><p class="muted">Social media tasks</p></div>
+  <div class="card" onclick="filter('Facebook')">📘 <h3>Facebook Jobs</h3><p class="muted">Engagement tasks</p></div>
+  <div class="card" onclick="filter('YouTube')">▶️ <h3>YouTube Jobs</h3><p class="muted">Channel tasks</p></div>
  </div>
- <div class="row">
-  <div class="stat">Available Jobs<strong id="totalJobs">0</strong></div>
-  <div class="stat">Pending Tasks<strong id="totalPending">0</strong></div>
+ <h2>Latest Jobs</h2><div id="latestJobs"></div>
+</section>
+
+<section id="gmail" class="page">
+ <div class="hero">
+  <div class="muted">SPECIAL TASK CATEGORY</div>
+  <h1>📧 Gmail Work Center</h1>
+  <p>Email-related tasks. Reward is added only after admin approval.</p>
  </div>
  <div class="card">
-  <h2>Job Categories</h2>
-  <p>📱 Social Media Tasks</p>
-  <p>📧 Email-related Tasks</p>
-  <p>▶️ YouTube Tasks</p>
-  <p>🎵 TikTok Tasks</p>
-  <p>📘 Facebook Tasks</p>
-  <p>✍️ Data Entry & Other Tasks</p>
+  <div class="row"><h3>New Email Task</h3><span class="reward">৳10</span></div>
+  <p class="muted">নতুন ইমেইল-সংক্রান্ত বৈধ কাজের সাবমিশন দিন। অ্যাকাউন্টের পাসওয়ার্ড বা OTP দেবেন না।</p>
+  <button class="full" onclick="gmailSubmit('New Email Task')">Submit New Email Task</button>
+ </div>
+ <div class="card">
+  <div class="row"><h3>Existing Email Task</h3><span class="reward">৳10</span></div>
+  <p class="muted">বিদ্যমান ইমেইল-সংক্রান্ত বৈধ কাজের Reference জমা দিন। কোনো গোপন তথ্য দেবেন না।</p>
+  <button class="full" onclick="gmailSubmit('Existing Email Task')">Submit Existing Email Task</button>
+ </div>
+ <div class="card">
+  <h3>Gmail Submission History</h3>
+  <div id="gmailHistory"></div>
  </div>
 </section>
 
-<section id="jobs" class="hidden">
- <h2>Available Jobs</h2>
+<section id="jobs" class="page">
+ <h2>Available Micro Jobs</h2>
  <div id="jobList"></div>
 </section>
 
-<section id="post" class="hidden">
+<section id="post" class="page">
  <div class="card">
   <h2>Post a New Job</h2>
-  <label>Job Title</label>
-  <input id="jobTitle" placeholder="কাজের নাম লিখুন">
+  <label>Job Title</label><input id="title" placeholder="Job title">
   <label>Category</label>
-  <select id="jobCategory">
-   <option>Social Media</option>
-   <option>Email-related Tasks</option>
-   <option>YouTube</option>
-   <option>TikTok</option>
-   <option>Facebook</option>
-   <option>Data Entry</option>
-   <option>Other</option>
+  <select id="category">
+   <option>Social Media</option><option>TikTok</option><option>Facebook</option>
+   <option>YouTube</option><option>Email-related Tasks</option><option>Data Entry</option><option>Other</option>
   </select>
-  <label>প্রতি কাজের Reward (৳)</label>
-  <input id="jobReward" type="number" min="1" placeholder="যেমন 10">
-  <label>কতজন কাজ করতে পারবে?</label>
-  <input id="jobSlots" type="number" min="1" placeholder="যেমন 100">
-  <label>কাজের বিস্তারিত</label>
-  <textarea id="jobDescription" rows="4" placeholder="কাজের নিয়ম লিখুন"></textarea>
-  <label>Job Posting Payment Transaction ID</label>
-  <input id="jobTrx" placeholder="bKash Transaction ID">
-  <button onclick="postJob()">Submit Job for Review</button>
-  <p class="muted">প্রকাশের আগে Admin কাজ ও পেমেন্ট যাচাই করবে।</p>
+  <label>Reward Per Task (৳)</label><input id="reward" type="number" min="1" placeholder="10">
+  <label>Number of Workers</label><input id="slots" type="number" min="1" placeholder="100">
+  <label>Description</label><textarea id="description" rows="4" placeholder="Describe your job"></textarea>
+  <label>bKash Transaction ID</label><input id="trx" placeholder="Transaction ID">
+  <button class="full" onclick="postJob()">Submit Job for Approval</button>
+  <p class="muted">Minimum posting payment ৳10. Admin review is required.</p>
  </div>
 </section>
 
-<section id="dashboard" class="hidden">
+<section id="dashboard" class="page">
  <h2>My Dashboard</h2>
- <div class="row">
-  <div class="stat">Balance<strong id="balance">৳0</strong></div>
-  <div class="stat">Pending<strong id="pendingBalance">৳0</strong></div>
+ <div class="grid">
+  <div class="stat">Balance<strong id="dashBalance">৳0</strong></div>
+  <div class="stat">Pending<strong id="dashPending">৳0</strong></div>
  </div>
- <div class="card">
-  <h3>My Posted Jobs</h3>
-  <div id="myJobs"></div>
- </div>
- <div class="card">
-  <h3>My Submissions</h3>
-  <div id="mySubmissions"></div>
- </div>
+ <div class="card"><h3>My Posted Jobs</h3><div id="myJobs"></div></div>
+ <div class="card"><h3>My Submissions</h3><div id="myTasks"></div></div>
 </section>
 
-<section id="admin" class="hidden">
+<section id="admin" class="page">
  <div class="card">
-  <h2>Admin Panel</h2>
-  <p class="muted">ডেমো Admin Panel — বাস্তব ব্যবহারে সার্ভার-সুরক্ষিত Admin Login দরকার।</p>
-  <label>Demo Admin PIN</label>
-  <input id="adminPin" type="password" placeholder="PIN লিখুন">
-  <button onclick="adminLogin()">Login as Admin</button>
-  <div id="adminContent" class="hidden">
-   <hr>
-   <h3>Job Approval</h3>
-   <div id="adminJobs"></div>
-   <hr>
-   <h3>Task Submissions</h3>
-   <div id="adminTasks"></div>
+  <h2>Admin Control Center</h2>
+  <p class="muted">Demo only. Production admin login must be server-protected.</p>
+  <label>Admin PIN</label><input id="pin" type="password" placeholder="Admin PIN">
+  <button class="full" onclick="adminLogin()">Login Admin</button>
+  <div id="adminArea" style="display:none">
+   <hr><h3>Gmail Work Submissions</h3><div id="gmailAdmin"></div>
+   <hr><h3>Other Task Submissions</h3><div id="taskAdmin"></div>
+   <hr><h3>Posted Jobs Approval</h3><div id="jobAdmin"></div>
   </div>
  </div>
 </section>
-
 </main>
 
+<nav>
+ <button class="active" data-id="home" onclick="go('home')"><span>⌂</span>Home</button>
+ <button data-id="gmail" onclick="go('gmail')"><span>✉</span>Gmail</button>
+ <button data-id="jobs" onclick="go('jobs')"><span>▦</span>Jobs</button>
+ <button data-id="post" onclick="go('post')"><span>＋</span>Post</button>
+ <button data-id="dashboard" onclick="go('dashboard')"><span>◈</span>Wallet</button>
+ <button data-id="admin" onclick="go('admin')"><span>⚙</span>Admin</button>
+</nav>
+
 <script>
-const ADMIN_PIN = "2468";
-let jobs = JSON.parse(localStorage.getItem("pelix_jobs") || "[]");
-let submissions = JSON.parse(localStorage.getItem("pelix_submissions") || "[]");
-let balance = Number(localStorage.getItem("pelix_balance") || 0);
-let pending = Number(localStorage.getItem("pelix_pending") || 0);
-let currentUser = "Demo User";
+const ADMIN_PIN="2468";
+let jobs=JSON.parse(localStorage.getItem("pelix_jobs")||"[]");
+let tasks=JSON.parse(localStorage.getItem("pelix_tasks")||"[]");
+let balance=Number(localStorage.getItem("pelix_balance")||0);
+let pending=Number(localStorage.getItem("pelix_pending")||0);
+let filterCategory="";
 
 function save(){
  localStorage.setItem("pelix_jobs",JSON.stringify(jobs));
- localStorage.setItem("pelix_submissions",JSON.stringify(submissions));
+ localStorage.setItem("pelix_tasks",JSON.stringify(tasks));
  localStorage.setItem("pelix_balance",balance);
  localStorage.setItem("pelix_pending",pending);
  render();
 }
-
-function show(id){
- document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
- document.getElementById(id).classList.remove("hidden");
+function esc(v){
+ return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function go(id){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x.dataset.id===id));
  render();
 }
-
+function filter(c){filterCategory=c;go("jobs")}
+function gmailSubmit(type){
+ let reference=prompt("কাজের Reference বা বিবরণ লিখুন। Password, OTP বা Recovery তথ্য দেবেন না:");
+ if(!reference||!reference.trim())return;
+ tasks.push({id:Date.now(),type,title:type,reward:10,reference:reference.trim(),status:"Pending",category:"Gmail"});
+ pending+=10;save();
+ alert("Gmail task Pending অবস্থায় জমা হয়েছে। Admin Approve করলে ৳10 পাবেন।");
+}
 function postJob(){
- let title=document.getElementById("jobTitle").value.trim();
- let category=document.getElementById("jobCategory").value;
- let reward=Number(document.getElementById("jobReward").value);
- let slots=Number(document.getElementById("jobSlots").value);
- let description=document.getElementById("jobDescription").value.trim();
- let trx=document.getElementById("jobTrx").value.trim();
-
- if(!title||!reward||reward<1||!slots||slots<1||!description||!trx){
-  alert("সব তথ্য পূরণ করুন।");return;
- }
-
- jobs.push({
-  id:Date.now(),title,category,reward,slots,description,trx,
-  owner:currentUser,status:"Pending",approved:0
- });
- save();
- alert("Job জমা হয়েছে। Admin Review-এর জন্য Pending থাকবে।");
- show("dashboard");
+ let title=document.getElementById("title").value.trim();
+ let category=document.getElementById("category").value;
+ let reward=Number(document.getElementById("reward").value);
+ let slots=Number(document.getElementById("slots").value);
+ let description=document.getElementById("description").value.trim();
+ let trx=document.getElementById("trx").value.trim();
+ if(!title||!description||!trx||reward<1||slots<1){alert("সব তথ্য পূরণ করুন।");return}
+ jobs.push({id:Date.now(),title,category,reward,slots,description,trx,status:"Pending"});
+ save();alert("Job Pending Approval-এ জমা হয়েছে।");go("dashboard");
 }
-
-function submitTask(id){
- let job=jobs.find(j=>j.id===id);
- if(!job||job.status!=="Approved"||job.slots<=0)return;
- let proof=prompt("কাজ সম্পন্নের প্রমাণ বা Work Reference লিখুন। কোনো Password বা OTP দেবেন না:");
- if(!proof||!proof.trim())return;
-
- submissions.push({
-  id:Date.now(),jobId:id,title:job.title,reward:job.reward,
-  worker:currentUser,proof:proof.trim(),status:"Pending"
- });
- job.slots--;
- pending+=job.reward;
- save();
- alert("Submission জমা হয়েছে। Admin Approve করলে Reward যোগ হবে।");
+function submitJob(id){
+ let j=jobs.find(x=>x.id===id);
+ if(!j||j.slots<1)return;
+ let reference=prompt("কাজের Reference বা প্রমাণ লিখুন। গোপন তথ্য দেবেন না:");
+ if(!reference||!reference.trim())return;
+ tasks.push({id:Date.now(),title:j.title,reward:j.reward,reference:reference.trim(),status:"Pending",category:j.category});
+ j.slots--;pending+=j.reward;save();
+ alert("Task Pending Review-এ জমা হয়েছে।");
 }
-
 function adminLogin(){
- if(document.getElementById("adminPin").value!==ADMIN_PIN){
-  alert("ভুল PIN");return;
- }
- document.getElementById("adminContent").classList.remove("hidden");
- renderAdmin();
-}
-
-function approveJob(id){
- let j=jobs.find(x=>x.id===id);
- if(j){j.status="Approved";save();renderAdmin();}
-}
-function rejectJob(id){
- let j=jobs.find(x=>x.id===id);
- if(j){j.status="Rejected";save();renderAdmin();}
+ if(document.getElementById("pin").value!==ADMIN_PIN){alert("Wrong PIN");return}
+ document.getElementById("adminArea").style.display="block";render();
 }
 function approveTask(id){
- let s=submissions.find(x=>x.id===id);
- if(!s||s.status!=="Pending")return;
- s.status="Approved";
- pending=Math.max(0,pending-s.reward);
- balance+=s.reward;
- save();renderAdmin();
+ let t=tasks.find(x=>x.id===id&&x.status==="Pending");if(!t)return;
+ t.status="Approved";pending=Math.max(0,pending-t.reward);balance+=t.reward;save();
 }
 function rejectTask(id){
- let s=submissions.find(x=>x.id===id);
- if(!s||s.status!=="Pending")return;
- s.status="Rejected";
- pending=Math.max(0,pending-s.reward);
- save();renderAdmin();
+ let t=tasks.find(x=>x.id===id&&x.status==="Pending");if(!t)return;
+ t.status="Rejected";pending=Math.max(0,pending-t.reward);save();
 }
-
+function approveJob(id){let j=jobs.find(x=>x.id===id);if(j)j.status="Approved";save()}
+function rejectJob(id){let j=jobs.find(x=>x.id===id);if(j)j.status="Rejected";save()}
+function jobCard(j){
+ return `<div class="card"><span class="tag">${esc(j.category)}</span><h3>${esc(j.title)}</h3><p class="muted">${esc(j.description)}</p><div class="row"><span class="reward">৳${j.reward}</span><span class="muted">${j.slots} Slots</span></div><br><button onclick="submitJob(${j.id})" class="full">Submit Work →</button></div>`;
+}
 function render(){
- document.getElementById("topBalance").textContent="৳ "+balance;
- document.getElementById("balance").textContent="৳ "+balance;
- document.getElementById("pendingBalance").textContent="৳ "+pending;
- document.getElementById("totalJobs").textContent=jobs.filter(j=>j.status==="Approved").length;
- document.getElementById("totalPending").textContent=submissions.filter(s=>s.status==="Pending").length;
-
- document.getElementById("jobList").innerHTML=jobs
- .filter(j=>j.status==="Approved"&&j.slots>0)
- .map(j=>`<div class="card">
- <span class="tag">${escapeHTML(j.category)}</span>
- <h3>${escapeHTML(j.title)}</h3>
- <p>${escapeHTML(j.description)}</p>
- <div class="row"><b>Reward: ৳${j.reward}</b><small>Slots: ${j.slots}</small></div>
- <button onclick="submitTask(${j.id})">Submit Work</button>
- </div>`).join("")||"<p class='muted'>এখনো কোনো Approved Job নেই।</p>";
-
- document.getElementById("myJobs").innerHTML=jobs.filter(j=>j.owner===currentUser)
- .map(j=>`<p>${escapeHTML(j.title)} — ${j.status}</p>`).join("")||"কোনো Job পোস্ট করা হয়নি।";
-
- document.getElementById("mySubmissions").innerHTML=submissions
- .filter(s=>s.worker===currentUser)
- .map(s=>`<p>${escapeHTML(s.title)} — ৳${s.reward} — ${s.status}</p>`).join("")||"কোনো Submission নেই।";
-
- renderAdmin();
+ document.getElementById("headerBalance").textContent="৳"+balance;
+ document.getElementById("homeBalance").textContent="৳"+balance;
+ document.getElementById("dashBalance").textContent="৳"+balance;
+ document.getElementById("dashPending").textContent="৳"+pending;
+ document.getElementById("homePending").textContent=tasks.filter(x=>x.status==="Pending").length;
+ document.getElementById("homeDone").textContent=tasks.filter(x=>x.status==="Approved").length;
+ let available=jobs.filter(x=>x.status==="Approved"&&x.slots>0);
+ document.getElementById("homeCount").textContent=available.length;
+ document.getElementById("latestJobs").innerHTML=available.slice(-3).reverse().map(jobCard).join("")||'<p class="muted">No jobs yet.</p>';
+ let shown=filterCategory?available.filter(x=>x.category===filterCategory):available;
+ document.getElementById("jobList").innerHTML=shown.map(jobCard).join("")||'<p class="muted">এই ক্যাটাগরিতে এখনো কাজ নেই।</p>';
+ document.getElementById("myJobs").innerHTML=jobs.map(j=>`<p>${esc(j.title)} — ${j.status}</p>`).join("")||"No jobs posted.";
+ document.getElementById("myTasks").innerHTML=tasks.map(t=>`<p>${esc(t.title)} — ৳${t.reward} — ${t.status}</p>`).join("")||"No submissions.";
+ document.getElementById("gmailHistory").innerHTML=tasks.filter(t=>t.category==="Gmail").map(t=>`<p>${esc(t.title)} — ৳${t.reward} — ${t.status}</p>`).join("")||"No Gmail submissions.";
+ document.getElementById("gmailAdmin").innerHTML=tasks.filter(t=>t.category==="Gmail").map(t=>adminTaskCard(t)).join("")||"No Gmail tasks.";
+ document.getElementById("taskAdmin").innerHTML=tasks.filter(t=>t.category!=="Gmail").map(t=>adminTaskCard(t)).join("")||"No other tasks.";
+ document.getElementById("jobAdmin").innerHTML=jobs.map(j=>`<div class="card"><b>${esc(j.title)}</b><p class="muted">৳${j.reward} · ${j.slots} slots · ${esc(j.trx)}</p><span class="status">${j.status}</span><p>${j.status==="Pending"?`<button onclick="approveJob(${j.id})">Approve</button> <button class="red" onclick="rejectJob(${j.id})">Reject</button>`:""}</p></div>`).join("")||"No jobs.";
 }
-
-function renderAdmin(){
- document.getElementById("adminJobs").innerHTML=jobs.map(j=>`
- <div class="card">
- <b>${escapeHTML(j.title)}</b>
- <p>Owner: ${escapeHTML(j.owner)} | Reward: ৳${j.reward}</p>
- <p>Transaction ID: ${escapeHTML(j.trx)}</p>
- <span class="tag">${j.status}</span><br><br>
- ${j.status==="Pending"?`<button onclick="approveJob(${j.id})">Approve</button>
- <button class="danger" onclick="rejectJob(${j.id})">Reject</button>`:""}
- </div>`).join("")||"কোনো Job নেই।";
-
- document.getElementById("adminTasks").innerHTML=submissions.map(s=>`
- <div class="card">
- <b>${escapeHTML(s.title)}</b>
- <p>Worker: ${escapeHTML(s.worker)}</p>
- <p>Reward: ৳${s.reward}</p>
- <p>Work Reference: ${escapeHTML(s.proof)}</p>
- <span class="tag">${s.status}</span><br><br>
- ${s.status==="Pending"?`<button onclick="approveTask(${s.id})">Approve ৳${s.reward}</button>
- <button class="danger" onclick="rejectTask(${s.id})">Reject</button>`:""}
- </div>`).join("")||"কোনো Submission নেই।";
+function adminTaskCard(t){
+ return `<div class="card"><b>${esc(t.title)}</b><p class="muted">৳${t.reward} · ${esc(t.reference)}</p><span class="status">${t.status}</span><p>${t.status==="Pending"?`<button onclick="approveTask(${t.id})">Approve ৳${t.reward}</button> <button class="red" onclick="rejectTask(${t.id})">Reject</button>`:""}</p></div>`;
 }
-
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
 render();
 </script>
 </body>
-</html>
+ </html>
+ 
