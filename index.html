@@ -4,7 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paylix - Earn Money</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+  body{background:#0f172a;color:#e2e8f0;min-height:100vh}
+  .container{max-width:480px;margin:0 auto;padding:20px}
+  .card{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  h1{font-size:22px;text-align:center;margin-bottom:6px;color:#38bdf8}
+  h2{font-size:18px;margin-bottom:14px;color:#38bdf8}
+  .sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px}
+  label{display:block;font-size:13px;margin-bottom:6px;color:#cbd5e1}
+  input,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:14px;margin-bottom:14px}
+  input:focus,textarea:focus{outline:none;border-color:#38bdf8}
+  button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+  button:hover{opacity:.9}
+  .btn-out{background:transparent;border:1px solid #475569;color:#94a3b8}
+  .btn-red{background:#dc2626}
+  .btn-green{background:#059669}
+  .msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd}
+  .success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
+  .error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
+  .hidden{display:none}
+  .nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .nav button{flex:1;min-width:70px;padding:9px 6px;font-size:12px;background:#334155}
+  .nav button.active{background:linear-gradient(135deg,#38bdf8,#6366f1)}
+  .list-item{background:#0f172a;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
+  .badge.pend{background:#78350f;color:#fcd34d}
+  .badge.block{background:#4c1d1d;color:#fca5a5}
+  .badge.paid{background:#1e3a8a;color:#93c5fd}
+  .balance{font-size:28px;font-weight:700;color:#10b981;text-align:center}
+  .balance-label{text-align:center;color:#94a3b8;font-size:12px;margin-bottom:18px}
+  .ref-box{background:#0f172a;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px}
+  .logout{float:right;background:#dc2626;width:auto;padding:7px 14px;font-size:12px}
+  .empty{text-align:center;color:#64748b;font-size:13px;padding:20px}
+  .row{display:flex;gap:6px;align-items:center}
+  .row button{width:auto;padding:6px 10px;font-size:11px}
+</style>
 </head>
 <body>
 <div class="container">
@@ -277,37 +312,4 @@ function showAdminTab(n){["gmails","tasks","withdraws","users"].forEach(t=>docum
 (function(){const s=localStorage.getItem("paylix_session");if(s && s!=="admin"){currentUser = s;showScreen("user"); loadUserPanel();}else if(s==="admin"){showScreen("admin"); loadAdminPanel();}else{showScreen("login");}})();
 </script>
 </body>
-</html>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{background:#0f172a;color:#e2e8f0;min-height:100vh}
-.container{max-width:480px;margin:0 auto;padding:20px}
-.card{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-h1{font-size:22px;text-align:center;margin-bottom:6px;color:#38bdf8}
-h2{font-size:18px;margin-bottom:14px;color:#38bdf8}
-.sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px}
-label{display:block;font-size:13px;margin-bottom:6px;color:#cbd5e1}
-input,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:14px;margin-bottom:14px}
-input:focus,textarea:focus{outline:none;border-color:#38bdf8}
-button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
-button:hover{opacity:.9}
-.btn-out{background:transparent;border:1px solid #475569;color:#94a3b8}
-.btn-red{background:#dc2626}
-.btn-green{background:#059669}
-.msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd}
-.success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
-.error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
-.hidden{display:none}
-.nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.nav button{flex:1;min-width:70px;padding:9px 6px;font-size:12px;background:#334155}
-.nav button.active{background:linear-gradient(135deg,#38bdf8,#6366f1)}
-.list-item{background:#0f172a;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
-.badge.pend{background:#78350f;color:#fcd34d}
-.badge.block{background:#4c1d1d;color:#fca5a5}
-.badge.paid{background:#1e3a8a;color:#93c5fd}
-.balance{font-size:28px;font-weight:700;color:#10b981;text-align:center}
-.balance-label{text-align:center;color:#94a3b8;font-size:12px;margin-bottom:18px}
-.ref-box{background:#0f172a;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px}
-.logout{float:right;background:#dc2626;width:auto;padding:7px 14px;font-size:12px}
-.empty{text-align:center;color:#64748b;font-size:13px;padding:20px}
-.row{display:flex;gap:6px;align-items:center}
-.row button{width:auto;padding:6px 10px;font-size:11px}
+</html>
