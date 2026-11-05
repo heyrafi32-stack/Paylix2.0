@@ -312,4 +312,20 @@ function addJob() {
   const slots = document.getElementById('job-slots').value;
   if(!title || !price || !slots) return alert('সব ঘর পূরণ করুন');
   db.jobs.push({ title, price, link, slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' }); 
-  saveDB(); document
+  saveDB(); document  const title = document.getElementById('job-title').value;
+  const price = document.getElementById('job-price').value; 
+  const link = document.getElementById('job-link').value;
+  const slots = document.getElementById('job-slots').value;
+  if(!title || !price || !slots) return alert('সব ঘর পূরণ করুন');
+  db.jobs.push({ title, price, link, slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' }); 
+  saveDB(); 
+  document.getElementById('job-title').value=''; 
+  document.getElementById('job-price').value=''; 
+  document.getElementById('job-link').value=''; 
+  document.getElementById('job-slots').value='';
+  loadAdminData('jobs'); 
+  alert('Job Posted!');
+}
+</script>
+</body>
+</html>
