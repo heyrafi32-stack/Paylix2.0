@@ -103,7 +103,7 @@ th{color:#c084fc;}
   <div id="page-support" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💬 Support</div><div class="form-box" style="text-align:center"><a href="https://t.me/Owner_Paylix" target="_blank"><button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button></a></div></div>
   <div id="page-admin-login" class="page"><div class="auth-container"><div class="auth-title">🛡️ Admin Login</div><div class="form-box"><div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div><button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button></div></div></div>
   <div id="page-admin" class="page"><div class="sec-title">🛡️ ADMIN PANEL</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px"><button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button><button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button><button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button><button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button><button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button></div><div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div><div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button></div>
-</div><script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </div><script>
 let db = JSON.parse(localStorage.getItem('paylix_db')) || { users: [], gmails: [], withdraws: [], jobs: [], jobSubs: [] };
 let currentUser = localStorage.getItem('paylix_current') || null;
 let isAdminLogged = false;
@@ -237,16 +237,22 @@ function openJobSubmit(title, index) {
 function autoSubmitProof(input) {
     if (input.files && input.files[0]) {
         let fileName = input.files[0].name;
-        document.getElementById('file-name-display').innerText = fileName + " (সেভ হচ্ছে...)";
         
-        setTimeout(() => {
-            db.jobSubs.push({ user: currentUser, jobTitle: currentJobToSubmit, proof: "ছবি আপলোড করা হয়েছে: " + fileName, status: 'pending', jobIndex: currentJobUrl });
-            saveDB(); 
-            alert('আপনার স্ক্রিনশট সফলভাবে জমা হয়েছে!');
-            openPage('page-microtask'); 
-        }, 800);
+        db.jobSubs.push({ 
+            user: currentUser, 
+            jobTitle: currentJobToSubmit, 
+            proof: "ছবি আপলোড করা হয়েছে: " + fileName, 
+            status: 'pending', 
+            jobIndex: currentJobUrl 
+        });
+        
+        saveDB(); 
+        alert('আপনার স্ক্রিনশট সফলভাবে জমা হয়েছে!');
+        openPage('page-microtask'); 
     }
-}function submitWithdraw() {
+}
+
+function submitWithdraw() {
   const method = document.getElementById('w-method').value; const number = document.getElementById('w-number').value; const amount = parseInt(document.getElementById('w-amount').value);
   if(!number || !amount) return alert('সব তথ্য দিন');
   if(amount < 100) return alert('সর্বনিম্ন ১০০ টাকা');
@@ -266,8 +272,9 @@ function loadAdminData(type) {
     tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Action</th></tr>';
     db.gmails.forEach((g, index) => {
       let actionBtn = '';
-      if(g.status === 'pending') { actionBtn = `<button class="btn small-btn btn-green" onclick="approveGmail(${index})">Approve</button> <button class="btn small-btn btn-red" onclick="rejectGmail(${index})">Reject</button>`; } 
-      else if(g.status === 'approved') { actionBtn = `<span style="color:#10b981">Approved</span>`; } 
+      if(g.status === 'pending') {
+          actionBtn = `<button class="btn small-btn btn-green" onclick="approveGmail(${index})">Approve</button> <button class="btn small-btn btn-red" onclick="rejectGmail(${index})">Reject</button>`;
+      } else if(g.status === 'approved') { actionBtn = `<span style="color:#10b981">Approved</span>`; } 
       else { actionBtn = `<span style="color:#ef4444">Rejected</span>`; }
       tableBody.innerHTML += `<tr><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td>${g.pass}</td><td>${actionBtn}</td></tr>`;
     });
@@ -316,8 +323,19 @@ function approveJobSub(index) {
   if(job && user) { user.balance += parseFloat(job.price); job.slots -= 1; }
   saveDB(); loadAdminData('job_subs'); alert('Approved!');
 }
-function deleteJob(index) { if(confirm('Delete?')) { db.jobs.splice(index,1); saveDB(); loadAdminData('jobs'); } }
-function toggleBlock(email) { const user = db.users.find(u => u.email === email); user.blocked = !user.blocked; saveDB(); loadAdminData('users'); }
+function deleteJob(index) { 
+    if(confirm('Delete?')) { 
+        db.jobs.splice(index,1); 
+        saveDB(); 
+        loadAdminData('jobs'); 
+    } 
+}
+function toggleBlock(email) { 
+    const user = db.users.find(u => u.email === email); 
+    user.blocked = !user.blocked; 
+    saveDB(); 
+    loadAdminData('users'); 
+}
 
 function addJob() {
   const title = document.getElementById('job-title').value;
