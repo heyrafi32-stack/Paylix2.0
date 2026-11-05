@@ -88,7 +88,26 @@ th{color:#c084fc;}
 
   <div id="page-microtask" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎯 Task</div><div id="user-job-list"></div></div>
 
-  <div id="page-job-submit" class="page"><div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div><div class="sec-title">📤 কাজ জমা দিন</div><div class="form-box"><div class="field"><label>কাজের নাম</label><input type="text" id="sub-job-title" readonly></div><div class="field"><label>প্রমাণ (স্ক্রিনশট বা লিংক দিন)</label><textarea id="sub-job-proof" rows="3" placeholder="এখানে আপনার কাজের প্রমাণ দিন"></textarea></div><button class="btn btn-green" onclick="submitJobProof()">জমা দিন</button></div></div>
+  <div id="page-job-submit" class="page">
+    <div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div>
+    <div class="sec-title">📤 কাজ জমা দিন</div>
+    <div class="form-box">
+        <div class="field">
+            <label>কাজের নাম</label>
+            <input type="text" id="sub-job-title" readonly style="background:#2a1552; opacity:0.8;">
+        </div>
+        <div class="field">
+            <label>প্রমাণ (স্ক্রিনশট আপলোড করুন অথবা লিংক দিন)</label>
+            <div style="background: #110a1f; border: 1px dashed #7c3aed; border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 10px;">
+                <input type="file" id="sub-job-image" accept="image/*" style="display: none;" onchange="document.getElementById('file-name-display').innerText = this.files[0].name;">
+                <label for="sub-job-image" style="cursor: pointer; display: block; color: #c084fc; font-weight: bold; margin-bottom: 5px;">📷 স্ক্রিনশট আপলোড করুন</label>
+                <span id="file-name-display" style="font-size: 0.75rem; color: #94a3b8;">কোনো ফাইল সিলেক্ট করা হয়নি</span>
+            </div>
+            <textarea id="sub-job-proof" rows="2" placeholder="অথবা এখানে আপনার কাজের প্রমাণ (লিংক বা নাম্বার) লিখুন..."></textarea>
+        </div>
+        <button class="btn btn-green" onclick="submitJobProof()">জমা দিন</button>
+    </div>
+  </div>
 
   <div id="page-withdraw" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💸 Withdraw</div><div class="form-box"><div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option><option>নগদ</option></select></div><div class="field"><label>নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div><div class="field"><label>টাকা</label><input type="number" id="w-amount" placeholder="100"></div><button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট</button></div></div>
 
@@ -101,7 +120,7 @@ th{color:#c084fc;}
   <div id="page-admin-login" class="page"><div class="auth-container"><div class="auth-title">🛡️ Admin Login</div><div class="form-box"><div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div><button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button></div></div></div>
 
   <div id="page-admin" class="page"><div class="sec-title">🛡️ ADMIN PANEL</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px"><button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button><button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button><button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button><button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button><button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button></div><div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div><div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button></div>
-</div><script>
+  </div><script>
 let db = JSON.parse(localStorage.getItem('paylix_db')) || { users: [], gmails: [], withdraws: [], jobs: [], jobSubs: [] };
 let currentUser = localStorage.getItem('paylix_current') || null;
 let isAdminLogged = false;
@@ -228,14 +247,26 @@ function openJobSubmit(title, index) {
   currentJobToSubmit = title; currentJobUrl = index;
   document.getElementById('sub-job-title').value = title;
   document.getElementById('sub-job-proof').value = '';
+  document.getElementById('sub-job-image').value = '';
+  document.getElementById('file-name-display').innerText = 'কোনো ফাইল সিলেক্ট করা হয়নি';
   openPage('page-job-submit');
 }
 
 function submitJobProof() {
-  const proof = document.getElementById('sub-job-proof').value.trim();
-  if(!proof) return alert('কাজের প্রমাণ দিন!');
-  db.jobSubs.push({ user: currentUser, jobTitle: currentJobToSubmit, proof: proof, status: 'pending', jobIndex: currentJobUrl });
-  saveDB(); openPage('page-microtask'); alert('কাজ সাবমিট হয়েছে!');
+  const proofText = document.getElementById('sub-job-proof').value.trim();
+  const imageFile = document.getElementById('sub-job-image').files[0];
+
+  if(!proofText && !imageFile) {
+      return alert('অনুগ্রহ করে স্ক্রিনশট আপলোড করুন অথবা প্রমাণ লিখে দিন!');
+  }
+
+  let proofData = proofText;
+  if(imageFile) {
+      proofData = proofData ? (proofData + " [ছবি যুক্ত আছে]") : "ছবি আপলোড করা হয়েছে";
+  }
+
+  db.jobSubs.push({ user: currentUser, jobTitle: currentJobToSubmit, proof: proofData, status: 'pending', jobIndex: currentJobUrl });
+  saveDB(); openPage('page-microtask'); alert('কাজ সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে Approve করলে টাকা যোগ হবে।');
 }
 
 function submitWithdraw() {
