@@ -4,7 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PAYLIX</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#080d1b;color:#fff;font-family:'Segoe UI',Arial,sans-serif;padding:18px}
+  .wrap{max-width:440px;margin:auto}
+  .logo{text-align:center;font-size:32px;font-weight:900;color:#55d6ff;margin:15px;letter-spacing:1px}
+  .logo span{color:#a78bfa}
+  .card{background:#111a2e;border:1px solid #263553;border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 8px 30px #0005}
+  h2,h3{text-align:center;margin:8px 0 18px;color:#e2e8f0}
+  p{color:#9eacc5;text-align:center;font-size:13px;margin-bottom:10px}
+  input,textarea{width:100%;padding:14px;margin:8px 0;background:#080f20;border:1px solid #344563;border-radius:11px;color:white;outline:none;font-family:inherit;font-size:14px}
+  input:focus,textarea:focus{border-color:#55d6ff}
+  .btn{display:block;width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,#087cfb,#8b5cf6);color:white;font-weight:bold;margin-top:12px;text-align:center;text-decoration:none;cursor:pointer;font-size:15px}
+  .btn:hover{opacity:0.9}
+  .btn-out{background:transparent;border:1px solid #344563;color:#9eacc5}
+  .btn-red{background:#dc2626}
+  .btn-green{background:#059669}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .tab{background:#1b2942;border:1px solid #354766;border-radius:10px;padding:12px;text-align:center;color:#cbd5e1;text-decoration:none;font-size:13px;cursor:pointer}
+  .tab.active{background:linear-gradient(100deg,#087cfb,#8b5cf6);color:white;border-color:transparent}
+  .balance{background:linear-gradient(120deg,#0758b8,#7445c9);padding:22px;border-radius:16px;text-align:center;margin:15px 0}
+  .balance h1{margin:8px;font-size:32px;color:#fff;font-weight:900}
+  .menu{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .menu a{background:#1a2740;padding:18px 8px;border:1px solid #30415f;border-radius:13px;text-align:center;color:white;text-decoration:none;font-size:14px;cursor:pointer}
+  .menu a span{display:block;font-size:23px;margin-bottom:8px}
+  .small{font-size:12px;color:#93a4c2;text-align:center;margin-top:20px}
+  .hidden{display:none!important}
+  .msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd;text-align:left}
+  .success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
+  .error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
+  .list-item{background:#080f20;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid #263553;text-align:left}
+  .badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
+  .badge.pend{background:#78350f;color:#fcd34d}
+  .badge.block{background:#4c1d1d;color:#fca5a5}
+  .badge.paid{background:#1e3a8a;color:#93c5fd}
+  .ref-box{background:#080f20;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px;text-align:center;border:1px dashed #344563}
+  .row{display:flex;gap:6px;align-items:center}
+  .row button{width:auto;padding:6px 10px;font-size:11px;margin:0}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -72,7 +109,6 @@
       <div class="msg">আপনাকে এই ফিক্সড পাসওয়ার্ডটি দিতে হবে</div>
       <button class="btn" onclick="submitGmail()">SUBMIT GMAIL</button>
       <div id="gmailMsg" style="margin-top:15px;"></div>
-      
       <h3 style="margin-top:25px;font-size:16px;">আমার সাবমিশন</h3>
       <div id="myGmails"></div>
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
@@ -107,7 +143,6 @@
       <input type="number" id="wdAmount" placeholder="Amount (৳)">
       <button class="btn" onclick="requestWithdraw()">REQUEST WITHDRAW</button>
       <div id="wdMsg" style="margin-top:15px;"></div>
-      
       <h3 style="margin-top:25px;font-size:16px;">আমার রিকোয়েস্ট</h3>
       <div id="myWithdraws"></div>
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
@@ -121,9 +156,7 @@
       <a class="btn" href="https://t.me/Owner_Paylix" target="_blank">TELEGRAM SUPPORT</a>
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
-  </div>
-
-  <!-- ADMIN LOGIN -->
+  </div>  <!-- ADMIN LOGIN -->
   <section class="card hidden" id="adminLoginScreen">
     <h2>Admin Panel</h2>
     <p>Admin access only</p>
@@ -308,39 +341,4 @@ function showAdminTab(n){
 })();
 </script>
 </body>
-</html>*{box-sizing:border-box;margin:0;padding:0}
-body{background:#080d1b;color:#fff;font-family:'Segoe UI',Arial,sans-serif;padding:18px}
-.wrap{max-width:440px;margin:auto}
-.logo{text-align:center;font-size:32px;font-weight:900;color:#55d6ff;margin:15px;letter-spacing:1px}
-.logo span{color:#a78bfa}
-.card{background:#111a2e;border:1px solid #263553;border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 8px 30px #0005}
-h2,h3{text-align:center;margin:8px 0 18px;color:#e2e8f0}
-p{color:#9eacc5;text-align:center;font-size:13px;margin-bottom:10px}
-input,textarea{width:100%;padding:14px;margin:8px 0;background:#080f20;border:1px solid #344563;border-radius:11px;color:white;outline:none;font-family:inherit;font-size:14px}
-input:focus,textarea:focus{border-color:#55d6ff}
-.btn{display:block;width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,#087cfb,#8b5cf6);color:white;font-weight:bold;margin-top:12px;text-align:center;text-decoration:none;cursor:pointer;font-size:15px}
-.btn:hover{opacity:0.9}
-.btn-out{background:transparent;border:1px solid #344563;color:#9eacc5}
-.btn-red{background:#dc2626}
-.btn-green{background:#059669}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.tab{background:#1b2942;border:1px solid #354766;border-radius:10px;padding:12px;text-align:center;color:#cbd5e1;text-decoration:none;font-size:13px;cursor:pointer}
-.tab.active{background:linear-gradient(100deg,#087cfb,#8b5cf6);color:white;border-color:transparent}
-.balance{background:linear-gradient(120deg,#0758b8,#7445c9);padding:22px;border-radius:16px;text-align:center;margin:15px 0}
-.balance h1{margin:8px;font-size:32px;color:#fff;font-weight:900}
-.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.menu a{background:#1a2740;padding:18px 8px;border:1px solid #30415f;border-radius:13px;text-align:center;color:white;text-decoration:none;font-size:14px;cursor:pointer}
-.menu a span{display:block;font-size:23px;margin-bottom:8px}
-.small{font-size:12px;color:#93a4c2;text-align:center;margin-top:20px}
-.hidden{display:none!important}
-.msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd;text-align:left}
-.success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
-.error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
-.list-item{background:#080f20;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid #263553;text-align:left}
-.badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
-.badge.pend{background:#78350f;color:#fcd34d}
-.badge.block{background:#4c1d1d;color:#fca5a5}
-.badge.paid{background:#1e3a8a;color:#93c5fd}
-.ref-box{background:#080f20;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px;text-align:center;border:1px dashed #344563}
-.row{display:flex;gap:6px;align-items:center}
-.row button{width:auto;padding:6px 10px;font-size:11px;margin:0}
+</html>
