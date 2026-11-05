@@ -25,7 +25,7 @@ body{min-height:100vh;background:#110a1f;color:#fff;display:flex;justify-content
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:24px}
 .card{background:#1a0b2e;border:1px solid #3b1d6e;border-radius:18px;padding:22px 18px;text-align:center;cursor:pointer;transition:.25s;}
 .card:hover{border-color:#a855f7;}
-.card .icon{font-size:1.7rem;margin-bottom:10px;display:block}.card .title{font-weight:600;font-size:.95rem}.card .sub{font-size:.75rem;color:#b9a4dd;margin-top:4px}
+.card .icon{font-size:1.7rem;margin-bottom:10px;display:block}.card .title{font-weight:600;font-size:.95rem}.card .sub{font-size:.75rem;color:#34d399;margin-top:4px;font-weight:bold;}
 .sec-title{font-size:1.1rem;font-weight:700;margin-bottom:15px;color:#fff;display:flex;align-items:center;gap:8px}
 .form-box{background:#1a0b2e;border:1px solid #3b1d6e;border-radius:18px;padding:22px}
 .field{margin-bottom:14px}.field label{font-size:.8rem;color:#b9a4dd;display:block;margin-bottom:6px}
@@ -57,6 +57,7 @@ th{color:#c084fc;}
 .status-pending { background: #fbbf2420; color: #fbbf24; border: 1px solid #fbbf2450; }
 .status-approved { background: #10b98120; color: #10b981; border: 1px solid #10b98150; }
 .status-rejected { background: #ef444420; color: #ef4444; border: 1px solid #ef444450; }
+.profile-pic { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg,#a855f7,#6d28d9); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
 </style>
 </head>
 <body>
@@ -70,18 +71,18 @@ th{color:#c084fc;}
     <div class="balance"><div class="balance-label">💰 ব্যালেন্স</div><div class="balance-amount" id="user-balance">৳ 0.00</div><button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw</button></div>
     <div class="sec-title">মেনু</div>
     <div class="grid">
-      <div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div></div>
-      <div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div></div>
-      <div class="card" onclick="openPage('page-refer')"><span class="icon">🎁</span><div class="title">Refer</div></div>
-      <div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div></div>
-      <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div></div>
-      <div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div></div>
+      <div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২</div></div>
+      <div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">কাজ করুন</div></div>
+      <div class="card" onclick="openPage('page-refer')"><span class="icon">🎁</span><div class="title">Refer</div><div class="sub">বন্ধু ইনভাইট</div></div>
+      <div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div>
+      <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/নগদ</div></div>
+      <div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div></div>
     </div>
     <div class="sec-title">📋 আপনার রিকোয়েস্ট সমূহ</div>
     <div id="user-history-list"><div style="text-align:center; color:#b9a4dd; font-size:0.85rem;">কোনো রিকোয়েস্ট নেই</div></div>
   </div>
 
-  <div id="page-gmail" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">📧 Gmail Sell</div><div class="form-box"><div class="field"><label>Gmail ID</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div><div class="field"><label>Password</label><input type="text" id="gmail-pass" placeholder="••••••••"></div><button class="btn" onclick="submitGmail()">সাবমিট</button></div></div>
+  <div id="page-gmail" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">📧 Gmail Sell</div><div class="form-box"><div class="field"><label>Gmail ID (৳ ১০)</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div><div class="field"><label>Password (৳ ১২)</label><input type="text" id="gmail-pass" placeholder="••••••••"></div><button class="btn" onclick="submitGmail()">সাবমিট</button></div></div>
 
   <div id="page-microtask" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎯 Task</div><div id="user-job-list"></div></div>
 
@@ -98,7 +99,7 @@ th{color:#c084fc;}
   <div id="page-admin-login" class="page"><div class="auth-container"><div class="auth-title">🛡️ Admin Login</div><div class="form-box"><div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div><button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button></div></div></div>
 
   <div id="page-admin" class="page"><div class="sec-title">🛡️ ADMIN PANEL</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px"><button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button><button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button><button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button><button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button><button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button></div><div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div><div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button></div>
-   </div><script>
+</div><script>
 let db = JSON.parse(localStorage.getItem('paylix_db')) || { users: [], gmails: [], withdraws: [], jobs: [], jobSubs: [] };
 let currentUser = localStorage.getItem('paylix_current') || null;
 let isAdminLogged = false;
@@ -301,28 +302,35 @@ function approveJobSub(index) {
   const job = db.jobs[s.jobIndex]; const user = db.users.find(u => u.email === s.user);
   if(job && user) { user.balance += parseFloat(job.price); job.slots -= 1; }
   saveDB(); loadAdminData('job_subs'); alert('Approved!');
+}function deleteJob(index) { 
+    if(confirm('Delete?')) { 
+        db.jobs.splice(index,1); 
+        saveDB(); 
+        loadAdminData('jobs'); 
+    } 
 }
-function deleteJob(index) { if(confirm('Delete?')) { db.jobs.splice(index,1); saveDB(); loadAdminData('jobs'); } }
-function toggleBlock(email) { const user = db.users.find(u => u.email === email); user.blocked = !user.blocked; saveDB(); loadAdminData('users'); }
+
+function toggleBlock(email) { 
+    const user = db.users.find(u => u.email === email); 
+    user.blocked = !user.blocked; 
+    saveDB(); 
+    loadAdminData('users'); 
+}
 
 function addJob() {
   const title = document.getElementById('job-title').value;
   const price = document.getElementById('job-price').value; 
   const link = document.getElementById('job-link').value;
   const slots = document.getElementById('job-slots').value;
+  
   if(!title || !price || !slots) return alert('সব ঘর পূরণ করুন');
-  db.jobs.push({ title, price, link, slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' }); 
-  saveDB(); document  const title = document.getElementById('job-title').value;
-  const price = document.getElementById('job-price').value; 
-  const link = document.getElementById('job-link').value;
-  const slots = document.getElementById('job-slots').value;
-  if(!title || !price || !slots) return alert('সব ঘর পূরণ করুন');
-  db.jobs.push({ title, price, link, slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' }); 
+  
+  db.jobs.push({ title: title, price: price, link: link, slots: slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' }); 
   saveDB(); 
-  document.getElementById('job-title').value=''; 
-  document.getElementById('job-price').value=''; 
-  document.getElementById('job-link').value=''; 
-  document.getElementById('job-slots').value='';
+  document.getElementById('job-title').value = ''; 
+  document.getElementById('job-price').value = ''; 
+  document.getElementById('job-link').value = ''; 
+  document.getElementById('job-slots').value = '';
   loadAdminData('jobs'); 
   alert('Job Posted!');
 }
