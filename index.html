@@ -31,7 +31,6 @@ body{min-height:100vh;background:radial-gradient(circle at 20% 10%,#3b1d6e 0%,#1
 .form-box{background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.2);border-radius:18px;padding:22px}
 .field{margin-bottom:14px}.field label{font-size:.8rem;color:#c9b8e8;display:block;margin-bottom:6px}
 .field input,.field select{width:100%;padding:14px;border-radius:10px;border:1px solid rgba(168,85,247,.3);background:rgba(13,6,24,.6);color:#fff;font-size:.95rem;outline:none}
-.field input:focus{border-color:#a855f7}
 .auth-container{margin-top:5vh}.auth-title{font-size:1.8rem;font-weight:800;margin-bottom:8px;text-align:center}.auth-sub{font-size:.9rem;color:#b9a4dd;margin-bottom:30px;text-align:center}
 .auth-link{text-align:center;margin-top:20px;font-size:.9rem;color:#b9a4dd}.auth-link a{color:#c084fc;font-weight:600;cursor:pointer}
 .sector-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
@@ -41,21 +40,21 @@ body{min-height:100vh;background:radial-gradient(circle at 20% 10%,#3b1d6e 0%,#1
 .txn{background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.18);border-radius:16px;padding:6px 4px}
 .txn-row{display:flex;justify-content:space-between;padding:13px 16px;border-bottom:1px solid rgba(168,85,247,.12);font-size:.9rem}
 .profile-pic{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#6d28d9);margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:2rem}
-/* Admin Table */
 table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.85rem}
-th,td{padding:10px;border-bottom:1px solid rgba(168,85,247,.2);text-align:left}
+th,td{padding:10px;border-bottom:1px solid rgba(168,85,247,.2);text-align:left;white-space:nowrap}
 th{color:#c084fc;font-weight:600}
+.small-btn{padding:6px 10px;font-size:.7rem;width:auto;border-radius:6px;box-shadow:none}
+.btn-red{background:#ef4444 !important;box-shadow:none !important}
+.btn-green{background:#10b981 !important;box-shadow:none !important}
 </style>
 </head>
 <body>
 <div class="app">
-  <!-- SPLASH -->
   <div id="page-splash">
     <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo">
     <div class="splash-text">PAYLIX</div>
   </div>
 
-  <!-- LOGIN -->
   <div id="page-login" class="page">
     <div class="auth-container">
       <div style="text-align:center;margin-bottom:20px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:70px;border-radius:15px"></div>
@@ -70,7 +69,6 @@ th{color:#c084fc;font-weight:600}
     </div>
   </div>
 
-  <!-- REGISTER -->
   <div id="page-register" class="page">
     <div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div>
     <div class="auth-container" style="margin-top:10px">
@@ -85,13 +83,13 @@ th{color:#c084fc;font-weight:600}
     </div>
   </div>
 
-  <!-- HOME -->
   <div id="page-home" class="page">
     <div class="topbar"><div class="logo"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png"><span>PAYLIX</span></div><div>🔔</div></div>
     <div class="balance"><div class="balance-label">💰 ব্যালেন্স</div><div class="balance-amount" id="user-balance">৳ 0.00</div><button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw</button></div>
     <div class="sec-title">মেনু</div>
     <div class="grid">
       <div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২</div></div>
+      <div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">কাজ করুন</div></div>
       <div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div>
       <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/নগদ</div></div>
       <div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div></div>
@@ -100,7 +98,6 @@ th{color:#c084fc;font-weight:600}
     <div class="txn" id="user-txn-list"><div class="txn-row" style="justify-content:center;color:#b9a4dd">কোনো লেনদেন নেই</div></div>
   </div>
 
-  <!-- GMAIL -->
   <div id="page-gmail" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
     <div class="sec-title">📧 Gmail Sell</div>
@@ -115,7 +112,12 @@ th{color:#c084fc;font-weight:600}
     </div>
   </div>
 
-  <!-- WITHDRAW -->
+  <div id="page-microtask" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">🎯 Microtask</div>
+    <div id="user-job-list"></div>
+  </div>
+
   <div id="page-withdraw" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
     <div class="sec-title">💸 Withdraw</div>
@@ -127,7 +129,6 @@ th{color:#c084fc;font-weight:600}
     </div>
   </div>
 
-  <!-- SETTINGS -->
   <div id="page-settings" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
     <div class="sec-title">⚙️ Settings</div>
@@ -139,7 +140,6 @@ th{color:#c084fc;font-weight:600}
     <br><button class="btn" onclick="logoutUser()" style="background:#ef4444">লগ আউট</button>
   </div>
 
-  <!-- SUPPORT -->
   <div id="page-support" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
     <div class="sec-title">💬 Support</div>
@@ -148,38 +148,53 @@ th{color:#c084fc;font-weight:600}
     </div>
   </div>
 
-  <!-- ================= ADMIN PANEL ================= -->
+  <div id="page-admin-login" class="page">
+    <div class="auth-container">
+      <div class="auth-title">🛡️ Admin Login</div>
+      <div class="auth-sub">শুধুমাত্র অনুমোদিত ব্যক্তিদের জন্য</div>
+      <div class="form-box">
+        <div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div>
+        <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div>
+        <button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button>
+      </div>
+      <div class="auth-link"><a onclick="openPage('page-login')">← ইউজার পেজে ফিরে যান</a></div>
+    </div>
+  </div>
+
   <div id="page-admin" class="page">
     <div class="sec-title">🛡️ ADMIN PANEL</div>
-    <div style="display:flex; gap:10px; margin-bottom:15px;">
-      <button class="btn" onclick="loadAdminData('gmail')">Gmail Orders</button>
-      <button class="btn" onclick="loadAdminData('withdraw')">Withdraws</button>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+      <button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button>
+      <button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button>
+      <button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button>
+      <button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button>
     </div>
-    <div class="form-box" style="overflow-x:auto;">
+    <div class="form-box" style="overflow-x:auto; margin-bottom:15px;">
       <table id="admin-table">
         <thead><tr><th>Info</th><th>Details</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
-    <br><button class="btn" onclick="openPage('page-login')" style="background:#ef4444">লগ আউট</button>
-  </div>
-</div>
-
-<script>
-// ডাটাবেস সিমুলেশন (LocalStorage)
-let db = JSON.parse(localStorage.getItem('paylix_db')) || { users: [], gmails: [], withdraws: [] };
+    <div id="admin-job-form" class="form-box" style="display:none;">
+      <div class="sec-title" style="font-size:0.9rem; margin-bottom:10px;">Add New Job</div>
+      <div class="field"><input type="text" id="job-title" placeholder="Job Title (e.g. Facebook Follow)"></div>
+      <div class="field"><input type="number" id="job-price" placeholder="Price per task (৳)"></div>
+      <button class="btn btn-green small-btn" onclick="addJob()">Post Job</button>
+    </div>let db = JSON.parse(localStorage.getItem('paylix_db')) || { users: [], gmails: [], withdraws: [], jobs: [] };
 let currentUser = localStorage.getItem('paylix_current') || null;
+let isAdminLogged = false;
 let currentSectorPrice = 10;
 
 function saveDB() { localStorage.setItem('paylix_db', JSON.stringify(db)); }
 
-// স্প্ল্যাশ লজিক ও সেশন চেক
 window.onload = () => {
   setTimeout(() => {
     document.getElementById('page-splash').style.opacity = '0';
     setTimeout(() => {
       document.getElementById('page-splash').style.display = 'none';
-      if(window.location.hash === '#admin') { openPage('page-admin'); loadAdminData('gmail'); }
+      if(window.location.hash === '#admin') { 
+        openPage('page-admin-login'); 
+      }
       else if(currentUser) { loadUserHome(); } 
       else { openPage('page-login'); }
     }, 500);
@@ -192,27 +207,48 @@ function openPage(id) {
   window.scrollTo(0,0);
 }
 
-// রেজিস্ট্রেশন
+function loginAdmin() {
+  const user = document.getElementById('admin-user').value;
+  const pass = document.getElementById('admin-pass').value;
+  if(user === 'admin' && pass === 'admin123') {
+    isAdminLogged = true;
+    openPage('page-admin');
+    loadAdminData('gmail');
+    document.getElementById('admin-user').value = '';
+    document.getElementById('admin-pass').value = '';
+  } else {
+    alert('ভুল ইউজারনেম বা পাসওয়ার্ড!');
+  }
+}
+
+function logoutAdmin() {
+  isAdminLogged = false;
+  history.replaceState(null, null, ' ');
+  openPage('page-login');
+}
+
 function registerUser() {
   const name = document.getElementById('reg-name').value;
   const email = document.getElementById('reg-email').value;
   const pass = document.getElementById('reg-pass').value;
   if(!name || !email || !pass) return alert('সব ঘর পূরণ করুন');
-  
   if(db.users.find(u => u.email === email)) return alert('এই ইমেইল দিয়ে অ্যাকাউন্ট আছে!');
   
-  db.users.push({ name, email, pass, balance: 0 });
+  db.users.push({ name, email, pass, balance: 0, blocked: false });
   saveDB();
   alert('সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে!');
   openPage('page-login');
 }
 
-// লগইন
 function loginUser() {
   const email = document.getElementById('log-email').value;
   const pass = document.getElementById('log-pass').value;
   const user = db.users.find(u => u.email === email && u.pass === pass);
+  
   if(user) {
+    if(user.blocked) {
+      return alert('আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে! আনব্লক করতে অ্যাডমিনের সাথে যোগাযোগ করুন: @Owner_Paylix');
+    }
     currentUser = email;
     localStorage.setItem('paylix_current', email);
     loadUserHome();
@@ -225,13 +261,25 @@ function loadUserHome() {
   document.getElementById('user-balance').innerText = '৳ ' + user.balance;
   document.getElementById('set-name').value = user.name;
   
-  // ট্রানজেকশন লোড
   let txns = db.gmails.filter(g => g.user === currentUser).map(g => `Gmail Sell: ৳${g.price}`)
     .concat(db.withdraws.filter(w => w.user === currentUser).map(w => `Withdraw: ৳${w.amount}`));
   
   const txnList = document.getElementById('user-txn-list');
   if(txns.length === 0) txnList.innerHTML = '<div class="txn-row" style="justify-content:center;color:#b9a4dd">কোনো লেনদেন নেই</div>';
   else txnList.innerHTML = txns.map(t => `<div class="txn-row"><span>${t}</span></div>`).join('');
+
+  const jobList = document.getElementById('user-job-list');
+  if(db.jobs.length === 0) {
+    jobList.innerHTML = '<div class="form-box" style="text-align:center">এখনো কোনো কাজ পোস্ট করা হয়নি।</div>';
+  } else {
+    jobList.innerHTML = db.jobs.map(j => `
+      <div class="form-box" style="margin-bottom:10px; text-align:center;">
+        <h3 style="margin-bottom:8px; color:#c084fc;">${j.title}</h3>
+        <p style="font-size:1.1rem; font-weight:bold; margin-bottom:10px;">৳ ${j.price}</p>
+        <button class="btn small-btn btn-green">কাজ শুরু করুন</button>
+      </div>
+    `).join('');
+  }
 
   openPage('page-home');
 }
@@ -248,7 +296,6 @@ function selectSector(price) {
   event.currentTarget.classList.add('active');
 }
 
-// জিমেইল সাবমিট
 function submitGmail() {
   const gmail = document.getElementById('gmail-id').value;
   const pass = document.getElementById('gmail-pass').value;
@@ -259,10 +306,9 @@ function submitGmail() {
   user.balance += currentSectorPrice;
   saveDB();
   loadUserHome();
-  alert('সফলভাবে সাবমিট হয়েছে! ব্যালেন্স যোগ হয়েছে।');
+  alert('সফলভাবে সাবমিট হয়েছে!');
 }
 
-// উইথড্র সাবমিট
 function submitWithdraw() {
   const method = document.getElementById('w-method').value;
   const number = document.getElementById('w-number').value;
@@ -287,23 +333,89 @@ function saveSettings() {
   alert('সেভ হয়েছে!');
 }
 
-// ================= অ্যাডমিন প্যানেল লজিক =================
 function loadAdminData(type) {
+  if(!isAdminLogged) return;
   const tableBody = document.querySelector('#admin-table tbody');
-  tableBody.innerHTML = '';
+  const tableHead = document.querySelector('#admin-table thead');
+  const jobForm = document.getElementById('admin-job-form');
   
+  tableBody.innerHTML = '';
+  jobForm.style.display = 'none'; 
+
   if(type === 'gmail') {
-    document.querySelector('#admin-table thead').innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Price</th></tr>';
+    tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Price</th></tr>';
     db.gmails.forEach(g => {
       tableBody.innerHTML += `<tr><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td>${g.pass}</td><td>৳${g.price}</td></tr>`;
     });
-  } else {
-    document.querySelector('#admin-table thead').innerHTML = '<tr><th>User</th><th>Method</th><th>Number</th><th>Amount</th></tr>';
+  } 
+  else if(type === 'withdraw') {
+    tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Number</th><th>Amount</th></tr>';
     db.withdraws.forEach(w => {
       tableBody.innerHTML += `<tr><td>${w.user.split('@')[0]}</td><td>${w.method}</td><td>${w.number}</td><td>৳${w.amount}</td></tr>`;
     });
   }
+  else if(type === 'users') {
+    tableHead.innerHTML = '<tr><th>User</th><th>Status</th><th>Action</th></tr>';
+    db.users.forEach(u => {
+      let status = u.blocked ? '<span style="color:red">Blocked</span>' : '<span style="color:#10b981">Active</span>';
+      let btnText = u.blocked ? 'Unblock' : 'Block';
+      let btnClass = u.blocked ? 'btn-green' : 'btn-red';
+      tableBody.innerHTML += `<tr>
+        <td>${u.name}<br><small style="color:#b9a4dd">${u.email}</small></td>
+        <td>${status}</td>
+        <td><button class="btn small-btn ${btnClass}" onclick="toggleBlock('${u.email}')">${btnText}</button></td>
+      </tr>`;
+    });
+  }
+  else if(type === 'jobs') {
+    jobForm.style.display = 'block'; 
+    tableHead.innerHTML = '<tr><th>Job Title</th><th>Price</th><th>Action</th></tr>';
+    if(db.jobs.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No jobs posted yet</td></tr>';
+    } else {
+      db.jobs.forEach((j, index) => {
+        tableBody.innerHTML += `<tr><td>${j.title}</td><td>৳${j.price}</td>
+          <td><button class="btn small-btn btn-red" onclick="deleteJob(${index})">Delete</button></td>
+        </tr>`;
+      });
+    }
+  }
+}
+
+function toggleBlock(email) {
+  if(!isAdminLogged) return;
+  const user = db.users.find(u => u.email === email);
+  user.blocked = !user.blocked;
+  saveDB();
+  loadAdminData('users');
+}
+
+function addJob() {
+  if(!isAdminLogged) return;
+  const title = document.getElementById('job-title').value;
+  const price = document.getElementById('job-price').value;
+  if(!title || !price) return alert('সব ঘর পূরণ করুন');
+  
+  db.jobs.push({ title, price });
+  saveDB();
+  document.getElementById('job-title').value = '';
+  document.getElementById('job-price').value = '';
+  loadAdminData('jobs');
+  alert('নতুন কাজ পোস্ট হয়েছে!');
+}
+
+function deleteJob(index) {
+  if(!isAdminLogged) return;
+  if(confirm('আপনি কি এই কাজটি ডিলিট করতে চান?')) {
+    db.jobs.splice(index, 1);
+    saveDB();
+    loadAdminData('jobs');
+  }
 }
 </script>
 </body>
- </html>
+  </html>
+    <br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button>
+  </div>
+</div>
+<script>
