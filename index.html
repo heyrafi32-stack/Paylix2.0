@@ -62,7 +62,9 @@ th{color:#c084fc;}
 </head>
 <body>
 <div class="app">
-  <div id="page-splash"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo"><div class="splash-text">PAYLIX</div></div>  <div id="page-login" class="page"><div class="auth-container"><div style="text-align:center;margin-bottom:20px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:70px;border-radius:15px"></div><div class="auth-title">স্বাগতম!</div><div class="auth-sub">লগইন করুন</div><div class="form-box"><div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div><button class="btn" onclick="loginUser()">লগইন</button></div><div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div></div></div>
+  <div id="page-splash"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo"><div class="splash-text">PAYLIX</div></div>
+
+  <div id="page-login" class="page"><div class="auth-container"><div style="text-align:center;margin-bottom:20px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:70px;border-radius:15px"></div><div class="auth-title">স্বাগতম!</div><div class="auth-sub">লগইন করুন</div><div class="form-box"><div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div><button class="btn" onclick="loginUser()">লগইন</button></div><div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div></div></div>
 
   <div id="page-register" class="page"><div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div><div class="auth-container" style="margin-top:10px"><div class="auth-title">অ্যাকাউন্ট তৈরি</div><div class="form-box"><div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="তানভীর"></div><div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div><div class="field"><label>রেফার কোড (ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="বন্ধুর রেফার কোড"></div><button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button></div><div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div></div></div>
 
@@ -107,6 +109,7 @@ let currentJobToSubmit = null;
 let currentJobUrl = "";
 
 function saveDB() { localStorage.setItem('paylix_db', JSON.stringify(db)); }
+
 window.onload = () => {
   setTimeout(() => {
     let splash = document.getElementById('page-splash');
@@ -122,12 +125,19 @@ window.onload = () => {
   }, 1500);
 };
 
-function openPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+function openPage(id) { 
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+    document.getElementById(id).classList.add('active'); 
+    window.scrollTo(0,0); 
+}
 
 function loginAdmin() {
   const user = document.getElementById('admin-user').value; const pass = document.getElementById('admin-pass').value;
-  if(user === 'admin' && pass === 'admin123') { isAdminLogged = true; openPage('page-admin'); loadAdminData('gmail'); } 
-  else { alert('ভুল ইউজারনেম বা পাসওয়ার্ড!'); }
+  if(user === 'admin' && pass === 'admin123') { 
+      isAdminLogged = true; 
+      openPage('page-admin'); 
+      loadAdminData('gmail'); 
+  } else { alert('ভুল ইউজারনেম বা পাসওয়ার্ড!'); }
 }
 function logoutAdmin() { isAdminLogged = false; history.replaceState(null, null, ' '); openPage('page-login'); }
 
@@ -166,7 +176,6 @@ function loadUserHome() {
           if(g.status === 'pending') badge = '<span class="status-badge status-pending">⏳ পেন্ডিং</span>';
           else if(g.status === 'approved') badge = '<span class="status-badge status-approved">✅ এপ্রুভড</span>';
           else badge = '<span class="status-badge status-rejected">❌ রিজেক্টেড</span>';
-          
           return `
             <div class="history-item">
                 <div class="history-info">${g.gmail}<small>Gmail Sell</small></div>
@@ -239,6 +248,7 @@ function submitWithdraw() {
 }
 function saveSettings() { const user = db.users.find(u => u.email === currentUser); user.name = document.getElementById('set-name').value; saveDB(); alert('সেভ হয়েছে!'); }
 
+// ================= ADMIN PANEL FUNCTIONS =================
 function loadAdminData(type) {
   if(!isAdminLogged) return;
   const tableBody = document.querySelector('#admin-table tbody'); const tableHead = document.querySelector('#admin-table thead'); const jobForm = document.getElementById('admin-job-form');
@@ -302,38 +312,13 @@ function approveJobSub(index) {
   const job = db.jobs[s.jobIndex]; const user = db.users.find(u => u.email === s.user);
   if(job && user) { user.balance += parseFloat(job.price); job.slots -= 1; }
   saveDB(); loadAdminData('job_subs'); alert('Approved!');
-}function deleteJob(index) { 
+}
+function deleteJob(index) { 
     if(confirm('Delete?')) { 
         db.jobs.splice(index,1); 
         saveDB(); 
         loadAdminData('jobs'); 
     } 
 }
-
 function toggleBlock(email) { 
-    const user = db.users.find(u => u.email === email); 
-    user.blocked = !user.blocked; 
-    saveDB(); 
-    loadAdminData('users'); 
-}
-
-function addJob() {
-  const title = document.getElementById('job-title').value;
-  const price = document.getElementById('job-price').value; 
-  const link = document.getElementById('job-link').value;
-  const slots = document.getElementById('job-slots').value;
-  
-  if(!title || !price || !slots) return alert('সব ঘর পূরণ করুন');
-  
-  db.jobs.push({ title: title, price: price, link: link, slots: slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' }); 
-  saveDB(); 
-  document.getElementById('job-title').value = ''; 
-  document.getElementById('job-price').value = ''; 
-  document.getElementById('job-link').value = ''; 
-  document.getElementById('job-slots').value = '';
-  loadAdminData('jobs'); 
-  alert('Job Posted!');
-}
-</script>
-</body>
-</html>
+    const
