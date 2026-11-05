@@ -45,9 +45,11 @@
 </head>
 <body>
 <div class="wrap">
+
   <div class="logo">PAY<span>LIX</span></div>
   <p>Earn More • Work Smart • Get Rewarded</p>
-  
+
+  <!-- LOGIN -->
   <section class="card" id="loginScreen">
     <h2>Welcome Back 👋</h2>
     <p>আপনার অ্যাকাউন্টে লগইন করুন</p>
@@ -59,6 +61,7 @@
     <p style="margin-top:20px;"><a href="#" onclick="showScreen('adminLogin');return false;" style="color:#64748b;text-decoration:none;font-size:11px;">Admin Login</a></p>
   </section>
 
+  <!-- REGISTER -->
   <section class="card hidden" id="registerScreen">
     <h2>Create Account</h2>
     <p>নতুন অ্যাকাউন্ট তৈরি করুন</p>
@@ -69,6 +72,7 @@
     <p style="margin-top:15px;">অ্যাকাউন্ট আছে? <a href="#" onclick="showScreen('login');return false;" style="color:#55d6ff;text-decoration:none;font-weight:bold;">Login করুন</a></p>
   </section>
 
+  <!-- USER DASHBOARD -->
   <div id="userPanel" class="hidden">
     <section class="card">
       <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
@@ -92,6 +96,7 @@
       </div>
     </section>
 
+    <!-- GMAIL -->
     <section class="card hidden" id="tab-gmail">
       <h3>📧 Gmail Submit</h3>
       <div class="msg">প্রতি জিমেইল অ্যাকাউন্টের রেট <b>১০ টাকা</b></div>
@@ -106,6 +111,7 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
+    <!-- REFER -->
     <section class="card hidden" id="tab-refer">
       <h3>👥 Refer & Earn</h3>
       <div class="msg">রেফার বোনাস শীঘ্রই যোগ করা হবে</div>
@@ -115,16 +121,26 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
+    <!-- MICRO TASK -->
     <section class="card hidden" id="tab-task">
-      <h3>📝 Micro Task Post</h3>
-      <div class="msg">আপনার টেলিগ্রাম ইউজারনেম: <b>@Owner_Paylix</b></div>
-      <input type="text" id="taskUser" value="@Owner_Paylix">
-      <textarea id="taskDetails" rows="3" placeholder="টাস্কের বিবরণ লিখুন..."></textarea>
-      <button class="btn" onclick="postTask()">POST TASK</button>
-      <div id="taskMsg" style="margin-top:15px;"></div>
-      <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
+      <h3>📝 Micro Tasks</h3>
+      <div id="taskListView">
+        <div class="msg">নিচে সব মাইক্রো টাস্কের লিস্ট দেওয়া হলো। কাজ দেখতে ক্লিক করুন।</div>
+        <div id="availableTasksList"></div>
+      </div>
+      <div id="taskDetailsView" class="hidden">
+        <h3>টাস্কের বিবরণ</h3>
+        <div class="msg" id="singleTaskDetails"></div>
+        <div class="msg" style="background:#064e3b;color:#6ee7b7;border-left-color:#10b981; text-align:center;">
+          কাজটি করতে যোগাযোগ করুন:<br><b style="font-size:16px;">@Owner_Paylix</b>
+        </div>
+        <a class="btn" href="https://t.me/Owner_Paylix" target="_blank">TELEGRAM এ মেসেজ দিন</a>
+        <button class="btn btn-out" style="margin-top:10px;" onclick="backToTaskList()">Back to Task List</button>
+      </div>
+      <button class="btn btn-out" style="margin-top:15px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
+    <!-- WITHDRAW -->
     <section class="card hidden" id="tab-withdraw">
       <h3>💸 Withdraw (bKash)</h3>
       <div class="msg">শুধুমাত্র <b>bKash</b> এ টাকা নেওয়া যাবে। ন্যূনতম উইথড্র ৫০৳</div>
@@ -137,6 +153,7 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
+    <!-- SUPPORT -->
     <section class="card hidden" id="tab-support">
       <h3>🎧 Support</h3>
       <p>যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করুন</p>
@@ -144,7 +161,8 @@
       <a class="btn" href="https://t.me/Owner_Paylix" target="_blank">TELEGRAM SUPPORT</a>
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
-  </div>  <section class="card hidden" id="adminLoginScreen">
+  </div>  <!-- ADMIN LOGIN -->
+  <section class="card hidden" id="adminLoginScreen">
     <h2>Admin Panel</h2>
     <p>Admin access only</p>
     <input type="password" id="adminPass" placeholder="Admin password">
@@ -153,20 +171,42 @@
     <button class="btn btn-out" style="margin-top:15px;" onclick="showScreen('login')">Back to Website</button>
   </section>
 
+  <!-- ADMIN PANEL -->
   <div id="adminPanel" class="hidden">
     <section class="card">
       <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
       <h2 style="text-align:left;margin-bottom:15px;">Admin Dashboard</h2>
+      
       <div class="tabs" style="grid-template-columns:1fr 1fr;">
         <a class="tab active" id="atab-gmails" onclick="showAdminTab('gmails')">Gmails</a>
         <a class="tab" id="atab-tasks" onclick="showAdminTab('tasks')">Tasks</a>
         <a class="tab" id="atab-withdraws" onclick="showAdminTab('withdraws')">Withdraw</a>
         <a class="tab" id="atab-users" onclick="showAdminTab('users')">Users</a>
       </div>
-      <div id="admin-gmails"><h3 style="font-size:16px;">Gmail Submissions</h3><div id="adminGmailList"></div></div>
-      <div id="admin-tasks" class="hidden"><h3 style="font-size:16px;">Micro Tasks</h3><div id="adminTaskList"></div></div>
-      <div id="admin-withdraws" class="hidden"><h3 style="font-size:16px;">Withdraw Requests</h3><div id="adminWithdrawList"></div></div>
-      <div id="admin-users" class="hidden"><h3 style="font-size:16px;">Users</h3><div id="adminUserList"></div></div>
+
+      <div id="admin-gmails">
+        <h3 style="font-size:16px;">Gmail Submissions</h3>
+        <div id="adminGmailList"></div>
+      </div>
+      
+      <div id="admin-tasks" class="hidden">
+        <h3 style="font-size:16px;">Micro Tasks Management</h3>
+        <input type="text" id="adminTaskInput" placeholder="নতুন টাস্কের বিবরণ লিখুন...">
+        <button class="btn btn-green" onclick="addAdminTask()">ADD TASK</button>
+        <div id="adminTaskMsg" style="margin-top:10px; margin-bottom:15px;"></div>
+        <hr style="border-color:#344563; margin: 15px 0;">
+        <div id="adminTaskList"></div>
+      </div>
+
+      <div id="admin-withdraws" class="hidden">
+        <h3 style="font-size:16px;">Withdraw Requests</h3>
+        <div id="adminWithdrawList"></div>
+      </div>
+      
+      <div id="admin-users" class="hidden">
+        <h3 style="font-size:16px;">Users</h3>
+        <div id="adminUserList"></div>
+      </div>
     </section>
   </div>
 
@@ -243,13 +283,6 @@ function submitGmail(){
   m.innerHTML='<div class="msg success">সাবমিট হয়েছে! অ্যাডমিন অ্যাপ্রুভ করলে ১০৳ যোগ হবে।</div>'; loadUserPanel();
 }
 
-function postTask(){
-  const u=document.getElementById("taskUser").value.trim(),d=document.getElementById("taskDetails").value.trim(),m=document.getElementById("taskMsg");
-  if(!u||!d){m.innerHTML='<div class="msg error">সব ঘর পূরণ করুন</div>';return}
-  const t=getDB("tasks");t.push({id:Date.now(),owner:currentUser,tg:u,details:d,date:new Date().toLocaleString()});setDB("tasks",t);
-  document.getElementById("taskDetails").value="";m.innerHTML='<div class="msg success">টাস্ক পোস্ট হয়েছে!</div>';
-}
-
 function requestWithdraw(){
   const n=document.getElementById("wdNumber").value.trim(),a=parseInt(document.getElementById("wdAmount").value),m=document.getElementById("wdMsg");
   if(!n||!a){m.innerHTML='<div class="msg error">নাম্বার ও টাকার পরিমাণ দিন</div>';return}
@@ -265,11 +298,43 @@ function requestWithdraw(){
 
 function copyRef(){navigator.clipboard.writeText(document.getElementById("refLink").textContent).then(()=>{document.getElementById("refMsg").innerHTML='<div class="msg success">লিংক কপি হয়েছে!</div>'})}
 
+function loadTasks() {
+  const tasks = getDB("tasks");
+  const b = document.getElementById("availableTasksList");
+  if(!tasks.length) { b.innerHTML = '<p>এখনো কোনো টাস্ক পোস্ট করা হয়নি।</p>'; return; }
+  b.innerHTML = tasks.slice().reverse().map(x => `
+    <div class="list-item" style="cursor:pointer;" onclick="viewTask(${x.id})">
+      <span style="font-size:12px;"><b>Task:</b> ${x.details.substring(0, 30)}...</span>
+      <span style="color:#55d6ff; font-size:20px;">&rarr;</span>
+    </div>
+  `).join("");
+}
+
+function viewTask(id) {
+  const tasks = getDB("tasks");
+  const task = tasks.find(t => t.id === id);
+  if(task) {
+    document.getElementById("taskListView").classList.add("hidden");
+    document.getElementById("taskDetailsView").classList.remove("hidden");
+    document.getElementById("singleTaskDetails").innerHTML = `<b>Task Details:</b><br><br>${task.details}`;
+  }
+}
+
+function backToTaskList() {
+  document.getElementById("taskDetailsView").classList.add("hidden");
+  document.getElementById("taskListView").classList.remove("hidden");
+}
+
 function showTab(n){
   ["gmail","refer","task","withdraw","support"].forEach(t=>document.getElementById("tab-"+t).classList.add("hidden"));
   document.getElementById("tab-"+n).classList.remove("hidden");
   document.querySelectorAll("#userPanel .menu a").forEach(a=>a.classList.remove("active"));
   if(n==="gmail"||n==="withdraw")loadUserPanel();
+  if(n==="task") {
+    loadTasks();
+    document.getElementById("taskListView").classList.remove("hidden");
+    document.getElementById("taskDetailsView").classList.add("hidden");
+  }
 }
 
 function doAdminLogin(){
@@ -278,12 +343,52 @@ function doAdminLogin(){
   else{e.textContent="ভুল অ্যাডমিন পাসওয়ার্ড!";e.classList.remove("hidden")}
 }
 
+function addAdminTask() {
+  const d = document.getElementById("adminTaskInput").value.trim();
+  const m = document.getElementById("adminTaskMsg");
+  if(!d) { m.innerHTML = '<div class="msg error">টাস্কের বিবরণ দিন</div>'; return; }
+  const t = getDB("tasks");
+  t.push({id: Date.now(), details: d});
+  setDB("tasks", t);
+  document.getElementById("adminTaskInput").value = "";
+  m.innerHTML = '<div class="msg success">টাস্ক পোস্ট হয়েছে!</div>';
+  loadAdminPanel();
+}
+
+function deleteAdminTask(id) {
+  if(!confirm("আপনি কি এই টাস্কটি ডিলিট করতে চান?")) return;
+  let t = getDB("tasks");
+  t = t.filter(x => x.id !== id);
+  setDB("tasks", t);
+  loadAdminPanel();
+}
+
+function editAdminTask(id) {
+  const t = getDB("tasks");
+  const task = t.find(x => x.id === id);
+  if(!task) return;
+  const newDetails = prompt("টাস্কের নতুন বিবরণ লিখুন:", task.details);
+  if(newDetails && newDetails.trim() !== "") {
+    task.details = newDetails.trim();
+    setDB("tasks", t);
+    loadAdminPanel();
+  }
+}
+
 function loadAdminPanel(){
   const g=getDB("gmails");
   document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>${x.email}<br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<p>কোনো সাবমিশন নেই</p>';
   
   const t=getDB("tasks");
-  document.getElementById("adminTaskList").innerHTML=t.length?t.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.tg}</b> (User: ${x.owner})<br>${x.details}<br><small style="color:#64748b;">${x.date}</small></span></div>`).join(""):'<p>কোনো টাস্ক নেই</p>';
+  document.getElementById("adminTaskList").innerHTML = t.length ? t.slice().reverse().map(x => `
+    <div class="list-item">
+      <span style="font-size:12px;">${x.details}</span>
+      <span class="row">
+        <button class="btn btn-green" style="width:auto;padding:5px 8px;font-size:11px;margin:0;" onclick="editAdminTask(${x.id})">Edit</button>
+        <button class="btn btn-red" style="width:auto;padding:5px 8px;font-size:11px;margin:0;" onclick="deleteAdminTask(${x.id})">Delete</button>
+      </span>
+    </div>
+  `).join("") : '<p>কোনো টাস্ক নেই</p>';
   
   const w=getDB("withdraws");
   document.getElementById("adminWithdrawList").innerHTML=w.length?w.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br><b>৳${x.amount}</b> → ${x.number}<br>method: <b>${x.method}</b><br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="pending"?`<div class="row"><button class="btn btn-green" onclick="updateWithdraw(${x.id},'paid')">Paid</button><button class="btn btn-red" onclick="updateWithdraw(${x.id},'rejected')">Reject</button></div>`:`<span class="badge ${x.status==="paid"?"paid":"block"}">${x.status}</span>`}</span></div>`).join(""):'<p>কোনো রিকোয়েস্ট নেই</p>';
@@ -313,4 +418,4 @@ function showAdminTab(n){
 })();
 </script>
 </body>
-</html>
+ </html>
