@@ -45,11 +45,9 @@
 </head>
 <body>
 <div class="wrap">
-
   <div class="logo">PAY<span>LIX</span></div>
   <p>Earn More • Work Smart • Get Rewarded</p>
-
-  <!-- LOGIN -->
+  
   <section class="card" id="loginScreen">
     <h2>Welcome Back 👋</h2>
     <p>আপনার অ্যাকাউন্টে লগইন করুন</p>
@@ -61,7 +59,6 @@
     <p style="margin-top:20px;"><a href="#" onclick="showScreen('adminLogin');return false;" style="color:#64748b;text-decoration:none;font-size:11px;">Admin Login</a></p>
   </section>
 
-  <!-- REGISTER -->
   <section class="card hidden" id="registerScreen">
     <h2>Create Account</h2>
     <p>নতুন অ্যাকাউন্ট তৈরি করুন</p>
@@ -72,23 +69,19 @@
     <p style="margin-top:15px;">অ্যাকাউন্ট আছে? <a href="#" onclick="showScreen('login');return false;" style="color:#55d6ff;text-decoration:none;font-weight:bold;">Login করুন</a></p>
   </section>
 
-  <!-- USER DASHBOARD -->
   <div id="userPanel" class="hidden">
     <section class="card">
       <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
       <h2 style="text-align:left;margin-bottom:0;">Dashboard</h2>
-      
       <div class="balance">
         <p style="color:white;margin:0;">YOUR AVAILABLE BALANCE</p>
         <h1 id="userBalance">৳ 0</h1>
         <p style="color:white;margin:0;">PAYLIX WALLET</p>
       </div>
-      
       <div class="tabs">
         <a class="tab active" href="#dashboard">Dashboard</a>
         <a class="tab" href="#tasks">My Tasks</a>
       </div>
-      
       <div class="menu">
         <a onclick="showTab('gmail')"><span>📧</span>Gmail Submit</a>
         <a onclick="showTab('refer')"><span>👥</span>Refer & Earn</a>
@@ -99,7 +92,6 @@
       </div>
     </section>
 
-    <!-- GMAIL -->
     <section class="card hidden" id="tab-gmail">
       <h3>📧 Gmail Submit</h3>
       <div class="msg">প্রতি জিমেইল অ্যাকাউন্টের রেট <b>১০ টাকা</b></div>
@@ -114,7 +106,6 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
-    <!-- REFER -->
     <section class="card hidden" id="tab-refer">
       <h3>👥 Refer & Earn</h3>
       <div class="msg">রেফার বোনাস শীঘ্রই যোগ করা হবে</div>
@@ -124,7 +115,6 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
-    <!-- MICRO TASK -->
     <section class="card hidden" id="tab-task">
       <h3>📝 Micro Task Post</h3>
       <div class="msg">আপনার টেলিগ্রাম ইউজারনেম: <b>@Owner_Paylix</b></div>
@@ -135,7 +125,6 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
-    <!-- WITHDRAW -->
     <section class="card hidden" id="tab-withdraw">
       <h3>💸 Withdraw (bKash)</h3>
       <div class="msg">শুধুমাত্র <b>bKash</b> এ টাকা নেওয়া যাবে। ন্যূনতম উইথড্র ৫০৳</div>
@@ -148,7 +137,6 @@
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
 
-    <!-- SUPPORT -->
     <section class="card hidden" id="tab-support">
       <h3>🎧 Support</h3>
       <p>যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করুন</p>
@@ -156,8 +144,7 @@
       <a class="btn" href="https://t.me/Owner_Paylix" target="_blank">TELEGRAM SUPPORT</a>
       <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
     </section>
-  </div>  <!-- ADMIN LOGIN -->
-  <section class="card hidden" id="adminLoginScreen">
+  </div>  <section class="card hidden" id="adminLoginScreen">
     <h2>Admin Panel</h2>
     <p>Admin access only</p>
     <input type="password" id="adminPass" placeholder="Admin password">
@@ -166,35 +153,20 @@
     <button class="btn btn-out" style="margin-top:15px;" onclick="showScreen('login')">Back to Website</button>
   </section>
 
-  <!-- ADMIN PANEL -->
   <div id="adminPanel" class="hidden">
     <section class="card">
       <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
       <h2 style="text-align:left;margin-bottom:15px;">Admin Dashboard</h2>
-      
       <div class="tabs" style="grid-template-columns:1fr 1fr;">
         <a class="tab active" id="atab-gmails" onclick="showAdminTab('gmails')">Gmails</a>
         <a class="tab" id="atab-tasks" onclick="showAdminTab('tasks')">Tasks</a>
         <a class="tab" id="atab-withdraws" onclick="showAdminTab('withdraws')">Withdraw</a>
         <a class="tab" id="atab-users" onclick="showAdminTab('users')">Users</a>
       </div>
-
-      <div id="admin-gmails">
-        <h3 style="font-size:16px;">Gmail Submissions</h3>
-        <div id="adminGmailList"></div>
-      </div>
-      <div id="admin-tasks" class="hidden">
-        <h3 style="font-size:16px;">Micro Tasks</h3>
-        <div id="adminTaskList"></div>
-      </div>
-      <div id="admin-withdraws" class="hidden">
-        <h3 style="font-size:16px;">Withdraw Requests</h3>
-        <div id="adminWithdrawList"></div>
-      </div>
-      <div id="admin-users" class="hidden">
-        <h3 style="font-size:16px;">Users</h3>
-        <div id="adminUserList"></div>
-      </div>
+      <div id="admin-gmails"><h3 style="font-size:16px;">Gmail Submissions</h3><div id="adminGmailList"></div></div>
+      <div id="admin-tasks" class="hidden"><h3 style="font-size:16px;">Micro Tasks</h3><div id="adminTaskList"></div></div>
+      <div id="admin-withdraws" class="hidden"><h3 style="font-size:16px;">Withdraw Requests</h3><div id="adminWithdrawList"></div></div>
+      <div id="admin-users" class="hidden"><h3 style="font-size:16px;">Users</h3><div id="adminUserList"></div></div>
     </section>
   </div>
 
