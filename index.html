@@ -412,7 +412,15 @@ function loadAdminPanel(){
   document.getElementById("adminUserList").innerHTML = users.length ? users.map(u=>`<div class="list-item"><span>${u.username} <br><small style="color:#64748b;">Balance: ${getBalance(u.username)}৳</small></span><span>${isBlocked(u.username)?`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="toggleBlock('${u.username}',false)">Unblock</button>`:`<button class="btn btn-red" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="toggleBlock('${u.username}',true)">Block</button>`}</span></div>`).join("") : '<p>কোনো ইউজার নেই</p>';
 
   const tr = getDB("taskReqs");
-  document.getElementById("adminTaskReqList").innerHTML = tr.length ? tr.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>Reward: ৳${x.reward}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="approveTask(${x.id})">Approve</button>`}</span></div>`).join("") : '<p>কোনো টাস্ক রিকোয়েস্ট নেই</p>';
+  document.getElementById("adminTaskReqList").innerHTML = tr.length ? tr.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>Reward: ৳${x.reward}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="approveTaskReq(${x.id})">Approve</button>`}</span></div>`).join("") : '<p>কোনো টাস্ক রিকোয়েস্ট নেই</p>';
 }
 
-function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails
+function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails",g)}loadAdminPanel()}
+function updateWithdraw(id,s){const l=getDB("withdraws"),w=l.find(x=>x.id===id);if(w){w.status=s;setDB("withdraws",l)}loadAdminPanel()}
+function toggleBlock(u,b){setBlocked(u,b);loadAdminPanel()}
+function approveTaskReq(id){const t=getDB("taskReqs"),x=t.find(y=>y.id===id);if(x){x.status="approved";setDB("taskReqs",t)}loadAdminPanel()}
+
+function showAdminTab(n){
+  ["gmails","tasks","withdraws","users","taskReqs"].forEach(t=>{
+    document.getElementById("admin-"+t).classList.add("hidden");
+    document.getElementById("atab-"+
