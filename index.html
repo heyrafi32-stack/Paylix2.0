@@ -24,40 +24,40 @@
   .page.active { display:block; }
   @keyframes slideIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
 
+  /* SPLASH SCREEN */
+  #page-splash {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:100vh; text-align:center; animation: fadeIn 1s;
+  }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  .splash-logo { width:120px; animation: pulse 2s infinite; margin-bottom:20px; }
+  @keyframes pulse { 0% { transform:scale(1); filter:drop-shadow(0 0 10px rgba(168,85,247,0.5)); } 50% { transform:scale(1.05); filter:drop-shadow(0 0 25px rgba(168,85,247,0.9)); } 100% { transform:scale(1); filter:drop-shadow(0 0 10px rgba(168,85,247,0.5)); } }
+  .splash-text { font-size:2rem; font-weight:800; background:linear-gradient(90deg,#c084fc,#a855f7,#7c3aed); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:2px;}
+
   /* TOP BAR */
   .topbar {
     display:flex; justify-content:space-between; align-items:center;
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(14px);
-    border:1px solid rgba(168,85,247,0.25);
-    border-radius:18px;
-    padding:14px 18px;
-    margin-bottom:20px;
+    background: rgba(255,255,255,0.06); backdrop-filter: blur(14px);
+    border:1px solid rgba(168,85,247,0.25); border-radius:18px; padding:14px 18px; margin-bottom:20px;
   }
   .logo { display:flex; align-items:center; gap:8px; }
   .logo img { height:36px; width:auto; object-fit:contain; filter: drop-shadow(0 0 8px rgba(168,85,247,0.8)); }
   .logo span { font-size:1.3rem; font-weight:800; background:linear-gradient(90deg,#c084fc,#a855f7,#7c3aed); -webkit-background-clip:text; background-clip:text; color:transparent; }
   
   /* BACK BUTTON */
-  .back-btn {
-    display:flex; align-items:center; gap:6px; color:#c9b8e8; font-size:.9rem;
-    cursor:pointer; margin-bottom:16px; font-weight:600;
-  }
+  .back-btn { display:flex; align-items:center; gap:6px; color:#c9b8e8; font-size:.9rem; cursor:pointer; margin-bottom:16px; font-weight:600; }
   .back-btn:hover { color:#fff; }
 
   /* BALANCE CARD */
   .balance {
     background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(109,40,217,0.15));
-    border:1px solid rgba(192,132,252,0.35);
-    border-radius:22px; padding:24px; margin-bottom:22px;
+    border:1px solid rgba(192,132,252,0.35); border-radius:22px; padding:24px; margin-bottom:22px;
     position:relative; overflow:hidden; box-shadow:0 0 40px rgba(168,85,247,0.25);
   }
-  .balance::after {
-    content:""; position:absolute; top:-40%; right:-10%; width:220px; height:220px; border-radius:50%;
-    background:radial-gradient(circle,#a855f7aa,transparent 70%); filter:blur(20px);
-  }
+  .balance::after { content:""; position:absolute; top:-40%; right:-10%; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle,#a855f7aa,transparent 70%); filter:blur(20px); }
   .balance-label { font-size:.85rem; color:#d8c8f0; letter-spacing:1px; text-transform:uppercase;}
   .balance-amount { font-size:2.5rem; font-weight:800; margin:6px 0 16px; background:linear-gradient(90deg,#fff,#e9d5ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  
   .btn {
     border:none; cursor:pointer; font-weight:600; border-radius:12px;
     padding:12px 20px; font-size:.9rem; color:#fff; width:100%;
@@ -82,7 +82,27 @@
   .sec-title { font-size:1.05rem; font-weight:700; margin-bottom:12px; color:#e9d5ff; display:flex; align-items:center; gap:8px;}
   .sec-title::before { content:""; width:4px; height:18px; border-radius:4px; background:linear-gradient(#c084fc,#7c3aed); }
 
-  /* GMAIL SELL SECTION */
+  /* FORMS & BOXES */
+  .form-box { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.2); border-radius:18px; padding:22px; }
+  .field { margin-bottom:14px; }
+  .field label { font-size:.8rem; color:#c9b8e8; display:block; margin-bottom:6px; }
+  .field input, .field select {
+    width:100%; padding:14px; border-radius:10px; border:1px solid rgba(168,85,247,0.3);
+    background:rgba(13,6,24,0.6); color:#fff; font-size:.95rem; outline:none;
+  }
+  .field input:focus, .field select:focus { border-color:#a855f7; box-shadow:0 0 12px rgba(168,85,247,0.4); }
+  
+  .pass-wrap { position:relative; }
+  .pass-wrap .eye { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.1rem; opacity:.7; }
+
+  /* AUTH PAGES (Login / Register) */
+  .auth-container { margin-top: 10vh; }
+  .auth-title { font-size:1.8rem; font-weight:800; margin-bottom:8px; color:#fff; text-align:center;}
+  .auth-sub { font-size:.9rem; color:#b9a4dd; margin-bottom:30px; text-align:center;}
+  .auth-link { text-align:center; margin-top:20px; font-size:.9rem; color:#b9a4dd;}
+  .auth-link a { color:#c084fc; text-decoration:none; font-weight:600; cursor:pointer;}
+
+  /* GMAIL SELL SECTOR */
   .sector-wrap { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;}
   .sector {
     background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.25);
@@ -91,26 +111,14 @@
   .sector.active { border-color:#c084fc; background:rgba(168,85,247,0.18); box-shadow:0 0 22px rgba(168,85,247,0.45); }
   .sector .t { font-weight:700; font-size:.95rem; }
   .sector .p { font-size:1.3rem; font-weight:800; margin-top:6px; background:linear-gradient(90deg,#c084fc,#a855f7); -webkit-background-clip:text; background-clip:text; color:transparent;}
-
-  .form-box { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.2); border-radius:18px; padding:22px; }
-  .field { margin-bottom:14px; }
-  .field label { font-size:.8rem; color:#c9b8e8; display:block; margin-bottom:6px; }
-  .field input {
-    width:100%; padding:14px; border-radius:10px; border:1px solid rgba(168,85,247,0.3);
-    background:rgba(13,6,24,0.6); color:#fff; font-size:.95rem; outline:none;
-  }
-  .field input:focus { border-color:#a855f7; box-shadow:0 0 12px rgba(168,85,247,0.4); }
   
-  .pass-wrap { position:relative; }
-  .pass-wrap .eye { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.1rem; opacity:.7; }
-
   /* progress */
   .progress-wrap { margin:6px 0 18px; }
   .progress-label { display:flex; justify-content:space-between; font-size:.8rem; color:#c9b8e8; margin-bottom:6px;}
   .bar { height:10px; border-radius:8px; background:rgba(255,255,255,0.08); overflow:hidden;}
   .bar-fill { height:100%; width:0%; border-radius:8px; background:linear-gradient(90deg,#a855f7,#ec4899); box-shadow:0 0 14px #a855f7;}
 
-  /* TRANSACTIONS */
+  /* TRANSACTIONS & LISTS */
   .txn { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.18); border-radius:16px; padding:6px 4px; }
   .txn-row { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid rgba(168,85,247,0.12); font-size:.9rem;}
   .txn-row:last-child { border:none; }
@@ -121,13 +129,91 @@
   .tag.ok { background:rgba(52,211,153,.15); color:#34d399; }
   .tag.pending { background:rgba(251,191,36,.15); color:#fbbf24; }
 
+  .job-card { background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.2); border-radius:14px; padding:16px; margin-bottom:12px;}
+  .job-card h4 { font-size:1rem; margin-bottom:6px; color:#e9d5ff;}
+  .job-card p { font-size:.8rem; color:#b9a4dd; margin-bottom:10px;}
+  .job-card .rate { font-weight:700; color:#34d399; font-size:1.1rem;}
+
+  .profile-pic { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,#a855f7,#6d28d9); margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:2rem; border:3px solid rgba(255,255,255,0.2);}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- ================= পেজ ১: মেইন ড্যাশবোর্ড ================= -->
-  <div id="page-home" class="page active">
+  <!-- ================= পেজ ০: স্প্ল্যাশ স্ক্রিন ================= -->
+  <div id="page-splash" class="page active">
+    <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix Logo" class="splash-logo">
+    <div class="splash-text">PAYLIX</div>
+  </div>
+
+  <!-- ================= পেজ ০.১: লগইন ================= -->
+  <div id="page-login" class="page">
+    <div class="auth-container">
+      <div style="text-align:center; margin-bottom:20px;">
+        <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Logo" style="height:60px; filter: drop-shadow(0 0 10px rgba(168,85,247,0.8));">
+      </div>
+      <div class="auth-title">স্বাগতম!</div>
+      <div class="auth-sub">আপনার অ্যাকাউন্টে লগইন করুন</div>
+      
+      <div class="form-box">
+        <div class="field">
+          <label>ইমেইল / মোবাইল</label>
+          <input type="text" placeholder="example@gmail.com">
+        </div>
+        <div class="field">
+          <label>পাসওয়ার্ড</label>
+          <div class="pass-wrap">
+            <input type="password" id="login-pass" placeholder="••••••••">
+            <span class="eye" onclick="togglePass('login-pass')">👁️</span>
+          </div>
+        </div>
+        <button class="btn" onclick="openPage('page-home')">লগইন করুন</button>
+      </div>
+      
+      <div class="auth-link">
+        নতুন অ্যাকাউন্ট নেই? <a onclick="openPage('page-register')">রেজিস্ট্রেশন করুন</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= পেজ ০.২: রেজিস্ট্রেশন ================= -->
+  <div id="page-register" class="page">
+    <div class="back-btn" onclick="openPage('page-login')">← লগইনে ফিরে যান</div>
+    <div class="auth-container" style="margin-top:20px;">
+      <div class="auth-title">অ্যাকাউন্ট তৈরি করুন</div>
+      <div class="auth-sub">আজই আমাদের সাথে যোগ দিন</div>
+      
+      <div class="form-box">
+        <div class="field">
+          <label>আপনার নাম</label>
+          <input type="text" placeholder="যেমন: তানভীর">
+        </div>
+        <div class="field">
+          <label>ইমেইল</label>
+          <input type="email" placeholder="example@gmail.com">
+        </div>
+        <div class="field">
+          <label>মোবাইল নাম্বার</label>
+          <input type="number" placeholder="01XXXXXXXXX">
+        </div>
+        <div class="field">
+          <label>পাসওয়ার্ড</label>
+          <div class="pass-wrap">
+            <input type="password" id="reg-pass" placeholder="••••••••">
+            <span class="eye" onclick="togglePass('reg-pass')">👁️</span>
+          </div>
+        </div>
+        <button class="btn" onclick="openPage('page-home')" style="margin-top:10px;">রেজিস্ট্রেশন করুন</button>
+      </div>
+      
+      <div class="auth-link">
+        আগে থেকেই অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন করুন</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= পেজ ১: হোম (ড্যাশবোর্ড) ================= -->
+  <div id="page-home" class="page">
     <div class="topbar">
       <div class="logo">
         <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix">
@@ -147,19 +233,19 @@
       <div class="card" onclick="openPage('page-gmail')">
         <span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২ /টি</div>
       </div>
-      <div class="card" onclick="alert('Microtask শীঘ্রই আসছে!')">
+      <div class="card" onclick="openPage('page-microtask')">
         <span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">টাস্ক করে আয়</div>
       </div>
-      <div class="card" onclick="alert('রেফার বোনাস শীঘ্রই!')">
-        <span class="icon">🎁</span><div class="title">Refer</div><div class="sub">বোনাস শীঘ্রই</div>
+      <div class="card" onclick="openPage('page-refer')">
+        <span class="icon">🎁</span><div class="title">Refer</div><div class="sub">রেফার করে আয়</div>
       </div>
-      <div class="card" onclick="alert('টেলিগ্রামে যোগাযোগ করুন: @Owner_Paylix')">
+      <div class="card" onclick="openPage('page-support')">
         <span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div>
       </div>
       <div class="card" onclick="openPage('page-withdraw')">
         <span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ / নগদ</div>
       </div>
-      <div class="card" onclick="alert('সেটিংস পেজ শীঘ্রই আসছে!')">
+      <div class="card" onclick="openPage('page-settings')">
         <span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div>
       </div>
     </div>
@@ -195,42 +281,124 @@
       </div>
 
       <div class="field">
-        <label>Gmail ID (শুধু সেক্টর A এর জন্য)</label>
+        <label>Gmail ID</label>
         <input type="text" placeholder="example@gmail.com">
       </div>
       <div class="field">
         <label>Password</label>
         <div class="pass-wrap">
-          <input type="password" id="pass" placeholder="••••••••">
-          <span class="eye" onclick="togglePass()">👁️</span>
+          <input type="password" id="gmail-pass" placeholder="••••••••">
+          <span class="eye" onclick="togglePass('gmail-pass')">👁️</span>
         </div>
       </div>
-      <button class="btn" onclick="alert('ব্যাকএন্ড কানেক্ট করা হলে এখানে ডাটা সেভ হবে!')">সাবমিট করুন</button>
+      <button class="btn">সাবমিট করুন</button>
     </div>
   </div>
 
-  <!-- ================= পেজ ৩: Withdraw ================= -->
+  <!-- ================= পেজ ৩: Microtask ================= -->
+  <div id="page-microtask" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">🎯 Microtask</div>
+    
+    <div class="job-card">
+      <h4>Gmail অ্যাকাউন্ট ভেরিফাই</h4>
+      <p>একটি জিমেইল আইডি লগইন করে ভেরিফাই করতে হবে।</p>
+      <div class="rate">৳ ৫ /টি</div>
+      <button class="btn" style="margin-top:10px; padding:8px;">কাজ শুরু করুন</button>
+    </div>
+    <div class="job-card">
+      <h4>ফেসবুক পেজ ফলো</h4>
+      <p>নির্দিষ্ট পেজ ফলো করে স্ক্রিনশট দিতে হবে।</p>
+      <div class="rate">৳ ৩ /টি</div>
+      <button class="btn" style="margin-top:10px; padding:8px;">কাজ শুরু করুন</button>
+    </div>
+  </div>
+
+  <!-- ================= পেজ ৪: Refer ================= -->
+  <div id="page-refer" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">🎁 Refer & Earn</div>
+    
+    <div class="form-box" style="text-align:center;">
+      <span style="font-size:3rem;">🤝</span>
+      <h3 style="margin:15px 0 8px;">বন্ধুদের ইনভাইট করুন</h3>
+      <p style="font-size:.85rem; color:#b9a4dd; margin-bottom:20px;">আপনার রেফার লিংক শেয়ার করুন। এখন বোনাস নেই, তবে শীঘ্রই আসছে!</p>
+      
+      <div class="field" style="text-align:left;">
+        <label>আপনার রেফার লিংক</label>
+        <input type="text" value="https://paylix20.vercel.app/ref/Tanvir123" readonly>
+      </div>
+      <button class="btn">লিংক কপি করুন</button>
+    </div>
+  </div>
+
+  <!-- ================= পেজ ৫: Support ================= -->
+  <div id="page-support" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">💬 Support</div>
+    
+    <div class="form-box" style="text-align:center;">
+      <span style="font-size:3rem;">📞</span>
+      <h3 style="margin:15px 0 8px;">আমাদের সাথে যোগাযোগ</h3>
+      <p style="font-size:.85rem; color:#b9a4dd; margin-bottom:20px;">যেকোনো সমস্যায় সরাসরি টেলিগ্রামে মেসেজ দিন।</p>
+      
+      <a href="https://t.me/Owner_Paylix" target="_blank" style="text-decoration:none;">
+        <button class="btn" style="background:linear-gradient(90deg,#229ED9,#0088cc);">টেলিগ্রামে মেসেজ দিন (@Owner_Paylix)</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= পেজ ৬: Withdraw ================= -->
   <div id="page-withdraw" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
     <div class="sec-title">💸 Withdraw</div>
     <div class="form-box">
       <div class="field">
         <label>পেমেন্ট মেথড</label>
-        <select style="width:100%; padding:14px; border-radius:10px; border:1px solid rgba(168,85,247,0.3); background:rgba(13,6,24,0.6); color:#fff; font-size:.95rem; outline:none;">
+        <select>
           <option>বিকাশ (bKash)</option>
           <option>নগদ (Nagad)</option>
         </select>
       </div>
       <div class="field">
-        <label>নাম্বার</label>
+        <label>আপনার একাউন্ট নাম্বার</label>
         <input type="number" placeholder="01XXXXXXXXX">
       </div>
       <div class="field">
         <label>টাকার পরিমাণ (সর্বনিম্ন ৳ ১০০)</label>
         <input type="number" placeholder="100">
       </div>
-      <button class="btn" onclick="alert('রিকোয়েস্ট পাঠানো হয়েছে! (এটা ডেমো)')">রিকোয়েস্ট দিন</button>
+      <button class="btn">রিকোয়েস্ট দিন</button>
     </div>
+  </div>
+
+  <!-- ================= পেজ ৭: Settings ================= -->
+  <div id="page-settings" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">⚙️ Settings</div>
+    
+    <div class="form-box">
+      <div class="profile-pic">👤</div>
+      <div class="field" style="text-align:center;">
+        <input type="file" style="border:none; padding:0; font-size:.8rem; color:#b9a4dd; margin:0 auto;">
+      </div>
+
+      <hr style="border:none; border-top:1px solid rgba(168,85,247,0.2); margin:20px 0;">
+
+      <div class="field">
+        <label>নাম</label>
+        <input type="text" value="Tanvir">
+      </div>
+      <div class="field">
+        <label>নতুন পাসওয়ার্ড</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <button class="btn">সেভ করুন</button>
+    </div>
+    
+    <br>
+    <!-- লগ আউট বাটনে ক্লিক করলে লগইন পেজে নিয়ে যাবে -->
+    <button class="btn" onclick="openPage('page-login')" style="background:linear-gradient(90deg,#ef4444,#b91c1c);">লগ আউট করুন</button>
   </div>
 
 </div>
@@ -238,24 +406,27 @@
 <script>
   // পেজ চেঞ্জ করার ফাংশন (অ্যাপের মতো)
   function openPage(pageId) {
-    // সব পেজ হাইড করো
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    // নির্দিষ্ট পেজ দেখাও
     document.getElementById(pageId).classList.add('active');
-    // উপরে স্ক্রল করো
     window.scrollTo(0, 0);
   }
 
-  function togglePass(){
-    const p = document.getElementById('pass');
+  // পাসওয়ার্ড শো/হাইড
+  function togglePass(id){
+    const p = document.getElementById(id);
     p.type = p.type === 'password' ? 'text' : 'password';
   }
 
+  // সেক্টর সিলেক্ট
   function selectSector(price) {
     document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
     event.currentTarget.classList.add('active');
-    // এখানে আমরা চাইলে Gmail ID ফিল্ড হাইড/শো করতে পারি
   }
+
+  // ২.৫ সেকেন্ড পর অটোমেটিক্যালি লগইন পেজে চলে যাবে
+  setTimeout(() => {
+    openPage('page-login');
+  }, 2500);
 </script>
 </body>
-</html>
+ </html>
