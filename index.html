@@ -2,207 +2,187 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paylix - Earn Money</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-  body{background:#0f172a;color:#e2e8f0;min-height:100vh}
-  .container{max-width:480px;margin:0 auto;padding:20px}
-  .card{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-  h1{font-size:22px;text-align:center;margin-bottom:6px;color:#38bdf8}
-  h2{font-size:18px;margin-bottom:14px;color:#38bdf8}
-  .sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px}
-  label{display:block;font-size:13px;margin-bottom:6px;color:#cbd5e1}
-  input,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:14px;margin-bottom:14px}
-  input:focus,textarea:focus{outline:none;border-color:#38bdf8}
-  button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
-  button:hover{opacity:.9}
-  .btn-out{background:transparent;border:1px solid #475569;color:#94a3b8}
-  .btn-red{background:#dc2626}
-  .btn-green{background:#059669}
-  .msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd}
-  .success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
-  .error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
-  .hidden{display:none}
-  .nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .nav button{flex:1;min-width:70px;padding:9px 6px;font-size:12px;background:#334155}
-  .nav button.active{background:linear-gradient(135deg,#38bdf8,#6366f1)}
-  .list-item{background:#0f172a;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
-  .badge.pend{background:#78350f;color:#fcd34d}
-  .badge.block{background:#4c1d1d;color:#fca5a5}
-  .badge.paid{background:#1e3a8a;color:#93c5fd}
-  .balance{font-size:28px;font-weight:700;color:#10b981;text-align:center}
-  .balance-label{text-align:center;color:#94a3b8;font-size:12px;margin-bottom:18px}
-  .ref-box{background:#0f172a;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px}
-  .logout{float:right;background:#dc2626;width:auto;padding:7px 14px;font-size:12px}
-  .empty{text-align:center;color:#64748b;font-size:13px;padding:20px}
-  .row{display:flex;gap:6px;align-items:center}
-  .row button{width:auto;padding:6px 10px;font-size:11px}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PAYLIX</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
+<div class="wrap">
+
+  <div class="logo">PAY<span>LIX</span></div>
+  <p>Earn More • Work Smart • Get Rewarded</p>
 
   <!-- LOGIN -->
-  <div id="loginScreen">
-    <div class="card">
-      <div style="text-align:center;margin-bottom:12px;">
-        <img src="https://i.postimg.cc/HxxJhP9S/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="Logo" style="width:100px;height:auto;border-radius:10px;">
-      </div>
-      <h1>Paylix</h1>
-      <p class="sub">Earn money by submitting Gmail accounts</p>
-      <label>Username</label>
-      <input type="text" id="loginUser" placeholder="আপনার ইউজারনেম দিন">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="আপনার পাসওয়ার্ড দিন">
-      <button onclick="doLogin()">Login</button>
-      <div id="loginError" class="msg error hidden" style="margin-top:14px;"></div>
-      <p style="text-align:center; margin-top:15px; font-size:13px; color:#94a3b8;">
-        নতুন একাউন্ট নেই? <a href="#" onclick="showScreen('register');return false;" style="color:#38bdf8;">Register করুন</a>
-      </p>
-    </div>
-  </div>
+  <section class="card" id="loginScreen">
+    <h2>Welcome Back 👋</h2>
+    <p>আপনার অ্যাকাউন্টে লগইন করুন</p>
+    <input type="text" id="loginUser" placeholder="Username">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button class="btn" onclick="doLogin()">LOGIN</button>
+    <div id="loginError" class="msg error hidden" style="margin-top:15px;"></div>
+    <p style="margin-top:15px;">অ্যাকাউন্ট নেই? <a href="#" onclick="showScreen('register');return false;" style="color:#55d6ff;text-decoration:none;font-weight:bold;">Register করুন</a></p>
+    <p style="margin-top:20px;"><a href="#" onclick="showScreen('adminLogin');return false;" style="color:#64748b;text-decoration:none;font-size:11px;">Admin Login</a></p>
+  </section>
 
   <!-- REGISTER -->
-  <div id="registerScreen" class="hidden">
-    <div class="card">
-      <h1>Create Account</h1>
-      <p class="sub">নতুন একাউন্ট খুলুন</p>
-      <label>Username</label>
-      <input type="text" id="regUser" placeholder="একটি ইউজারনেম দিন">
-      <label>Password</label>
-      <input type="password" id="regPass" placeholder="একটি পাসওয়ার্ড দিন">
-      <button onclick="doRegister()">Register</button>
-      <div id="regMsg" style="margin-top:14px;"></div>
-      <p style="text-align:center; margin-top:15px; font-size:13px; color:#94a3b8;">
-        একাউন্ট আছে? <a href="#" onclick="showScreen('login');return false;" style="color:#38bdf8;">Login করুন</a>
-      </p>
-      <button class="btn-out" style="margin-top:10px;" onclick="showScreen('login')">Back</button>
-    </div>
-  </div>
+  <section class="card hidden" id="registerScreen">
+    <h2>Create Account</h2>
+    <p>নতুন অ্যাকাউন্ট তৈরি করুন</p>
+    <input type="text" id="regUser" placeholder="Username">
+    <input type="password" id="regPass" placeholder="Password">
+    <button class="btn" onclick="doRegister()">REGISTER</button>
+    <div id="regMsg" style="margin-top:15px;"></div>
+    <p style="margin-top:15px;">অ্যাকাউন্ট আছে? <a href="#" onclick="showScreen('login');return false;" style="color:#55d6ff;text-decoration:none;font-weight:bold;">Login করুন</a></p>
+  </section>
 
-  <!-- USER PANEL -->
+  <!-- USER DASHBOARD -->
   <div id="userPanel" class="hidden">
-    <div class="card">
-      <button class="logout" onclick="logout()">Logout</button>
-      <h2>Dashboard</h2>
-      <div class="balance" id="userBalance">0৳</div>
-      <div class="balance-label">মোট ব্যালেন্স</div>
-      <div class="nav">
-        <button class="active" onclick="showTab('gmail')">Gmail</button>
-        <button onclick="showTab('refer')">Refer</button>
-        <button onclick="showTab('task')">Task</button>
-        <button onclick="showTab('withdraw')">Withdraw</button>
-        <button onclick="showTab('support')">Support</button>
+    <section class="card">
+      <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
+      <h2 style="text-align:left;margin-bottom:0;">Dashboard</h2>
+      
+      <div class="balance">
+        <p style="color:white;margin:0;">YOUR AVAILABLE BALANCE</p>
+        <h1 id="userBalance">৳ 0</h1>
+        <p style="color:white;margin:0;">PAYLIX WALLET</p>
       </div>
+      
+      <div class="tabs">
+        <a class="tab active" href="#dashboard">Dashboard</a>
+        <a class="tab" href="#tasks">My Tasks</a>
+      </div>
+      
+      <div class="menu">
+        <a onclick="showTab('gmail')"><span>📧</span>Gmail Submit</a>
+        <a onclick="showTab('refer')"><span>👥</span>Refer & Earn</a>
+        <a onclick="showTab('task')"><span>📝</span>Micro Tasks</a>
+        <a onclick="showTab('withdraw')"><span>💸</span>Withdraw</a>
+        <a onclick="showTab('support')"><span>🎧</span>Support</a>
+        <a onclick="logout()"><span>🚪</span>Logout</a>
+      </div>
+    </section>
 
-      <div id="tab-gmail">
-        <h2>Gmail Submit</h2>
-        <div class="msg">প্রতি জিমেইল অ্যাকাউন্টের রেট <b>১০ টাকা</b></div>
-        <label>Gmail Address</label>
-        <input type="email" id="gmailInput" placeholder="example@gmail.com">
-        <label>Gmail Password</label>
-        <input type="text" id="gmailPass" placeholder="পাসওয়ার্ড">
-        <label>Website Fixed Password</label>
-        <input type="password" id="gmailFixedPass" placeholder="ফিক্সড পাসওয়ার্ড দিন">
-        <div class="msg">আপনাকে এই ফিক্সড পাসওয়ার্ডটি দিতে হবে</div>
-        <button onclick="submitGmail()">Submit Gmail</button>
-        <div id="gmailMsg" style="margin-top:12px;"></div>
-        <h2 style="margin-top:20px;">আমার সাবমিশন</h2>
-        <div id="myGmails"></div>
-      </div>
+    <!-- GMAIL -->
+    <section class="card hidden" id="tab-gmail">
+      <h3>📧 Gmail Submit</h3>
+      <div class="msg">প্রতি জিমেইল অ্যাকাউন্টের রেট <b>১০ টাকা</b></div>
+      <input type="email" id="gmailInput" placeholder="Gmail Address (example@gmail.com)">
+      <input type="text" id="gmailPass" placeholder="Gmail Password">
+      <input type="password" id="gmailFixedPass" placeholder="Fixed Password (@SRABON99#&)">
+      <div class="msg">আপনাকে এই ফিক্সড পাসওয়ার্ডটি দিতে হবে</div>
+      <button class="btn" onclick="submitGmail()">SUBMIT GMAIL</button>
+      <div id="gmailMsg" style="margin-top:15px;"></div>
+      
+      <h3 style="margin-top:25px;font-size:16px;">আমার সাবমিশন</h3>
+      <div id="myGmails"></div>
+      <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
+    </section>
 
-      <div id="tab-refer" class="hidden">
-        <h2>Refer & Earn</h2>
-        <div class="msg">রেফার বোনাস শীঘ্রই যোগ করা হবে</div>
-        <label>আপনার রেফার লিংক</label>
-        <div class="ref-box" id="refLink"></div>
-        <button onclick="copyRef()">Copy Refer Link</button>
-        <div id="refMsg" style="margin-top:12px;"></div>
-      </div>
+    <!-- REFER -->
+    <section class="card hidden" id="tab-refer">
+      <h3>👥 Refer & Earn</h3>
+      <div class="msg">রেফার বোনাস শীঘ্রই যোগ করা হবে</div>
+      <div class="ref-box" id="refLink"></div>
+      <button class="btn" onclick="copyRef()">COPY REFERRAL LINK</button>
+      <div id="refMsg" style="margin-top:15px;"></div>
+      <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
+    </section>
 
-      <div id="tab-task" class="hidden">
-        <h2>Micro Task Post</h2>
-        <div class="msg">আপনার টেলিগ্রাম ইউজারনেম: <b>@Owner_Paylix</b></div>
-        <label>Telegram Username</label>
-        <input type="text" id="taskUser" value="@Owner_Paylix">
-        <label>Task Details</label>
-        <textarea id="taskDetails" rows="3" placeholder="টাস্কের বিবরণ লিখুন..."></textarea>
-        <button onclick="postTask()">Post Task</button>
-        <div id="taskMsg" style="margin-top:12px;"></div>
-      </div>
+    <!-- MICRO TASK -->
+    <section class="card hidden" id="tab-task">
+      <h3>📝 Micro Task Post</h3>
+      <div class="msg">আপনার টেলিগ্রাম ইউজারনেম: <b>@Owner_Paylix</b></div>
+      <input type="text" id="taskUser" value="@Owner_Paylix">
+      <textarea id="taskDetails" rows="3" placeholder="টাস্কের বিবরণ লিখুন..."></textarea>
+      <button class="btn" onclick="postTask()">POST TASK</button>
+      <div id="taskMsg" style="margin-top:15px;"></div>
+      <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
+    </section>
 
-      <div id="tab-withdraw" class="hidden">
-        <h2>Withdraw (bKash)</h2>
-        <div class="msg">শুধুমাত্র <b>bKash</b> এ টাকা নেওয়া যাবে। ন্যূনতম উইথড্র ৫০৳</div>
-        <label>bKash Number</label>
-        <input type="text" id="wdNumber" placeholder="01XXXXXXXXX">
-        <label>Amount (৳)</label>
-        <input type="number" id="wdAmount" placeholder="টাকার পরিমাণ">
-        <button onclick="requestWithdraw()">Request Withdraw</button>
-        <div id="wdMsg" style="margin-top:12px;"></div>
-        <h2 style="margin-top:20px;">আমার রিকোয়েস্ট</h2>
-        <div id="myWithdraws"></div>
-      </div>
+    <!-- WITHDRAW -->
+    <section class="card hidden" id="tab-withdraw">
+      <h3>💸 Withdraw (bKash)</h3>
+      <div class="msg">শুধুমাত্র <b>bKash</b> এ টাকা নেওয়া যাবে। ন্যূনতম উইথড্র ৫০৳</div>
+      <input type="text" id="wdNumber" placeholder="bKash Number (01XXXXXXXXX)">
+      <input type="number" id="wdAmount" placeholder="Amount (৳)">
+      <button class="btn" onclick="requestWithdraw()">REQUEST WITHDRAW</button>
+      <div id="wdMsg" style="margin-top:15px;"></div>
+      
+      <h3 style="margin-top:25px;font-size:16px;">আমার রিকোয়েস্ট</h3>
+      <div id="myWithdraws"></div>
+      <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
+    </section>
 
-      <div id="tab-support" class="hidden">
-        <h2>Support</h2>
-        <div class="msg">যেকোনো সমস্যায় যোগাযোগ করুন</div>
-        <label>Telegram Support</label>
-        <div class="ref-box">@Owner_Paylix</div>
-        <a href="https://t.me/Owner_Paylix" target="_blank" style="text-decoration:none;">
-          <button>Message on Telegram</button>
-        </a>
-      </div>
-    </div>
+    <!-- SUPPORT -->
+    <section class="card hidden" id="tab-support">
+      <h3>🎧 Support</h3>
+      <p>যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করুন</p>
+      <div class="msg" style="text-align:center;">Telegram: <b>@Owner_Paylix</b></div>
+      <a class="btn" href="https://t.me/Owner_Paylix" target="_blank">TELEGRAM SUPPORT</a>
+      <button class="btn btn-out" style="margin-top:10px;" onclick="showTab('dashboard')">Back to Dashboard</button>
+    </section>
   </div>
 
   <!-- ADMIN LOGIN -->
-  <div id="adminLogin" class="hidden">
-    <div class="card">
-      <h1>Admin Panel</h1>
-      <p class="sub">Admin access only</p>
-      <label>Admin Password</label>
-      <input type="password" id="adminPass" placeholder="Admin password">
-      <button onclick="doAdminLogin()">Login</button>
-      <div id="adminError" class="msg error hidden" style="margin-top:14px;"></div>
-      <button class="btn-out" style="margin-top:10px;" onclick="showScreen('login')">Back</button>
-    </div>
-  </div>
+  <section class="card hidden" id="adminLoginScreen">
+    <h2>Admin Panel</h2>
+    <p>Admin access only</p>
+    <input type="password" id="adminPass" placeholder="Admin password">
+    <button class="btn" onclick="doAdminLogin()">LOGIN</button>
+    <div id="adminError" class="msg error hidden" style="margin-top:15px;"></div>
+    <button class="btn btn-out" style="margin-top:15px;" onclick="showScreen('login')">Back to Website</button>
+  </section>
 
   <!-- ADMIN PANEL -->
   <div id="adminPanel" class="hidden">
-    <div class="card">
-      <button class="logout" onclick="logout()">Logout</button>
-      <h2>Admin Dashboard</h2>
-      <div class="nav">
-        <button class="active" onclick="showAdminTab('gmails')">Gmails</button>
-        <button onclick="showAdminTab('tasks')">Tasks</button>
-        <button onclick="showAdminTab('withdraws')">Withdraw</button>
-        <button onclick="showAdminTab('users')">Users</button>
+    <section class="card">
+      <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
+      <h2 style="text-align:left;margin-bottom:15px;">Admin Dashboard</h2>
+      
+      <div class="tabs" style="grid-template-columns:1fr 1fr;">
+        <a class="tab active" id="atab-gmails" onclick="showAdminTab('gmails')">Gmails</a>
+        <a class="tab" id="atab-tasks" onclick="showAdminTab('tasks')">Tasks</a>
+        <a class="tab" id="atab-withdraws" onclick="showAdminTab('withdraws')">Withdraw</a>
+        <a class="tab" id="atab-users" onclick="showAdminTab('users')">Users</a>
       </div>
-      <div id="admin-gmails"><h2>Gmail Submissions</h2><div id="adminGmailList"></div></div>
-      <div id="admin-tasks" class="hidden"><h2>Micro Tasks</h2><div id="adminTaskList"></div></div>
-      <div id="admin-withdraws" class="hidden"><h2>Withdraw Requests</h2><div class="msg">সব রিকোয়েস্ট <b>bKash</b> এ।</div><div id="adminWithdrawList"></div></div>
-      <div id="admin-users" class="hidden"><h2>Users</h2><div id="adminUserList"></div></div>
-    </div>
+
+      <div id="admin-gmails">
+        <h3 style="font-size:16px;">Gmail Submissions</h3>
+        <div id="adminGmailList"></div>
+      </div>
+      <div id="admin-tasks" class="hidden">
+        <h3 style="font-size:16px;">Micro Tasks</h3>
+        <div id="adminTaskList"></div>
+      </div>
+      <div id="admin-withdraws" class="hidden">
+        <h3 style="font-size:16px;">Withdraw Requests</h3>
+        <div id="adminWithdrawList"></div>
+      </div>
+      <div id="admin-users" class="hidden">
+        <h3 style="font-size:16px;">Users</h3>
+        <div id="adminUserList"></div>
+      </div>
+    </section>
   </div>
 
-  <p style="text-align:center;margin-top:20px;">
-    <a href="#" onclick="showScreen('adminLogin');return false;" style="color:#475569;font-size:11px;">Admin</a>
-  </p>
+  <div class="small">© 2026 PAYLIX — All Rights Reserved</div>
 </div>
 
 <script>
 const ADMIN_PASS="admin123", GMAIL_RATE=10, MIN_WITHDRAW=50, FIXED_PASS="@SRABON99#&";
 let currentUser = null;
+
 function getDB(k){return JSON.parse(localStorage.getItem("paylix_"+k)||"[]")}
 function setDB(k,v){localStorage.setItem("paylix_"+k,JSON.stringify(v))}
 function getBlocked(){return getDB("blocked")}
 function isBlocked(u){return getBlocked().includes(u)}
 function setBlocked(u,b){let x=getBlocked();if(b&&!x.includes(u))x.push(u);if(!b)x=x.filter(y=>y!==u);setDB("blocked",x)}
-function showScreen(n){["loginScreen","registerScreen","userPanel","adminLogin","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));const m={login:"loginScreen",register:"registerScreen",user:"userPanel",adminLogin:"adminLogin",admin:"adminPanel"};document.getElementById(m[n]).classList.remove("hidden");}
+
+function showScreen(n){
+  ["loginScreen","registerScreen","userPanel","adminLoginScreen","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  const m={login:"loginScreen",register:"registerScreen",user:"userPanel",adminLogin:"adminLoginScreen",admin:"adminPanel"};
+  document.getElementById(m[n]).classList.remove("hidden");
+}
 function logout(){localStorage.removeItem("paylix_session"); currentUser=null; showScreen("login")}
 
 function doRegister(){
@@ -232,7 +212,7 @@ function getBalance(u){
 }
 
 function loadUserPanel(){
-  document.getElementById("userBalance").textContent=getBalance(currentUser)+"৳";
+  document.getElementById("userBalance").textContent="৳ " + getBalance(currentUser);
   document.getElementById("refLink").textContent=window.location.origin+window.location.pathname+"?ref="+currentUser;
   renderMyGmails(getDB("gmails").filter(g=>g.owner===currentUser));
   renderMyWithdraws(getDB("withdraws").filter(w=>w.owner===currentUser));
@@ -240,12 +220,12 @@ function loadUserPanel(){
 
 function renderMyGmails(g){
   const b=document.getElementById("myGmails");
-  b.innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span>${x.email}</span><span class="badge ${x.status==="approved"?"":"pend"}">${x.status==="approved"?"Approved":"Pending"}</span></div>`).join(""):'<div class="empty">এখনও কোনো সাবমিশন নেই</div>';
+  b.innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span>${x.email}</span><span class="badge ${x.status==="approved"?"":"pend"}">${x.status==="approved"?"Approved":"Pending"}</span></div>`).join(""):'<p style="margin-top:10px;">কোনো সাবমিশন নেই</p>';
 }
 
 function renderMyWithdraws(l){
   const b=document.getElementById("myWithdraws");
-  b.innerHTML=l.length?l.slice().reverse().map(w=>`<div class="list-item"><span>৳${w.amount} → ${w.number}<br><small style="color:#64748b;">${w.date}</small></span><span class="badge ${w.status==="paid"?"paid":(w.status==="rejected"?"block":"pend")}">${w.status}</span></div>`).join(""):'<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
+  b.innerHTML=l.length?l.slice().reverse().map(w=>`<div class="list-item"><span>৳${w.amount} → ${w.number}<br><small style="color:#64748b;">${w.date}</small></span><span class="badge ${w.status==="paid"?"paid":(w.status==="rejected"?"block":"pend")}">${w.status}</span></div>`).join(""):'<p style="margin-top:10px;">কোনো রিকোয়েস্ট নেই</p>';
 }
 
 function submitGmail(){
@@ -283,8 +263,7 @@ function copyRef(){navigator.clipboard.writeText(document.getElementById("refLin
 function showTab(n){
   ["gmail","refer","task","withdraw","support"].forEach(t=>document.getElementById("tab-"+t).classList.add("hidden"));
   document.getElementById("tab-"+n).classList.remove("hidden");
-  const tabs=["gmail","refer","task","withdraw","support"];
-  document.querySelectorAll("#userPanel .nav button").forEach((b,i)=>b.classList.toggle("active",tabs[i]===n));
+  document.querySelectorAll("#userPanel .menu a").forEach(a=>a.classList.remove("active"));
   if(n==="gmail"||n==="withdraw")loadUserPanel();
 }
 
@@ -296,20 +275,72 @@ function doAdminLogin(){
 
 function loadAdminPanel(){
   const g=getDB("gmails");
-  document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>${x.email}<br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn-green" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<div class="empty">কোনো সাবমিশন নেই</div>';
+  document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>${x.email}<br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<p>কোনো সাবমিশন নেই</p>';
+  
   const t=getDB("tasks");
-  document.getElementById("adminTaskList").innerHTML=t.length?t.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.tg}</b> (User: ${x.owner})<br>${x.details}<br><small style="color:#64748b;">${x.date}</small></span></div>`).join(""):'<div class="empty">কোনো টাস্ক নেই</div>';
+  document.getElementById("adminTaskList").innerHTML=t.length?t.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.tg}</b> (User: ${x.owner})<br>${x.details}<br><small style="color:#64748b;">${x.date}</small></span></div>`).join(""):'<p>কোনো টাস্ক নেই</p>';
+  
   const w=getDB("withdraws");
-  document.getElementById("adminWithdrawList").innerHTML=w.length?w.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br><b>৳${x.amount}</b> → ${x.number}<br>method: <b>${x.method}</b><br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="pending"?`<div class="row"><button class="btn-green" onclick="updateWithdraw(${x.id},'paid')">Paid</button><button class="btn-red" onclick="updateWithdraw(${x.id},'rejected')">Reject</button></div>`:`<span class="badge ${x.status==="paid"?"paid":"block"}">${x.status}</span>`}</span></div>`).join(""):'<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
+  document.getElementById("adminWithdrawList").innerHTML=w.length?w.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br><b>৳${x.amount}</b> → ${x.number}<br>method: <b>${x.method}</b><br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="pending"?`<div class="row"><button class="btn btn-green" onclick="updateWithdraw(${x.id},'paid')">Paid</button><button class="btn btn-red" onclick="updateWithdraw(${x.id},'rejected')">Reject</button></div>`:`<span class="badge ${x.status==="paid"?"paid":"block"}">${x.status}</span>`}</span></div>`).join(""):'<p>কোনো রিকোয়েস্ট নেই</p>';
+  
   const users = getDB("users");
-  document.getElementById("adminUserList").innerHTML = users.length ? users.map(u=>`<div class="list-item"><span>${u.username} <br><small style="color:#64748b;">Balance: ${getBalance(u.username)}৳</small></span><span>${isBlocked(u.username)?`<button class="btn-green" onclick="toggleBlock('${u.username}',false)">Unblock</button>`:`<button class="btn-red" onclick="toggleBlock('${u.username}',true)">Block</button>`}</span></div>`).join("") : '<div class="empty">কোনো ইউজার নেই</div>';
+  document.getElementById("adminUserList").innerHTML = users.length ? users.map(u=>`<div class="list-item"><span>${u.username} <br><small style="color:#64748b;">Balance: ${getBalance(u.username)}৳</small></span><span>${isBlocked(u.username)?`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="toggleBlock('${u.username}',false)">Unblock</button>`:`<button class="btn btn-red" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="toggleBlock('${u.username}',true)">Block</button>`}</span></div>`).join("") : '<p>কোনো ইউজার নেই</p>';
 }
 
 function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails",g)}loadAdminPanel()}
 function updateWithdraw(id,s){const l=getDB("withdraws"),w=l.find(x=>x.id===id);if(w){w.status=s;setDB("withdraws",l)}loadAdminPanel()}
 function toggleBlock(u,b){setBlocked(u,b);loadAdminPanel()}
-function showAdminTab(n){["gmails","tasks","withdraws","users"].forEach(t=>document.getElementById("admin-"+t).classList.add("hidden"));document.getElementById("admin-"+n).classList.remove("hidden");const tabs=["gmails","tasks","withdraws","users"];document.querySelectorAll("#adminPanel .nav button").forEach((b,i)=>b.classList.toggle("active",tabs[i]===n));}
-(function(){const s=localStorage.getItem("paylix_session");if(s && s!=="admin"){currentUser = s;showScreen("user"); loadUserPanel();}else if(s==="admin"){showScreen("admin"); loadAdminPanel();}else{showScreen("login");}})();
+
+function showAdminTab(n){
+  ["gmails","tasks","withdraws","users"].forEach(t=>{
+    document.getElementById("admin-"+t).classList.add("hidden");
+    document.getElementById("atab-"+t).classList.remove("active");
+  });
+  document.getElementById("admin-"+n).classList.remove("hidden");
+  document.getElementById("atab-"+n).classList.add("active");
+}
+
+(function(){
+  const s=localStorage.getItem("paylix_session");
+  if(s && s!=="admin"){currentUser = s;showScreen("user"); loadUserPanel();}
+  else if(s==="admin"){showScreen("admin"); loadAdminPanel();}
+  else{showScreen("login");}
+})();
 </script>
 </body>
-</html>
+</html>*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080d1b;color:#fff;font-family:'Segoe UI',Arial,sans-serif;padding:18px}
+.wrap{max-width:440px;margin:auto}
+.logo{text-align:center;font-size:32px;font-weight:900;color:#55d6ff;margin:15px;letter-spacing:1px}
+.logo span{color:#a78bfa}
+.card{background:#111a2e;border:1px solid #263553;border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 8px 30px #0005}
+h2,h3{text-align:center;margin:8px 0 18px;color:#e2e8f0}
+p{color:#9eacc5;text-align:center;font-size:13px;margin-bottom:10px}
+input,textarea{width:100%;padding:14px;margin:8px 0;background:#080f20;border:1px solid #344563;border-radius:11px;color:white;outline:none;font-family:inherit;font-size:14px}
+input:focus,textarea:focus{border-color:#55d6ff}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,#087cfb,#8b5cf6);color:white;font-weight:bold;margin-top:12px;text-align:center;text-decoration:none;cursor:pointer;font-size:15px}
+.btn:hover{opacity:0.9}
+.btn-out{background:transparent;border:1px solid #344563;color:#9eacc5}
+.btn-red{background:#dc2626}
+.btn-green{background:#059669}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tab{background:#1b2942;border:1px solid #354766;border-radius:10px;padding:12px;text-align:center;color:#cbd5e1;text-decoration:none;font-size:13px;cursor:pointer}
+.tab.active{background:linear-gradient(100deg,#087cfb,#8b5cf6);color:white;border-color:transparent}
+.balance{background:linear-gradient(120deg,#0758b8,#7445c9);padding:22px;border-radius:16px;text-align:center;margin:15px 0}
+.balance h1{margin:8px;font-size:32px;color:#fff;font-weight:900}
+.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.menu a{background:#1a2740;padding:18px 8px;border:1px solid #30415f;border-radius:13px;text-align:center;color:white;text-decoration:none;font-size:14px;cursor:pointer}
+.menu a span{display:block;font-size:23px;margin-bottom:8px}
+.small{font-size:12px;color:#93a4c2;text-align:center;margin-top:20px}
+.hidden{display:none!important}
+.msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd;text-align:left}
+.success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
+.error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
+.list-item{background:#080f20;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid #263553;text-align:left}
+.badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
+.badge.pend{background:#78350f;color:#fcd34d}
+.badge.block{background:#4c1d1d;color:#fca5a5}
+.badge.paid{background:#1e3a8a;color:#93c5fd}
+.ref-box{background:#080f20;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px;text-align:center;border:1px dashed #344563}
+.row{display:flex;gap:6px;align-items:center}
+.row button{width:auto;padding:6px 10px;font-size:11px;margin:0}
