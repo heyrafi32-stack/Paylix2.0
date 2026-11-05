@@ -63,8 +63,11 @@ th{color:#c084fc;}
 <body>
 <div class="app">
   <div id="page-splash"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo"><div class="splash-text">PAYLIX</div></div>
+
   <div id="page-login" class="page"><div class="auth-container"><div style="text-align:center;margin-bottom:20px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:70px;border-radius:15px"></div><div class="auth-title">স্বাগতম!</div><div class="auth-sub">লগইন করুন</div><div class="form-box"><div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div><button class="btn" onclick="loginUser()">লগইন</button></div><div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div></div></div>
+
   <div id="page-register" class="page"><div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div><div class="auth-container" style="margin-top:10px"><div class="auth-title">অ্যাকাউন্ট তৈরি</div><div class="form-box"><div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="তানভীর"></div><div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div><div class="field"><label>রেফার কোড (ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="বন্ধুর রেফার কোড"></div><button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button></div><div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div></div></div>
+
   <div id="page-home" class="page">
     <div class="topbar"><div class="logo"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png"><span>PAYLIX</span></div></div>
     <div class="balance"><div class="balance-label">💰 ব্যালেন্স</div><div class="balance-amount" id="user-balance">৳ 0.00</div><button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw</button></div>
@@ -80,13 +83,19 @@ th{color:#c084fc;}
     <div class="sec-title">📋 আপনার রিকোয়েস্ট সমূহ</div>
     <div id="user-history-list"><div style="text-align:center; color:#b9a4dd; font-size:0.85rem;">কোনো রিকোয়েস্ট নেই</div></div>
   </div>
+
   <div id="page-gmail" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">📧 Gmail Sell</div><div class="form-box"><div class="field"><label>Gmail ID (৳ ১০)</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div><div class="field"><label>Password (৳ ১২)</label><input type="text" id="gmail-pass" placeholder="••••••••"></div><button class="btn" onclick="submitGmail()">সাবমিট</button></div></div>
+
   <div id="page-microtask" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎯 Task</div><div id="user-job-list"></div></div>
+
   <div id="page-job-submit" class="page">
     <div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div>
     <div class="sec-title">📤 কাজ জমা দিন</div>
     <div class="form-box">
-        <div class="field"><label>কাজের নাম</label><input type="text" id="sub-job-title" readonly style="background:#2a1552; opacity:0.8;"></div>
+        <div class="field">
+            <label>কাজের নাম</label>
+            <input type="text" id="sub-job-title" readonly style="background:#2a1552; opacity:0.8;">
+        </div>
         <div class="field">
             <label>প্রমাণ (স্ক্রিনশট আপলোড করুন অথবা লিংক দিন)</label>
             <div style="background: #110a1f; border: 1px dashed #7c3aed; border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 10px;">
@@ -99,11 +108,17 @@ th{color:#c084fc;}
         <button class="btn btn-green" onclick="submitJobProof()">জমা দিন</button>
     </div>
   </div>
+
   <div id="page-withdraw" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💸 Withdraw</div><div class="form-box"><div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option><option>নগদ</option></select></div><div class="field"><label>নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div><div class="field"><label>টাকা</label><input type="number" id="w-amount" placeholder="100"></div><button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট</button></div></div>
+
   <div id="page-refer" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎁 Refer & Earn</div><div class="form-box" style="text-align:center"><span style="font-size:3rem">🤝</span><h3 style="margin:15px 0 8px">বন্ধুদের ইনভাইট করুন</h3><div class="field" style="text-align:left"><label>আপনার রেফার লিংক</label><input type="text" id="ref-link" readonly></div><button class="btn" onclick="copyRefLink()">লিংক কপি করুন</button></div></div>
+
   <div id="page-settings" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">⚙️ Settings</div><div class="form-box"><div class="profile-pic">👤</div><div class="field"><label>নাম</label><input type="text" id="set-name"></div><button class="btn" onclick="saveSettings()">সেভ</button></div><br><button class="btn" onclick="logoutUser()" style="background:#ef4444">লগ আউট</button></div>
+
   <div id="page-support" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💬 Support</div><div class="form-box" style="text-align:center"><a href="https://t.me/Owner_Paylix" target="_blank"><button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button></a></div></div>
+
   <div id="page-admin-login" class="page"><div class="auth-container"><div class="auth-title">🛡️ Admin Login</div><div class="form-box"><div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div><button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button></div></div></div>
+
   <div id="page-admin" class="page"><div class="sec-title">🛡️ ADMIN PANEL</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px"><button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button><button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button><button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button><button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button><button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button></div><div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div><div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button></div>
 </div><script>
 let db = JSON.parse(localStorage.getItem('paylix_db')) || { users: [], gmails: [], withdraws: [], jobs: [], jobSubs: [] };
