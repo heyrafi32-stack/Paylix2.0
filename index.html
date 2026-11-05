@@ -287,9 +287,7 @@ function submitWithdraw() {
   user.balance -= amount; db.withdraws.push({ user: currentUser, method, number, amount, status: 'pending' }); saveDB(); loadUserHome(); alert('রিকোয়েস্ট পাঠানো হয়েছে!');
 }
 
-function saveSettings() { const user = db.users.find(u => u.email === currentUser); user.name = document.getElementById('set-name').value; saveDB(); alert('সেভ হয়েছে!'); }
-
-function loadAdminData(type) {
+function saveSettings() { const user = db.users.find(u => u.email === currentUser); user.name = document.getElementById('set-name').value; saveDB(); alert('সেভ হয়েছে!'); }function loadAdminData(type) {
   if(!isAdminLogged) return;
   const tableBody = document.querySelector('#admin-table tbody'); const tableHead = document.querySelector('#admin-table thead'); const jobForm = document.getElementById('admin-job-form');
   tableBody.innerHTML = ''; jobForm.style.display = 'none'; 
@@ -349,8 +347,19 @@ function approveJobSub(index) {
   if(job && user) { user.balance += parseFloat(job.price); job.slots -= 1; }
   saveDB(); loadAdminData('job_subs'); alert('Approved!');
 }
-function deleteJob(index) { if(confirm('Delete?')) { db.jobs.splice(index,1); saveDB(); loadAdminData('jobs'); } }
-function toggleBlock(email) { const user = db.users.find(u => u.email === email); user.blocked = !user.blocked; saveDB(); loadAdminData('users'); }
+function deleteJob(index) { 
+    if(confirm('Delete?')) { 
+        db.jobs.splice(index,1); 
+        saveDB(); 
+        loadAdminData('jobs'); 
+    } 
+}
+function toggleBlock(email) { 
+    const user = db.users.find(u => u.email === email); 
+    user.blocked = !user.blocked; 
+    saveDB(); 
+    loadAdminData('users'); 
+}
 
 function addJob() {
   const title = document.getElementById('job-title').value;
