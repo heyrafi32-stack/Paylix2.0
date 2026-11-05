@@ -125,16 +125,17 @@
     <section class="card hidden" id="tab-task">
       <h3>📝 Micro Tasks</h3>
       <div id="taskListView">
-        <div class="msg">নিচে সব মাইক্রো টাস্কের লিস্ট দেওয়া হলো। কাজ দেখতে ক্লিক করুন।</div>
+        <div class="msg">নিচের টাস্কগুলো দেখে কাজ করুন এবং টাকা ইনকাম করুন।</div>
         <div id="availableTasksList"></div>
       </div>
       <div id="taskDetailsView" class="hidden">
         <h3>টাস্কের বিবরণ</h3>
         <div class="msg" id="singleTaskDetails"></div>
         <div class="msg" style="background:#064e3b;color:#6ee7b7;border-left-color:#10b981; text-align:center;">
-          কাজটি করতে যোগাযোগ করুন:<br><b style="font-size:16px;">@Owner_Paylix</b>
+          কাজটি করে সাবমিট করুন। <br><b>বোনাস: <span id="taskRewardTxt"></span>৳</b>
         </div>
-        <a class="btn" href="https://t.me/Owner_Paylix" target="_blank">TELEGRAM এ মেসেজ দিন</a>
+        <button class="btn btn-green" onclick="submitUserTask()">SUBMIT TASK</button>
+        <div id="taskSubmitMsg" style="margin-top:10px;"></div>
         <button class="btn btn-out" style="margin-top:10px;" onclick="backToTaskList()">Back to Task List</button>
       </div>
       <button class="btn btn-out" style="margin-top:15px;" onclick="showTab('dashboard')">Back to Dashboard</button>
@@ -177,11 +178,12 @@
       <button class="btn btn-out" style="margin-bottom:15px;padding:8px;width:auto;float:right;" onclick="logout()">Logout</button>
       <h2 style="text-align:left;margin-bottom:15px;">Admin Dashboard</h2>
       
-      <div class="tabs" style="grid-template-columns:1fr 1fr;">
+      <div class="tabs" style="grid-template-columns:1fr 1fr 1fr;">
         <a class="tab active" id="atab-gmails" onclick="showAdminTab('gmails')">Gmails</a>
         <a class="tab" id="atab-tasks" onclick="showAdminTab('tasks')">Tasks</a>
         <a class="tab" id="atab-withdraws" onclick="showAdminTab('withdraws')">Withdraw</a>
         <a class="tab" id="atab-users" onclick="showAdminTab('users')">Users</a>
+        <a class="tab" id="atab-taskReqs" onclick="showAdminTab('taskReqs')">Task Reqs</a>
       </div>
 
       <div id="admin-gmails">
@@ -190,8 +192,9 @@
       </div>
       
       <div id="admin-tasks" class="hidden">
-        <h3 style="font-size:16px;">Micro Tasks Management</h3>
-        <input type="text" id="adminTaskInput" placeholder="নতুন টাস্কের বিবরণ লিখুন...">
+        <h3 style="font-size:16px;">Task Management</h3>
+        <input type="text" id="adminTaskInput" placeholder="টাস্কের নাম/বিবরণ...">
+        <input type="number" id="adminTaskReward" placeholder="বোনাস (৳) যেমন: 5">
         <button class="btn btn-green" onclick="addAdminTask()">ADD TASK</button>
         <div id="adminTaskMsg" style="margin-top:10px; margin-bottom:15px;"></div>
         <hr style="border-color:#344563; margin: 15px 0;">
@@ -207,6 +210,11 @@
         <h3 style="font-size:16px;">Users</h3>
         <div id="adminUserList"></div>
       </div>
+
+      <div id="admin-taskReqs" class="hidden">
+        <h3 style="font-size:16px;">Task Submissions</h3>
+        <div id="adminTaskReqList"></div>
+      </div>
     </section>
   </div>
 
@@ -216,6 +224,8 @@
 <script>
 const ADMIN_PASS="admin123", GMAIL_RATE=10, MIN_WITHDRAW=50, FIXED_PASS="@SRABON99#&";
 let currentUser = null;
+let currentTaskReward = 0;
+let currentTaskId = 0;
 
 function getDB(k){return JSON.parse(localStorage.getItem("paylix_"+k)||"[]")}
 function setDB(k,v){localStorage.setItem("paylix_"+k,JSON.stringify(v))}
@@ -251,9 +261,10 @@ function doLogin(){
 }
 
 function getBalance(u){
-  const earned=getDB("gmails").filter(g=>g.owner===u&&g.status==="approved").length*GMAIL_RATE;
-  const paid=getDB("withdraws").filter(w=>w.owner===u&&w.status==="paid").reduce((s,w)=>s+w.amount,0);
-  return earned-paid;
+  const earnedGmail = getDB("gmails").filter(g=>g.owner===u&&g.status==="approved").length*GMAIL_RATE;
+  const earnedTask = getDB("taskReqs").filter(t=>t.owner===u&&t.status==="approved").reduce((s,t)=>s+t.reward,0);
+  const paid = getDB("withdraws").filter(w=>w.owner===u&&w.status==="paid").reduce((s,w)=>s+w.amount,0);
+  return (earnedGmail + earnedTask) - paid;
 }
 
 function loadUserPanel(){
@@ -304,7 +315,7 @@ function loadTasks() {
   if(!tasks.length) { b.innerHTML = '<p>এখনো কোনো টাস্ক পোস্ট করা হয়নি।</p>'; return; }
   b.innerHTML = tasks.slice().reverse().map(x => `
     <div class="list-item" style="cursor:pointer;" onclick="viewTask(${x.id})">
-      <span style="font-size:12px;"><b>Task:</b> ${x.details.substring(0, 30)}...</span>
+      <span style="font-size:13px;"><b>${x.details}</b><br><span style="color:#10b981">বোনাস: ৳${x.reward}</span></span>
       <span style="color:#55d6ff; font-size:20px;">&rarr;</span>
     </div>
   `).join("");
@@ -314,10 +325,25 @@ function viewTask(id) {
   const tasks = getDB("tasks");
   const task = tasks.find(t => t.id === id);
   if(task) {
+    currentTaskReward = task.reward;
+    currentTaskId = task.id;
     document.getElementById("taskListView").classList.add("hidden");
     document.getElementById("taskDetailsView").classList.remove("hidden");
     document.getElementById("singleTaskDetails").innerHTML = `<b>Task Details:</b><br><br>${task.details}`;
+    document.getElementById("taskRewardTxt").textContent = task.reward;
+    document.getElementById("taskSubmitMsg").innerHTML = "";
   }
+}
+
+function submitUserTask() {
+  const t = getDB("taskReqs");
+  if(t.some(x=>x.owner===currentUser && x.taskId===currentTaskId)) {
+    document.getElementById("taskSubmitMsg").innerHTML = '<div class="msg error">আপনি এই টাস্ক আগেই সাবমিট করেছেন!</div>';
+    return;
+  }
+  t.push({id: Date.now(), taskId: currentTaskId, owner: currentUser, reward: currentTaskReward, status: "pending", date: new Date().toLocaleString()});
+  setDB("taskReqs", t);
+  document.getElementById("taskSubmitMsg").innerHTML = '<div class="msg success">টাস্ক সাবমিট হয়েছে! অ্যাডমিন অ্যাপ্রুভ করলে '+currentTaskReward+'৳ যোগ হবে।</div>';
 }
 
 function backToTaskList() {
@@ -345,12 +371,14 @@ function doAdminLogin(){
 
 function addAdminTask() {
   const d = document.getElementById("adminTaskInput").value.trim();
+  const r = parseInt(document.getElementById("adminTaskReward").value);
   const m = document.getElementById("adminTaskMsg");
-  if(!d) { m.innerHTML = '<div class="msg error">টাস্কের বিবরণ দিন</div>'; return; }
+  if(!d || !r) { m.innerHTML = '<div class="msg error">টাস্কের বিবরণ ও বোনাস দিন</div>'; return; }
   const t = getDB("tasks");
-  t.push({id: Date.now(), details: d});
+  t.push({id: Date.now(), details: d, reward: r});
   setDB("tasks", t);
   document.getElementById("adminTaskInput").value = "";
+  document.getElementById("adminTaskReward").value = "";
   m.innerHTML = '<div class="msg success">টাস্ক পোস্ট হয়েছে!</div>';
   loadAdminPanel();
 }
@@ -363,18 +391,6 @@ function deleteAdminTask(id) {
   loadAdminPanel();
 }
 
-function editAdminTask(id) {
-  const t = getDB("tasks");
-  const task = t.find(x => x.id === id);
-  if(!task) return;
-  const newDetails = prompt("টাস্কের নতুন বিবরণ লিখুন:", task.details);
-  if(newDetails && newDetails.trim() !== "") {
-    task.details = newDetails.trim();
-    setDB("tasks", t);
-    loadAdminPanel();
-  }
-}
-
 function loadAdminPanel(){
   const g=getDB("gmails");
   document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>${x.email}<br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<p>কোনো সাবমিশন নেই</p>';
@@ -382,9 +398,8 @@ function loadAdminPanel(){
   const t=getDB("tasks");
   document.getElementById("adminTaskList").innerHTML = t.length ? t.slice().reverse().map(x => `
     <div class="list-item">
-      <span style="font-size:12px;">${x.details}</span>
+      <span style="font-size:12px;">${x.details} (৳${x.reward})</span>
       <span class="row">
-        <button class="btn btn-green" style="width:auto;padding:5px 8px;font-size:11px;margin:0;" onclick="editAdminTask(${x.id})">Edit</button>
         <button class="btn btn-red" style="width:auto;padding:5px 8px;font-size:11px;margin:0;" onclick="deleteAdminTask(${x.id})">Delete</button>
       </span>
     </div>
@@ -395,27 +410,9 @@ function loadAdminPanel(){
   
   const users = getDB("users");
   document.getElementById("adminUserList").innerHTML = users.length ? users.map(u=>`<div class="list-item"><span>${u.username} <br><small style="color:#64748b;">Balance: ${getBalance(u.username)}৳</small></span><span>${isBlocked(u.username)?`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="toggleBlock('${u.username}',false)">Unblock</button>`:`<button class="btn btn-red" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="toggleBlock('${u.username}',true)">Block</button>`}</span></div>`).join("") : '<p>কোনো ইউজার নেই</p>';
+
+  const tr = getDB("taskReqs");
+  document.getElementById("adminTaskReqList").innerHTML = tr.length ? tr.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>Reward: ৳${x.reward}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn btn-green" style="width:auto;padding:6px 10px;font-size:12px;margin:0;" onclick="approveTask(${x.id})">Approve</button>`}</span></div>`).join("") : '<p>কোনো টাস্ক রিকোয়েস্ট নেই</p>';
 }
 
-function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails",g)}loadAdminPanel()}
-function updateWithdraw(id,s){const l=getDB("withdraws"),w=l.find(x=>x.id===id);if(w){w.status=s;setDB("withdraws",l)}loadAdminPanel()}
-function toggleBlock(u,b){setBlocked(u,b);loadAdminPanel()}
-
-function showAdminTab(n){
-  ["gmails","tasks","withdraws","users"].forEach(t=>{
-    document.getElementById("admin-"+t).classList.add("hidden");
-    document.getElementById("atab-"+t).classList.remove("active");
-  });
-  document.getElementById("admin-"+n).classList.remove("hidden");
-  document.getElementById("atab-"+n).classList.add("active");
-}
-
-(function(){
-  const s=localStorage.getItem("paylix_session");
-  if(s && s!=="admin"){currentUser = s;showScreen("user"); loadUserPanel();}
-  else if(s==="admin"){showScreen("admin"); loadAdminPanel();}
-  else{showScreen("login");}
-})();
-</script>
-</body>
- </html>
+function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails
