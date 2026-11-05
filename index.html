@@ -270,7 +270,6 @@ function startUpload(input) {
             if (progress === 100) {
                 clearInterval(interval);
                 
-                // সেভ করা হচ্ছে
                 db.jobSubs.push({ 
                     user: currentUser, 
                     jobTitle: currentJobToSubmit, 
@@ -280,12 +279,10 @@ function startUpload(input) {
                 });
                 saveDB(); 
                 
-                setTimeout(() => {
-                    alert('আপনার স্ক্রিনশট সফলভাবে জমা হয়েছে!');
-                    openPage('page-microtask'); 
-                }, 500);
+                alert('আপনার স্ক্রিনশট সফলভাবে জমা হয়েছে!');
+                openPage('page-microtask'); 
             }
-        }, 100); // ১০০ মিলিসেকেন্ড পর পর বাড়বে
+        }, 50); 
     } else {
         alert('ফাইল সিলেক্ট করা হয়নি!');
     }
