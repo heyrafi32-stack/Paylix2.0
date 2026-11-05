@@ -1,549 +1,303 @@
-<!doctype html>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{background:#0f172a;color:#e2e8f0;min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:20px}
+.card{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+h1{font-size:22px;text-align:center;margin-bottom:6px;color:#38bdf8}
+h2{font-size:18px;margin-bottom:14px;color:#38bdf8}
+.sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px}
+label{display:block;font-size:13px;margin-bottom:6px;color:#cbd5e1}
+input,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:14px;margin-bottom:14px}
+input:focus,textarea:focus{outline:none;border-color:#38bdf8}
+button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+button:hover{opacity:.9}
+.btn-out{background:transparent;border:1px solid #475569;color:#94a3b8}
+.btn-red{background:#dc2626}
+.btn-green{background:#059669}
+.msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd}
+.success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
+.error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
+.hidden{display:none}
+.nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.nav button{flex:1;min-width:70px;padding:9px 6px;font-size:12px;background:#334155}
+.nav button.active{background:linear-gradient(135deg,#38bdf8,#6366f1)}
+.list-item{background:#0f172a;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
+.badge.pend{background:#78350f;color:#fcd34d}
+.badge.block{background:#4c1d1d;color:#fca5a5}
+.badge.paid{background:#1e3a8a;color:#93c5fd}
+.balance{font-size:28px;font-weight:700;color:#10b981;text-align:center}
+.balance-label{text-align:center;color:#94a3b8;font-size:12px;margin-bottom:18px}
+.ref-box{background:#0f172a;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px}
+.logout{float:right;background:#dc2626;width:auto;padding:7px 14px;font-size:12px}
+.empty{text-align:center;color:#64748b;font-size:13px;padding:20px}
+.row{display:flex;gap:6px;align-items:center}
+.row button{width:auto;padding:6px 10px;font-size:11px}<!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Paylix — Earn Hub</title>
-<style>
-:root{--bg:#0b1020;--panel:#121a30;--panel2:#18233e;--line:#263452;--txt:#eef3ff;--muted:#9aa9c7;--a:#8b7cff;--b:#43c6e8;--good:#38d39f;--warn:#ffca6a}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 80% -10%,#25205a 0,transparent 60%),var(--bg);color:var(--txt);font:15px system-ui,"Noto Sans Bengali",sans-serif}
-button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;color:white;background:linear-gradient(100deg,var(--a),#5a8cff);font-weight:700}
-input{width:100%;background:#0c1428;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--txt);outline:none}input:focus{border-color:var(--a)}
-a{color:#a9a0ff;text-decoration:none}.wrap{max-width:1120px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{font-size:24px;font-weight:900;letter-spacing:.4px}.brand span{color:#a69aff}.pill{border:1px solid var(--line);border-radius:99px;padding:8px 12px;color:var(--muted);font-size:13px}
-.card{background:linear-gradient(145deg,rgba(24,35,62,.96),rgba(17,25,46,.96));border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 14px 40px #0003}
-.auth{max-width:460px;margin:8vh auto}.tabs,.nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.tabs button,.nav button{background:#202b48;color:#c8d3ec}.tabs button.active,.nav button.active{background:linear-gradient(100deg,var(--a),#5a8cff);color:white}
-label{display:block;color:var(--muted);font-size:13px;margin:13px 0 6px}.hint{font-size:12px;color:var(--muted);line-height:1.6}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.stat{font-size:26px;font-weight:800;margin-top:6px}.muted{color:var(--muted)}.section{display:none}.section.active{display:block}.task{display:flex;justify-content:space-between;align-items:center;gap:12px}.tag{font-size:12px;border-radius:99px;padding:5px 9px;background:#263657;color:#c7d5f6}.status{color:var(--warn);font-weight:700}.notice{padding:12px;border:1px solid #51452d;background:#302817;border-radius:12px;color:#ffe0a0;font-size:13px;line-height:1.6}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hidden{display:none!important}.balance{font-size:34px;font-weight:900;color:var(--good)}.foot{margin:28px 0;color:var(--muted);font-size:12px;text-align:center}
-@media(max-width:720px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.top{align-items:flex-start}.nav button{flex:1}.card{padding:16px}}
-</style></head>
-<body><div class="wrap">
-<header class="top"><div class="brand">Pay<span>lix</span></div><div class="pill">Micro Task • Earn Hub</div></header>
-<div id="auth" class="card auth">
- <h2 id="authTitle">Paylix-এ স্বাগতম</h2><p class="muted">অ্যাকাউন্ট খুলুন অথবা লগইন করুন</p>
- <div class="tabs"><button id="loginTab" class="active" onclick="setAuth('login')">লগইন</button><button id="regTab" onclick="setAuth('register')">অ্যাকাউন্ট খুলুন</button></div>
- <div id="regFields" class="hidden"><label>আপনার নাম</label><input id="regName" placeholder="নাম লিখুন"><label>মোবাইল নম্বর</label><input id="regPhone" placeholder="01XXXXXXXXX" inputmode="numeric"><p class="hint">বাস্তব SMS OTP যাচাই চালু করতে Backend ও SMS Gateway লাগবে। এই HTML ডেমোতে নম্বরের সত্যতা যাচাই হয় না।</p></div>
- <label>মোবাইল নম্বর</label><input id="phone" placeholder="01XXXXXXXXX" inputmode="numeric">
- <label>পাসওয়ার্ড</label><input id="pass" type="password" placeholder="পাসওয়ার্ড">
- <button style="width:100%;margin-top:18px" onclick="authAction()">চালিয়ে যান</button><p id="authMsg" class="hint"></p>
-</div>
-<div id="app" class="hidden">
- <div class="top"><div><div class="muted">স্বাগতম, <b id="hello"></b></div><div class="hint" id="userPhone"></div></div><button onclick="logout()">লগআউট</button></div>
- <div class="grid">
-  <div class="card"><div class="muted">আপনার ব্যালেন্স</div><div class="balance">৳ <span id="balance">0</span></div></div>
-  <div class="card"><div class="muted">Pending Task</div><div class="stat" id="pendingCount">0</div></div>
-  <div class="card"><div class="muted">Referral</div><div class="stat" id="refCode">—</div></div>
- </div>
- <nav class="nav"><button class="active" onclick="show('home',this)">হোম</button><button onclick="show('gmail',this)">Gmail Task</button><button onclick="show('micro',this)">Micro Task</button><button onclick="show('ref',this)">Referral</button><button onclick="show('withdraw',this)">Withdraw</button><button onclick="show('support',this)">Support</button></nav>
- <section id="home" class="section active"><div class="card"><h2>Paylix Dashboard</h2><p class="muted">আপনার Task সম্পন্ন করুন, Admin Review-এর জন্য জমা দিন এবং অনুমোদনের পর Reward পান।</p><div class="notice">নিরাপত্তা নোট: Paylix কখনো আপনার Gmail-এর আসল পাসওয়ার্ড চাইবে না। কোনো Task-এর জন্য শুধু নির্ধারিত Task Code ব্যবহার করুন।</div></div></section>
- <section id="gmail" class="section"><div class="card"><h2>Gmail Task Submission</h2><p>নিচে আপনার তৈরি করা Gmail ঠিকানা দিন। Gmail-এর পাসওয়ার্ড এখানে দেবেন না।</p><div class="notice">Task Code: <b>PAYLIX-2026</b><br>নির্দেশনা: নিজের তৈরি Gmail ঠিকানা লিখে Task Code নিশ্চিত করুন, তারপর Submit করুন। Admin অনুমোদন করলে ৳১০ যোগ হবে।</div><label>Gmail ঠিকানা</label><input id="gmailAddress" type="email" placeholder="example@gmail.com"><label>Task Code</label><input id="taskCode" placeholder="PAYLIX-2026"><button style="margin-top:14px" onclick="submitGmail()">Submit Task</button><p class="hint" id="gmailMsg">Submit হলে Pending দেখাবে। Admin approve না করা পর্যন্ত Reward যোগ হবে না।</p></div></section>
- <section id="micro" class="section"><div class="card"><h2>Micro Task</h2><p>Micro Task পোস্ট বা কেনার জন্য Admin-এর সাথে Telegram-এ যোগাযোগ করুন।</p><p class="stat">সর্বনিম্ন ৳৫০</p><a href="https://t.me/Owner_Paylix" target="_blank" rel="noopener"><button>Telegram-এ যোগাযোগ</button></a><p class="hint">Task-এর শর্ত ও মূল্য Admin নিশ্চিত করবেন।</p></div></section>
- <section id="ref" class="section"><div class="card"><h2>Referral Program</h2><p>আপনার Referral Code: <b id="refCode2"></b></p><label>Referral Link</label><input id="refLink" readonly><button onclick="copyRef()">লিংক কপি করুন</button><p class="notice" style="margin-top:16px">এখনো Referral Bonus চালু হয়নি। খুব শীঘ্রই Referral Bonus যুক্ত হবে।</p></div></section>
- <section id="withdraw" class="section"><div class="card"><h2>Withdraw Request</h2><p class="muted">বর্তমানে শুধু bKash Withdrawal চালু আছে।</p><label>পেমেন্ট মাধ্যম</label><input value="bKash" readonly><label>bKash নম্বর</label><input id="payNumber" placeholder="01XXXXXXXXX" inputmode="numeric"><label>টাকার পরিমাণ (৳)</label><input id="amount" type="number" min="10" placeholder="পরিমাণ লিখুন"><button style="margin-top:14px" onclick="withdraw()">Request Withdrawal</button><p id="withdrawMsg" class="hint"></p><p class="hint">Nagad Withdrawal আপাতত চালু নয়; ভবিষ্যতে যুক্ত হতে পারে (সর্বোচ্চ সীমা ৳৫০০ নির্ধারণাধীন)।</p></div></section>
- <section id="support" class="section"><div class="card"><h2>Support Center</h2><p>যেকোনো সমস্যা বা সাহায্যের জন্য Telegram-এ যোগাযোগ করুন।</p><h3>@Owner_Paylix</h3><a href="https://t.me/Owner_Paylix" target="_blank" rel="noopener"><button>Contact Support</button></a></div></section>
- <div class="card" style="margin-top:14px"><h3>আপনার সাম্প্রতিক Activity</h3><div id="activity" class="muted">এখনো কোনো Activity নেই।</div></div>
-</div><div class="foot">© 2026 Paylix • Demo UI — production ব্যবহারের আগে secure backend আবশ্যক</div>
-</div>
-<script>
-const KEY='paylix_demo_v1';let mode='login',current=null;
-function db(){return JSON.parse(localStorage.getItem(KEY)||'{"users":[],"tasks":[],"withdrawals":[]}')}
-function save(x){localStorage.setItem(KEY,JSON.stringify(x))}
-function setAuth(m){mode=m;document.getElementById('regFields').classList.toggle('hidden',m!=='register');document.getElementById('loginTab').classList.toggle('active',m==='login');document.getElementById('regTab').classList.toggle('active',m==='register');document.getElementById('authTitle').textContent=m==='login'?'লগইন করুন':'নতুন অ্যাকাউন্ট খুলুন';document.getElementById('authMsg').textContent=''}
-function authAction(){let phone=document.getElementById('phone').value.trim(),pass=document.getElementById('pass').value;if(!/^01[3-9]\\d{8}$/.test(phone)){msg('authMsg','সঠিক বাংলাদেশি মোবাইল নম্বর দিন (01XXXXXXXXX)।');return}if(pass.length<6){msg('authMsg','পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');return}let d=db(),u=d.users.find(x=>x.phone===phone);
-if(mode==='register'){if(u){msg('authMsg','এই নম্বরে অ্যাকাউন্ট আছে। লগইন করুন।');return}let name=document.getElementById('regName').value.trim();if(!name){msg('authMsg','আপনার নাম লিখুন।');return}u={id:'U'+Date.now(),name,phone,pass,balance:0,blocked:false,ref:'PL'+Math.random().toString(36).slice(2,8).toUpperCase()};d.users.push(u);save(d)}else if(!u||u.pass!==pass){msg('authMsg','নম্বর অথবা পাসওয়ার্ড সঠিক নয়।');return}if(u.blocked){msg('authMsg','আপনার অ্যাকাউন্ট সাময়িকভাবে বন্ধ। Support-এ যোগাযোগ করুন।');return}current=u.id;localStorage.setItem('paylix_session',current);render()}
-function msg(id,t){document.getElementById(id).textContent=t}
-function render(){let d=db();current=localStorage.getItem('paylix_session');let u=d.users.find(x=>x.id===current);if(!u){document.getElementById('auth').classList.remove('hidden');document.getElementById('app').classList.add('hidden');return}if(u.blocked){logout();alert('অ্যাকাউন্টটি ব্লক করা হয়েছে।');return}document.getElementById('auth').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('hello').textContent=u.name;document.getElementById('userPhone').textContent=u.phone;document.getElementById('balance').textContent=u.balance;document.getElementById('refCode').textContent=u.ref;document.getElementById('refCode2').textContent=u.ref;document.getElementById('refLink').value=location.href.split('#')[0]+'?ref='+u.ref;let tasks=d.tasks.filter(x=>x.userId===u.id);document.getElementById('pendingCount').textContent=tasks.filter(x=>x.status==='Pending').length;document.getElementById('activity').innerHTML=tasks.length?tasks.slice().reverse().map(x=>'<p>'+esc(x.email)+' — <b>'+esc(x.status)+'</b></p>').join(''):'এখনো কোনো Activity নেই।'}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function show(id,b){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
-function submitGmail(){let email=document.getElementById('gmailAddress').value.trim(),code=document.getElementById('taskCode').value.trim();if(!/^[^@\\s]+@gmail\\.com$/i.test(email)){msg('gmailMsg','একটি সঠিক @gmail.com ঠিকানা দিন।');return}if(code!=='PAYLIX-2026'){msg('gmailMsg','Task Code সঠিক নয়।');return}let d=db();if(d.tasks.some(x=>x.userId===current&&x.email.toLowerCase()===email.toLowerCase()&&x.status!=='Rejected')){msg('gmailMsg','এই Gmail দিয়ে আগে Task জমা দেওয়া হয়েছে।');return}let u=d.users.find(x=>x.id===current);d.tasks.push({id:'T'+Date.now(),userId:current,name:u.name,phone:u.phone,email,submitted:new Date().toISOString(),status:'Pending',reward:10});save(d);msg('gmailMsg','সফলভাবে জমা হয়েছে। Status: Pending — Admin Review-এর অপেক্ষায়।');document.getElementById('gmailAddress').value='';document.getElementById('taskCode').value='';render()}
-function withdraw(){let n=document.getElementById('payNumber').value.trim(),a=Number(document.getElementById('amount').value);if(!/^01[3-9]\\d{8}$/.test(n)||!Number.isFinite(a)||a<10){msg('withdrawMsg','সঠিক bKash নম্বর এবং কমপক্ষে ৳১০ লিখুন।');return}let d=db(),u=d.users.find(x=>x.id===current);if(a>u.balance){msg('withdrawMsg','আপনার পর্যাপ্ত ব্যালেন্স নেই।');return}u.balance-=a;d.withdrawals.push({id:'W'+Date.now(),userId:u.id,name:u.name,phone:u.phone,payNumber:n,method:'bKash',amount:a,status:'Pending',submitted:new Date().toISOString()});save(d);msg('withdrawMsg','Withdrawal Request জমা হয়েছে। Admin Review করবেন।');render()}
-function copyRef(){let x=document.getElementById('refLink');x.select();document.execCommand('copy');alert('Referral link কপি হয়েছে।')}
-function logout(){localStorage.removeItem('paylix_session');current=null;render()}
-render();
-</script></body></html><!doctype html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Paylix Admin</title>
-<style>
-:root{--bg:#0b1020;--p:#141e35;--line:#293957;--txt:#edf2ff;--muted:#9eacc8;--a:#897cff;--green:#38d39f;--red:#ff727e;--yellow:#ffd078}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px system-ui,"Noto Sans Bengali",sans-serif}.wrap{max-width:1200px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.brand{font-size:24px;font-weight:900}.brand span{color:#a69aff}.card{background:var(--p);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}button{border:0;border-radius:9px;padding:9px 12px;color:white;background:var(--a);font-weight:700;cursor:pointer;margin:2px}button.red{background:#a83e54}button.green{background:#168b6b}input{background:#0b1428;border:1px solid var(--line);padding:10px;border-radius:9px;color:white;width:100%;margin:6px 0}nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}nav button{background:#263452}.tab{display:none}.tab.active{display:block}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{font-size:25px;font-weight:900}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse;min-width:650px}td,th{text-align:left;padding:11px;border-bottom:1px solid var(--line)}.scroll{overflow:auto}.warn{color:var(--yellow);font-size:12px;line-height:1.6}.login{max-width:430px;margin:10vh auto}.hide{display:none!important}@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}.wrap{padding:12px}}
-</style></head><body><div class="wrap">
-<div class="top"><div class="brand">Pay<span>lix</span> / Admin</div><span class="muted">Management Console</span></div>
-<div id="login" class="card login"><h2>Admin Access</h2><p class="warn">এটি কেবল UI ডেমো। এখানে কোনো আসল নিরাপদ Admin Login নেই। Production-এ Server-side authentication ও role permission আবশ্যক।</p><input id="adminKey" type="password" placeholder="Demo access phrase"><button onclick="enter()">ডেমো প্যানেল খুলুন</button><p id="loginMsg" class="muted"></p></div>
-<div id="panel" class="hide">
-<div class="stats"><div class="card">মোট User<div class="stat" id="usersN">0</div></div><div class="card">Pending Task<div class="stat" id="tasksN">0</div></div><div class="card">Pending Withdraw<div class="stat" id="withdrawN">0</div></div><div class="card">মোট Reward<div class="stat" id="rewardN">৳0</div></div></div>
-<nav><button onclick="tab('users',this)">Users</button><button onclick="tab('tasks',this)">Gmail Tasks</button><button onclick="tab('withdrawals',this)">Withdrawals</button><button onclick="tab('posts',this)">Posts</button></nav>
-<section id="users" class="tab active card"><h2>User Management</h2><div class="scroll"><table><thead><tr><th>নাম</th><th>মোবাইল</th><th>Balance</th><th>Status</th><th>Action</th></tr></thead><tbody id="userRows"></tbody></table></div></section>
-<section id="tasks" class="tab card"><h2>Gmail Task Review</h2><p class="muted">এখানে শুধু জমা দেওয়া Gmail ঠিকানা ও submitter দেখা যাবে; Gmail password কখনো সংগ্রহ করবেন না। Approve করলে ৳১০ যোগ হবে।</p><div class="scroll"><table><thead><tr><th>Gmail</th><th>User</th><th>Phone</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="taskRows"></tbody></table></div></section>
-<section id="withdrawals" class="tab card"><h2>Withdrawal Requests</h2><div class="scroll"><table><thead><tr><th>User</th><th>Phone</th><th>Method</th><th>Payment Number</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody id="withdrawRows"></tbody></table></div></section>
-<section id="posts" class="tab card"><h2>Post Management</h2><p class="muted">Micro Task বা Announcement পোস্ট তৈরি, সম্পাদনা ও মুছে ফেলুন (ডেমো ডেটা)।</p><input id="postTitle" placeholder="পোস্টের শিরোনাম"><input id="postBody" placeholder="পোস্টের বিবরণ"><button onclick="addPost()">পোস্ট করুন</button><div id="postRows"></div></section>
-</div></div>
-<script>
-const KEY='paylix_demo_v1',PKEY='paylix_posts';function db(){return JSON.parse(localStorage.getItem(KEY)||'{"users":[],"tasks":[],"withdrawals":[]}')}function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
-function enter(){if(document.getElementById('adminKey').value!=='PAYLIX-DEMO'){document.getElementById('loginMsg').textContent='ডেমো phrase সঠিক নয়। (Phrase: PAYLIX-DEMO)';return}document.getElementById('login').classList.add('hide');document.getElementById('panel').classList.remove('hide');render()}
-function tab(id,b){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){let d=db();document.getElementById('usersN').textContent=d.users.length;document.getElementById('tasksN').textContent=d.tasks.filter(x=>x.status==='Pending').length;document.getElementById('withdrawN').textContent=d.withdrawals.filter(x=>x.status==='Pending').length;document.getElementById('rewardN').textContent='৳'+d.tasks.filter(x=>x.status==='Approved').reduce((s,x)=>s+(x.reward||10),0);
-document.getElementById('userRows').innerHTML=d.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.phone)}</td><td>৳${u.balance}</td><td>${u.blocked?'Blocked':'Active'}</td><td><button class="${u.blocked?'green':'red'}" onclick="blockUser('${u.id}')">${u.blocked?'Unblock':'Block'}</button></td></tr>`).join('');
-document.getElementById('taskRows').innerHTML=d.tasks.map(t=>`<tr><td>${esc(t.email)}</td><td>${esc(t.name)}</td><td>${esc(t.phone)}</td><td>${new Date(t.submitted).toLocaleString()}</td><td>${t.status}</td><td>${t.status==='Pending'?`<button class="green" onclick="reviewTask('${t.id}','Approved')">Approve ৳10</button><button class="red" onclick="reviewTask('${t.id}','Rejected')">Reject</button>`:'—'}</td></tr>`).join('');
-document.getElementById('withdrawRows').innerHTML=d.withdrawals.map(w=>`<tr><td>${esc(w.name)}</td><td>${esc(w.phone)}</td><td>${esc(w.method)}</td><td>${esc(w.payNumber)}</td><td>৳${w.amount}</td><td>${w.status}</td><td>${w.status==='Pending'?`<button class="green" onclick="reviewWithdraw('${w.id}','Approved')">Approve</button><button class="red" onclick="reviewWithdraw('${w.id}','Rejected')">Reject</button>`:'—'}</td></tr>`).join('');renderPosts()}
-function blockUser(id){let d=db(),u=d.users.find(x=>x.id===id);u.blocked=!u.blocked;save(d);render()}
-function reviewTask(id,status){let d=db(),t=d.tasks.find(x=>x.id===id);if(!t||t.status!=='Pending')return;t.status=status;if(status==='Approved'){let u=d.users.find(x=>x.id===t.userId);if(u)u.balance+=10}save(d);render()}
-function reviewWithdraw(id,status){let d=db(),w=d.withdrawals.find(x=>x.id===id);if(!w||w.status!=='Pending')return;w.status=status;if(status==='Rejected'){let u=d.users.find(x=>x.id===w.userId);if(u)u.balance+=w.amount}save(d);render()}
-function posts(){return JSON.parse(localStorage.getItem(PKEY)||'[]')}function addPost(){let t=document.getElementById('postTitle').value.trim(),b=document.getElementById('postBody').value.trim();if(!t||!b)return alert('শিরোনাম ও বিবরণ লিখুন');let p=posts();p.push({id:Date.now(),title:t,body:b});localStorage.setItem(PKEY,JSON.stringify(p));document.getElementById('postTitle').value='';document.getElementById('postBody').value='';renderPosts()}
-function renderPosts(){document.getElementById('postRows').innerHTML=posts().map(p=>`<div style="border-top:1px solid #293957;padding:12px 0"><b>${esc(p.title)}</b><p class="muted">${esc(p.body)}</p><button onclick="editPost(${p.id})">Edit</button><button class="red" onclick="deletePost(${p.id})">Delete</button></div>`).join('')}
-function editPost(id){let p=posts(),x=p.find(a=>a.id===id);let t=prompt('শিরোনাম',x.title);if(t===null)return;let b=prompt('বিবরণ',x.body);if(b===null)return;x.title=t;x.body=b;localStorage.setItem(PKEY,JSON.stringify(p));renderPosts()}
-function deletePost(id){if(!confirm('পোস্ট মুছবেন?'))return;localStorage.setItem(PKEY,JSON.stringify(posts().filter(x=>x.id!==id)));renderPosts()}
-</script></body></html>/* =====================================
-   PAYLIX - PART 3: app.js
-   Demo version using browser localStorage
-===================================== */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paylix - Earn Money</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
 
-const DB = {
-  users: "paylix_users",
-  tasks: "paylix_tasks",
-  gmail: "paylix_gmail",
-  withdrawals: "paylix_withdrawals",
-  current: "paylix_current_user"
-};
+  <div id="loginScreen">
+    <div class="card">
+      <div style="text-align:center;margin-bottom:12px;">
+        <img src="https://i.postimg.cc/HxxJhP9S/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="Logo" style="width:100px;height:auto;border-radius:10px;">
+      </div>
+      <h1>Paylix</h1>
+      <p class="sub">Earn money by submitting Gmail accounts</p>
+      <div class="msg">আপনাকে এই ফিক্সড পাসওয়ার্ডটি দিতে হবে</div>
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="আপনার ইউজারনেম">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="ফিক্সড পাসওয়ার্ড দিন">
+      <button onclick="doLogin()">Login</button>
+      <div id="loginError" class="msg error hidden" style="margin-top:14px;"></div>
+    </div>
+  </div>
 
-function getData(key) {
-  return JSON.parse(localStorage.getItem(key) || "[]");
+  <div id="userPanel" class="hidden">
+    <div class="card">
+      <button class="logout" onclick="logout()">Logout</button>
+      <h2>Dashboard</h2>
+      <div class="balance" id="userBalance">0৳</div>
+      <div class="balance-label">মোট ব্যালেন্স</div>
+      <div class="nav">
+        <button class="active" onclick="showTab('gmail')">Gmail</button>
+        <button onclick="showTab('refer')">Refer</button>
+        <button onclick="showTab('task')">Task</button>
+        <button onclick="showTab('withdraw')">Withdraw</button>
+        <button onclick="showTab('support')">Support</button>
+      </div>
+
+      <div id="tab-gmail">
+        <h2>Gmail Submit</h2>
+        <div class="msg">প্রতি জিমেইল অ্যাকাউন্টের রেট <b>১০ টাকা</b></div>
+        <label>Gmail Address</label>
+        <input type="email" id="gmailInput" placeholder="example@gmail.com">
+        <label>Gmail Password</label>
+        <input type="text" id="gmailPass" placeholder="পাসওয়ার্ড">
+        <button onclick="submitGmail()">Submit Gmail</button>
+        <div id="gmailMsg" style="margin-top:12px;"></div>
+        <h2 style="margin-top:20px;">আমার সাবমিশন</h2>
+        <div id="myGmails"></div>
+      </div>
+
+      <div id="tab-refer" class="hidden">
+        <h2>Refer & Earn</h2>
+        <div class="msg">রেফার বোনাস শীঘ্রই যোগ করা হবে</div>
+        <label>আপনার রেফার লিংক</label>
+        <div class="ref-box" id="refLink"></div>
+        <button onclick="copyRef()">Copy Refer Link</button>
+        <div id="refMsg" style="margin-top:12px;"></div>
+      </div>
+
+      <div id="tab-task" class="hidden">
+        <h2>Micro Task Post</h2>
+        <div class="msg">আপনার টেলিগ্রাম ইউজারনেম: <b>@Owner_Paylix</b></div>
+        <label>Telegram Username</label>
+        <input type="text" id="taskUser" value="@Owner_Paylix">
+        <label>Task Details</label>
+        <textarea id="taskDetails" rows="3" placeholder="টাস্কের বিবরণ লিখুন..."></textarea>
+        <button onclick="postTask()">Post Task</button>
+        <div id="taskMsg" style="margin-top:12px;"></div>
+      </div>
+
+      <div id="tab-withdraw" class="hidden">
+        <h2>Withdraw (bKash)</h2>
+        <div class="msg">শুধুমাত্র <b>bKash</b> এ টাকা নেওয়া যাবে। ন্যূনতম উইথড্র ৫০৳</div>
+        <label>bKash Number</label>
+        <input type="text" id="wdNumber" placeholder="01XXXXXXXXX">
+        <label>Amount (৳)</label>
+        <input type="number" id="wdAmount" placeholder="টাকার পরিমাণ">
+        <button onclick="requestWithdraw()">Request Withdraw</button>
+        <div id="wdMsg" style="margin-top:12px;"></div>
+        <h2 style="margin-top:20px;">আমার রিকোয়েস্ট</h2>
+        <div id="myWithdraws"></div>
+      </div>
+
+      <div id="tab-support" class="hidden">
+        <h2>Support</h2>
+        <div class="msg">যেকোনো সমস্যায় যোগাযোগ করুন</div>
+        <label>Telegram Support</label>
+        <div class="ref-box">@Owner_Paylix</div>
+        <a href="https://t.me/Owner_Paylix" target="_blank" style="text-decoration:none;">
+          <button>Message on Telegram</button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminLogin" class="hidden">
+    <div class="card">
+      <h1>Admin Panel</h1>
+      <p class="sub">Admin access only</p>
+      <label>Admin Password</label>
+      <input type="password" id="adminPass" placeholder="Admin password">
+      <button onclick="doAdminLogin()">Login</button>
+      <div id="adminError" class="msg error hidden" style="margin-top:14px;"></div>
+      <button class="btn-out" style="margin-top:10px;" onclick="showScreen('login')">Back</button>
+    </div>
+  </div>
+
+  <div id="adminPanel" class="hidden">
+    <div class="card">
+      <button class="logout" onclick="logout()">Logout</button>
+      <h2>Admin Dashboard</h2>
+      <div class="nav">
+        <button class="active" onclick="showAdminTab('gmails')">Gmails</button>
+        <button onclick="showAdminTab('tasks')">Tasks</button>
+        <button onclick="showAdminTab('withdraws')">Withdraw</button>
+        <button onclick="showAdminTab('users')">Users</button>
+      </div>
+      <div id="admin-gmails">
+        <h2>Gmail Submissions</h2>
+        <div id="adminGmailList"></div>
+      </div>
+      <div id="admin-tasks" class="hidden">
+        <h2>Micro Tasks</h2>
+        <div id="adminTaskList"></div>
+      </div>
+      <div id="admin-withdraws" class="hidden">
+        <h2>Withdraw Requests</h2>
+        <div class="msg">সব রিকোয়েস্ট <b>bKash</b> এ।</div>
+        <div id="adminWithdrawList"></div>
+      </div>
+      <div id="admin-users" class="hidden">
+        <h2>Users</h2>
+        <div id="adminUserList"></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align:center;margin-top:20px;">
+    <a href="#" onclick="showScreen('adminLogin');return false;" style="color:#475569;font-size:11px;">Admin</a>
+  </p>
+
+                                             </div><script>
+const FIXED_USER="user",FIXED_PASS="@SRABON99#&",ADMIN_PASS="admin123",GMAIL_RATE=10,MIN_WITHDRAW=50;
+function getDB(k){return JSON.parse(localStorage.getItem("paylix_"+k)||"[]")}
+function setDB(k,v){localStorage.setItem("paylix_"+k,JSON.stringify(v))}
+function getBlocked(){return getDB("blocked")}
+function isBlocked(u){return getBlocked().includes(u)}
+function setBlocked(u,b){let x=getBlocked();if(b&&!x.includes(u))x.push(u);if(!b)x=x.filter(y=>y!==u);setDB("blocked",x)}
+
+function showScreen(n){
+  ["loginScreen","userPanel","adminLogin","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  const m={login:"loginScreen",user:"userPanel",adminLogin:"adminLogin",admin:"adminPanel"};
+  document.getElementById(m[n]).classList.remove("hidden");
+}
+function logout(){localStorage.removeItem("paylix_session");showScreen("login")}
+
+function doLogin(){
+  const u=document.getElementById("loginUser").value.trim(),p=document.getElementById("loginPass").value,e=document.getElementById("loginError");
+  if(u===FIXED_USER&&p===FIXED_PASS){
+    if(isBlocked(u)){e.textContent="আপনার অ্যাকাউন্ট ব্লক করা হয়েছে! সাপোর্টে যোগাযোগ করুন।";e.classList.remove("hidden");return}
+    e.classList.add("hidden");localStorage.setItem("paylix_session","user");showScreen("user");loadUserPanel();
+  }else{e.textContent="ভুল ইউজারনেম বা পাসওয়ার্ড!";e.classList.remove("hidden")}
 }
 
-function saveData(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
+function getBalance(u){
+  const earned=getDB("gmails").filter(g=>g.owner===u&&g.status==="approved").length*GMAIL_RATE;
+  const paid=getDB("withdraws").filter(w=>w.owner===u&&w.status==="paid").reduce((s,w)=>s+w.amount,0);
+  return earned-paid;
 }
 
-function currentUser() {
-  return JSON.parse(localStorage.getItem(DB.current) || "null");
+function loadUserPanel(){
+  document.getElementById("userBalance").textContent=getBalance(FIXED_USER)+"৳";
+  document.getElementById("refLink").textContent=window.location.origin+window.location.pathname+"?ref="+FIXED_USER;
+  renderMyGmails(getDB("gmails").filter(g=>g.owner===FIXED_USER));
+  renderMyWithdraws(getDB("withdraws").filter(w=>w.owner===FIXED_USER));
 }
 
-function money(amount) {
-  return "৳" + Number(amount || 0).toFixed(2);
+function renderMyGmails(g){
+  const b=document.getElementById("myGmails");
+  b.innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span>${x.email}</span><span class="badge ${x.status==="approved"?"":"pend"}">${x.status==="approved"?"Approved":"Pending"}</span></div>`).join(""):'<div class="empty">এখনও কোনো সাবমিশন নেই</div>';
 }
 
-function makeId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+function renderMyWithdraws(l){
+  const b=document.getElementById("myWithdraws");
+  b.innerHTML=l.length?l.slice().reverse().map(w=>`<div class="list-item"><span>৳${w.amount} → ${w.number}<br><small style="color:#64748b;">${w.date}</small></span><span class="badge ${w.status==="paid"?"paid":(w.status==="rejected"?"block":"pend")}">${w.status}</span></div>`).join(""):'<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
 }
 
-/* REGISTER */
-
-function registerUser(name, phone, password) {
-  if (!name || !phone || !password) {
-    alert("সব তথ্য পূরণ করুন");
-    return;
-  }
-
-  if (!/^01[3-9]\d{8}$/.test(phone)) {
-    alert("সঠিক বাংলাদেশি মোবাইল নম্বর দিন");
-    return;
-  }
-
-  const users = getData(DB.users);
-
-  if (users.some(u => u.phone === phone)) {
-    alert("এই নম্বর দিয়ে অ্যাকাউন্ট খোলা আছে");
-    return;
-  }
-
-  const user = {
-    id: makeId(),
-    name,
-    phone,
-    password,
-    balance: 0,
-    referralCode: "PAY" + Math.random().toString(36).slice(2, 8).toUpperCase(),
-    blocked: false,
-    createdAt: new Date().toLocaleString()
-  };
-
-  users.push(user);
-  saveData(DB.users, users);
-
-  alert("রেজিস্ট্রেশন সফল হয়েছে");
+function submitGmail(){
+  const email=document.getElementById("gmailInput").value.trim(),pass=document.getElementById("gmailPass").value.trim(),m=document.getElementById("gmailMsg");
+  if(!email||!pass){m.innerHTML='<div class="msg error">ইমেইল ও পাসওয়ার্ড দুটোই দিন</div>';return}
+  if(!/^[^@\s]+@gmail\.com$/i.test(email)){m.innerHTML='<div class="msg error">সঠিক Gmail ঠিকানা দিন</div>';return}
+  const g=getDB("gmails");g.push({id:Date.now(),owner:FIXED_USER,email,pass,status:"pending",date:new Date().toLocaleString()});setDB("gmails",g);
+  document.getElementById("gmailInput").value="";document.getElementById("gmailPass").value="";
+  m.innerHTML='<div class="msg success">সাবমিট হয়েছে! অ্যাডমিন অ্যাপ্রুভ করলে ১০৳ যোগ হবে।</div>';loadUserPanel();
 }
 
-/* LOGIN */
-
-function loginUser(phone, password) {
-  const users = getData(DB.users);
-
-  const user = users.find(
-    u => u.phone === phone && u.password === password
-  );
-
-  if (!user) {
-    alert("ফোন নম্বর অথবা পাসওয়ার্ড ভুল");
-    return;
-  }
-
-  if (user.blocked) {
-    alert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে");
-    return;
-  }
-
-  localStorage.setItem(DB.current, JSON.stringify(user));
-  location.href = "index.html";
+function postTask(){
+  const u=document.getElementById("taskUser").value.trim(),d=document.getElementById("taskDetails").value.trim(),m=document.getElementById("taskMsg");
+  if(!u||!d){m.innerHTML='<div class="msg error">সব ঘর পূরণ করুন</div>';return}
+  const t=getDB("tasks");t.push({id:Date.now(),owner:FIXED_USER,tg:u,details:d,date:new Date().toLocaleString()});setDB("tasks",t);
+  document.getElementById("taskDetails").value="";m.innerHTML='<div class="msg success">টাস্ক পোস্ট হয়েছে!</div>';
 }
 
-/* LOGOUT */
-
-function logoutUser() {
-  localStorage.removeItem(DB.current);
-  location.href = "index.html";
+function requestWithdraw(){
+  const n=document.getElementById("wdNumber").value.trim(),a=parseInt(document.getElementById("wdAmount").value),m=document.getElementById("wdMsg");
+  if(!n||!a){m.innerHTML='<div class="msg error">নাম্বার ও টাকার পরিমাণ দিন</div>';return}
+  if(!/^01[3-9]\d{8}$/.test(n)){m.innerHTML='<div class="msg error">সঠিক bKash নাম্বার দিন</div>';return}
+  if(a<MIN_WITHDRAW){m.innerHTML='<div class="msg error">ন্যূনতম উইথড্র '+MIN_WITHDRAW+'৳</div>';return}
+  const bal=getBalance(FIXED_USER);
+  if(a>bal){m.innerHTML='<div class="msg error">পর্যাপ্ত ব্যালেন্স নেই (আপনার '+bal+'৳)</div>';return}
+  if(getDB("withdraws").some(w=>w.owner===FIXED_USER&&w.status==="pending")){m.innerHTML='<div class="msg error">একটি রিকোয়েস্ট আগেই pending আছে</div>';return}
+  const l=getDB("withdraws");l.push({id:Date.now(),owner:FIXED_USER,number:n,amount:a,method:"bKash",status:"pending",date:new Date().toLocaleString()});setDB("withdraws",l);
+  document.getElementById("wdNumber").value="";document.getElementById("wdAmount").value="";
+  m.innerHTML='<div class="msg success">রিকোয়েস্ট পাঠানো হয়েছে!</div>';loadUserPanel();
 }
 
-/* USER BALANCE */
+function copyRef(){navigator.clipboard.writeText(document.getElementById("refLink").textContent).then(()=>{document.getElementById("refMsg").innerHTML='<div class="msg success">লিংক কপি হয়েছে!</div>'})}
 
-function updateBalance(userId, amount) {
-  const users = getData(DB.users);
-  const index = users.findIndex(u => u.id === userId);
-
-  if (index === -1) return;
-
-  users[index].balance =
-    Number(users[index].balance || 0) + Number(amount);
-
-  saveData(DB.users, users);
-
-  const loggedIn = currentUser();
-
-  if (loggedIn && loggedIn.id === userId) {
-    localStorage.setItem(DB.current, JSON.stringify(users[index]));
-  }
+function showTab(n){
+  ["gmail","refer","task","withdraw","support"].forEach(t=>document.getElementById("tab-"+t).classList.add("hidden"));
+  document.getElementById("tab-"+n).classList.remove("hidden");
+  const tabs=["gmail","refer","task","withdraw","support"];
+  document.querySelectorAll("#userPanel .nav button").forEach((b,i)=>b.classList.toggle("active",tabs[i]===n));
+  if(n==="gmail"||n==="withdraw")loadUserPanel();
 }
 
-/* GMAIL TASK SUBMISSION */
-
-function submitGmailTask(email, taskCode) {
-  const user = currentUser();
-
-  if (!user) {
-    alert("আগে লগইন করুন");
-    return;
-  }
-
-  if (!email || !email.includes("@")) {
-    alert("সঠিক Gmail ঠিকানা দিন");
-    return;
-  }
-
-  if (taskCode !== "@SRABON99#&") {
-    alert("Task Code ভুল হয়েছে");
-    return;
-  }
-
-  const submissions = getData(DB.gmail);
-
-  submissions.push({
-    id: makeId(),
-    userId: user.id,
-    name: user.name,
-    phone: user.phone,
-    email,
-    reward: 10,
-    status: "Pending",
-    date: new Date().toLocaleString()
-  });
-
-  saveData(DB.gmail, submissions);
-
-  alert("Gmail Task জমা হয়েছে। Admin অনুমোদন করলে ১০ টাকা পাবেন।");
+function doAdminLogin(){
+  const p=document.getElementById("adminPass").value,e=document.getElementById("adminError");
+  if(p===ADMIN_PASS){e.classList.add("hidden");localStorage.setItem("paylix_session","admin");showScreen("admin");loadAdminPanel()}
+  else{e.textContent="ভুল অ্যাডমিন পাসওয়ার্ড!";e.classList.remove("hidden")}
 }
 
-/* ADMIN APPROVE GMAIL TASK */
+function loadAdminPanel(){
+  const g=getDB("gmails");
+  document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.email}</b><br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn-green" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<div class="empty">কোনো সাবমিশন নেই</div>';
 
-function approveGmailTask(submissionId) {
-  const submissions = getData(DB.gmail);
-  const index = submissions.findIndex(s => s.id === submissionId);
+  const t=getDB("tasks");
+  document.getElementById("adminTaskList").innerHTML=t.length?t.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.tg}</b><br>${x.details}<br><small style="color:#64748b;">${x.date}</small></span></div>`).join(""):'<div class="empty">কোনো টাস্ক নেই</div>';
 
-  if (index === -1 || submissions[index].status !== "Pending") return;
+  const w=getDB("withdraws");
+  document.getElementById("adminWithdrawList").innerHTML=w.length?w.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>৳${x.amount}</b> → ${x.number}<br>method: <b>${x.method}</b><br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="pending"?`<div class="row"><button class="btn-green" onclick="updateWithdraw(${x.id},'paid')">Paid</button><button class="btn-red" onclick="updateWithdraw(${x.id},'rejected')">Reject</button></div>`:`<span class="badge ${x.status==="paid"?"paid":"block"}">${x.status}</span>`}</span></div>`).join(""):'<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
 
-  submissions[index].status = "Approved";
-  saveData(DB.gmail, submissions);
-
-  updateBalance(submissions[index].userId, 10);
-
-  alert("Gmail Task Approved। ১০ টাকা যোগ হয়েছে।");
+  document.getElementById("adminUserList").innerHTML=`<div class="list-item"><span>${FIXED_USER} <br><small style="color:#64748b;">Balance: ${getBalance(FIXED_USER)}৳</small></span><span>${isBlocked(FIXED_USER)?`<button class="btn-green" onclick="toggleBlock('${FIXED_USER}',false)">Unblock</button>`:`<button class="btn-red" onclick="toggleBlock('${FIXED_USER}',true)">Block</button>`}</span></div>`;
 }
 
-/* ADMIN REJECT GMAIL TASK */
+function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails",g)}loadAdminPanel()}
+function updateWithdraw(id,s){const l=getDB("withdraws"),w=l.find(x=>x.id===id);if(w){w.status=s;setDB("withdraws",l)}loadAdminPanel()}
+function toggleBlock(u,b){setBlocked(u,b);loadAdminPanel()}
 
-function rejectGmailTask(submissionId) {
-  const submissions = getData(DB.gmail);
-  const index = submissions.findIndex(s => s.id === submissionId);
-
-  if (index === -1 || submissions[index].status !== "Pending") return;
-
-  submissions[index].status = "Rejected";
-  saveData(DB.gmail, submissions);
-
-  alert("Gmail Task Rejected");
+function showAdminTab(n){
+  ["gmails","tasks","withdraws","users"].forEach(t=>document.getElementById("admin-"+t).classList.add("hidden"));
+  document.getElementById("admin-"+n).classList.remove("hidden");
+  const tabs=["gmails","tasks","withdraws","users"];
+  document.querySelectorAll("#adminPanel .nav button").forEach((b,i)=>b.classList.toggle("active",tabs[i]===n));
 }
 
-/* ADMIN CREATE MICRO TASK */
-
-function createMicroTask(title, description, reward, slots, link) {
-  const tasks = getData(DB.tasks);
-
-  if (!title || !description || !reward || !slots || !link) {
-    alert("সব তথ্য পূরণ করুন");
-    return;
-  }
-
-  if (Number(reward) <= 0 || Number(slots) <= 0) {
-    alert("Reward এবং Slots সঠিকভাবে দিন");
-    return;
-  }
-
-  tasks.push({
-    id: makeId(),
-    title,
-    description,
-    reward: Number(reward),
-    slots: Number(slots),
-    link,
-    submissions: [],
-    active: true,
-    createdAt: new Date().toLocaleString()
-  });
-
-  saveData(DB.tasks, tasks);
-
-  alert("Micro Task তৈরি হয়েছে");
-}
-
-/* USER SUBMIT MICRO TASK */
-
-function submitMicroTask(taskId, proof) {
-  const user = currentUser();
-
-  if (!user) {
-    alert("আগে লগইন করুন");
-    return;
-  }
-
-  if (!proof) {
-    alert("কাজের প্রমাণ জমা দিন");
-    return;
-  }
-
-  const tasks = getData(DB.tasks);
-  const index = tasks.findIndex(t => t.id === taskId);
-
-  if (index === -1 || !tasks[index].active) {
-    alert("এই Task এখন পাওয়া যাচ্ছে না");
-    return;
-  }
-
-  const task = tasks[index];
-
-  if (task.submissions.length >= task.slots) {
-    alert("এই Task-এর সব Slot পূর্ণ হয়ে গেছে");
-    return;
-  }
-
-  if (task.submissions.some(s => s.userId === user.id)) {
-    alert("আপনি এই Task আগে জমা দিয়েছেন");
-    return;
-  }
-
-  task.submissions.push({
-    id: makeId(),
-    userId: user.id,
-    name: user.name,
-    phone: user.phone,
-    proof,
-    status: "Pending",
-    date: new Date().toLocaleString()
-  });
-
-  if (task.submissions.length >= task.slots) {
-    task.active = false;
-  }
-
-  saveData(DB.tasks, tasks);
-
-  alert("Micro Task জমা হয়েছে। Admin অনুমোদনের অপেক্ষায় থাকুন।");
-}
-
-/* ADMIN APPROVE MICRO TASK */
-
-function approveMicroTask(taskId, submissionId) {
-  const tasks = getData(DB.tasks);
-  const task = tasks.find(t => t.id === taskId);
-
-  if (!task) return;
-
-  const submission = task.submissions.find(s => s.id === submissionId);
-
-  if (!submission || submission.status !== "Pending") return;
-
-  submission.status = "Approved";
-  saveData(DB.tasks, tasks);
-
-  updateBalance(submission.userId, task.reward);
-
-  alert("Task Approved। User-এর Balance-এ টাকা যোগ হয়েছে।");
-}
-
-/* ADMIN REJECT MICRO TASK */
-
-function rejectMicroTask(taskId, submissionId) {
-  const tasks = getData(DB.tasks);
-  const task = tasks.find(t => t.id === taskId);
-
-  if (!task) return;
-
-  const submission = task.submissions.find(s => s.id === submissionId);
-
-  if (!submission || submission.status !== "Pending") return;
-
-  submission.status = "Rejected";
-  saveData(DB.tasks, tasks);
-
-  alert("Task Rejected");
-}
-
-/* ADMIN DELETE MICRO TASK */
-
-function deleteMicroTask(taskId) {
-  const tasks = getData(DB.tasks);
-  saveData(DB.tasks, tasks.filter(t => t.id !== taskId));
-  alert("Task Delete হয়েছে");
-}
-
-/* WITHDRAWAL REQUEST */
-
-function requestWithdrawal(amount, paymentNumber, method) {
-  const user = currentUser();
-
-  if (!user) {
-    alert("আগে লগইন করুন");
-    return;
-  }
-
-  amount = Number(amount);
-
-  if (method !== "bKash") {
-    alert("বর্তমানে শুধু bKash চালু আছে");
-    return;
-  }
-
-  if (!paymentNumber || amount <= 0) {
-    alert("সঠিক তথ্য দিন");
-    return;
-  }
-
-  const users = getData(DB.users);
-  const index = users.findIndex(u => u.id === user.id);
-
-  if (index === -1 || users[index].balance < amount) {
-    alert("আপনার Balance পর্যাপ্ত নয়");
-    return;
-  }
-
-  users[index].balance -= amount;
-  saveData(DB.users, users);
-
-  localStorage.setItem(DB.current, JSON.stringify(users[index]));
-
-  const withdrawals = getData(DB.withdrawals);
-
-  withdrawals.push({
-    id: makeId(),
-    userId: user.id,
-    name: user.name,
-    phone: user.phone,
-    amount,
-    paymentNumber,
-    method: "bKash",
-    status: "Pending",
-    date: new Date().toLocaleString()
-  });
-
-  saveData(DB.withdrawals, withdrawals);
-
-  alert("Withdrawal Request জমা হয়েছে");
-}
-
-/* ADMIN APPROVE WITHDRAWAL */
-
-function approveWithdrawal(requestId) {
-  const requests = getData(DB.withdrawals);
-  const index = requests.findIndex(r => r.id === requestId);
-
-  if (index === -1 || requests[index].status !== "Pending") return;
-
-  requests[index].status = "Approved";
-  saveData(DB.withdrawals, requests);
-
-  alert("Withdrawal Approved");
-}
-
-/* ADMIN REJECT WITHDRAWAL */
-
-function rejectWithdrawal(requestId) {
-  const requests = getData(DB.withdrawals);
-  const index = requests.findIndex(r => r.id === requestId);
-
-  if (index === -1 || requests[index].status !== "Pending") return;
-
-  requests[index].status = "Rejected";
-
-  updateBalance(requests[index].userId, requests[index].amount);
-
-  saveData(DB.withdrawals, requests);
-
-  alert("Withdrawal Rejected। টাকা User-এর Balance-এ ফেরত দেওয়া হয়েছে।");
-}
-
-/* ADMIN BLOCK / UNBLOCK USER */
-
-function toggleUserBlock(userId) {
-  const users = getData(DB.users);
-  const index = users.findIndex(u => u.id === userId);
-
-  if (index === -1) return;
-
-  users[index].blocked = !users[index].blocked;
-  saveData(DB.users, users);
-
-  alert(users[index].blocked ? "User Blocked" : "User Unblocked");
-}
-
-/* REFERRAL LINK */
-
-function getReferralLink() {
-  const user = currentUser();
-
-  if (!user) return "";
-
-  return location.origin + location.pathname + "?ref=" + user.referralCode;
-}
-
-/* SHOW USER INFORMATION */
-
-function showUserInfo() {
-  const user = currentUser();
-
-  if (!user) return;
-
-  const name = document.getElementById("userName");
-  const balance = document.getElementById("userBalance");
-  const referral = document.getElementById("referralLink");
-
-  if (name) name.textContent = user.name;
-  if (balance) balance.textContent = money(user.balance);
-  if (referral) referral.value = getReferralLink();
-}
-
-/* INITIALIZE */
-
-document.addEventListener("DOMContentLoaded", function () {
-  showUserInfo();
-
-  const user = currentUser();
-
-  if (user && user.blocked) {
-    localStorage.removeItem(DB.current);
-    alert("আপনার Account Block করা হয়েছে");
-    location.href = "index.html";
-  }
-});<script src="app.js"></script>
+(function(){
+  const s=localStorage.getItem("paylix_session");
+  if(s==="user"){showScreen("user");loadUserPanel()}
+  else if(s==="admin"){showScreen("admin");loadAdminPanel()}
+  else{showScreen("login")}
+})();
+</script>
+</body>
+</html>
