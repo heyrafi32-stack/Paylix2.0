@@ -2,102 +2,117 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paylix — Premium Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Paylix — App</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; -webkit-tap-highlight-color: transparent; }
 
   body {
     min-height:100vh;
     background: radial-gradient(circle at 20% 10%, #3b1d6e 0%, #1a0b2e 45%, #0d0618 100%);
     color:#fff;
-    padding:20px;
     display:flex;
     justify-content:center;
+    overflow-x:hidden;
   }
 
-  .app { width:100%; max-width:1000px; }
+  /* APP CONTAINER */
+  .app { width:100%; max-width:500px; position:relative; overflow:hidden; min-height:100vh; padding:20px; padding-bottom:50px;}
 
-  /* --- TOP BAR --- */
+  /* PAGE SYSTEM */
+  .page { display:none; animation: slideIn 0.3s forwards; }
+  .page.active { display:block; }
+  @keyframes slideIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+
+  /* TOP BAR */
   .topbar {
     display:flex; justify-content:space-between; align-items:center;
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(14px);
     border:1px solid rgba(168,85,247,0.25);
     border-radius:18px;
-    padding:14px 22px;
+    padding:14px 18px;
     margin-bottom:20px;
-    box-shadow:0 0 30px rgba(168,85,247,0.15);
   }
-  .logo { display:flex; align-items:center; gap:10px; }
-  .logo img {
-    height:42px; width:auto; object-fit:contain;
-    filter: drop-shadow(0 0 10px rgba(168,85,247,0.8));
+  .logo { display:flex; align-items:center; gap:8px; }
+  .logo img { height:36px; width:auto; object-fit:contain; filter: drop-shadow(0 0 8px rgba(168,85,247,0.8)); }
+  .logo span { font-size:1.3rem; font-weight:800; background:linear-gradient(90deg,#c084fc,#a855f7,#7c3aed); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  
+  /* BACK BUTTON */
+  .back-btn {
+    display:flex; align-items:center; gap:6px; color:#c9b8e8; font-size:.9rem;
+    cursor:pointer; margin-bottom:16px; font-weight:600;
   }
-  .logo span {
-    font-size:1.5rem; font-weight:800; letter-spacing:1px;
-    background:linear-gradient(90deg,#c084fc,#a855f7,#7c3aed);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .user-chip { display:flex; align-items:center; gap:10px; font-size:.9rem; color:#d8c8f0;}
-  .avatar { width:36px; height:36px; border-radius:50%;
-    background:linear-gradient(135deg,#a855f7,#6d28d9);
-    display:flex; align-items:center; justify-content:center; font-weight:700; }
+  .back-btn:hover { color:#fff; }
 
-  /* --- BALANCE CARD --- */
+  /* BALANCE CARD */
   .balance {
     background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(109,40,217,0.15));
     border:1px solid rgba(192,132,252,0.35);
-    border-radius:22px;
-    padding:26px;
-    margin-bottom:22px;
-    position:relative; overflow:hidden;
-    box-shadow:0 0 40px rgba(168,85,247,0.25);
+    border-radius:22px; padding:24px; margin-bottom:22px;
+    position:relative; overflow:hidden; box-shadow:0 0 40px rgba(168,85,247,0.25);
   }
   .balance::after {
-    content:""; position:absolute; top:-40%; right:-10%;
-    width:220px; height:220px; border-radius:50%;
-    background:radial-gradient(circle,#a855f7aa,transparent 70%);
-    filter:blur(20px);
+    content:""; position:absolute; top:-40%; right:-10%; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle,#a855f7aa,transparent 70%); filter:blur(20px);
   }
   .balance-label { font-size:.85rem; color:#d8c8f0; letter-spacing:1px; text-transform:uppercase;}
-  .balance-amount { font-size:2.6rem; font-weight:800; margin:6px 0 16px;
-    background:linear-gradient(90deg,#fff,#e9d5ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .balance-amount { font-size:2.5rem; font-weight:800; margin:6px 0 16px; background:linear-gradient(90deg,#fff,#e9d5ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .btn {
     border:none; cursor:pointer; font-weight:600; border-radius:12px;
-    padding:11px 22px; font-size:.9rem; color:#fff;
+    padding:12px 20px; font-size:.9rem; color:#fff; width:100%;
     background:linear-gradient(90deg,#a855f7,#7c3aed);
-    box-shadow:0 0 18px rgba(168,85,247,0.55);
-    transition:.25s;
+    box-shadow:0 0 18px rgba(168,85,247,0.55); transition:.25s;
   }
   .btn:hover { transform:translateY(-2px); box-shadow:0 0 28px rgba(168,85,247,0.85); }
 
-  /* --- GRID MENU --- */
-  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
+  /* MENU GRID */
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:24px; }
   .card {
-    background: rgba(255,255,255,0.05);
-    border:1px solid rgba(168,85,247,0.22);
-    border-radius:18px; padding:22px 18px; text-align:center;
-    backdrop-filter: blur(12px);
-    cursor:pointer; transition:.25s;
+    background: rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.22);
+    border-radius:18px; padding:22px 18px; text-align:center; cursor:pointer; transition:.25s;
   }
-  .card:hover { border-color:#a855f7; transform:translateY(-4px);
-    box-shadow:0 0 25px rgba(168,85,247,0.4); background:rgba(168,85,247,0.12); }
+  .card:active { transform:scale(0.95); }
+  .card:hover { border-color:#a855f7; transform:translateY(-4px); box-shadow:0 0 25px rgba(168,85,247,0.4); background:rgba(168,85,247,0.12); }
   .card .icon { font-size:1.7rem; margin-bottom:10px; display:block; }
   .card .title { font-weight:600; font-size:.95rem; }
   .card .sub { font-size:.75rem; color:#b9a4dd; margin-top:4px; }
 
-  /* --- SECTION TITLE --- */
-  .sec-title { font-size:1.05rem; font-weight:700; margin-bottom:12px; color:#e9d5ff;
-    display:flex; align-items:center; gap:8px;}
-  .sec-title::before { content:""; width:4px; height:18px; border-radius:4px;
-    background:linear-gradient(#c084fc,#7c3aed); }
+  /* SECTION TITLE */
+  .sec-title { font-size:1.05rem; font-weight:700; margin-bottom:12px; color:#e9d5ff; display:flex; align-items:center; gap:8px;}
+  .sec-title::before { content:""; width:4px; height:18px; border-radius:4px; background:linear-gradient(#c084fc,#7c3aed); }
 
-  /* --- TRANSACTIONS --- */
-  .txn { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.18);
-    border-radius:16px; padding:6px 4px; }
-  .txn-row { display:flex; justify-content:space-between; align-items:center;
-    padding:13px 16px; border-bottom:1px solid rgba(168,85,247,0.12); font-size:.9rem;}
+  /* GMAIL SELL SECTION */
+  .sector-wrap { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;}
+  .sector {
+    background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.25);
+    border-radius:16px; padding:18px; text-align:center; cursor:pointer; transition:.2s;
+  }
+  .sector.active { border-color:#c084fc; background:rgba(168,85,247,0.18); box-shadow:0 0 22px rgba(168,85,247,0.45); }
+  .sector .t { font-weight:700; font-size:.95rem; }
+  .sector .p { font-size:1.3rem; font-weight:800; margin-top:6px; background:linear-gradient(90deg,#c084fc,#a855f7); -webkit-background-clip:text; background-clip:text; color:transparent;}
+
+  .form-box { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.2); border-radius:18px; padding:22px; }
+  .field { margin-bottom:14px; }
+  .field label { font-size:.8rem; color:#c9b8e8; display:block; margin-bottom:6px; }
+  .field input {
+    width:100%; padding:14px; border-radius:10px; border:1px solid rgba(168,85,247,0.3);
+    background:rgba(13,6,24,0.6); color:#fff; font-size:.95rem; outline:none;
+  }
+  .field input:focus { border-color:#a855f7; box-shadow:0 0 12px rgba(168,85,247,0.4); }
+  
+  .pass-wrap { position:relative; }
+  .pass-wrap .eye { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.1rem; opacity:.7; }
+
+  /* progress */
+  .progress-wrap { margin:6px 0 18px; }
+  .progress-label { display:flex; justify-content:space-between; font-size:.8rem; color:#c9b8e8; margin-bottom:6px;}
+  .bar { height:10px; border-radius:8px; background:rgba(255,255,255,0.08); overflow:hidden;}
+  .bar-fill { height:100%; width:0%; border-radius:8px; background:linear-gradient(90deg,#a855f7,#ec4899); box-shadow:0 0 14px #a855f7;}
+
+  /* TRANSACTIONS */
+  .txn { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.18); border-radius:16px; padding:6px 4px; }
+  .txn-row { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid rgba(168,85,247,0.12); font-size:.9rem;}
   .txn-row:last-child { border:none; }
   .txn .name { color:#e6dcf7; }
   .txn .amt.pos { color:#34d399; font-weight:700; }
@@ -106,140 +121,140 @@
   .tag.ok { background:rgba(52,211,153,.15); color:#34d399; }
   .tag.pending { background:rgba(251,191,36,.15); color:#fbbf24; }
 
-  /* --- GMAIL SELL SECTION --- */
-  .sector-wrap { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px;}
-  .sector {
-    background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.25);
-    border-radius:16px; padding:18px; text-align:center; cursor:pointer; transition:.2s;
-  }
-  .sector.active { border-color:#c084fc; background:rgba(168,85,247,0.18);
-    box-shadow:0 0 22px rgba(168,85,247,0.45); }
-  .sector .t { font-weight:700; font-size:.95rem; }
-  .sector .p { font-size:1.3rem; font-weight:800; margin-top:6px;
-    background:linear-gradient(90deg,#c084fc,#a855f7); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .sector .p span { font-size:.75rem; color:#b9a4dd; -webkit-text-fill-color:#b9a4dd;}
-
-  .form-box { background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.2);
-    border-radius:18px; padding:22px; }
-  .field { margin-bottom:14px; }
-  .field label { font-size:.8rem; color:#c9b8e8; display:block; margin-bottom:6px; }
-  .field input {
-    width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(168,85,247,0.3);
-    background:rgba(13,6,24,0.6); color:#fff; font-size:.95rem; outline:none;
-  }
-  .field input:focus { border-color:#a855f7; box-shadow:0 0 12px rgba(168,85,247,0.4); }
-  .pass-wrap { position:relative; }
-  .pass-wrap .eye { position:absolute; right:12px; top:50%; transform:translateY(-50%);
-    cursor:pointer; font-size:1.1rem; opacity:.7; }
-  .pass-wrap .eye:hover { opacity:1; }
-
-  /* progress */
-  .progress-wrap { margin:6px 0 18px; }
-  .progress-label { display:flex; justify-content:space-between; font-size:.8rem; color:#c9b8e8; margin-bottom:6px;}
-  .bar { height:10px; border-radius:8px; background:rgba(255,255,255,0.08); overflow:hidden;}
-  .bar-fill { height:100%; width:64%; border-radius:8px;
-    background:linear-gradient(90deg,#a855f7,#ec4899); box-shadow:0 0 14px #a855f7;}
-
-  /* mobile */
-  @media(max-width:700px){
-    .grid { grid-template-columns:repeat(2,1fr); }
-    .sector-wrap { grid-template-columns:1fr; }
-    .balance-amount { font-size:2rem; }
-    .logo img { height:34px; }
-    .logo span { font-size:1.2rem; }
-  }
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="logo">
-      <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix Logo">
-      <span>PAYLIX</span>
-    </div>
-    <div class="user-chip">
-      <span>🔔</span>
-      <div class="avatar">T</div>
-      <span>Tanvir</span>
-    </div>
-  </div>
-
-  <!-- BALANCE -->
-  <div class="balance">
-    <div class="balance-label">💰 আপনার ব্যালেন্স</div>
-    <div class="balance-amount">৳ 1,250.00</div>
-    <button class="btn">💸 Withdraw করুন</button>
-  </div>
-
-  <!-- MENU GRID -->
-  <div class="sec-title">মেনু</div>
-  <div class="grid">
-    <div class="card"><span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২ /টি</div></div>
-    <div class="card"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">টাস্ক করে আয়</div></div>
-    <div class="card"><span class="icon">🎁</span><div class="title">Refer</div><div class="sub">বোনাস শীঘ্রই</div></div>
-    <div class="card"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div>
-    <div class="card"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ / নগদ</div></div>
-    <div class="card"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল ও সিকিউরিটি</div></div>
-  </div>
-
-  <!-- GMAIL SELL DEMO -->
-  <div class="sec-title">📧 Gmail Sell</div>
-  <div class="sector-wrap">
-    <div class="sector active">
-      <div class="t">🅰️ Gmail + Password</div>
-      <div class="p">৳ ১০ <span>/টি</span></div>
-    </div>
-    <div class="sector">
-      <div class="t">🅱️ শুধু Password</div>
-      <div class="p">৳ ১২ <span>/টি</span></div>
-    </div>
-  </div>
-
-  <div class="form-box">
-    <div class="progress-wrap">
-      <div class="progress-label"><span>আজকের লিমিট</span><span>৳ 320 / ৳ 500</span></div>
-      <div class="bar"><div class="bar-fill"></div></div>
+  <!-- ================= পেজ ১: মেইন ড্যাশবোর্ড ================= -->
+  <div id="page-home" class="page active">
+    <div class="topbar">
+      <div class="logo">
+        <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix">
+        <span>PAYLIX</span>
+      </div>
+      <div style="font-size:1.2rem; cursor:pointer;">🔔</div>
     </div>
 
-    <div class="field">
-      <label>Gmail ID</label>
-      <input type="text" placeholder="example@gmail.com">
+    <div class="balance">
+      <div class="balance-label">💰 আপনার ব্যালেন্স</div>
+      <div class="balance-amount">৳ 0.00</div>
+      <button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw করুন</button>
     </div>
-    <div class="field">
-      <label>Password</label>
-      <div class="pass-wrap">
-        <input type="password" id="pass" placeholder="••••••••">
-        <span class="eye" onclick="togglePass()">👁️</span>
+
+    <div class="sec-title">মেনু</div>
+    <div class="grid">
+      <div class="card" onclick="openPage('page-gmail')">
+        <span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২ /টি</div>
+      </div>
+      <div class="card" onclick="alert('Microtask শীঘ্রই আসছে!')">
+        <span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">টাস্ক করে আয়</div>
+      </div>
+      <div class="card" onclick="alert('রেফার বোনাস শীঘ্রই!')">
+        <span class="icon">🎁</span><div class="title">Refer</div><div class="sub">বোনাস শীঘ্রই</div>
+      </div>
+      <div class="card" onclick="alert('টেলিগ্রামে যোগাযোগ করুন: @Owner_Paylix')">
+        <span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div>
+      </div>
+      <div class="card" onclick="openPage('page-withdraw')">
+        <span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ / নগদ</div>
+      </div>
+      <div class="card" onclick="alert('সেটিংস পেজ শীঘ্রই আসছে!')">
+        <span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div>
       </div>
     </div>
-    <button class="btn" style="width:100%;">সাবমিট করুন</button>
+
+    <div class="sec-title">📊 সাম্প্রতিক লেনদেন</div>
+    <div class="txn">
+      <div class="txn-row" style="justify-content:center; color:#b9a4dd;">
+        <span>কোনো লেনদেন নেই</span>
+      </div>
+    </div>
   </div>
 
-  <!-- RECENT TRANSACTIONS -->
-  <div class="sec-title" style="margin-top:26px;">📊 সাম্প্রতিক লেনদেন</div>
-  <div class="txn">
-    <div class="txn-row">
-      <span class="name">Gmail Sell <span class="tag ok">সফল</span></span>
-      <span class="amt pos">+৳ 25</span>
+  <!-- ================= পেজ ২: Gmail Sell ================= -->
+  <div id="page-gmail" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">📧 Gmail Sell</div>
+
+    <div class="sector-wrap">
+      <div class="sector active" onclick="selectSector(10)">
+        <div class="t">🅰️ Gmail + Password</div>
+        <div class="p">৳ ১০ /টি</div>
+      </div>
+      <div class="sector" onclick="selectSector(12)">
+        <div class="t">🅱️ শুধু Password</div>
+        <div class="p">৳ ১২ /টি</div>
+      </div>
     </div>
-    <div class="txn-row">
-      <span class="name">Withdraw <span class="tag pending">অপেক্ষমাণ</span></span>
-      <span class="amt neg">-৳ 100</span>
+
+    <div class="form-box">
+      <div class="progress-wrap">
+        <div class="progress-label"><span>আজকের লিমিট</span><span>৳ 0 / ৳ 500</span></div>
+        <div class="bar"><div class="bar-fill"></div></div>
+      </div>
+
+      <div class="field">
+        <label>Gmail ID (শুধু সেক্টর A এর জন্য)</label>
+        <input type="text" placeholder="example@gmail.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="pass" placeholder="••••••••">
+          <span class="eye" onclick="togglePass()">👁️</span>
+        </div>
+      </div>
+      <button class="btn" onclick="alert('ব্যাকএন্ড কানেক্ট করা হলে এখানে ডাটা সেভ হবে!')">সাবমিট করুন</button>
     </div>
-    <div class="txn-row">
-      <span class="name">Password Sell <span class="tag ok">সফল</span></span>
-      <span class="amt pos">+৳ 12</span>
+  </div>
+
+  <!-- ================= পেজ ৩: Withdraw ================= -->
+  <div id="page-withdraw" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title">💸 Withdraw</div>
+    <div class="form-box">
+      <div class="field">
+        <label>পেমেন্ট মেথড</label>
+        <select style="width:100%; padding:14px; border-radius:10px; border:1px solid rgba(168,85,247,0.3); background:rgba(13,6,24,0.6); color:#fff; font-size:.95rem; outline:none;">
+          <option>বিকাশ (bKash)</option>
+          <option>নগদ (Nagad)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>নাম্বার</label>
+        <input type="number" placeholder="01XXXXXXXXX">
+      </div>
+      <div class="field">
+        <label>টাকার পরিমাণ (সর্বনিম্ন ৳ ১০০)</label>
+        <input type="number" placeholder="100">
+      </div>
+      <button class="btn" onclick="alert('রিকোয়েস্ট পাঠানো হয়েছে! (এটা ডেমো)')">রিকোয়েস্ট দিন</button>
     </div>
   </div>
 
 </div>
 
 <script>
+  // পেজ চেঞ্জ করার ফাংশন (অ্যাপের মতো)
+  function openPage(pageId) {
+    // সব পেজ হাইড করো
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // নির্দিষ্ট পেজ দেখাও
+    document.getElementById(pageId).classList.add('active');
+    // উপরে স্ক্রল করো
+    window.scrollTo(0, 0);
+  }
+
   function togglePass(){
     const p = document.getElementById('pass');
     p.type = p.type === 'password' ? 'text' : 'password';
+  }
+
+  function selectSector(price) {
+    document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    // এখানে আমরা চাইলে Gmail ID ফিল্ড হাইড/শো করতে পারি
   }
 </script>
 </body>
