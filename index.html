@@ -246,9 +246,9 @@ function submitWithdraw() {
   if(user.balance < amount) return alert('পর্যাপ্ত ব্যালেন্স নেই!');
   user.balance -= amount; db.withdraws.push({ user: currentUser, method, number, amount, status: 'pending' }); saveDB(); loadUserHome(); alert('রিকোয়েস্ট পাঠানো হয়েছে!');
 }
+
 function saveSettings() { const user = db.users.find(u => u.email === currentUser); user.name = document.getElementById('set-name').value; saveDB(); alert('সেভ হয়েছে!'); }
 
-// ================= ADMIN PANEL FUNCTIONS =================
 function loadAdminData(type) {
   if(!isAdminLogged) return;
   const tableBody = document.querySelector('#admin-table tbody'); const tableHead = document.querySelector('#admin-table thead'); const jobForm = document.getElementById('admin-job-form');
@@ -321,4 +321,5 @@ function deleteJob(index) {
     } 
 }
 function toggleBlock(email) { 
-    const
+    const user = db.users.find(u => u.email === email); 
+    user.blocked = !user
