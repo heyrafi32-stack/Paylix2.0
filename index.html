@@ -4,47 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paylix - Earn Money</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-  body{background:#0f172a;color:#e2e8f0;min-height:100vh}
-  .container{max-width:480px;margin:0 auto;padding:20px}
-  .card{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-  h1{font-size:22px;text-align:center;margin-bottom:6px;color:#38bdf8}
-  h2{font-size:18px;margin-bottom:14px;color:#38bdf8}
-  .sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px}
-  label{display:block;font-size:13px;margin-bottom:6px;color:#cbd5e1}
-  input,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:14px;margin-bottom:14px}
-  input:focus,textarea:focus{outline:none;border-color:#38bdf8}
-  button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
-  button:hover{opacity:.9}
-  .btn-out{background:transparent;border:1px solid #475569;color:#94a3b8}
-  .btn-red{background:#dc2626}
-  .btn-green{background:#059669}
-  .msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd}
-  .success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
-  .error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
-  .hidden{display:none}
-  .nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .nav button{flex:1;min-width:70px;padding:9px 6px;font-size:12px;background:#334155}
-  .nav button.active{background:linear-gradient(135deg,#38bdf8,#6366f1)}
-  .list-item{background:#0f172a;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
-  .badge.pend{background:#78350f;color:#fcd34d}
-  .badge.block{background:#4c1d1d;color:#fca5a5}
-  .badge.paid{background:#1e3a8a;color:#93c5fd}
-  .balance{font-size:28px;font-weight:700;color:#10b981;text-align:center}
-  .balance-label{text-align:center;color:#94a3b8;font-size:12px;margin-bottom:18px}
-  .ref-box{background:#0f172a;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px}
-  .logout{float:right;background:#dc2626;width:auto;padding:7px 14px;font-size:12px}
-  .empty{text-align:center;color:#64748b;font-size:13px;padding:20px}
-  .row{display:flex;gap:6px;align-items:center}
-  .row button{width:auto;padding:6px 10px;font-size:11px}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
 
-  <!-- Login Screen -->
+  <!-- LOGIN -->
   <div id="loginScreen">
     <div class="card">
       <div style="text-align:center;margin-bottom:12px;">
@@ -52,17 +17,37 @@
       </div>
       <h1>Paylix</h1>
       <p class="sub">Earn money by submitting Gmail accounts</p>
-      <div class="msg">আপনাকে এই ফিক্সড পাসওয়ার্ডটি দিতে হবে</div>
       <label>Username</label>
-      <input type="text" id="loginUser" placeholder="আপনার ইউজারনেম">
+      <input type="text" id="loginUser" placeholder="আপনার ইউজারনেম দিন">
       <label>Password</label>
-      <input type="password" id="loginPass" placeholder="ফিক্সড পাসওয়ার্ড দিন">
+      <input type="password" id="loginPass" placeholder="আপনার পাসওয়ার্ড দিন">
       <button onclick="doLogin()">Login</button>
       <div id="loginError" class="msg error hidden" style="margin-top:14px;"></div>
+      <p style="text-align:center; margin-top:15px; font-size:13px; color:#94a3b8;">
+        নতুন একাউন্ট নেই? <a href="#" onclick="showScreen('register');return false;" style="color:#38bdf8;">Register করুন</a>
+      </p>
     </div>
   </div>
 
-  <!-- User Panel -->
+  <!-- REGISTER -->
+  <div id="registerScreen" class="hidden">
+    <div class="card">
+      <h1>Create Account</h1>
+      <p class="sub">নতুন একাউন্ট খুলুন</p>
+      <label>Username</label>
+      <input type="text" id="regUser" placeholder="একটি ইউজারনেম দিন">
+      <label>Password</label>
+      <input type="password" id="regPass" placeholder="একটি পাসওয়ার্ড দিন">
+      <button onclick="doRegister()">Register</button>
+      <div id="regMsg" style="margin-top:14px;"></div>
+      <p style="text-align:center; margin-top:15px; font-size:13px; color:#94a3b8;">
+        একাউন্ট আছে? <a href="#" onclick="showScreen('login');return false;" style="color:#38bdf8;">Login করুন</a>
+      </p>
+      <button class="btn-out" style="margin-top:10px;" onclick="showScreen('login')">Back</button>
+    </div>
+  </div>
+
+  <!-- USER PANEL -->
   <div id="userPanel" class="hidden">
     <div class="card">
       <button class="logout" onclick="logout()">Logout</button>
@@ -84,6 +69,9 @@
         <input type="email" id="gmailInput" placeholder="example@gmail.com">
         <label>Gmail Password</label>
         <input type="text" id="gmailPass" placeholder="পাসওয়ার্ড">
+        <label>Website Fixed Password</label>
+        <input type="password" id="gmailFixedPass" placeholder="ফিক্সড পাসওয়ার্ড দিন">
+        <div class="msg">আপনাকে এই ফিক্সড পাসওয়ার্ডটি দিতে হবে</div>
         <button onclick="submitGmail()">Submit Gmail</button>
         <div id="gmailMsg" style="margin-top:12px;"></div>
         <h2 style="margin-top:20px;">আমার সাবমিশন</h2>
@@ -135,7 +123,7 @@
     </div>
   </div>
 
-  <!-- Admin Login -->
+  <!-- ADMIN LOGIN -->
   <div id="adminLogin" class="hidden">
     <div class="card">
       <h1>Admin Panel</h1>
@@ -148,7 +136,7 @@
     </div>
   </div>
 
-  <!-- Admin Panel -->
+  <!-- ADMIN PANEL -->
   <div id="adminPanel" class="hidden">
     <div class="card">
       <button class="logout" onclick="logout()">Logout</button>
@@ -159,53 +147,47 @@
         <button onclick="showAdminTab('withdraws')">Withdraw</button>
         <button onclick="showAdminTab('users')">Users</button>
       </div>
-      <div id="admin-gmails">
-        <h2>Gmail Submissions</h2>
-        <div id="adminGmailList"></div>
-      </div>
-      <div id="admin-tasks" class="hidden">
-        <h2>Micro Tasks</h2>
-        <div id="adminTaskList"></div>
-      </div>
-      <div id="admin-withdraws" class="hidden">
-        <h2>Withdraw Requests</h2>
-        <div class="msg">সব রিকোয়েস্ট <b>bKash</b> এ।</div>
-        <div id="adminWithdrawList"></div>
-      </div>
-      <div id="admin-users" class="hidden">
-        <h2>Users</h2>
-        <div id="adminUserList"></div>
-      </div>
+      <div id="admin-gmails"><h2>Gmail Submissions</h2><div id="adminGmailList"></div></div>
+      <div id="admin-tasks" class="hidden"><h2>Micro Tasks</h2><div id="adminTaskList"></div></div>
+      <div id="admin-withdraws" class="hidden"><h2>Withdraw Requests</h2><div class="msg">সব রিকোয়েস্ট <b>bKash</b> এ।</div><div id="adminWithdrawList"></div></div>
+      <div id="admin-users" class="hidden"><h2>Users</h2><div id="adminUserList"></div></div>
     </div>
   </div>
 
   <p style="text-align:center;margin-top:20px;">
     <a href="#" onclick="showScreen('adminLogin');return false;" style="color:#475569;font-size:11px;">Admin</a>
   </p>
-
 </div>
 
 <script>
-const FIXED_USER="user",FIXED_PASS="@SRABON99#&",ADMIN_PASS="admin123",GMAIL_RATE=10,MIN_WITHDRAW=50;
+const ADMIN_PASS="admin123", GMAIL_RATE=10, MIN_WITHDRAW=50, FIXED_PASS="@SRABON99#&";
+let currentUser = null;
 function getDB(k){return JSON.parse(localStorage.getItem("paylix_"+k)||"[]")}
 function setDB(k,v){localStorage.setItem("paylix_"+k,JSON.stringify(v))}
 function getBlocked(){return getDB("blocked")}
 function isBlocked(u){return getBlocked().includes(u)}
 function setBlocked(u,b){let x=getBlocked();if(b&&!x.includes(u))x.push(u);if(!b)x=x.filter(y=>y!==u);setDB("blocked",x)}
+function showScreen(n){["loginScreen","registerScreen","userPanel","adminLogin","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));const m={login:"loginScreen",register:"registerScreen",user:"userPanel",adminLogin:"adminLogin",admin:"adminPanel"};document.getElementById(m[n]).classList.remove("hidden");}
+function logout(){localStorage.removeItem("paylix_session"); currentUser=null; showScreen("login")}
 
-function showScreen(n){
-  ["loginScreen","userPanel","adminLogin","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-  const m={login:"loginScreen",user:"userPanel",adminLogin:"adminLogin",admin:"adminPanel"};
-  document.getElementById(m[n]).classList.remove("hidden");
+function doRegister(){
+  const u=document.getElementById("regUser").value.trim(), p=document.getElementById("regPass").value.trim(), m=document.getElementById("regMsg");
+  if(!u || !p){ m.innerHTML='<div class="msg error">ইউজারনেম ও পাসওয়ার্ড দিন</div>'; return; }
+  const users = getDB("users");
+  if(users.find(x=>x.username === u)){ m.innerHTML='<div class="msg error">এই ইউজারনেম আগেই নেওয়া হয়েছে</div>'; return; }
+  users.push({username:u, password:p}); setDB("users", users);
+  m.innerHTML='<div class="msg success">একাউন্ট তৈরি হয়েছে! এখন লগইন করুন।</div>';
+  setTimeout(()=>showScreen("login"), 1500);
 }
-function logout(){localStorage.removeItem("paylix_session");showScreen("login")}
 
 function doLogin(){
-  const u=document.getElementById("loginUser").value.trim(),p=document.getElementById("loginPass").value,e=document.getElementById("loginError");
-  if(u===FIXED_USER&&p===FIXED_PASS){
+  const u=document.getElementById("loginUser").value.trim(), p=document.getElementById("loginPass").value, e=document.getElementById("loginError");
+  const users = getDB("users");
+  const validUser = users.find(x=>x.username === u && x.password === p);
+  if(validUser){
     if(isBlocked(u)){e.textContent="আপনার অ্যাকাউন্ট ব্লক করা হয়েছে! সাপোর্টে যোগাযোগ করুন।";e.classList.remove("hidden");return}
-    e.classList.add("hidden");localStorage.setItem("paylix_session","user");showScreen("user");loadUserPanel();
-  }else{e.textContent="ভুল ইউজারনেম বা পাসওয়ার্ড!";e.classList.remove("hidden")}
+    e.classList.add("hidden"); currentUser = u; localStorage.setItem("paylix_session", u); showScreen("user"); loadUserPanel();
+  } else { e.textContent="ভুল ইউজারনেম বা পাসওয়ার্ড!"; e.classList.remove("hidden"); }
 }
 
 function getBalance(u){
@@ -215,10 +197,10 @@ function getBalance(u){
 }
 
 function loadUserPanel(){
-  document.getElementById("userBalance").textContent=getBalance(FIXED_USER)+"৳";
-  document.getElementById("refLink").textContent=window.location.origin+window.location.pathname+"?ref="+FIXED_USER;
-  renderMyGmails(getDB("gmails").filter(g=>g.owner===FIXED_USER));
-  renderMyWithdraws(getDB("withdraws").filter(w=>w.owner===FIXED_USER));
+  document.getElementById("userBalance").textContent=getBalance(currentUser)+"৳";
+  document.getElementById("refLink").textContent=window.location.origin+window.location.pathname+"?ref="+currentUser;
+  renderMyGmails(getDB("gmails").filter(g=>g.owner===currentUser));
+  renderMyWithdraws(getDB("withdraws").filter(w=>w.owner===currentUser));
 }
 
 function renderMyGmails(g){
@@ -232,18 +214,19 @@ function renderMyWithdraws(l){
 }
 
 function submitGmail(){
-  const email=document.getElementById("gmailInput").value.trim(),pass=document.getElementById("gmailPass").value.trim(),m=document.getElementById("gmailMsg");
-  if(!email||!pass){m.innerHTML='<div class="msg error">ইমেইল ও পাসওয়ার্ড দুটোই দিন</div>';return}
+  const email=document.getElementById("gmailInput").value.trim(), pass=document.getElementById("gmailPass").value.trim(), fPass=document.getElementById("gmailFixedPass").value.trim(), m=document.getElementById("gmailMsg");
+  if(!email||!pass){m.innerHTML='<div class="msg error">জিমেইল ও পাসওয়ার্ড দুটোই দিন</div>';return}
   if(!/^[^@\s]+@gmail\.com$/i.test(email)){m.innerHTML='<div class="msg error">সঠিক Gmail ঠিকানা দিন</div>';return}
-  const g=getDB("gmails");g.push({id:Date.now(),owner:FIXED_USER,email,pass,status:"pending",date:new Date().toLocaleString()});setDB("gmails",g);
-  document.getElementById("gmailInput").value="";document.getElementById("gmailPass").value="";
-  m.innerHTML='<div class="msg success">সাবমিট হয়েছে! অ্যাডমিন অ্যাপ্রুভ করলে ১০৳ যোগ হবে।</div>';loadUserPanel();
+  if(fPass !== FIXED_PASS){ m.innerHTML='<div class="msg error">ফিক্সড পাসওয়ার্ড ভুল দিয়েছেন!</div>'; return; }
+  const g=getDB("gmails"); g.push({id:Date.now(),owner:currentUser,email,pass,status:"pending",date:new Date().toLocaleString()}); setDB("gmails",g);
+  document.getElementById("gmailInput").value=""; document.getElementById("gmailPass").value=""; document.getElementById("gmailFixedPass").value="";
+  m.innerHTML='<div class="msg success">সাবমিট হয়েছে! অ্যাডমিন অ্যাপ্রুভ করলে ১০৳ যোগ হবে।</div>'; loadUserPanel();
 }
 
 function postTask(){
   const u=document.getElementById("taskUser").value.trim(),d=document.getElementById("taskDetails").value.trim(),m=document.getElementById("taskMsg");
   if(!u||!d){m.innerHTML='<div class="msg error">সব ঘর পূরণ করুন</div>';return}
-  const t=getDB("tasks");t.push({id:Date.now(),owner:FIXED_USER,tg:u,details:d,date:new Date().toLocaleString()});setDB("tasks",t);
+  const t=getDB("tasks");t.push({id:Date.now(),owner:currentUser,tg:u,details:d,date:new Date().toLocaleString()});setDB("tasks",t);
   document.getElementById("taskDetails").value="";m.innerHTML='<div class="msg success">টাস্ক পোস্ট হয়েছে!</div>';
 }
 
@@ -252,10 +235,10 @@ function requestWithdraw(){
   if(!n||!a){m.innerHTML='<div class="msg error">নাম্বার ও টাকার পরিমাণ দিন</div>';return}
   if(!/^01[3-9]\d{8}$/.test(n)){m.innerHTML='<div class="msg error">সঠিক bKash নাম্বার দিন</div>';return}
   if(a<MIN_WITHDRAW){m.innerHTML='<div class="msg error">ন্যূনতম উইথড্র '+MIN_WITHDRAW+'৳</div>';return}
-  const bal=getBalance(FIXED_USER);
+  const bal=getBalance(currentUser);
   if(a>bal){m.innerHTML='<div class="msg error">পর্যাপ্ত ব্যালেন্স নেই (আপনার '+bal+'৳)</div>';return}
-  if(getDB("withdraws").some(w=>w.owner===FIXED_USER&&w.status==="pending")){m.innerHTML='<div class="msg error">একটি রিকোয়েস্ট আগেই pending আছে</div>';return}
-  const l=getDB("withdraws");l.push({id:Date.now(),owner:FIXED_USER,number:n,amount:a,method:"bKash",status:"pending",date:new Date().toLocaleString()});setDB("withdraws",l);
+  if(getDB("withdraws").some(w=>w.owner===currentUser&&w.status==="pending")){m.innerHTML='<div class="msg error">একটি রিকোয়েস্ট আগেই pending আছে</div>';return}
+  const l=getDB("withdraws");l.push({id:Date.now(),owner:currentUser,number:n,amount:a,method:"bKash",status:"pending",date:new Date().toLocaleString()});setDB("withdraws",l);
   document.getElementById("wdNumber").value="";document.getElementById("wdAmount").value="";
   m.innerHTML='<div class="msg success">রিকোয়েস্ট পাঠানো হয়েছে!</div>';loadUserPanel();
 }
@@ -278,34 +261,53 @@ function doAdminLogin(){
 
 function loadAdminPanel(){
   const g=getDB("gmails");
-  document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.email}</b><br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn-green" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<div class="empty">কোনো সাবমিশন নেই</div>';
-
+  document.getElementById("adminGmailList").innerHTML=g.length?g.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br>${x.email}<br>pass: ${x.pass}<br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="approved"?'<span class="badge">Approved</span>':`<button class="btn-green" onclick="approveGmail(${x.id})">Approve</button>`}</span></div>`).join(""):'<div class="empty">কোনো সাবমিশন নেই</div>';
   const t=getDB("tasks");
-  document.getElementById("adminTaskList").innerHTML=t.length?t.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.tg}</b><br>${x.details}<br><small style="color:#64748b;">${x.date}</small></span></div>`).join(""):'<div class="empty">কোনো টাস্ক নেই</div>';
-
+  document.getElementById("adminTaskList").innerHTML=t.length?t.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>${x.tg}</b> (User: ${x.owner})<br>${x.details}<br><small style="color:#64748b;">${x.date}</small></span></div>`).join(""):'<div class="empty">কোনো টাস্ক নেই</div>';
   const w=getDB("withdraws");
-  document.getElementById("adminWithdrawList").innerHTML=w.length?w.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>৳${x.amount}</b> → ${x.number}<br>method: <b>${x.method}</b><br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="pending"?`<div class="row"><button class="btn-green" onclick="updateWithdraw(${x.id},'paid')">Paid</button><button class="btn-red" onclick="updateWithdraw(${x.id},'rejected')">Reject</button></div>`:`<span class="badge ${x.status==="paid"?"paid":"block"}">${x.status}</span>`}</span></div>`).join(""):'<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
-
-  document.getElementById("adminUserList").innerHTML=`<div class="list-item"><span>${FIXED_USER} <br><small style="color:#64748b;">Balance: ${getBalance(FIXED_USER)}৳</small></span><span>${isBlocked(FIXED_USER)?`<button class="btn-green" onclick="toggleBlock('${FIXED_USER}',false)">Unblock</button>`:`<button class="btn-red" onclick="toggleBlock('${FIXED_USER}',true)">Block</button>`}</span></div>`;
+  document.getElementById("adminWithdrawList").innerHTML=w.length?w.slice().reverse().map(x=>`<div class="list-item"><span style="font-size:12px;"><b>User: ${x.owner}</b><br><b>৳${x.amount}</b> → ${x.number}<br>method: <b>${x.method}</b><br><small style="color:#64748b;">${x.date}</small></span><span>${x.status==="pending"?`<div class="row"><button class="btn-green" onclick="updateWithdraw(${x.id},'paid')">Paid</button><button class="btn-red" onclick="updateWithdraw(${x.id},'rejected')">Reject</button></div>`:`<span class="badge ${x.status==="paid"?"paid":"block"}">${x.status}</span>`}</span></div>`).join(""):'<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
+  const users = getDB("users");
+  document.getElementById("adminUserList").innerHTML = users.length ? users.map(u=>`<div class="list-item"><span>${u.username} <br><small style="color:#64748b;">Balance: ${getBalance(u.username)}৳</small></span><span>${isBlocked(u.username)?`<button class="btn-green" onclick="toggleBlock('${u.username}',false)">Unblock</button>`:`<button class="btn-red" onclick="toggleBlock('${u.username}',true)">Block</button>`}</span></div>`).join("") : '<div class="empty">কোনো ইউজার নেই</div>';
 }
 
 function approveGmail(id){const g=getDB("gmails"),x=g.find(y=>y.id===id);if(x){x.status="approved";setDB("gmails",g)}loadAdminPanel()}
 function updateWithdraw(id,s){const l=getDB("withdraws"),w=l.find(x=>x.id===id);if(w){w.status=s;setDB("withdraws",l)}loadAdminPanel()}
 function toggleBlock(u,b){setBlocked(u,b);loadAdminPanel()}
-
-function showAdminTab(n){
-  ["gmails","tasks","withdraws","users"].forEach(t=>document.getElementById("admin-"+t).classList.add("hidden"));
-  document.getElementById("admin-"+n).classList.remove("hidden");
-  const tabs=["gmails","tasks","withdraws","users"];
-  document.querySelectorAll("#adminPanel .nav button").forEach((b,i)=>b.classList.toggle("active",tabs[i]===n));
-}
-
-(function(){
-  const s=localStorage.getItem("paylix_session");
-  if(s==="user"){showScreen("user");loadUserPanel()}
-  else if(s==="admin"){showScreen("admin");loadAdminPanel()}
-  else{showScreen("login")}
-})();
+function showAdminTab(n){["gmails","tasks","withdraws","users"].forEach(t=>document.getElementById("admin-"+t).classList.add("hidden"));document.getElementById("admin-"+n).classList.remove("hidden");const tabs=["gmails","tasks","withdraws","users"];document.querySelectorAll("#adminPanel .nav button").forEach((b,i)=>b.classList.toggle("active",tabs[i]===n));}
+(function(){const s=localStorage.getItem("paylix_session");if(s && s!=="admin"){currentUser = s;showScreen("user"); loadUserPanel();}else if(s==="admin"){showScreen("admin"); loadAdminPanel();}else{showScreen("login");}})();
 </script>
 </body>
-</html>
+</html>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{background:#0f172a;color:#e2e8f0;min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:20px}
+.card{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+h1{font-size:22px;text-align:center;margin-bottom:6px;color:#38bdf8}
+h2{font-size:18px;margin-bottom:14px;color:#38bdf8}
+.sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px}
+label{display:block;font-size:13px;margin-bottom:6px;color:#cbd5e1}
+input,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:14px;margin-bottom:14px}
+input:focus,textarea:focus{outline:none;border-color:#38bdf8}
+button{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+button:hover{opacity:.9}
+.btn-out{background:transparent;border:1px solid #475569;color:#94a3b8}
+.btn-red{background:#dc2626}
+.btn-green{background:#059669}
+.msg{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;color:#bae6fd}
+.success{background:#064e3b;border-left-color:#10b981;color:#6ee7b7}
+.error{background:#4c1d1d;border-left-color:#ef4444;color:#fca5a5}
+.hidden{display:none}
+.nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.nav button{flex:1;min-width:70px;padding:9px 6px;font-size:12px;background:#334155}
+.nav button.active{background:linear-gradient(135deg,#38bdf8,#6366f1)}
+.list-item{background:#0f172a;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.badge{background:#065f46;color:#6ee7b7;padding:3px 9px;border-radius:20px;font-size:11px}
+.badge.pend{background:#78350f;color:#fcd34d}
+.badge.block{background:#4c1d1d;color:#fca5a5}
+.badge.paid{background:#1e3a8a;color:#93c5fd}
+.balance{font-size:28px;font-weight:700;color:#10b981;text-align:center}
+.balance-label{text-align:center;color:#94a3b8;font-size:12px;margin-bottom:18px}
+.ref-box{background:#0f172a;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;color:#38bdf8;margin-bottom:10px}
+.logout{float:right;background:#dc2626;width:auto;padding:7px 14px;font-size:12px}
+.empty{text-align:center;color:#64748b;font-size:13px;padding:20px}
+.row{display:flex;gap:6px;align-items:center}
+.row button{width:auto;padding:6px 10px;font-size:11px}
