@@ -51,8 +51,7 @@ th{color:#c084fc;font-weight:600}
 <body>
 <div class="app">
   <div id="page-splash"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo"><div class="splash-text">PAYLIX</div></div><div id="page-login" class="page"><div class="auth-container"><div style="text-align:center;margin-bottom:20px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:70px;border-radius:15px"></div><div class="auth-title">স্বাগতম!</div><div class="auth-sub">লগইন করুন</div><div class="form-box"><div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div><button class="btn" onclick="loginUser()">লগইন</button></div><div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div></div></div>
-<div id="page-register" class="page"><div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div><div class="auth-container" style="margin-top:10px"><div class="auth-title">অ্যাকাউন্ট তৈরি</div><div class="form-box"><div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="তানভীর"></div><div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div><button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button></div><div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div></div></div>
-<div id="page-home" class="page"><div class="topbar"><div class="logo"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png"><span>PAYLIX</span></div><div>🔔</div></div><div class="balance"><div class="balance-label">💰 ব্যালেন্স</div><div class="balance-amount" id="user-balance">৳ 0.00</div><button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw</button></div><div class="sec-title">মেনু</div><div class="grid"><div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২</div></div><div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">কাজ করুন</div></div><div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div><div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/নগদ</div></div><div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div></div></div><div class="sec-title">📊 লেনদেন</div><div class="txn" id="user-txn-list"><div class="txn-row" style="justify-content:center;color:#b9a4dd">কোনো লেনদেন নেই</div></div></div>
+<div id="page-register" class="page"><div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div><div class="auth-container" style="margin-top:10px"><div class="auth-title">অ্যাকাউন্ট তৈরি</div><div class="form-box"><div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="তানভীর"></div><div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div><button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button></div><div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div></div></div><div id="page-home" class="page"><div class="topbar"><div class="logo"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png"><span>PAYLIX</span></div><div>🔔</div></div><div class="balance"><div class="balance-label">💰 ব্যালেন্স</div><div class="balance-amount" id="user-balance">৳ 0.00</div><button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw</button></div><div class="sec-title">মেনু</div><div class="grid"><div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১০ – ৳ ১২</div></div><div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">কাজ করুন</div></div><div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div><div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/নগদ</div></div><div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div></div></div><div class="sec-title">📊 লেনদেন</div><div class="txn" id="user-txn-list"><div class="txn-row" style="justify-content:center;color:#b9a4dd">কোনো লেনদেন নেই</div></div></div>
 <div id="page-gmail" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">📧 Gmail Sell</div><div class="sector-wrap"><div class="sector active" onclick="selectSector(10)"><div class="t">🅰️ Gmail+Pass</div><div class="p">৳ ১০</div></div><div class="sector" onclick="selectSector(12)"><div class="t">🅱️ শুধু Pass</div><div class="p">৳ ১২</div></div></div><div class="form-box"><div class="field"><label>Gmail ID</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div><div class="field"><label>Password</label><input type="text" id="gmail-pass" placeholder="••••••••"></div><button class="btn" onclick="submitGmail()">সাবমিট</button></div></div>
 <div id="page-microtask" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎯 Microtask</div><div id="user-job-list"></div></div>
 <div id="page-withdraw" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💸 Withdraw</div><div class="form-box"><div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option><option>নগদ</option></select></div><div class="field"><label>নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div><div class="field"><label>টাকা</label><input type="number" id="w-amount" placeholder="100"></div><button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট</button></div></div>
@@ -112,7 +111,8 @@ function loadUserHome() {
   openPage('page-home');
 }
 function logoutUser() { currentUser = null; localStorage.removeItem('paylix_current'); openPage('page-login'); }
-function selectSector(price) { currentSectorPrice = price; document.querySelectorAll('.sector').forEach(s => s.classList.remove('active')); event.currentTarget.classList.add('active'); }function submitGmail() {
+function selectSector(price) { currentSectorPrice = price; document.querySelectorAll('.sector').forEach(s => s.classList.remove('active')); event.currentTarget.classList.add('active'); }
+function submitGmail() {
   const gmail = document.getElementById('gmail-id').value.trim();
   const pass = document.getElementById('gmail-pass').value.trim();
   if(!gmail || !pass) return alert('সব তথ্য দিন');
@@ -121,7 +121,7 @@ function selectSector(price) { currentSectorPrice = price; document.querySelecto
   const isDuplicate = db.gmails.some(g => g.gmail === gmail || g.pass === pass);
   if(isDuplicate) return alert('এই জিমেইল বা পাসওয়ার্ড আগেই সাবমিট করা হয়েছে!');
   db.gmails.push({ user: currentUser, gmail: gmail, pass: pass, price: currentSectorPrice, status: 'pending' });
-  saveDB(); loadUserHome(); alert('সফলভাবে সাবমিট হয়েছে! অ্যাডমিন চেক করে অ্যাপ্রুভ করলে ব্যালেন্স যোগ হবে।');
+  saveDB(); loadUserHome(); alert('সফলভাবে সাবমিট হয়েছে! অ্যাডমিন Approve করলে ব্যালেন্স যোগ হবে।');
 }
 function submitWithdraw() {
   const method = document.getElementById('w-method').value; const number = document.getElementById('w-number').value; const amount = parseInt(document.getElementById('w-amount').value);
@@ -137,14 +137,16 @@ function loadAdminData(type) {
   const tableBody = document.querySelector('#admin-table tbody'); const tableHead = document.querySelector('#admin-table thead'); const jobForm = document.getElementById('admin-job-form');
   tableBody.innerHTML = ''; jobForm.style.display = 'none'; 
   if(type === 'gmail') {
-    tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Action</th></tr>';
+    tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Status</th><th>Action</th></tr>';
+    if(db.gmails.length === 0) { tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center">কোনো জিমেইল সাবমিট হয়নি</td></tr>'; }
     db.gmails.forEach((g, index) => {
-      let statusText = g.status === 'approved' ? '<span style="color:#10b981">Approved</span>' : '<span style="color:#fbbf24">Pending</span>';
-      let btn = g.status === 'pending' ? `<button class="btn small-btn btn-green" onclick="approveGmail(${index})">Approve</button>` : statusText;
-      tableBody.innerHTML += `<tr><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td><span id="pass-${index}" style="display:none">${g.pass}</span> <button class="btn small-btn" style="background:#555;padding:3px 6px;font-size:.6rem" onclick="toggleAdminPass(${index})">👁️</button></td><td>${btn} (৳${g.price})</td></tr>`;
+      let statusBadge = g.status === 'approved' ? '<span style="color:#10b981;font-weight:bold">✅ Approved</span>' : '<span style="color:#fbbf24;font-weight:bold">⏳ Pending</span>';
+      let actionBtn = g.status === 'pending' ? `<button class="btn small-btn btn-green" onclick="approveGmail(${index})">Approve</button>` : `<button class="btn small-btn btn-red" onclick="deleteGmail(${index})">Delete</button>`;
+      tableBody.innerHTML += `<tr><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td><span id="pass-${index}" style="display:none">${g.pass}</span> <button class="btn small-btn" style="background:#555;padding:3px 6px;font-size:.6rem" onclick="toggleAdminPass(${index})">👁️</button></td><td>${statusBadge}</td><td>${actionBtn} <br><small>৳${g.price}</small></td></tr>`;
     });
   } else if(type === 'withdraw') {
     tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Number</th><th>Amount</th></tr>';
+    if(db.withdraws.length === 0) { tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center">কোনো উইথড্র রিকোয়েস্ট নেই</td></tr>'; }
     db.withdraws.forEach(w => { tableBody.innerHTML += `<tr><td>${w.user.split('@')[0]}</td><td>${w.method}</td><td>${w.number}</td><td>৳${w.amount}</td></tr>`; });
   } else if(type === 'users') {
     tableHead.innerHTML = '<tr><th>User</th><th>Status</th><th>Action</th></tr>';
@@ -162,9 +164,16 @@ function loadAdminData(type) {
 function toggleAdminPass(index) { const el = document.getElementById('pass-' + index); el.style.display = el.style.display === 'none' ? 'inline' : 'none'; }
 function approveGmail(index) {
   if(!isAdminLogged) return;
-  if(confirm('পাসওয়ার্ড চেক করেছেন তো? অ্যাপ্রুভ করলে ইউজারের ব্যালেন্স যোগ হবে।')) {
-    db.gmails[index].status = 'approved'; const user = db.users.find(u => u.email === db.gmails[index].user); user.balance += db.gmails[index].price; saveDB(); loadAdminData('gmail'); alert('অ্যাপ্রুভ হয়েছে এবং ইউজারের ব্যালেন্স যোগ হয়েছে!');
+  if(confirm('আপনি কি নিশ্চিত এই জিমেইলটি অ্যাপ্রুভ করবেন? অ্যাপ্রুভ করলে ইউজারের ব্যালেন্স যোগ হবে।')) {
+    db.gmails[index].status = 'approved'; 
+    const user = db.users.find(u => u.email === db.gmails[index].user); 
+    user.balance += db.gmails[index].price; 
+    saveDB(); loadAdminData('gmail'); alert('সফলভাবে অ্যাপ্রুভ হয়েছে! ব্যালেন্স যোগ হয়েছে।');
   }
+}
+function deleteGmail(index) {
+  if(!isAdminLogged) return;
+  if(confirm('আপনি কি এই জিমেইলটি ডিলিট করতে চান?')) { db.gmails.splice(index, 1); saveDB(); loadAdminData('gmail'); }
 }
 function toggleBlock(email) { if(!isAdminLogged) return; const user = db.users.find(u => u.email === email); user.blocked = !user.blocked; saveDB(); loadAdminData('users'); }
 function addJob() {
