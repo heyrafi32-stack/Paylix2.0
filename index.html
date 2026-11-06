@@ -107,7 +107,7 @@ th{color:#c084fc;}
         </div>
     </div>
   </div>
-  <div id="page-withdraw" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💸 Withdraw</div><div class="form-box"><div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option><option>নগদ</option></select></div><div class="field"><label>নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div><div class="field"><label>টাকা</label><input type="number" id="w-amount" placeholder="100"></div><button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট</button></div></div>
+  <div id="page-withdraw" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💸 Withdraw</div><div class="form-box"><div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option></select></div><div class="field"><label>নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div><div class="field"><label>টাকা</label><input type="number" id="w-amount" placeholder="100"></div><button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট</button></div></div>
   <div id="page-refer" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎁 Refer & Earn</div><div class="form-box" style="text-align:center"><span style="font-size:3rem">🤝</span><h3 style="margin:15px 0 8px">বন্ধুদের ইনভাইট করুন</h3><div class="field" style="text-align:left"><label>আপনার রেফার লিংক</label><input type="text" id="ref-link" readonly></div><button class="btn" onclick="copyRefLink()">লিংক কপি করুন</button></div></div>
   <div id="page-settings" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">⚙️ Settings</div><div class="form-box"><div class="profile-pic">👤</div><div class="field"><label>নাম</label><input type="text" id="set-name"></div><button class="btn" onclick="saveSettings()">সেভ</button></div><br><button class="btn" onclick="logoutUser()" style="background:#ef4444">লগ আউট</button></div>
   <div id="page-support" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💬 Support</div><div class="form-box" style="text-align:center"><a href="https://t.me/Owner_Paylix" target="_blank"><button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button></a></div></div>
@@ -125,7 +125,7 @@ th{color:#c084fc;}
     <div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div>
     <div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button>
   </div>
-  </div><script type="module">
+</div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
@@ -392,13 +392,24 @@ th{color:#c084fc;}
           });
         }
         else if(type === 'withdraw') {
-          tableHead.innerHTML = '<tr><th>User</th><th>Num</th><th>Amt</th><th>Action</th></tr>';
+          tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Num</th><th>Amt</th><th>Action</th></tr>';
           const snap = await getDocs(collection(db, "withdraws"));
           tableBody.innerHTML = '';
           snap.forEach(docSnap => {
             const w = docSnap.data();
-            let actionBtn = w.status === 'approved' ? `<span style="color:#10b981">Paid</span>` : `<button class="btn small-btn btn-green" onclick="approveWithdraw('${docSnap.id}')">Paid</button>`;
-            tableBody.innerHTML += `<tr><td>${w.user.split('@')[0]}</td><td>${w.number}</td><td>৳${w.amount}</td><td>${actionBtn}</td></tr>`;
+            let actionBtn = w.status === 'approved' 
+                ? `<span style="color:#10b981">Paid</span>` 
+                : w.status === 'rejected' 
+                ? `<span style="color:#ef4444">Rejected</span>` 
+                : `<button class="btn small-btn btn-green" onclick="approveWithdraw('${docSnap.id}')">Paid</button> <button class="btn small-btn btn-red" onclick="rejectWithdraw('${docSnap.id}')">Reject</button>`;
+            
+            tableBody.innerHTML += `<tr>
+                <td>${w.user.split('@')[0]}</td>
+                <td>${w.method}</td>
+                <td>${w.number}</td>
+                <td>৳${w.amount}</td>
+                <td>${actionBtn}</td>
+            </tr>`;
           });
         }
         else if(type === 'users') {
@@ -438,6 +449,11 @@ th{color:#c084fc;}
   window.deleteJob = async function(id) { if(confirm('Delete?')) { await deleteDoc(doc(db, "jobs", id)); window.loadAdminData('jobs'); } }
   window.toggleBlock = async function(id, currentStatus) { await updateDoc(doc(db, "users", id), { blocked: !currentStatus }); window.loadAdminData('users'); }
   window.approveWithdraw = async function(id) { await updateDoc(doc(db, "withdraws", id), { status: 'approved' }); window.loadAdminData('withdraw'); alert('Paid!'); }
+  window.rejectWithdraw = async function(id) { 
+      await updateDoc(doc(db, "withdraws", id), { status: 'rejected' }); 
+      window.loadAdminData('withdraw'); 
+      alert('Withdraw Rejected!'); 
+  }
 
   window.addMoney = async function(userId, currentBalance) {
       let amount = prompt("কত টাকা যোগ করতে চান? (শুধু সংখ্যা লিখুন)");
