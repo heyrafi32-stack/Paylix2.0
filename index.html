@@ -75,7 +75,7 @@ th{color:#c084fc;}
       <div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">কাজ করুন</div></div>
       <div class="card" onclick="openPage('page-refer')"><span class="icon">🎁</span><div class="title">Refer</div><div class="sub">বন্ধু ইনভাইট</div></div>
       <div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div>
-      <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/নগদ</div></div>
+      <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/উপায়</div></div>
       <div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div></div>
     </div>
     <div class="sec-title">📋 আপনার রিকোয়েস্ট সমূহ</div>
@@ -83,39 +83,30 @@ th{color:#c084fc;}
   </div>
   <div id="page-gmail" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">📧 Gmail Sell</div><div class="form-box"><div class="field"><label>Gmail ID (৳ ১৫)</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div><div class="field"><label>Password (৳ ১৫)</label><input type="text" id="gmail-pass" placeholder="••••••••"></div><button class="btn" onclick="submitGmail()">সাবমিট</button></div></div>
   <div id="page-microtask" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎯 Task</div><div id="user-job-list"></div></div>
+  
   <div id="page-job-submit" class="page">
     <div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div>
     <div class="sec-title">📤 কাজ জমা দিন</div>
     <div class="form-box">
         <div class="field"><label>কাজের নাম</label><input type="text" id="sub-job-title" readonly style="background:#2a1552; opacity:0.8;"></div>
         <div class="field">
-            <label>প্রমাণ (স্ক্রিনশট আপলোড করুন)</label>
-            <div style="background: #110a1f; border: 1px dashed #7c3aed; border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 10px;">
-                <input type="file" id="sub-job-image" accept="image/*" style="display: none;" onchange="startUpload(this)">
-                <label for="sub-job-image" style="cursor: pointer; display: block; color: #c084fc; font-weight: bold; margin-bottom: 5px;">📷 স্ক্রিনশট সিলেক্ট করুন</label>
-                <span id="file-name-display" style="font-size: 0.75rem; color: #94a3b8;">কোনো ফাইল সিলেক্ট করা হয়নি</span>
-            </div>
-            <div id="upload-progress-area" style="display:none; margin-top: 15px;">
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#c084fc; margin-bottom: 5px;">
-                    <span>আপলোড হচ্ছে...</span>
-                    <span id="progress-percent">0%</span>
-                </div>
-                <div style="width:100%; background:#2a1552; height: 10px; border-radius: 5px; overflow:hidden;">
-                    <div id="progress-bar-fill" style="height: 100%; width: 0%; background: #10b981; transition: width 0.2s;"></div>
-                </div>
-            </div>
+            <label>কাজের প্রমাণ (লিংক বা নাম্বার দিন)</label>
+            <textarea id="sub-job-proof" rows="3" placeholder="এখানে আপনার কাজের প্রমাণ লিখুন..."></textarea>
         </div>
+        <button class="btn btn-green" onclick="submitJobProof()">জমা দিন</button>
     </div>
   </div>
+  
   <div id="page-withdraw" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
     <div class="sec-title">💸 Withdraw</div>
     <div class="form-box">
         <div class="field">
-            <label>পেমেন্ট মেথড</label>
-            <div style="background:#110a1f; border:1px solid #3b1d6e; padding:14px; border-radius:10px; color:#c084fc; font-weight:bold;">
-                উপায় (শীঘ্রই আসছে)
-            </div>
+            <label>মেথড</label>
+            <select id="w-method">
+                <option>বিকাশ</option>
+                <option>উপায়</option>
+            </select>
         </div>
         <div class="field">
             <label>আপনার একাউন্ট নাম্বার</label>
@@ -145,7 +136,7 @@ th{color:#c084fc;}
     <div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div>
     <div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button>
   </div>
-              </div><script type="module">
+  </div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
@@ -299,46 +290,32 @@ th{color:#c084fc;}
   window.openJobSubmit = function(title, docId) {
     currentJobToSubmit = title; currentJobUrl = docId;
     document.getElementById('sub-job-title').value = title;
-    document.getElementById('sub-job-image').value = '';
-    document.getElementById('file-name-display').innerText = 'কোনো ফাইল সিলেক্ট করা হয়নি';
-    document.getElementById('upload-progress-area').style.display = 'none';
-    document.getElementById('progress-bar-fill').style.width = '0%';
-    document.getElementById('progress-percent').innerText = '0%';
+    document.getElementById('sub-job-proof').value = '';
     window.openPage('page-job-submit');
   }
 
-  window.startUpload = function(input) {
-      if (input.files && input.files[0]) {
-          let fileName = input.files[0].name;
-          document.getElementById('file-name-display').innerText = fileName;
-          let progressArea = document.getElementById('upload-progress-area');
-          let progressBar = document.getElementById('progress-bar-fill');
-          let progressText = document.getElementById('progress-percent');
-          progressArea.style.display = 'block';
-          let progress = 0;
-          
-          let interval = setInterval(async () => {
-              progress += 10;
-              if (progress > 100) progress = 100;
-              progressBar.style.width = progress + '%';
-              progressText.innerText = progress + '%';
-              
-              if (progress === 100) {
-                  clearInterval(interval);
-                  try {
-                      await addDoc(collection(db, "jobSubs"), { user: currentUser, jobTitle: currentJobToSubmit, proof: "ছবি: " + fileName, status: 'pending', jobIndex: currentJobUrl });
-                      alert('আপনার স্ক্রিনশট সফলভাবে জমা হয়েছে!');
-                      window.openPage('page-microtask'); 
-                  } catch(e) { alert('সার্ভারে সমস্যা!'); }
-              }
-          }, 50); 
-      } else {
-          alert('ফাইল সিলেক্ট করা হয়নি!');
+  window.submitJobProof = async function() {
+      const proofText = document.getElementById('sub-job-proof').value.trim();
+      if(!proofText) {
+          return alert('অনুগ্রহ করে কাজের প্রমাণ (লিংক বা নাম্বার) লিখে দিন!');
+      }
+      try {
+          await addDoc(collection(db, "jobSubs"), { 
+              user: currentUser, 
+              jobTitle: currentJobToSubmit, 
+              proof: proofText, 
+              status: 'pending', 
+              jobIndex: currentJobUrl 
+          });
+          alert('কাজ সফলভাবে জমা হয়েছে! অ্যাডমিন Approve করলে টাকা যোগ হবে।');
+          window.openPage('page-microtask'); 
+      } catch(e) {
+          alert('সার্ভারে সমস্যা! আবার চেষ্টা করুন।');
       }
   }
 
   window.submitWithdraw = async function() {
-    const method = "উপায়"; 
+    const method = document.getElementById('w-method').value; 
     const number = document.getElementById('w-number').value; 
     const amount = parseInt(document.getElementById('w-amount').value);
     
@@ -364,9 +341,7 @@ th{color:#c084fc;}
           await updateDoc(userSnap.docs[0].ref, { name: document.getElementById('set-name').value });
           alert('সেভ হয়েছে!'); 
       } catch(e) { alert('সার্ভারে সমস্যা!'); }
-  }
-
-  window.loadAdminData = async function(type) {
+  }  window.loadAdminData = async function(type) {
     if(!isAdminLogged) return;
     const tableBody = document.querySelector('#admin-table tbody'); const tableHead = document.querySelector('#admin-table thead'); const jobForm = document.getElementById('admin-job-form');
     tableBody.innerHTML = 'লোড হচ্ছে...'; jobForm.style.display = 'none'; 
@@ -375,7 +350,9 @@ th{color:#c084fc;}
         if(type === 'gmail') {
           tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Action</th></tr>';
           const snap = await getDocs(collection(db, "gmails"));
-          tableBody.innerHTML = '';
+          tableBody.innerHTML = `
+            <tr><td colspan="4"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('gmail-row')" style="width:100%; padding:10px; border-radius:8px; border:1px solid #7c3aed; background:#110a1f; color:#fff; outline:none; margin-bottom:10px;"></td></tr>
+          `;
           snap.forEach(docSnap => {
             const g = docSnap.data();
             let actionBtn = '';
@@ -383,13 +360,15 @@ th{color:#c084fc;}
                 actionBtn = `<button class="btn small-btn btn-green" onclick="approveGmail('${docSnap.id}')">Approve</button> <button class="btn small-btn btn-red" onclick="rejectGmail('${docSnap.id}')">Reject</button>`;
             } else if(g.status === 'approved') { actionBtn = `<span style="color:#10b981">Approved</span>`; } 
             else { actionBtn = `<span style="color:#ef4444">Rejected</span>`; }
-            tableBody.innerHTML += `<tr><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td>${g.pass}</td><td>${actionBtn}</td></tr>`;
+            tableBody.innerHTML += `<tr class="gmail-row" data-search="${g.user.toLowerCase()}"><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td>${g.pass}</td><td>${actionBtn}</td></tr>`;
           });
         } 
         else if(type === 'job_subs') {
           tableHead.innerHTML = '<tr><th>User</th><th>Job</th><th>Proof</th><th>Action</th></tr>';
           const snap = await getDocs(collection(db, "jobSubs"));
-          tableBody.innerHTML = '';
+          tableBody.innerHTML = `
+            <tr><td colspan="4"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('jobsubs-row')" style="width:100%; padding:10px; border-radius:8px; border:1px solid #7c3aed; background:#110a1f; color:#fff; outline:none; margin-bottom:10px;"></td></tr>
+          `;
           snap.forEach(docSnap => {
             const s = docSnap.data();
             let actionBtn = s.status === 'approved' 
@@ -398,7 +377,7 @@ th{color:#c084fc;}
                 ? `<span style="color:#ef4444">Rejected</span>` 
                 : `<button class="btn small-btn btn-green" onclick="approveJobSub('${docSnap.id}')">Approve</button> <button class="btn small-btn btn-red" onclick="rejectJobSub('${docSnap.id}')">Reject</button>`;
             
-            tableBody.innerHTML += `<tr>
+            tableBody.innerHTML += `<tr class="jobsubs-row" data-search="${s.user.toLowerCase()}">
                 <td>${s.user.split('@')[0]}</td>
                 <td>${s.jobTitle}</td>
                 <td>${s.proof}</td>
@@ -418,7 +397,9 @@ th{color:#c084fc;}
         else if(type === 'withdraw') {
           tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Num</th><th>Amt</th><th>Action</th></tr>';
           const snap = await getDocs(collection(db, "withdraws"));
-          tableBody.innerHTML = '';
+          tableBody.innerHTML = `
+            <tr><td colspan="5"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('withdraw-row')" style="width:100%; padding:10px; border-radius:8px; border:1px solid #7c3aed; background:#110a1f; color:#fff; outline:none; margin-bottom:10px;"></td></tr>
+          `;
           snap.forEach(docSnap => {
             const w = docSnap.data();
             let actionBtn = w.status === 'approved' 
@@ -427,7 +408,7 @@ th{color:#c084fc;}
                 ? `<span style="color:#ef4444">Rejected</span>` 
                 : `<button class="btn small-btn btn-green" onclick="approveWithdraw('${docSnap.id}')">Paid</button> <button class="btn small-btn btn-red" onclick="rejectWithdraw('${docSnap.id}')">Reject</button>`;
             
-            tableBody.innerHTML += `<tr>
+            tableBody.innerHTML += `<tr class="withdraw-row" data-search="${w.user.toLowerCase()}">
                 <td>${w.user.split('@')[0]}</td>
                 <td>${w.method}</td>
                 <td>${w.number}</td>
@@ -437,12 +418,14 @@ th{color:#c084fc;}
           });
         }
         else if(type === 'users') {
-          tableHead.innerHTML = '<tr><th>Email</th><th>Action</th></tr>';
+          tableHead.innerHTML = '<tr><th>User Email</th><th>Action</th></tr>';
           const snap = await getDocs(collection(db, "users"));
-          tableBody.innerHTML = '';
+          tableBody.innerHTML = `
+            <tr><td colspan="2"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('user-row')" style="width:100%; padding:10px; border-radius:8px; border:1px solid #7c3aed; background:#110a1f; color:#fff; outline:none; margin-bottom:10px;"></td></tr>
+          `;
           snap.forEach(docSnap => {
             const u = docSnap.data();
-            tableBody.innerHTML += `<tr>
+            tableBody.innerHTML += `<tr class="user-row" data-search="${u.email.toLowerCase()}">
                 <td>${u.email}</td>
                 <td>
                     <button class="btn small-btn ${u.blocked?'btn-green':'btn-red'}" onclick="toggleBlock('${docSnap.id}', ${u.blocked})">${u.blocked?'Unblock':'Block'}</button>
@@ -453,10 +436,12 @@ th{color:#c084fc;}
         else if(type === 'add_money') {
           tableHead.innerHTML = '<tr><th>Email</th><th>Balance</th><th>Action</th></tr>';
           const snap = await getDocs(collection(db, "users"));
-          tableBody.innerHTML = '';
+          tableBody.innerHTML = `
+            <tr><td colspan="3"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('money-row')" style="width:100%; padding:10px; border-radius:8px; border:1px solid #7c3aed; background:#110a1f; color:#fff; outline:none; margin-bottom:10px;"></td></tr>
+          `;
           snap.forEach(docSnap => {
             const u = docSnap.data();
-            tableBody.innerHTML += `<tr>
+            tableBody.innerHTML += `<tr class="money-row" data-search="${u.email.toLowerCase()}">
                 <td>${u.email}</td>
                 <td>৳${u.balance}</td>
                 <td><button class="btn small-btn btn-blue" onclick="addMoney('${docSnap.id}', ${u.balance})">Add Money</button></td>
@@ -464,6 +449,20 @@ th{color:#c084fc;}
           });
         }
     } catch(e) { tableBody.innerHTML = 'লোড হতে সমস্যা হয়েছে!'; console.error(e); }
+  }
+
+  window.searchTable = function(className) {
+      let input = document.getElementById('search-input').value.toLowerCase();
+      let rows = document.querySelectorAll('.' + className);
+      
+      rows.forEach(row => {
+          let searchData = row.getAttribute('data-search');
+          if(searchData.includes(input)) {
+              row.style.display = '';
+          } else {
+              row.style.display = 'none';
+          }
+      });
   }
 
   window.approveGmail = async function(id) { 
