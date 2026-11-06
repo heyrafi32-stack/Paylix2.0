@@ -112,7 +112,7 @@ th{color:#c084fc;}
   <div id="page-support" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💬 Support</div><div class="form-box" style="text-align:center"><a href="https://t.me/Owner_Paylix" target="_blank"><button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button></a></div></div>
   <div id="page-admin-login" class="page"><div class="auth-container"><div class="auth-title">🛡️ Admin Login</div><div class="form-box"><div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div><button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button></div></div></div>
   <div id="page-admin" class="page"><div class="sec-title">🛡️ ADMIN PANEL</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px"><button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button><button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button><button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button><button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button><button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button></div><div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div><div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button></div>
-  </div><script type="module">
+</div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
@@ -355,8 +355,18 @@ th{color:#c084fc;}
           tableBody.innerHTML = '';
           snap.forEach(docSnap => {
             const s = docSnap.data();
-            let actionBtn = s.status === 'approved' ? `<span style="color:#10b981">Approved</span>` : `<button class="btn small-btn btn-green" onclick="approveJobSub('${docSnap.id}')">Approve</button>`;
-            tableBody.innerHTML += `<tr><td>${s.user.split('@')[0]}</td><td>${s.jobTitle}</td><td>${s.proof}</td><td>${actionBtn}</td></tr>`;
+            let actionBtn = s.status === 'approved' 
+                ? `<span style="color:#10b981">Approved</span>` 
+                : s.status === 'rejected' 
+                ? `<span style="color:#ef4444">Rejected</span>` 
+                : `<button class="btn small-btn btn-green" onclick="approveJobSub('${docSnap.id}')">Approve</button> <button class="btn small-btn btn-red" onclick="rejectJobSub('${docSnap.id}')">Reject</button>`;
+            
+            tableBody.innerHTML += `<tr>
+                <td>${s.user.split('@')[0]}</td>
+                <td>${s.jobTitle}</td>
+                <td>${s.proof}</td>
+                <td>${actionBtn}</td>
+            </tr>`;
           });
         }
         else if(type === 'jobs') {
@@ -393,6 +403,7 @@ th{color:#c084fc;}
   window.approveGmail = async function(id) { await updateDoc(doc(db, "gmails", id), { status: 'approved' }); window.loadAdminData('gmail'); alert('Approved!'); }
   window.rejectGmail = async function(id) { await updateDoc(doc(db, "gmails", id), { status: 'rejected' }); window.loadAdminData('gmail'); alert('Rejected!'); }
   window.approveJobSub = async function(id) { await updateDoc(doc(db, "jobSubs", id), { status: 'approved' }); window.loadAdminData('job_subs'); alert('Approved!'); }
+  window.rejectJobSub = async function(id) { await updateDoc(doc(db, "jobSubs", id), { status: 'rejected' }); window.loadAdminData('job_subs'); alert('Rejected!'); }
   window.deleteJob = async function(id) { if(confirm('Delete?')) { await deleteDoc(doc(db, "jobs", id)); window.loadAdminData('jobs'); } }
   window.toggleBlock = async function(id, currentStatus) { await updateDoc(doc(db, "users", id), { blocked: !currentStatus }); window.loadAdminData('users'); }
   window.approveWithdraw = async function(id) { await updateDoc(doc(db, "withdraws", id), { status: 'approved' }); window.loadAdminData('withdraw'); alert('Paid!'); }
