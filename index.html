@@ -136,7 +136,7 @@ th{color:#c084fc;}
     <div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div>
     <div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button>
   </div>
-  </div><script type="module">
+</div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
