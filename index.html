@@ -114,7 +114,7 @@ th{color:#c084fc;}
         <div class="field">
             <label>পেমেন্ট মেথড</label>
             <div style="background:#110a1f; border:1px solid #3b1d6e; padding:14px; border-radius:10px; color:#c084fc; font-weight:bold;">
-                বিকাশ / নগদ (উপায়) - শীঘ্রই আসছে
+                উপায় (শীঘ্রই আসছে)
             </div>
         </div>
         <div class="field">
@@ -145,7 +145,7 @@ th{color:#c084fc;}
     <div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div>
     <div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button>
   </div>
-        </div><script type="module">
+              </div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
@@ -338,10 +338,13 @@ th{color:#c084fc;}
   }
 
   window.submitWithdraw = async function() {
-    const method = "বিকাশ"; // ডিফল্টভাবে বিকাশে সেভ হবে
-    const number = document.getElementById('w-number').value; const amount = parseInt(document.getElementById('w-amount').value);
+    const method = "উপায়"; 
+    const number = document.getElementById('w-number').value; 
+    const amount = parseInt(document.getElementById('w-amount').value);
+    
     if(!number || !amount) return alert('সব তথ্য দিন');
     if(amount < 100) return alert('সর্বনিম্ন ১০০ টাকা');
+    
     try {
         const q = query(collection(db, "users"), where("email", "==", currentUser));
         const userSnap = await getDocs(q);
