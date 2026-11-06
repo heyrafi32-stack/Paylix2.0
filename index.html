@@ -490,9 +490,7 @@ th{color:#c084fc;}
       await updateDoc(doc(db, "withdraws", id), { status: 'rejected' }); 
       window.loadAdminData('withdraw'); 
       alert('Withdraw Rejected!'); 
-  }
-
-  window.addMoney = async function(userId, currentBalance) {
+  }window.addMoney = async function(userId, currentBalance) {
       let amount = prompt("কত টাকা যোগ করতে চান? (শুধু সংখ্যা লিখুন)");
       if(amount === null || amount === "") return;
       
