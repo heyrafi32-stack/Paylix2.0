@@ -3,164 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Apexify</title>
+<title>Paylix</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
   body{min-height:100vh;background:#0d1b15;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
   .app{width:100%;max-width:500px;min-height:100vh;padding:16px;padding-bottom:90px;position:relative}
-  .page{display:none;animation:fadeIn .25s forwards}.page.active{display:block}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-   #page-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;position:fixed;top:0;left:0;width:100%;z-index:999;background:#0d1b15;transition:opacity .4s}
-  .splash-logo{width:100px;border-radius:22px;margin-bottom:15px;box-shadow:0 0 25px rgba(16,185,129,0.3)}
-  .splash-text{font-size:1.8rem;font-weight:800;color:#34d399;letter-spacing:2px}
-  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-  .logo-area{display:flex;align-items:center;gap:10px}
-  .logo-area img{width:36px;height:36px;border-radius:10px}
-  .logo-area span{font-size:1.2rem;font-weight:700}
-  .top-icons{display:flex;gap:8px}
-  .icon-btn{width:36px;height:36px;background:#132e22;border:1px solid #1f4e38;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#34d399;font-size:1rem}
-</style>
-</head>
-<style>
-  .welcome-banner{background:linear-gradient(135deg,#064e3b,#022c22);border:1px solid #065f46;border-radius:16px;padding:16px;margin-bottom:14px}
-  .welcome-banner h3{font-size:1.1rem;margin-bottom:4px}
-  .welcome-banner p{font-size:0.75rem;color:#a7f3d0}
-  .status-card{background:#132e22;border:1px solid #1f4e38;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:0.85rem}
-  .badge-active{background:#064e3b;color:#34d399;padding:4px 12px;border-radius:20px;font-weight:600;font-size:0.75rem;border:1px solid #059669}
-  .main-card{background:linear-gradient(145deg,#064e3b,#022c22);border:1px solid #059669;border-radius:20px;padding:20px;margin-bottom:16px}
-  .card-title{font-size:0.8rem;color:#a7f3d0;text-transform:uppercase;letter-spacing:0.5px}
-  .card-balance{font-size:2.2rem;font-weight:800;margin:8px 0 16px}
-  .sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px}
-  .sub-item{font-size:0.75rem;color:#a7f3d0}
-  .sub-item span{display:block;font-size:1rem;font-weight:700;color:#fff;margin-top:2px}
+  .page{display:none}.page.active{display:block}
+  #page-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;position:fixed;top:0;left:0;width:100%;z-index:999;background:#0d1b15}
+  .splash-logo{width:100px;border-radius:22px;margin-bottom:15px}
+  .splash-text{font-size:1.8rem;font-weight:800;color:#34d399}
   .form-box{background:#132e22;border:1px solid #1f4e38;border-radius:16px;padding:16px;margin-bottom:14px}
   .field{margin-bottom:12px}.field label{font-size:0.75rem;color:#a7f3d0;display:block;margin-bottom:4px}
   .field input,.field select{width:100%;padding:12px;border-radius:10px;border:1px solid #1f4e38;background:#0d1b15;color:#fff;font-size:0.9rem;outline:none}
-  .btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:12px;font-size:0.9rem;color:#fff;width:100%;background:#10b981;transition:0.2s}
-  .btn:hover{background:#059669}
+  .btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:12px;font-size:0.9rem;color:#fff;width:100%;background:#10b981}
   .back-btn{color:#34d399;font-size:0.85rem;cursor:pointer;margin-bottom:12px;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.75rem}
+  th,td{padding:8px;border-bottom:1px solid #1f4e38;text-align:left}
+  th{color:#34d399}
 </style>
+</head>
 <body>
+
 <div class="app">  
   <div id="page-splash">
     <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo">
-    <div class="splash-text">Apexify</div>
+    <div class="splash-text">Paylix</div>
   </div>  
 
+  <!-- Login Page -->
   <div id="page-login" class="page">
-    <div class="auth-container" style="margin-top:8vh">
-      <div style="text-align:center;margin-bottom:16px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:60px;border-radius:14px"></div>
-      <div style="font-size:1.6rem;font-weight:800;margin-bottom:4px;text-align:center;color:#34d399">স্বাগতম!</div>
-      <div style="font-size:0.85rem;color:#94a3b8;margin-bottom:24px;text-align:center">আপনার অ্যাকাউন্টে লগইন করুন</div>
+    <div style="margin-top:10vh">
+      <div style="font-size:1.6rem;font-weight:800;text-align:center;color:#34d399;margin-bottom:20px">লগইন করুন</div>
       <div class="form-box">
         <div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div>
         <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div>
         <button class="btn" onclick="loginUser()">লগইন</button>
       </div>
-      <div style="text-align:center;margin-top:16px;font-size:0.85rem;color:#94a3b8">অ্যাকাউন্ট নেই? <span onclick="openPage('page-register')" style="color:#34d399;font-weight:600;cursor:pointer">রেজিস্ট্রেশন করুন</span></div>
+      <div style="text-align:center;font-size:0.85rem;color:#94a3b8">অ্যাকাউন্ট নেই? <span onclick="openPage('page-register')" style="color:#34d399;cursor:pointer">রেজিস্ট্রেশন</span></div>
     </div>
   </div>  
 
+  <!-- Register Page -->
   <div id="page-register" class="page">
     <div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div>
-    <div class="auth-container" style="margin-top:10px">
-      <div style="font-size:1.6rem;font-weight:800;margin-bottom:4px;text-align:center;color:#34d399">নতুন অ্যাকাউন্ট</div>
-      <div class="form-box" style="margin-top:15px">
-        <div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="আপনার নাম"></div>
-        <div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div>
-        <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
-        <div class="field"><label>রেফার কোড (ইমেইল - ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="রেফারকারীর ইমেইল"></div>
-        <button class="btn" onclick="registerUser()">অ্যাকাউন্ট তৈরি করুন</button>
-      </div>
+    <div style="font-size:1.6rem;font-weight:800;text-align:center;color:#34d399;margin-bottom:20px">নতুন অ্যাকাউন্ট</div>
+    <div class="form-box">
+      <div class="field"><label>নাম</label><input type="text" id="reg-name" placeholder="নাম"></div>
+      <div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div>
+      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
+      <div class="field"><label>রেফার কোড (ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="রেফার ইমেইল"></div>
+      <button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button>
     </div>
-  </div>
-    <div id="page-home" class="page">
-    <div class="topbar">
-      <div class="logo-area">
-        <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png">
-        <span>Apexify</span>
-      </div>
-      <div class="top-icons">
-        <div class="icon-btn" onclick="loadUserHome()">🔄</div>
-        <div class="icon-btn">🎧</div>
-        <div class="icon-btn">🔔</div>
-      </div>
-    </div>
+  </div>  
 
-    <div class="welcome-banner">
-      <h3 id="wel-name">Welcome, User 👋</h3>
-      <p>নিরাপদে কাজ করুন এবং নিয়মিত পেমেন্ট নিন!</p>
+  <!-- Home Page -->
+  <div id="page-home" class="page">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3>Paylix 🚀</h3>
+      <button class="btn" style="width:auto;padding:6px 12px;font-size:0.75rem;background:#ef4444" onclick="logoutUser()">লগআউট</button>
     </div>
-
-    <div class="status-card">
-      <span>🟢 Account status</span>
-      <span class="badge-active">Active</span>
+    <div class="form-box" style="background:linear-gradient(135deg,#064e3b,#022c22)">
+      <div style="font-size:0.8rem;color:#a7f3d0">AVAILABLE BALANCE</div>
+      <div style="font-size:2rem;font-weight:800;margin:8px 0" id="main-bal">৳0</div>
+      <button class="btn" onclick="openPage('page-withdraw')">Withdraw (১৫% চার্জ)</button>
     </div>
-
-    <div class="main-card">
-      <div class="card-title">Total asset value</div>
-      <div class="card-balance" id="total-asset">৳ 0.00</div>
-      <div class="sub-grid">
-        <div class="sub-item">Available <span id="main-bal">৳0</span></div>
-        <div class="sub-item">Salary <span id="salary-bal">৳0</span></div>
-        <div class="sub-item">Referral <span id="ref-bal">৳0</span></div>
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px">
-      <div class="form-box" style="margin:0;cursor:pointer" onclick="openPage('page-wallet')">
-        <h4>➕ Deposit</h4><p style="font-size:0.7rem;color:#94a3b8">bKash / Nagad</p>
-      </div>
-      <div class="form-box" style="margin:0;cursor:pointer" onclick="openPage('page-withdraw')">
-        <h4>📥 Withdraw</h4><p style="font-size:0.7rem;color:#94a3b8">To your wallet</p>
-      </div>
-    </div>
-
-    <div style="font-size:1rem;font-weight:700;margin:16px 0 12px;color:#e2e8f0">Main Services</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
-      <div class="form-box" style="margin:0;padding:12px 6px;text-align:center;cursor:pointer" onclick="openPage('page-wallet')"><span style="font-size:1.3rem;display:block">💳</span><p style="font-size:0.7rem">Wallet</p></div>
-      <div class="form-box" style="margin:0;padding:12px 6px;text-align:center;cursor:pointer" onclick="openPage('page-spin')"><span style="font-size:1.3rem;display:block">🎰</span><p style="font-size:0.7rem">Spin</p></div>
-      <div class="form-box" style="margin:0;padding:12px 6px;text-align:center;cursor:pointer" onclick="openPage('page-gmail-sell')"><span style="font-size:1.3rem;display:block">📧</span><p style="font-size:0.7rem">Gmail Sell</p></div>
-      <div class="form-box" style="margin:0;padding:12px 6px;text-align:center;cursor:pointer" onclick="openPage('page-withdraw')"><span style="font-size:1.3rem;display:block">💸</span><p style="font-size:0.7rem">Withdraw</p></div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+      <div class="form-box" style="text-align:center;cursor:pointer" onclick="openPage('page-spin')"><h3>🎰</h3><p>Spin & Earn</p></div>
+      <div class="form-box" style="text-align:center;cursor:pointer" onclick="openPage('page-gmail-sell')"><h3>📧</h3><p>Gmail Sell</p></div>
     </div>
   </div>
 
-  <div id="page-wallet" class="page">
+  <!-- Spin Page -->
+  <div id="page-spin" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-    <div style="font-size:1rem;font-weight:700;margin-bottom:12px">My Wallet</div>
-    <div class="main-card">
-      <div class="card-title">DEPOSIT BALANCE</div>
-      <div class="card-balance" id="wallet-dep-bal">৳ 0</div>
-      <button class="btn" style="background:#fff;color:#0d1b15" onclick="alert('ডিপোজিট সিস্টেম চালু আছে।')">+ Deposit</button>
-    </div>
-  </div>
-    <div id="page-spin" class="page">
-    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-    <div class="form-box" style="text-align:center;padding:25px">
+    <div class="form-box" style="text-align:center">
       <h3>🎰 লাকি স্পিন (ফি: ১৫ টাকা)</h3>
-      <p style="font-size:0.8rem;color:#a7f3d0;margin:8px 0 20px">প্রতি স্পিনে আকর্ষণীয় ক্যাশব্যাক জিতুন!</p>
-      <div style="font-size:3.5rem;margin:20px 0">🎯</div>
-      <button class="btn" onclick="playSpin()">স্পিন করুন (৳১৫)</button>
+      <button class="btn" style="margin-top:20px" onclick="playSpin()">স্পিন করুন</button>
     </div>
   </div>
 
+  <!-- Gmail Sell Page -->
   <div id="page-gmail-sell" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-    <div style="font-size:1rem;font-weight:700;margin-bottom:12px">📧 Gmail Sell (মূল্য: ৳১৫)</div>
-    <div class="welcome-banner" style="background:#132e22;border:1px solid #1f4e38;margin-bottom:14px">
-      <p style="color:#a7f3d0;font-size:0.8rem">নতুন জিমেইল তৈরি করে ইমেইল ও পাসওয়ার্ড জমা দিন।</p>
-    </div>
-    <div class="form-box">
-      <div class="field"><label>জিমেইল অ্যাড্রেস</label><input type="email" id="sell-gmail" placeholder="example@gmail.com"></div>
-      <div class="field"><label>জিমেইল পাসওয়ার্ড</label><input type="password" id="sell-gpass" placeholder="পাসওয়ার্ড দিন"></div>
-      <button class="btn" onclick="submitGmailOrder()">জিমেইল জমা দিন (+৳১৫)</button>
+    <h3>📧 Gmail Sell (৳১৫)</h3>
+    <div class="form-box" style="margin-top:10px">
+      <div class="field"><label>জিমেইল</label><input type="email" id="sell-gmail" placeholder="gmail@gmail.com"></div>
+      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="sell-gpass" placeholder="password"></div>
+      <button class="btn" onclick="submitGmailOrder()">জমা দিন</button>
     </div>
   </div>
 
+  <!-- Withdraw Page -->
   <div id="page-withdraw" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-    <div style="font-size:1rem;font-weight:700;margin-bottom:12px">টাকা উত্তোলন (১৫% চার্জ)</div>
-    <div class="form-box">
+    <h3>টাকা উত্তোলন</h3>
+    <div class="form-box" style="margin-top:10px">
       <div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option><option>নগদ</option></select></div>
       <div class="field"><label>নম্বর</label><input type="number" id="w-number" placeholder="017XXXXXXXX"></div>
       <div class="field"><label>পরিমাণ (সর্বনিম্ন ১০০)</label><input type="number" id="w-amount" placeholder="100"></div>
@@ -168,51 +105,35 @@
     </div>
   </div>
 
-  <div id="page-profile" class="page">
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="width:70px;height:70px;background:#064e3b;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:2px solid #10b981" id="prof-initial">M</div>
-      <h3 id="prof-name">MD Rafi</h3>
-      <p style="font-size:0.75rem;color:#34d399">Active Member</p>
-    </div>
-    <div class="form-box" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center" onclick="logoutUser()">
-      <span style="color:#ef4444;font-weight:600">Log out</span><span>→</span>
-    </div>
-  </div>
-    <div id="page-admin-login" class="page">
+  <!-- Admin Login Page -->
+  <div id="page-admin-login" class="page">
     <div style="margin-top:15vh">
-      <div style="font-size:1.8rem;font-weight:800;margin-bottom:6px;text-align:center;color:#f59e0b">🛡️ Admin Portal</div>
-      <div style="font-size:0.85rem;color:#94a3b8;margin-bottom:24px;text-align:center">অ্যাডমিন ইমেইল ও পাসওয়ার্ড দিন</div>
+      <h3 style="color:#f59e0b;text-align:center;margin-bottom:20px">🛡️ Admin Portal</h3>
       <div class="form-box">
         <div class="field"><label>অ্যাডমিন ইমেইল</label><input type="text" id="admin-user" placeholder="hey.rafi32@gmail.com"></div>
         <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div>
-        <button class="btn" style="background:#f59e0b" onclick="loginAdmin()">লগইন করুন</button>
+        <button class="btn" style="background:#f59e0b" onclick="loginAdmin()">প্রবেশ করুন</button>
       </div>
     </div>
   </div>
 
+  <!-- Admin Panel -->
   <div id="page-admin" class="page">
-    <div style="font-size:1.1rem;font-weight:700;margin:16px 0 12px;color:#f59e0b">🛡️ ADMIN PANEL</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:15px">
-      <button class="btn" style="padding:8px;font-size:0.75rem" onclick="loadAdminData('gmail')">Gmail</button>
-      <button class="btn" style="padding:8px;font-size:0.75rem;background:#3b82f6" onclick="loadAdminData('withdraw')">Withdraw</button>
-      <button class="btn" style="padding:8px;font-size:0.75rem;background:#10b981" onclick="loadAdminData('users')">Users</button>
+    <h3 style="color:#f59e0b;margin-bottom:12px">🛡️ Admin Panel</h3>
+    <div style="display:flex;gap:5px;margin-bottom:10px">
+      <button class="btn" style="padding:6px;font-size:0.7rem" onclick="loadAdminData('gmail')">Gmail Orders</button>
+      <button class="btn" style="padding:6px;font-size:0.7rem;background:#3b82f6" onclick="loadAdminData('withdraw')">Withdraws</button>
+      <button class="btn" style="padding:6px;font-size:0.7rem;background:#ef4444" onclick="openPage('page-login')">লগআউট</button>
     </div>
     <div class="form-box" style="overflow-x:auto">
-      <table id="admin-table" style="width:100%;border-collapse:collapse;font-size:0.75rem">
-        <thead><tr><th style="color:#34d399;padding:8px;text-align:left">Info</th><th style="color:#34d399;padding:8px;text-align:left">Details</th></tr></thead>
+      <table id="admin-table">
+        <thead><tr><th>Info</th><th>Details</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
-    <button class="btn" style="background:#ef4444;margin-top:15px" onclick="logoutAdmin()">অ্যাডমিন লগআউট</button>
-  </div>
-
-  <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#132e22;border-top:1px solid #1f4e38;display:flex;justify-content:space-around;padding:10px 0;z-index:100">
-    <div style="text-align:center;cursor:pointer;color:#34d399;font-size:0.7rem;flex:1" onclick="switchTab('page-home', this)"><span style="font-size:1.2rem;display:block">🏠</span>Home</div>
-    <div style="text-align:center;cursor:pointer;color:#94a3b8;font-size:0.7rem;flex:1" onclick="switchTab('page-wallet', this)"><span style="font-size:1.2rem;display:block">💳</span>Wallet</div>
-    <div style="text-align:center;cursor:pointer;color:#94a3b8;font-size:0.7rem;flex:1" onclick="switchTab('page-services', this)"><span style="font-size:1.2rem;display:block">🔲</span>Services</div>
-    <div style="text-align:center;cursor:pointer;color:#94a3b8;font-size:0.7rem;flex:1" onclick="switchTab('page-profile', this)"><span style="font-size:1.2rem;display:block">👤</span>Profile</div>
   </div>
 </div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
@@ -236,28 +157,20 @@
     window.scrollTo(0,0);
   };
 
-  window.switchTab = function(id, el) {
-    document.querySelectorAll('[style*="color:#34d399"]').forEach(n => { if(n.parentElement.style) n.parentElement.style.color = '#94a3b8'; });
-    el.style.color = '#34d399';
-    openPage(id);
-  };
-
   window.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash === '#admin') {
+    let splash = document.getElementById('page-splash');
+    
+    if (window.location.hash === '#admin' || window.location.hash === '#adn') {
+      if(splash) splash.style.display = 'none';
       openPage('page-admin-login');
       return;
     }
+
     setTimeout(() => {
-      let splash = document.getElementById('page-splash');
-      if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => {
-          splash.style.display = 'none';
-          if (currentUser) { loadUserHome(); openPage('page-home'); }
-          else { openPage('page-login'); }
-        }, 300);
-      }
-    }, 1200);
+      if (splash) splash.style.display = 'none';
+      if (currentUser) { loadUserHome(); openPage('page-home'); }
+      else { openPage('page-login'); }
+    }, 1000);
   });
 
   window.registerUser = async function() {
@@ -270,8 +183,8 @@
       const q = query(collection(db, "users"), where("email", "==", email));
       const snap = await getDocs(q);
       if (!snap.empty) return alert('এই ইমেইল দিয়ে অ্যাকাউন্ট আছে!');
-      await addDoc(collection(db, "users"), { name, email, pass, balance: 0, salary: 0, referralBalance: 0, refBy: ref || null, blocked: false });
-      alert('রেজিস্ট্রেশন সফল হয়েছে!');
+      await addDoc(collection(db, "users"), { name, email, pass, balance: 0, referralBalance: 0, refBy: ref || null });
+      alert('রেজিস্ট্রেশন সফল!');
       openPage('page-login');
     } catch(e) { alert('ত্রুটি ঘটেছে!'); }
   };
@@ -283,30 +196,21 @@
       const q = query(collection(db, "users"), where("email", "==", email), where("pass", "==", pass));
       const snap = await getDocs(q);
       if (!snap.empty) {
-        let u = snap.docs[0].data();
-        if(u.blocked) return alert('অ্যাকাউন্ট ব্লকড!');
         currentUser = email;
         localStorage.setItem('paylix_current', email);
         loadUserHome();
         openPage('page-home');
       } else { alert('ভুল ইমেইল বা পাসওয়ার্ড!'); }
     } catch(e) { alert('সার্ভার সমস্যা!'); }
-  };<script type="module">
+  };
+
   window.loadUserHome = async function() {
     if (!currentUser) return;
     const q = query(collection(db, "users"), where("email", "==", currentUser));
     const snap = await getDocs(q);
     if (!snap.empty) {
       const u = snap.docs[0].data();
-      const totalAsset = (u.balance || 0) + (u.salary || 0) + (u.referralBalance || 0);
-      document.getElementById('wel-name').innerText = `Welcome, ${u.name} 👋`;
-      document.getElementById('total-asset').innerText = `৳ ${totalAsset.toFixed(2)}`;
       document.getElementById('main-bal').innerText = `৳${u.balance || 0}`;
-      document.getElementById('salary-bal').innerText = `৳${u.salary || 0}`;
-      document.getElementById('ref-bal').innerText = `৳${u.referralBalance || 0}`;
-      document.getElementById('wallet-dep-bal').innerText = `৳ ${u.balance || 0}`;
-      document.getElementById('prof-name').innerText = u.name;
-      document.getElementById('prof-initial').innerText = u.name.charAt(0).toUpperCase();
     }
   };
 
@@ -315,10 +219,8 @@
     const gpass = document.getElementById('sell-gpass').value;
     if (!gmail || !gpass) return alert('সব ঘর পূরণ করুন!');
     try {
-      await addDoc(collection(db, "gmails"), { user: currentUser, gmail, password: gpass, price: 15, status: 'pending', time: new Date().toLocaleString() });
-      alert('জিমেইল সফলভাবে জমা হয়েছে!');
-      document.getElementById('sell-gmail').value = '';
-      document.getElementById('sell-gpass').value = '';
+      await addDoc(collection(db, "gmails"), { user: currentUser, gmail, password: gpass, price: 15, status: 'pending' });
+      alert('জিমেইল জমা হয়েছে!');
       openPage('page-home');
     } catch(e) { alert('ত্রুটি!'); }
   };
@@ -333,10 +235,13 @@
     const uDoc = snap.docs[0];
     const uData = uDoc.data();
     if (uData.balance < amount) return alert('পর্যাপ্ত ব্যালেন্স নেই!');
-    const userReceive = amount * 0.85;
-    const refBonus = amount * 0.10;
+    
+    const userReceive = amount * 0.85; 
+    const refBonus = amount * 0.10;   
+
     await updateDoc(doc(db, "users", uDoc.id), { balance: uData.balance - amount });
     await addDoc(collection(db, "withdraw"), { user: currentUser, method, number, requested: amount, received: userReceive, status: 'pending' });
+
     if (uData.refBy) {
       const refQ = query(collection(db, "users"), where("email", "==", uData.refBy));
       const refSnap = await getDocs(refQ);
@@ -355,59 +260,31 @@
     const snap = await getDocs(q);
     const uDoc = snap.docs[0];
     const uData = uDoc.data();
-    if (uData.balance < cost) return alert('অন্তত ১৫ টাকা প্রয়োজন!');
-    const rand = Math.random() * 100;
-    let reward = rand < 55 ? 0 : rand < 85 ? 2 : rand < 98 ? 5 : 10;
+    if (uData.balance < cost) return alert('১৫ টাকা প্রয়োজন!');
+    let reward = Math.random() < 0.55 ? 0 : Math.random() < 0.85 ? 2 : 5;
     await updateDoc(doc(db, "users", uDoc.id), { balance: uData.balance + (reward - cost) });
     alert(`স্পিন সম্পন্ন! জিতেছেন ৳${reward}`);
     loadUserHome();
-  };<script type="module">
+  };
+
   window.loginAdmin = function() {
-    const user = document.getElementById('admin-user').value;
-    const pass = document.getElementById('admin-pass').value;
-    if (user === 'hey.rafi32@gmail.com' && pass === 'rafi2026') {
+    if (document.getElementById('admin-user').value === 'hey.rafi32@gmail.com' && document.getElementById('admin-pass').value === 'rafi2026') {
       openPage('page-admin');
       loadAdminData('withdraw');
     } else { alert('ভুল তথ্য!'); }
   };
 
-  window.logoutAdmin = function() { openPage('page-admin-login'); };
-
   window.loadAdminData = async function(type) {
     const tbody = document.querySelector('#admin-table tbody');
     tbody.innerHTML = 'লোড হচ্ছে...';
     try {
-      if (type === 'withdraw') {
-        const snap = await getDocs(collection(db, "withdraw"));
-        tbody.innerHTML = '';
-        snap.forEach(d => {
-          let item = d.data();
-          tbody.innerHTML += `<tr><td style="padding:8px;border-bottom:1px solid #1f4e38"><b>${item.user}</b><br>${item.method}: ${item.number}</td><td style="padding:8px;border-bottom:1px solid #1f4e38">৳${item.requested}</td></tr>`;
-        });
-      } else if (type === 'gmail') {
-        const snap = await getDocs(collection(db, "gmails"));
-        tbody.innerHTML = '';
-        let i = 0;
-        snap.forEach(d => {
-          let item = d.data(); i++;
-          let pId = `pass-${i}`;
-          tbody.innerHTML += `<tr><td style="padding:8px;border-bottom:1px solid #1f4e38"><b>${item.user}</b><br><span style="color:#34d399">${item.gmail}</span></td><td style="padding:8px;border-bottom:1px solid #1f4e38"><input type="password" id="${pId}" value="${item.password}" readonly style="background:#0d1b15;color:#fff;border:1px solid #1f4e38;width:80px;font-size:0.7rem"><span onclick="togglePass('${pId}', this)" style="cursor:pointer;margin-left:5px">👁️‍🗨️</span></td></tr>`;
-        });
-      } else if (type === 'users') {
-        const snap = await getDocs(collection(db, "users"));
-        tbody.innerHTML = '';
-        snap.forEach(d => {
-          let u = d.data();
-          tbody.innerHTML += `<tr><td style="padding:8px;border-bottom:1px solid #1f4e38">${u.name}<br>${u.email}</td><td style="padding:8px;border-bottom:1px solid #1f4e38">৳${u.balance}</td></tr>`;
-        });
-      }
+      const snap = await getDocs(collection(db, type === 'gmail' ? "gmails" : "withdraw"));
+      tbody.innerHTML = '';
+      snap.forEach(d => {
+        let item = d.data();
+        tbody.innerHTML += `<tr><td><b>${item.user}</b><br>${type==='gmail'?item.gmail:item.number}</td><td>৳${type==='gmail'?item.price:item.requested} (${item.password || item.status})</td></tr>`;
+      });
     } catch(e) { tbody.innerHTML = `<tr><td colspan="2">ত্রুটি!</td></tr>`; }
-  };
-
-  window.togglePass = function(id, el) {
-    let inp = document.getElementById(id);
-    if (inp.type === "password") { inp.type = "text"; el.innerText = "🔒"; }
-    else { inp.type = "password"; el.innerText = "👁️‍🗨️"; }
   };
 
   window.logoutUser = function() {
@@ -418,6 +295,3 @@
 </script>
 </body>
 </html>
-
- 
- 
