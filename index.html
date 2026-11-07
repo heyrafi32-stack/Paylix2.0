@@ -2,851 +2,524 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Paylix</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Apexify - Admin & User Panel</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;background:#f0fdf4;color:#1e293b;display:flex;justify-content:center;overflow-x:hidden}
-.app{width:100%;max-width:480px;min-height:100vh;background:#f0fdf4;position:relative;padding-bottom:75px}
-.page{display:none;animation:fadeIn .25s ease}.page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
+  body{min-height:100vh;background:#0d1b15;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
+  .app{width:100%;max-width:500px;min-height:100vh;padding:16px;padding-bottom:90px;position:relative}
+  .page{display:none;animation:fadeIn .25s forwards}.page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-#page-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;position:fixed;top:0;left:0;width:100%;z-index:999;background:#064e3b;transition:opacity .4s}
-.splash-logo{width:90px;height:90px;border-radius:22px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#fff;font-weight:800;margin-bottom:16px;box-shadow:0 0 40px rgba(16,185,129,.4)}
-.splash-text{font-size:1.8rem;font-weight:800;color:#fff;letter-spacing:1px}
+  #page-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;position:fixed;top:0;left:0;width:100%;z-index:999;background:#0d1b15;transition:opacity .4s}
+  .splash-logo{width:100px;border-radius:22px;margin-bottom:15px;box-shadow:0 0 25px rgba(16,185,129,0.3)}
+  .splash-text{font-size:1.8rem;font-weight:800;color:#34d399;letter-spacing:2px}
 
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:50}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.1rem}
-.logo span{font-size:1.2rem;font-weight:700;color:#064e3b}
-.header-actions{display:flex;gap:8px}
-.icon-btn{width:36px;height:36px;border-radius:10px;background:#f1f5f9;border:none;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .logo-area{display:flex;align-items:center;gap:10px}
+  .logo-area img{width:36px;height:36px;border-radius:10px}
+  .logo-area span{font-size:1.2rem;font-weight:700}
+  .top-icons{display:flex;gap:8px}
+  .icon-btn{width:36px;height:36px;background:#132e22;border:1px solid #1f4e38;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#34d399;font-size:1rem}
 
-.balance-card{margin:16px;background:linear-gradient(135deg,#059669,#047857);border-radius:18px;padding:20px;color:#fff;position:relative;overflow:hidden}
-.balance-card::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%}
-.balance-label{font-size:.8rem;opacity:.85;margin-bottom:4px}
-.balance-amount{font-size:2rem;font-weight:800;margin-bottom:14px}
-.balance-actions{display:flex;gap:10px}
-.bal-btn{flex:1;padding:10px;border-radius:10px;border:none;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
-.bal-btn.primary{background:#fff;color:#047857}
-.bal-btn.secondary{background:rgba(255,255,255,.15);color:#fff}
+  .welcome-banner{background:linear-gradient(135deg,#064e3b,#022c22);border:1px solid #065f46;border-radius:16px;padding:16px;margin-bottom:14px}
+  .welcome-banner h3{font-size:1.1rem;margin-bottom:4px}
+  .welcome-banner p{font-size:0.75rem;color:#a7f3d0}
 
-.section{padding:0 16px 16px}
-.sec-title{font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .status-card{background:#132e22;border:1px solid #1f4e38;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:0.85rem}
+  .badge-active{background:#064e3b;color:#34d399;padding:4px 12px;border-radius:20px;font-weight:600;font-size:0.75rem;border:1px solid #059669}
 
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.card{background:#fff;border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;border:1px solid #e2e8f0;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.card:active{transform:scale(.97)}
-.card .icon{font-size:1.6rem;margin-bottom:8px;display:block}
-.card .title{font-size:.78rem;font-weight:600;color:#334155}
+  .main-card{background:linear-gradient(145deg,#064e3b,#022c22);border:1px solid #059669;border-radius:20px;padding:20px;margin-bottom:16px}
+  .card-title{font-size:0.8rem;color:#a7f3d0;text-transform:uppercase;letter-spacing:0.5px}
+  .card-balance{font-size:2.2rem;font-weight:800;margin:8px 0 16px}
+  .sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px}
+  .sub-item{font-size:0.75rem;color:#a7f3d0}
+  .sub-item span{display:block;font-size:1rem;font-weight:700;color:#fff;margin-top:2px}
 
-.form-box{background:#fff;border-radius:16px;padding:18px;border:1px solid #e2e8f0;margin-bottom:16px}
-.field{margin-bottom:14px}
-.field label{font-size:.78rem;color:#64748b;display:block;margin-bottom:5px;font-weight:500}
-.field input,.field select,.field textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;color:#1e293b;font-size:.95rem;outline:none}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:#10b981;background:#fff}
-.btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:13px 20px;font-size:.95rem;color:#fff;width:100%;background:linear-gradient(90deg,#059669,#10b981);transition:.2s}
-.btn:active{transform:scale(.98)}
-.btn-outline{background:#fff;color:#059669;border:1.5px solid #059669}
-.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626)}
-.btn-sm{padding:8px 14px;font-size:.8rem;width:auto;border-radius:8px}
+  .action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+  .action-box{background:#132e22;border:1px solid #1f4e38;border-radius:16px;padding:16px;cursor:pointer;transition:0.2s}
+  .action-box:hover{border-color:#34d399}
+  .action-box .ico{font-size:1.4rem;margin-bottom:8px;display:inline-block;padding:8px;background:#064e3b;border-radius:10px}
+  .action-box h4{font-size:0.9rem;margin-bottom:2px}
+  .action-box p{font-size:0.7rem;color:#94a3b8}
 
-.auth-container{padding:30px 20px}
-.auth-title{font-size:1.6rem;font-weight:800;color:#064e3b;margin-bottom:6px;text-align:center}
-.auth-sub{font-size:.9rem;color:#64748b;margin-bottom:24px;text-align:center}
-.auth-link{text-align:center;margin-top:18px;font-size:.9rem;color:#64748b}
-.auth-link a{color:#059669;font-weight:600;cursor:pointer}
+  .sec-title{font-size:1rem;font-weight:700;margin:16px 0 12px;color:#e2e8f0}
+  .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  .service-item{background:#132e22;border:1px solid #1f4e38;border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer}
+  .service-item span{font-size:1.3rem;display:block;margin-bottom:6px}
+  .service-item p{font-size:0.7rem;color:#cbd5e1}
 
-.back-btn{display:inline-flex;align-items:center;gap:4px;color:#64748b;font-size:.9rem;cursor:pointer;margin:14px 16px 8px;font-weight:600}
+  .form-box{background:#132e22;border:1px solid #1f4e38;border-radius:16px;padding:16px;margin-bottom:14px}
+  .field{margin-bottom:12px}.field label{font-size:0.75rem;color:#a7f3d0;display:block;margin-bottom:4px}
+  .field input,.field select{width:100%;padding:12px;border-radius:10px;border:1px solid #1f4e38;background:#0d1b15;color:#fff;font-size:0.9rem;outline:none}
+  
+  .btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:12px;font-size:0.9rem;color:#fff;width:100%;background:#10b981;transition:0.2s}
+  .btn:hover{background:#059669}
+  .back-btn{color:#34d399;font-size:0.85rem;cursor:pointer;margin-bottom:12px;font-weight:600}
 
-.history-item{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:14px;border-radius:12px;margin-bottom:10px;border:1px solid #e2e8f0}
-.history-info{font-size:.88rem;color:#1e293b}
-.history-info small{color:#94a3b8;display:block;margin-top:3px;font-size:.75rem}
-.status-badge{font-size:.7rem;padding:4px 8px;border-radius:6px;font-weight:600}
-.status-pending{background:#fef3c7;color:#d97706}
-.status-approved{background:#d1fae5;color:#059669}
-.status-rejected{background:#fee2e2;color:#dc2626}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.75rem}
+  th,td{padding:8px;border-bottom:1px solid #1f4e38;text-align:left}
+  th{color:#34d399}
+  .small-btn{padding:4px 8px;font-size:0.65rem;width:auto;border-radius:6px;margin-right:3px;border:none;color:#fff;cursor:pointer}
+  .btn-red{background:#ef4444}.btn-green{background:#10b981}.btn-blue{background:#3b82f6}
 
-.task-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:12px}
-.task-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.task-title{font-size:.95rem;font-weight:700;color:#1e293b}
-.task-price{background:#d1fae5;color:#059669;padding:4px 10px;border-radius:20px;font-size:.8rem;font-weight:700}
-.task-desc{font-size:.82rem;color:#64748b;line-height:1.5;margin-bottom:12px}
-.task-actions{display:flex;gap:8px}
-.btn-start{flex:1;background:#f1f5f9;border:1px solid #e2e8f0;color:#334155;padding:10px;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer}
-.btn-submit{flex:1;background:#059669;border:none;color:#fff;padding:10px;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer}
+  .nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#132e22;border-top:1px solid #1f4e38;display:flex;justify-content:space-around;padding:10px 0;z-index:100}
+  .nav-item{text-align:center;cursor:pointer;color:#94a3b8;font-size:0.7rem;flex:1}
+  .nav-item.active{color:#34d399}
+  .nav-item span{font-size:1.2rem;display:block;margin-bottom:2px}
 
-.spin-container{text-align:center;padding:20px 16px}
-.spin-wheel{width:260px;height:260px;border-radius:50%;margin:0 auto 20px;background:conic-gradient(#10b981 0deg 51.4deg,#34d399 51.4deg 102.8deg,#6ee7b7 102.8deg 154.2deg,#a7f3d0 154.2deg 205.6deg,#d1fae5 205.6deg 257deg,#ecfdf5 257deg 308.4deg,#059669 308.4deg 360deg);border:8px solid #064e3b;position:relative;transition:transform 4s cubic-bezier(0.17,0.67,0.12,0.99);box-shadow:0 10px 30px rgba(5,150,105,.25)}
-.spin-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:#064e3b;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.1rem;z-index:2}
-.spin-pointer{width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:20px solid #ef4444;margin:0 auto -8px;position:relative;z-index:3}
-
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #e2e8f0;display:flex;justify-content:space-around;padding:8px 0 10px;z-index:100}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.7rem;color:#94a3b8;cursor:pointer;padding:4px 12px;font-weight:500}
-.nav-item.active{color:#059669}
-.nav-item .nav-icon{font-size:1.35rem}
-
-.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-table{width:100%;border-collapse:collapse;font-size:.8rem}
-th,td{padding:10px 8px;border-bottom:1px solid #e2e8f0;text-align:left}
-th{color:#059669;font-weight:600;background:#f0fdf4}
-
-.welcome-banner{margin:16px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:14px;padding:14px 16px;border:1px solid #a7f3d0}
-.welcome-banner h3{font-size:.95rem;color:#064e3b;margin-bottom:2px}
-.welcome-banner p{font-size:.8rem;color:#047857}
-.empty{text-align:center;color:#94a3b8;font-size:.85rem;padding:20px 0}
-.profile-pic{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff}
+  .auth-container{margin-top:8vh}
+  .auth-title{font-size:1.6rem;font-weight:800;margin-bottom:4px;text-align:center;color:#34d399}
+  .auth-sub{font-size:0.85rem;color:#94a3b8;margin-bottom:24px;text-align:center}
+  .auth-link{text-align:center;margin-top:16px;font-size:0.85rem;color:#94a3b8}
+  .auth-link span{color:#34d399;font-weight:600;cursor:pointer}
 </style>
 </head>
-<body>
-<div class="app">
+<body><div class="app">  
+  <!-- Splash Screen -->
+  <div id="page-splash">
+    <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo">
+    <div class="splash-text">Apexify</div>
+  </div>  
 
-<div id="page-splash">
-  <div class="splash-logo">P</div>
-  <div class="splash-text">PAYLIX</div>
-</div>
-
-<div id="page-login" class="page">
-  <div class="auth-container">
-    <div style="text-align:center;margin-bottom:20px">
-      <div class="splash-logo" style="width:70px;height:70px;font-size:1.8rem;margin:0 auto 10px">P</div>
-    </div>
-    <div class="auth-title">স্বাগতম!</div>
-    <div class="auth-sub">লগইন করুন</div>
-    <div class="form-box">
-      <div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div>
-      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div>
-      <button class="btn" onclick="loginUser()">লগইন</button>
-    </div>
-    <div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div>
-  </div>
-</div>
-
-<div id="page-register" class="page">
-  <div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div>
-  <div class="auth-container" style="padding-top:10px">
-    <div class="auth-title">অ্যাকাউন্ট তৈরি</div>
-    <div class="form-box">
-      <div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="আপনার নাম"></div>
-      <div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div>
-      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
-      <div class="field"><label>রেফার কোড (ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="বন্ধুর রেফার কোড"></div>
-      <button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button>
-    </div>
-    <div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div>
-  </div>
-</div>
-
-<div id="page-home" class="page">
-  <div class="topbar">
-    <div class="logo"><div class="logo-icon">P</div><span>Paylix</span></div>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="loadUserHome()">🔄</button>
-    </div>
-  </div>
-
-  <div class="welcome-banner">
-    <h3>স্বাগতম 👋</h3>
-    <p>আজকের কাজ শুরু করুন ও আয় করুন</p>
-  </div>
-
-  <div class="balance-card">
-    <div class="balance-label">💰 আপনার ব্যালেন্স</div>
-    <div class="balance-amount" id="user-balance">৳ 0.00</div>
-    <div class="balance-actions">
-      <button class="bal-btn secondary" onclick="openPage('page-withdraw')">💸 Withdraw</button>
-      <button class="bal-btn primary" onclick="openPage('page-spin')">🎯 Spin</button>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="sec-title">মেনু</div>
-    <div class="grid">
-      <div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div></div>
-      <div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div></div>
-      <div class="card" onclick="openPage('page-spin')"><span class="icon">🎡</span><div class="title">Spin</div></div>
-      <div class="card" onclick="openPage('page-refer')"><span class="icon">🎁</span><div class="title">Refer</div></div>
-      <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div></div>
-      <div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="sec-title">📋 আপনার রিকোয়েস্ট</div>
-    <div id="user-history-list"><div class="empty">কোনো রিকোয়েস্ট নেই</div></div>
-  </div>
-</div>
-
-<div id="page-gmail" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">📧 Gmail Sell (৳১৫ /টি)</div>
-    <div class="form-box">
-      <div class="field"><label>Gmail ID</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div>
-      <div class="field"><label>Password</label><input type="text" id="gmail-pass" placeholder="••••••••"></div>
-      <button class="btn" onclick="submitGmail()">সাবমিট করুন</button>
-    </div>
-    <p style="font-size:.8rem;color:#64748b;text-align:center">প্রতি ১৫টা অ্যাপ্রুভড Gmail এ ৳২০ বোনাস পাবেন</p>
-  </div>
-</div>
-
-<div id="page-microtask" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">🎯 Microtask</div>
-    <div id="user-job-list"><div class="empty">কোনো কাজ নেই</div></div>
-  </div>
-</div>
-
-<div id="page-job-submit" class="page">
-  <div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">📤 কাজ জমা দিন</div>
-    <div class="form-box">
-      <div class="field"><label>কাজের নাম</label><input type="text" id="sub-job-title" readonly style="background:#f1f5f9"></div>
-      <div class="field"><label>কাজের প্রমাণ (লিংক / নাম্বার)</label><textarea id="sub-job-proof" rows="3" placeholder="এখানে প্রমাণ লিখুন..."></textarea></div>
-      <button class="btn" onclick="submitJobProof()">জমা দিন</button>
-    </div>
-  </div>
-</div>
-
-<div id="page-spin" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="spin-container">
-    <div class="sec-title" style="justify-content:center">🎡 Daily Spin</div>
-    <p style="font-size:.85rem;color:#64748b;margin-bottom:16px">প্রতি স্পিনে ৳১৫ কাটা হবে</p>
-    <div class="spin-pointer"></div>
-    <div class="spin-wheel" id="spin-wheel">
-      <div class="spin-center">GO</div>
-    </div>
-    <button class="btn" id="spin-btn" onclick="doSpin()" style="max-width:220px;margin:0 auto">স্পিন করুন (৳১৫)</button>
-    <div id="spin-result" style="margin-top:16px;font-weight:700;font-size:1.1rem;color:#059669"></div>
-  </div>
-</div>
-
-<div id="page-withdraw" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">💸 Withdraw</div>
-    <div class="form-box">
-      <div class="field"><label>মেথড</label>
-        <select id="w-method"><option>বিকাশ</option><option>উপায়</option></select>
+  <!-- Login Page -->
+  <div id="page-login" class="page">
+    <div class="auth-container">
+      <div style="text-align:center;margin-bottom:16px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:60px;border-radius:14px"></div>
+      <div class="auth-title">স্বাগতম!</div>
+      <div class="auth-sub">আপনার অ্যাকাউন্টে লগইন করুন</div>
+      <div class="form-box">
+        <div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div>
+        <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div>
+        <button class="btn" onclick="loginUser()">লগইন</button>
       </div>
-      <div class="field"><label>অ্যাকাউন্ট নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div>
-      <div class="field"><label>টাকার পরিমাণ (সর্বনিম্ন ৳১০০)</label><input type="number" id="w-amount" placeholder="100"></div>
-      <p style="font-size:.78rem;color:#64748b;margin-bottom:12px">⚠️ উইথড্র ফি ১৫% কাটা হবে (১০% রেফারার + ৫% সার্ভিস চার্জ)</p>
-      <button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট দিন</button>
+      <div class="auth-link">অ্যাকাউন্ট নেই? <span onclick="openPage('page-register')">রেজিস্ট্রেশন করুন</span></div>
+      <div class="auth-link" style="margin-top:10px;"><span onclick="openPage('page-admin-login')" style="color:#f59e0b">🔐 অ্যাডমিন প্যানেল লগইন</span></div>
     </div>
-  </div>
-</div>
+  </div>  
 
-<div id="page-refer" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">🎁 Refer & Earn</div>
-    <div class="form-box" style="text-align:center">
-      <div style="font-size:2.8rem;margin-bottom:10px">🤝</div>
-      <h3 style="margin-bottom:6px;color:#064e3b">বন্ধুদের ইনভাইট করুন</h3>
-      <p style="font-size:.85rem;color:#64748b;margin-bottom:16px">আপনার রেফার করা ইউজার উইথড্র করলে আপনি ১০% কমিশন পাবেন</p>
-      <div class="field" style="text-align:left">
-        <label>আপনার রেফার কোড</label>
-        <input type="text" id="ref-link" readonly>
+  <!-- Register Page -->
+  <div id="page-register" class="page">
+    <div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div>
+    <div class="auth-container" style="margin-top:10px">
+      <div class="auth-title">নতুন অ্যাকাউন্ট</div>
+      <div class="auth-sub">তথ্য দিয়ে রেজিস্ট্রেশন সম্পন্ন করুন</div>
+      <div class="form-box">
+        <div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="আপনার নাম"></div>
+        <div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div>
+        <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
+        <div class="field"><label>রেফার কোড (ইমেইল - ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="রেফারকারীর ইমেইল"></div>
+        <button class="btn" onclick="registerUser()">অ্যাকাউন্ট তৈরি করুন</button>
       </div>
-      <button class="btn" onclick="copyRefLink()">কপি করুন</button>
+    </div>
+  </div>  
+
+  <!-- Home Page -->
+  <div id="page-home" class="page">
+    <div class="topbar">
+      <div class="logo-area">
+        <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png">
+        <span>Apexify</span>
+      </div>
+      <div class="top-icons">
+        <div class="icon-btn" onclick="loadUserHome()">🔄</div>
+        <div class="icon-btn">🎧</div>
+        <div class="icon-btn">🔔</div>
+      </div>
+    </div>
+
+    <div class="welcome-banner">
+      <h3 id="wel-name">Welcome, User 👋</h3>
+      <p>নিরাপদে কাজ করুন এবং নিয়মিত পেমেন্ট নিন!</p>
+    </div>
+
+    <div class="status-card">
+      <span>🟢 Account status</span>
+      <span class="badge-active">Active</span>
+    </div>
+
+    <div class="main-card">
+      <div class="card-title">Total asset value</div>
+      <div class="card-balance" id="total-asset">৳ 0.00</div>
+      <div class="sub-grid">
+        <div class="sub-item">Available <span id="main-bal">৳0</span></div>
+        <div class="sub-item">Salary <span id="salary-bal">৳0</span></div>
+        <div class="sub-item">Referral <span id="ref-bal">৳0</span></div>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-box" onclick="openPage('page-wallet')">
+        <span class="ico">➕</span>
+        <h4>Deposit</h4>
+        <p>bKash / Nagad</p>
+      </div>
+      <div class="action-box" onclick="openPage('page-withdraw')">
+        <span class="ico">📥</span>
+        <h4>Withdraw</h4>
+        <p>To your wallet</p>
+      </div>
+    </div>
+
+    <div class="sec-title">Main Services</div>
+    <div class="services-grid">
+      <div class="service-item" onclick="openPage('page-wallet')"><span>💳</span><p>Wallet</p></div>
+      <div class="service-item" onclick="openPage('page-spin')"><span>🎰</span><p>Spin</p></div>
+      <div class="service-item" onclick="openPage('page-task')"><span>📋</span><p>Task</p></div>
+      <div class="service-item" onclick="openPage('page-withdraw')"><span>💸</span><p>Withdraw</p></div>
     </div>
   </div>
-</div>
 
-<div id="page-settings" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">⚙️ প্রোফাইল</div>
+  <!-- Wallet Page -->
+  <div id="page-wallet" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title" style="margin-top:0">My Wallet</div>
+    <div class="main-card">
+      <div class="card-title">DEPOSIT BALANCE</div>
+      <div class="card-balance" id="wallet-dep-bal">৳ 0</div>
+      <button class="btn" style="background:#fff;color:#0d1b15" onclick="alert('ডিপোজিট সিস্টেম চালু আছে।')">+ Deposit</button>
+    </div>
+  </div>
+
+  <!-- Spin Page -->
+  <div id="page-spin" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="form-box" style="text-align:center;padding:25px">
+      <h3>🎰 লাকি স্পিন (ফি: ১৫ টাকা)</h3>
+      <p style="font-size:0.8rem;color:#a7f3d0;margin:8px 0 20px">প্রতি স্পিনে আকর্ষণীয় ক্যাশব্যাক জিতুন!</p>
+      <div id="wheel-box" style="font-size:3.5rem;margin:20px 0">🎯</div>
+      <button class="btn" onclick="playSpin()">স্পিন করুন (৳১৫)</button>
+    </div>
+  </div>
+
+  <!-- Task Page -->
+  <div id="page-task" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title" style="margin-top:0">Available Tasks</div>
     <div class="form-box">
-      <div class="profile-pic">👤</div>
-      <div class="field"><label>নাম</label><input type="text" id="set-name"></div>
-      <button class="btn" onclick="saveSettings()">সেভ করুন</button>
-    </div>
-    <button class="btn btn-red" onclick="logoutUser()" style="margin-top:10px">লগ আউট</button>
-  </div>
-</div>
-
-<div id="page-support" class="page">
-  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-  <div class="section">
-    <div class="sec-title">💬 Support</div>
-    <div class="form-box" style="text-align:center">
-      <p style="margin-bottom:16px;color:#64748b">সাপোর্টের জন্য টেলিগ্রামে যোগাযোগ করুন</p>
-      <a href="https://t.me/Owner_Paylix" target="_blank">
-        <button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button>
-      </a>
+      <h4 style="font-size:0.95rem;margin-bottom:6px">ইউটিউব ভিডিও লাইক ও সাবস্ক্রাইব 👍</h4>
+      <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:12px">ভিডিওটি ২ মিনিট দেখে লাইক ও সাবস্ক্রাইব করুন।</p>
+      <button class="btn" style="padding:8px;font-size:0.8rem" onclick="alert('টাস্ক সাবমিট সফল হয়েছে!')">সাবমিট করুন (+৳২.৩)</button>
     </div>
   </div>
-</div>
 
-<div id="page-admin-login" class="page">
-  <div class="auth-container">
-    <div class="auth-title">🛡️ Admin Login</div>
+  <!-- Withdraw Page -->
+  <div id="page-withdraw" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <div class="sec-title" style="margin-top:0">টাকা উত্তোলন (১৫% চার্জ)</div>
     <div class="form-box">
-      <div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div>
-      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div>
-      <button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button>
+      <div class="field">
+        <label>মেথড</label>
+        <select id="w-method"><option>বিকাশ</option><option>নগদ</option></select>
+      </div>
+      <div class="field"><label>নম্বর</label><input type="number" id="w-number" placeholder="017XXXXXXXX"></div>
+      <div class="field"><label>পরিমাণ (সর্বনিম্ন ১০০)</label><input type="number" id="w-amount" placeholder="100"></div>
+      <button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট পাঠান</button>
     </div>
   </div>
-</div>
 
-<div id="page-admin" class="page">
-  <div class="section" style="padding-top:16px">
-    <div class="sec-title">🛡️ ADMIN PANEL</div>
-    <div class="admin-grid">
-      <button class="btn btn-sm" onclick="loadAdminData('gmail')">Gmail Orders</button>
-      <button class="btn btn-sm" onclick="loadAdminData('withdraw')">Withdraws</button>
-      <button class="btn btn-sm" onclick="loadAdminData('jobs')">Manage Jobs</button>
-      <button class="btn btn-sm" onclick="loadAdminData('job_subs')">Job Submits</button>
-      <button class="btn btn-sm" onclick="loadAdminData('users')">Users</button>
-      <button class="btn btn-sm" style="background:#3b82f6" onclick="loadAdminData('add_money')">Add Money</button>
+  <!-- Services Page -->
+  <div id="page-services" class="page">
+    <div class="sec-title" style="margin-top:0">All Services</div>
+    <div class="services-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="action-box" onclick="openPage('page-wallet')"><span class="ico">💳</span><h4>Wallet</h4><p>ব্যালেন্স চেক</p></div>
+      <div class="action-box" onclick="openPage('page-spin')"><span class="ico">🎰</span><h4>Spin</h4><p>স্পিন করে আয়</p></div>
+      <div class="action-box" onclick="openPage('page-task')"><span class="ico">📋</span><h4>Task</h4><p>মাইক্রো টাস্ক</p></div>
+      <div class="action-box" onclick="openPage('page-withdraw')"><span class="ico">💸</span><h4>Withdraw</h4><p>টাকা তুলুন</p></div>
     </div>
+  </div>
+
+  <!-- Profile Page -->
+  <div id="page-profile" class="page">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="width:70px;height:70px;background:#064e3b;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:2px solid #10b981" id="prof-initial">M</div>
+      <h3 id="prof-name">MD Rafi</h3>
+      <p style="font-size:0.75rem;color:#34d399">Active Member</p>
+    </div>
+    <div class="form-box" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center" onclick="logoutUser()">
+      <span style="color:#ef4444;font-weight:600">Log out</span>
+      <span>→</span>
+    </div>
+  </div>
+
+  <!-- Admin Login Page -->
+  <div id="page-admin-login" class="page">
+    <div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div>
+    <div class="auth-container" style="margin-top:10px">
+      <div class="auth-title">🛡️ Admin Login</div>
+      <div class="form-box">
+        <div class="field"><label>অ্যাডমিন ইমেইল</label><input type="text" id="admin-user" placeholder="hey.rafi32@gmail.com"></div>
+        <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div>
+        <button class="btn" style="background:#f59e0b" onclick="loginAdmin()">প্রবেশ করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Panel Dashboard -->
+  <div id="page-admin" class="page">
+    <div class="sec-title" style="color:#f59e0b">🛡️ ADMIN PANEL (FULL CONTROL)</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:15px">
+      <button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button>
+      <button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button>
+      <button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button>
+      <button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button>
+      <button class="btn small-btn btn-blue" onclick="loadAdminData('users')">Users List</button>
+      <button class="btn small-btn" style="background:#8b5cf6" onclick="loadAdminData('add_money')">Add/Cut Money</button>
+    </div>
+
     <div class="form-box" style="overflow-x:auto">
       <table id="admin-table">
         <thead><tr><th>Info</th><th>Details</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
-    <div id="admin-job-form" class="form-box" style="display:none;margin-top:12px">
-      <div class="sec-title" style="font-size:.9rem">Add New Job</div>
-      <div class="field"><input type="text" id="job-title" placeholder="Job Title"></div>
-      <div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div>
-      <div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div>
-      <div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div>
-      <button class="btn btn-sm" onclick="addJob()">Post Job</button>
-    </div>
-    <button class="btn btn-red" onclick="logoutAdmin()" style="margin-top:16px">লগ আউট</button>
+
+    <button class="btn btn-red" onclick="logoutAdmin()" style="margin-top:15px">লগআউট অ্যাডমিন</button>
   </div>
-</div>
 
-<div class="bottom-nav" id="bottom-nav" style="display:none">
-  <div class="nav-item active" onclick="openPage('page-home')"><div class="nav-icon">🏠</div>Home</div>
-  <div class="nav-item" onclick="openPage('page-microtask')"><div class="nav-icon">🎯</div>Task</div>
-  <div class="nav-item" onclick="openPage('page-spin')"><div class="nav-icon">🎡</div>Spin</div>
-  <div class="nav-item" onclick="openPage('page-refer')"><div class="nav-icon">🎁</div>Refer</div>
-  <div class="nav-item" onclick="openPage('page-settings')"><div class="nav-icon">👤</div>Profile</div>
-</div>
+  <!-- Bottom Navigation Bar -->
+  <div class="nav-bar">
+    <div class="nav-item active" onclick="switchTab('page-home', this)"><span>🏠</span>Home</div>
+    <div class="nav-item" onclick="switchTab('page-wallet', this)"><span>💳</span>Wallet</div>
+    <div class="nav-item" onclick="switchTab('page-services', this)"><span>🔲</span>Services</div>
+    <div class="nav-item" onclick="switchTab('page-profile', this)"><span>👤</span>Profile</div>
+  </div>
 
-        </div><script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+</div><script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
-  authDomain: "paylix-586b1.firebaseapp.com",
-  projectId: "paylix-586b1",
-  storageBucket: "paylix-586b1.firebasestorage.app",
-  messagingSenderId: "353074453470",
-  appId: "1:353074453470:web:679e99a4021eeed9499b4f"
-};
+  const firebaseConfig = {
+    apiKey: "AlzaSyAt87cMTIiJyXtpfIfLiLfZfa7WX1g9Mg",
+    authDomain: "paylix-586b1.firebaseapp.com",
+    projectId: "paylix-586b1",
+    storageBucket: "paylix-586b1.appspot.com",
+    messagingSenderId: "353074453470",
+    appId: "1:353074453470:web:679e99a4021eeed9499b4f"
+  };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-let currentUser = localStorage.getItem('paylix_current') || null;
-let isAdminLogged = false;
-let currentJobToSubmit = null;
-let isSpinning = false;
+  let currentUser = localStorage.getItem('paylix_current') || null;
+  let isAdminLogged = false;
 
-window.openPage = function(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+  window.openPage = function(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  };
 
-  const nav = document.getElementById('bottom-nav');
-  const mainPages = ['page-home','page-microtask','page-spin','page-refer','page-settings'];
-  if (mainPages.includes(id) && currentUser) {
-    nav.style.display = 'flex';
-  } else {
-    nav.style.display = 'none';
-  }
+  window.switchTab = function(id, el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    openPage(id);
+  };
 
-  if (id === 'page-home' && currentUser) loadUserHome();
-  if (id === 'page-microtask' && currentUser) loadJobs();
-  if (id === 'page-refer' && currentUser) {
-    document.getElementById('ref-link').value = currentUser.split('@')[0].toUpperCase();
-  }
-  if (id === 'page-settings' && currentUser) loadSettings();
-};
-
-setTimeout(() => {
-  const splash = document.getElementById('page-splash');
-  splash.style.opacity = '0';
   setTimeout(() => {
-    splash.style.display = 'none';
-    if (window.location.hash === '#admin') openPage('page-admin-login');
-    else if (currentUser) openPage('page-home');
-    else openPage('page-login');
-  }, 400);
-}, 1400);
+    let splash = document.getElementById('page-splash');
+    if (splash) {
+      splash.style.opacity = '0';
+      setTimeout(() => {
+        splash.style.display = 'none';
+        if (currentUser) { loadUserHome(); openPage('page-home'); }
+        else { openPage('page-login'); }
+      }, 300);
+    }
+  }, 1200);
 
-window.registerUser = async function() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim().toLowerCase();
-  const pass = document.getElementById('reg-pass').value;
-  const ref = document.getElementById('reg-ref').value.trim();
-  if (!name || !email || !pass) return alert('সব ঘর পূরণ করুন');
-  try {
-    const q = query(collection(db, "users"), where("email", "==", email));
-    const snap = await getDocs(q);
-    if (!snap.empty) return alert('এই ইমেইল দিয়ে অ্যাকাউন্ট আছে!');
-    await addDoc(collection(db, "users"), {
-      name, email, pass, balance: 0, blocked: false,
-      refBy: ref || null, gmailCount: 0, createdAt: Date.now()
-    });
-    alert('সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে!');
-    openPage('page-login');
-  } catch(e) { alert('সমস্যা হয়েছে, আবার চেষ্টা করুন'); }
-};
+  window.registerUser = async function() {
+    const name = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const pass = document.getElementById('reg-pass').value;
+    const ref = document.getElementById('reg-ref').value;
 
-window.loginUser = async function() {
-  const email = document.getElementById('log-email').value.trim().toLowerCase();
-  const pass = document.getElementById('log-pass').value;
-  try {
-    const q = query(collection(db, "users"), where("email", "==", email), where("pass", "==", pass));
+    if (!name || !email || !pass) return alert('সব ঘর পূরণ করুন');
+
+    try {
+      const q = query(collection(db, "users"), where("email", "==", email));
+      const snap = await getDocs(q);
+      if (!snap.empty) return alert('এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে!');
+
+      await addDoc(collection(db, "users"), {
+        name: name,
+        email: email,
+        pass: pass,
+        balance: 0,
+        salary: 0,
+        referralBalance: 0,
+        refBy: ref || null,
+        blocked: false
+      });
+      alert('রেজিস্ট্রেশন সফল হয়েছে!');
+      openPage('page-login');
+    } catch(e) {
+      alert('ত্রুটি ঘটেছে! আবার চেষ্টা করুন।');
+    }
+  };
+
+  window.loginUser = async function() {
+    const email = document.getElementById('log-email').value;
+    const pass = document.getElementById('log-pass').value;
+
+    try {
+      const q = query(collection(db, "users"), where("email", "==", email), where("pass", "==", pass));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const uData = snap.docs[0].data();
+        if(uData.blocked) return alert('আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে!');
+        currentUser = email;
+        localStorage.setItem('paylix_current', email);
+        loadUserHome();
+        openPage('page-home');
+      } else {
+        alert('ভুল ইমেইল বা পাসওয়ার্ড!');
+      }
+    } catch(e) {
+      alert('সার্ভার সমস্যা!');
+    }
+  };
+
+  window.loadUserHome = async function() {
+    if (!currentUser) return;
+    const q = query(collection(db, "users"), where("email", "==", currentUser));
     const snap = await getDocs(q);
     if (!snap.empty) {
-      const data = snap.docs[0].data();
-      if (data.blocked) return alert('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে!');
-      currentUser = email;
-      localStorage.setItem('paylix_current', email);
-      openPage('page-home');
-    } else alert('ভুল ইমেইল বা পাসওয়ার্ড!');
-  } catch(e) { alert('সার্ভার সমস্যা!'); }
-};
+      const u = snap.docs[0].data();
+      const totalAsset = (u.balance || 0) + (u.salary || 0) + (u.referralBalance || 0);
+      
+      document.getElementById('wel-name').innerText = `Welcome, ${u.name} 👋`;
+      document.getElementById('total-asset').innerText = `৳ ${totalAsset.toFixed(2)}`;
+      document.getElementById('main-bal').innerText = `৳${u.balance || 0}`;
+      document.getElementById('salary-bal').innerText = `৳${u.salary || 0}`;
+      document.getElementById('ref-bal').innerText = `৳${u.referralBalance || 0}`;
+      document.getElementById('wallet-dep-bal').innerText = `৳ ${u.balance || 0}`;
+      document.getElementById('prof-name').innerText = u.name;
+      document.getElementById('prof-initial').innerText = u.name.charAt(0).toUpperCase();
+    }
+  };
 
-window.logoutUser = function() {
-  currentUser = null;
-  localStorage.removeItem('paylix_current');
-  document.getElementById('bottom-nav').style.display = 'none';
-  openPage('page-login');
-};
+  window.submitWithdraw = async function() {
+    const method = document.getElementById('w-method').value;
+    const number = document.getElementById('w-number').value;
+    const amount = parseFloat(document.getElementById('w-amount').value);
 
-window.loadUserHome = async function() {
-  if (!currentUser) return;
-  try {
+    if (!amount || amount < 100) return alert('সর্বনিম্ন উইথড্র ১০০ টাকা!');
+
     const q = query(collection(db, "users"), where("email", "==", currentUser));
     const snap = await getDocs(q);
-    if (snap.empty) { logoutUser(); return; }
-    const user = snap.docs[0].data();
-    document.getElementById('user-balance').innerText = '৳ ' + (user.balance || 0).toFixed(2);
+    const uDoc = snap.docs[0];
+    const uData = uDoc.data();
 
-    const histDiv = document.getElementById('user-history-list');
-    histDiv.innerHTML = '<div class="empty">লোড হচ্ছে...</div>';
-    let html = '';
+    if (uData.balance < amount) return alert('পর্যাপ্ত মেইন ব্যালেন্স নেই!');
 
-    const gSnap = await getDocs(query(collection(db, "gmails"), where("user", "==", currentUser)));
-    gSnap.forEach(d => {
-      const g = d.data();
-      html += `<div class="history-item">
-        <div class="history-info">Gmail: \( {g.gmail}<small> \){g.status}</small></div>
-        <span class="status-badge status-\( {g.status}"> \){g.status}</span>
-      </div>`;
+    const userReceive = amount * 0.85; 
+    const refBonus = amount * 0.10;    
+
+    await updateDoc(doc(db, "users", uDoc.id), {
+      balance: uData.balance - amount
     });
 
-    const wSnap = await getDocs(query(collection(db, "withdraws"), where("user", "==", currentUser)));
-    wSnap.forEach(d => {
-      const w = d.data();
-      html += `<div class="history-item">
-        <div class="history-info">Withdraw ৳\( {w.amount}<small> \){w.method} - ${w.number}</small></div>
-        <span class="status-badge status-\( {w.status}"> \){w.status}</span>
-      </div>`;
-    });
-
-    histDiv.innerHTML = html || '<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
-  } catch(e) { console.log(e); }
-};
-
-window.submitGmail = async function() {
-  const gmail = document.getElementById('gmail-id').value.trim();
-  const pass = document.getElementById('gmail-pass').value.trim();
-  if (!gmail || !pass) return alert('সব ঘর পূরণ করুন');
-  try {
-    await addDoc(collection(db, "gmails"), {
-      user: currentUser, gmail, pass, status: 'pending', time: Date.now()
-    });
-    alert('Gmail সাবমিট হয়েছে! অ্যাপ্রুভের জন্য অপেক্ষা করুন।');
-    document.getElementById('gmail-id').value = '';
-    document.getElementById('gmail-pass').value = '';
-    openPage('page-home');
-  } catch(e) { alert('সমস্যা হয়েছে!'); }
-};
-
-window.loadJobs = async function() {
-  const list = document.getElementById('user-job-list');
-  list.innerHTML = '<div class="empty">লোড হচ্ছে...</div>';
-  try {
-    const snap = await getDocs(collection(db, "jobs"));
-    let html = '';
-    snap.forEach(d => {
-      const j = d.data();
-      html += `<div class="task-card">
-        <div class="task-header">
-          <div class="task-title">${j.title}</div>
-          <div class="task-price">৳${j.price}</div>
-        </div>
-        <div class="task-desc">${j.desc || 'কাজটি সম্পন্ন করে প্রমাণ জমা দিন'}</div>
-        <div class="task-actions">
-          <button class="btn-start" onclick="window.open('${j.link || '#'}','_blank')">Start Task</button>
-          <button class="btn-submit" onclick="startJobSubmit('\( {d.id}',' \){j.title}',${j.price})">Submit</button>
-        </div>
-      </div>`;
-    });
-    list.innerHTML = html || '<div class="empty">কোনো কাজ নেই</div>';
-  } catch(e) { list.innerHTML = '<div class="empty">লোড করতে সমস্যা</div>'; }
-};
-
-window.startJobSubmit = function(id, title, price) {
-  currentJobToSubmit = { id, title, price };
-  document.getElementById('sub-job-title').value = title;
-  document.getElementById('sub-job-proof').value = '';
-  openPage('page-job-submit');
-};
-
-window.submitJobProof = async function() {
-  const proof = document.getElementById('sub-job-proof').value.trim();
-  if (!proof) return alert('প্রমাণ লিখুন');
-  if (!currentJobToSubmit) return;
-  try {
-    await addDoc(collection(db, "jobSubs"), {
+    await addDoc(collection(db, "withdraw"), {
       user: currentUser,
-      jobId: currentJobToSubmit.id,
-      jobTitle: currentJobToSubmit.title,
-      price: currentJobToSubmit.price,
-      proof,
-      status: 'pending',
-      time: Date.now()
+      method: method,
+      number: number,
+      requested: amount,
+      received: userReceive,
+      status: 'pending'
     });
-    alert('কাজ জমা দেওয়া হয়েছে!');
-    openPage('page-microtask');
-  } catch(e) { alert('সমস্যা হয়েছে!'); }
-};
 
-window.doSpin = async function() {
-  if (isSpinning) return;
-  if (!currentUser) return;
+    if (uData.refBy) {
+      const refQ = query(collection(db, "users"), where("email", "==", uData.refBy));
+      const refSnap = await getDocs(refQ);
+      if (!refSnap.empty) {
+        const refDoc = refSnap.docs[0];
+        await updateDoc(doc(db, "users", refDoc.id), {
+          referralBalance: (refDoc.data().referralBalance || 0) + refBonus
+        });
+      }
+    }
 
-  const q = query(collection(db, "users"), where("email", "==", currentUser));
-  const snap = await getDocs(q);
-  if (snap.empty) return;
-  const userDoc = snap.docs[0];
-  const user = userDoc.data();
-  if ((user.balance || 0) < 15) return alert('পর্যাপ্ত ব্যালেন্স নেই! (৳১৫ প্রয়োজন)');
+    alert(`উইথড্র রিকোয়েস্ট সফল হয়েছে! ১৫% চার্জ কেটে আপনাকে ৳${userReceive} দেওয়া হবে।`);
+    loadUserHome();
+    openPage('page-home');
+  };
 
-  isSpinning = true;
-  document.getElementById('spin-btn').disabled = true;
-  document.getElementById('spin-result').innerText = '';
-
-  const prizes = [
-    { amount: 0, weight: 40 },
-    { amount: 2, weight: 20 },
-    { amount: 5, weight: 15 },
-    { amount: 8, weight: 10 },
-    { amount: 10, weight: 8 },
-    { amount: 15, weight: 5 },
-    { amount: 20, weight: 2 }
-  ];
-  const totalWeight = prizes.reduce((s, p) => s + p.weight, 0);
-  let rand = Math.random() * totalWeight;
-  let selected = prizes[0];
-  for (const p of prizes) {
-    if (rand < p.weight) { selected = p; break; }
-    rand -= p.weight;
-  }
-
-  const wheel = document.getElementById('spin-wheel');
-  const extraSpins = 5 + Math.floor(Math.random() * 3);
-  const deg = extraSpins * 360 + (selected.amount * 18);
-  wheel.style.transform = `rotate(${deg}deg)`;
-
-  setTimeout(async () => {
-    const newBal = (user.balance || 0) - 15 + selected.amount;
-    await updateDoc(userDoc.ref, { balance: newBal });
-    document.getElementById('spin-result').innerText = selected.amount === 0 ? '😞 দুঃখিত, ৳০' : `🎉 আপনি পেয়েছেন ৳${selected.amount}`;
-    document.getElementById('user-balance').innerText = '৳ ' + newBal.toFixed(2);
-    isSpinning = false;
-    document.getElementById('spin-btn').disabled = false;
-  }, 4200);
-};
-
-window.submitWithdraw = async function() {
-  const method = document.getElementById('w-method').value;
-  const number = document.getElementById('w-number').value.trim();
-  const amount = parseFloat(document.getElementById('w-amount').value);
-  if (!number || !amount) return alert('সব ঘর পূরণ করুন');
-  if (amount < 100) return alert('সর্বনিম্ন উইথড্র ৳১০০');
-
-  try {
+  window.playSpin = async function() {
+    const cost = 15;
     const q = query(collection(db, "users"), where("email", "==", currentUser));
     const snap = await getDocs(q);
-    if (snap.empty) return;
-    const userDoc = snap.docs[0];
-    const user = userDoc.data();
-    if ((user.balance || 0) < amount) return alert('পর্যাপ্ত ব্যালেন্স নেই!');
+    const uDoc = snap.docs[0];
+    const uData = uDoc.data();
 
-    const fee = amount * 0.15;
-    const referrerShare = amount * 0.10;
-    const adminShare = amount * 0.05;
-    const userReceives = amount - fee;
+    if (uData.balance < cost) return alert('স্পিন করার জন্য অন্তত ১৫ টাকা ব্যালেন্স প্রয়োজন!');
 
-    await updateDoc(userDoc.ref, { balance: user.balance - amount });
+    const rand = Math.random() * 100;
+    let reward = 0;
+    if (rand < 55) reward = 0;
+    else if (rand < 85) reward = 2;
+    else if (rand < 98) reward = 5;
+    else reward = 10;
 
-    if (user.refBy) {
-      const allUsers = await getDocs(collection(db, "users"));
-      allUsers.forEach(async (d) => {
-        if (d.data().email.split('@')[0].toUpperCase() === user.refBy.toUpperCase()) {
-          await updateDoc(d.ref, { balance: (d.data().balance || 0) + referrerShare });
-        }
-      });
-    }
-
-    await addDoc(collection(db, "withdraws"), {
-      user: currentUser,
-      method, number, amount,
-      fee, userReceives, referrerShare, adminShare,
-      status: 'pending', time: Date.now()
+    const netChange = reward - cost; 
+    await updateDoc(doc(db, "users", uDoc.id), {
+      balance: uData.balance + netChange
     });
 
-    alert(`রিকোয়েস্ট দেওয়া হয়েছে!\nআপনি পাবেন: ৳\( {userReceives.toFixed(2)}\nফি: ৳ \){fee.toFixed(2)}`);
-    openPage('page-home');
-  } catch(e) { console.log(e); alert('সমস্যা হয়েছে!'); }
-};
+    alert(`স্পিন সম্পন্ন! আপনি জিতেছেন ৳${reward} (স্পিন ফি ৳১৫ কাটা হয়েছে)`);
+    loadUserHome();
+  };
 
-window.copyRefLink = function() {
-  const input = document.getElementById('ref-link');
-  input.select();
-  document.execCommand('copy');
-  alert('রেফার কোড কপি হয়েছে!');
-};
+  // Admin Login with specified Email & Password
+  window.loginAdmin = function() {
+    const user = document.getElementById('admin-user').value;
+    const pass = document.getElementById('admin-pass').value;
+    if (user === 'hey.rafi32@gmail.com' && pass === 'rafi2026') {
+      isAdminLogged = true;
+      openPage('page-admin');
+      loadAdminData('withdraw');
+    } else {
+      alert('ভুল অ্যাডমিন ইমেইল বা পাসওয়ার্ড!');
+    }
+  };
 
-window.loadSettings = async function() {
-  const q = query(collection(db, "users"), where("email", "==", currentUser));
-  const snap = await getDocs(q);
-  if (!snap.empty) {
-    document.getElementById('set-name').value = snap.docs[0].data().name || '';
+  window.logoutAdmin = function() {
+    isAdminLogged = false;
+    openPage('page-login');
+  };
+
+  window.loadAdminData = async function(type) {
+    const tbody = document.querySelector('#admin-table tbody');
+    tbody.innerHTML = 'লোড হচ্ছে...';
+
+    try {
+      if (type === 'withdraw') {
+        const snap = await getDocs(collection(db, "withdraw"));
+        tbody.innerHTML = '';
+        snap.forEach(d => {
+          let item = d.data();
+          tbody.innerHTML += `<tr><td><b>${item.user}</b><br>${item.method}: ${item.number}</td><td>৳${item.requested} (${item.status})</td></tr>`;
+        });
+      } else if (type === 'users') {
+        const snap = await getDocs(collection(db, "users"));
+        tbody.innerHTML = '';
+        snap.forEach(d => {
+          let u = d.data();
+          tbody.innerHTML += `<tr><td><b>${u.name}</b><br>${u.email}</td><td>Bal: ৳${u.balance}</td></tr>`;
+        });
+      } else {
+        tbody.innerHTML = `<tr><td colspan="2">ডাটা পাওয়া যায়নি বা সেকশন খালি আছে।</td></tr>`;
+      }
+    } catch(err) {
+      tbody.innerHTML = `<tr><td colspan="2">লোড করতে সমস্যা হয়েছে।</td></tr>`;
+    }
   }
-};
 
-window.saveSettings = async function() {
-  const name = document.getElementById('set-name').value.trim();
-  if (!name) return alert('নাম লিখুন');
-  const q = query(collection(db, "users"), where("email", "==", currentUser));
-  const snap = await getDocs(q);
-  if (!snap.empty) {
-    await updateDoc(snap.docs[0].ref, { name });
-    alert('সেভ হয়েছে!');
-  }
-};
-
-window.loginAdmin = function() {
-  const user = document.getElementById('admin-user').value;
-  const pass = document.getElementById('admin-pass').value;
-  if (user === 'admin' && pass === 'admin123') {
-    isAdminLogged = true;
-    openPage('page-admin');
-    loadAdminData('gmail');
-  } else alert('ভুল ইউজারনেম বা পাসওয়ার্ড!');
-};
-
-window.logoutAdmin = function() {
-  isAdminLogged = false;
-  history.replaceState(null, null, ' ');
-  openPage('page-login');
-};
-
-window.loadAdminData = async function(type) {
-  const tableBody = document.querySelector('#admin-table tbody');
-  const tableHead = document.querySelector('#admin-table thead');
-  const jobForm = document.getElementById('admin-job-form');
-  tableBody.innerHTML = '<tr><td colspan="5">লোড হচ্ছে...</td></tr>';
-  jobForm.style.display = 'none';
-
-  try {
-    if (type === 'gmail') {
-      tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Status</th><th>Action</th></tr>';
-      const snap = await getDocs(collection(db, "gmails"));
-      tableBody.innerHTML = '';
-      snap.forEach(d => {
-        const g = d.data();
-        let btn = g.status === 'pending'
-          ? `<button class="btn btn-sm" style="background:#10b981;margin-right:4px" onclick="approveGmail('${d.id}')">Approve</button>
-             <button class="btn btn-sm btn-red" onclick="rejectGmail('${d.id}')">Reject</button>`
-          : g.status;
-        tableBody.innerHTML += `<tr><td>\( {g.user.split('@')[0]}</td><td> \){g.gmail}</td><td>\( {g.pass}</td><td> \){g.status}</td><td>${btn}</td></tr>`;
-      });
-    }
-    else if (type === 'withdraw') {
-      tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Number</th><th>Amount</th><th>Action</th></tr>';
-      const snap = await getDocs(collection(db, "withdraws"));
-      tableBody.innerHTML = '';
-      snap.forEach(d => {
-        const w = d.data();
-        let btn = w.status === 'pending'
-          ? `<button class="btn btn-sm" style="background:#10b981;margin-right:4px" onclick="approveWithdraw('${d.id}')">Paid</button>
-             <button class="btn btn-sm btn-red" onclick="rejectWithdraw('${d.id}')">Reject</button>`
-          : w.status;
-        tableBody.innerHTML += `<tr><td>\( {w.user.split('@')[0]}</td><td> \){w.method}</td><td>\( {w.number}</td><td>৳ \){w.amount}</td><td>${btn}</td></tr>`;
-      });
-    }
-    else if (type === 'jobs') {
-      jobForm.style.display = 'block';
-      tableHead.innerHTML = '<tr><th>Title</th><th>Price</th><th>Slots</th><th>Action</th></tr>';
-      const snap = await getDocs(collection(db, "jobs"));
-      tableBody.innerHTML = '';
-      snap.forEach(d => {
-        const j = d.data();
-        tableBody.innerHTML += `<tr><td>\( {j.title}</td><td>৳ \){j.price}</td><td>\( {j.slots}</td><td><button class="btn btn-sm btn-red" onclick="deleteJob(' \){d.id}')">Delete</button></td></tr>`;
-      });
-    }
-    else if (type === 'job_subs') {
-      tableHead.innerHTML = '<tr><th>User</th><th>Job</th><th>Proof</th><th>Action</th></tr>';
-      const snap = await getDocs(collection(db, "jobSubs"));
-      tableBody.innerHTML = '';
-      snap.forEach(d => {
-        const s = d.data();
-        let btn = s.status === 'pending'
-          ? `<button class="btn btn-sm" style="background:#10b981;margin-right:4px" onclick="approveJobSub('${d.id}')">Approve</button>
-             <button class="btn btn-sm btn-red" onclick="rejectJobSub('${d.id}')">Reject</button>`
-          : s.status;
-        tableBody.innerHTML += `<tr><td>\( {s.user.split('@')[0]}</td><td> \){s.jobTitle}</td><td>\( {s.proof}</td><td> \){btn}</td></tr>`;
-      });
-    }
-    else if (type === 'users') {
-      tableHead.innerHTML = '<tr><th>Email</th><th>Balance</th><th>Action</th></tr>';
-      const snap = await getDocs(collection(db, "users"));
-      tableBody.innerHTML = '';
-      snap.forEach(d => {
-        const u = d.data();
-        tableBody.innerHTML += `<tr>
-          <td>\( {u.email}</td><td>৳ \){u.balance||0}</td>
-          <td><button class="btn btn-sm \( {u.blocked?'':'btn-red'}" onclick="toggleBlock(' \){d.id}',\( {!!u.blocked})"> \){u.blocked?'Unblock':'Block'}</button></td>
-        </tr>`;
-      });
-    }
-    else if (type === 'add_money') {
-      tableHead.innerHTML = '<tr><th>Email</th><th>Balance</th><th>Action</th></tr>';
-      const snap = await getDocs(collection(db, "users"));
-      tableBody.innerHTML = '';
-      snap.forEach(d => {
-        const u = d.data();
-        tableBody.innerHTML += `<tr>
-          <td>\( {u.email}</td><td>৳ \){u.balance||0}</td>
-          <td><button class="btn btn-sm" style="background:#3b82f6" onclick="addMoney('\( {d.id}', \){u.balance||0})">Add</button></td>
-        </tr>`;
-      });
-    }
-  } catch(e) { tableBody.innerHTML = '<tr><td colspan="5">সমস্যা হয়েছে</td></tr>'; console.log(e); }
-};
-
-window.approveGmail = async function(id) {
-  const gRef = doc(db, "gmails", id);
-  const gSnap = await getDoc(gRef);
-  if (!gSnap.exists()) return;
-  const g = gSnap.data();
-  await updateDoc(gRef, { status: 'approved' });
-
-  const uQ = query(collection(db, "users"), where("email", "==", g.user));
-  const uSnap = await getDocs(uQ);
-  if (!uSnap.empty) {
-    const uDoc = uSnap.docs[0];
-    const u = uDoc.data();
-    let newCount = (u.gmailCount || 0) + 1;
-    let bonus = 0;
-    if (newCount % 15 === 0) bonus = 20;
-    await updateDoc(uDoc.ref, {
-      balance: (u.balance || 0) + 15 + bonus,
-      gmailCount: newCount
-    });
-    if (bonus > 0) alert(`Approved! ৳১৫ + বোনাস ৳২০ যোগ হয়েছে`);
-    else alert('Approved! ৳১৫ যোগ হয়েছে');
-  }
-  loadAdminData('gmail');
-};
-
-window.rejectGmail = async function(id) {
-  await updateDoc(doc(db, "gmails", id), { status: 'rejected' });
-  loadAdminData('gmail');
-  alert('Rejected!');
-};
-
-window.approveJobSub = async function(id) {
-  const sRef = doc(db, "jobSubs", id);
-  const sSnap = await getDoc(sRef);
-  if (!sSnap.exists()) return;
-  const s = sSnap.data();
-  await updateDoc(sRef, { status: 'approved' });
-
-  const uQ = query(collection(db, "users"), where("email", "==", s.user));
-  const uSnap = await getDocs(uQ);
-  if (!uSnap.empty) {
-    const uDoc = uSnap.docs[0];
-    await updateDoc(uDoc.ref, { balance: (uDoc.data().balance || 0) + (s.price || 0) });
-  }
-  loadAdminData('job_subs');
-  alert('Approved!');
-};
-
-window.rejectJobSub = async function(id) {
-  await updateDoc(doc(db, "jobSubs", id), { status: 'rejected' });
-  loadAdminData('job_subs');
-  alert('Rejected!');
-};
-
-window.approveWithdraw = async function(id) {
-  await updateDoc(doc(db, "withdraws", id), { status: 'approved' });
-  loadAdminData('withdraw');
-  alert('Paid!');
-};
-
-window.rejectWithdraw = async function(id) {
-  await updateDoc(doc(db, "withdraws", id), { status: 'rejected' });
-  loadAdminData('withdraw');
-  alert('Rejected!');
-};
-
-window.deleteJob = async function(id) {
-  if (confirm('Delete this job?')) {
-    await deleteDoc(doc(db, "jobs", id));
-    loadAdminData('jobs');
-  }
-};
-
-window.toggleBlock = async function(id, current) {
-  await updateDoc(doc(db, "users", id), { blocked: !current });
-  loadAdminData('users');
-};
-
-window.addMoney = async function(userId, currentBalance) {
-  const amount = prompt("কত টাকা যোগ করবেন?");
-  if (!amount) return;
-  const val = parseFloat(amount);
-  if (isNaN(val) || val <= 0) return alert('সঠিক সংখ্যা দিন');
-  await updateDoc(doc(db, "users", userId), { balance: currentBalance + val });
-  alert('যোগ করা হয়েছে!');
-  loadAdminData('add_money');
-};
-
-window.addJob = async function() {
-  const title = document.getElementById('job-title').value.trim();
-  const price = document.getElementById('job-price').value.trim();
-  const link = document.getElementById('job-link').value.trim();
-  const slots = document.getElementById('job-slots').value.trim();
-  if (!title || !price) return alert('Title ও Price দিন');
-  await addDoc(collection(db, "jobs"), {
-    title, price: parseFloat(price), link, slots: slots || '100',
-    desc: 'কাজটি সম্পন্ন করে Submit করুন'
-  });
-  document.getElementById('job-title').value = '';
-  document.getElementById('job-price').value = '';
-  document.getElementById('job-link').value = '';
-  document.getElementById('job-slots').value = '';
-  loadAdminData('jobs');
-  alert('Job Posted!');
-};
+  window.logoutUser = function() {
+    localStorage.removeItem('paylix_current');
+    currentUser = null;
+    openPage('page-login');
+  };
 </script>
 </body>
 </html>
