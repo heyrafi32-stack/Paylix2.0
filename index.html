@@ -268,10 +268,15 @@
   };
 
   window.loginAdmin = function() {
-    if (document.getElementById('admin-user').value === 'hey.rafi32@gmail.com' && document.getElementById('admin-pass').value === 'rafi2026') {
+    const user = document.getElementById('admin-user').value.trim();
+    const pass = document.getElementById('admin-pass').value.trim();
+    
+    if (user === 'hey.rafi32@gmail.com' && pass === 'rafi2026') {
       openPage('page-admin');
       loadAdminData('withdraw');
-    } else { alert('ভুল তথ্য!'); }
+    } else {
+      alert('ভুল ইমেইল বা পাসওয়ার্ড!');
+    }
   };
 
   window.loadAdminData = async function(type) {
