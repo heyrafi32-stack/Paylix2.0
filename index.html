@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Paylix</title>
+<title>Paylix - Full Control Platform</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
   body{min-height:100vh;background:#0d1b15;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
@@ -14,12 +14,14 @@
   .splash-text{font-size:1.8rem;font-weight:800;color:#34d399}
   .form-box{background:#132e22;border:1px solid #1f4e38;border-radius:16px;padding:16px;margin-bottom:14px}
   .field{margin-bottom:12px}.field label{font-size:0.75rem;color:#a7f3d0;display:block;margin-bottom:4px}
-  .field input,.field select{width:100%;padding:12px;border-radius:10px;border:1px solid #1f4e38;background:#0d1b15;color:#fff;font-size:0.9rem;outline:none}
+  .field input,.field select,.field textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #1f4e38;background:#0d1b15;color:#fff;font-size:0.9rem;outline:none}
   .btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:12px;font-size:0.9rem;color:#fff;width:100%;background:#10b981}
   .back-btn{color:#34d399;font-size:0.85rem;cursor:pointer;margin-bottom:12px;font-weight:600}
   table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.75rem}
   th,td{padding:8px;border-bottom:1px solid #1f4e38;text-align:left}
   th{color:#34d399}
+  .job-card{background:#132e22;border:1px solid #1f4e38;border-radius:14px;padding:14px;margin-bottom:10px}
+  .small-btn{padding:4px 8px;font-size:0.65rem;border-radius:6px;border:none;color:#fff;cursor:pointer;margin-right:3px}
 </style>
 </head>
 <body>
@@ -67,10 +69,18 @@
       <div style="font-size:2rem;font-weight:800;margin:8px 0" id="main-bal">৳0</div>
       <button class="btn" onclick="openPage('page-withdraw')">Withdraw (১৫% চার্জ)</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
-      <div class="form-box" style="text-align:center;cursor:pointer" onclick="openPage('page-spin')"><h3>🎰</h3><p>Spin & Earn</p></div>
-      <div class="form-box" style="text-align:center;cursor:pointer" onclick="openPage('page-gmail-sell')"><h3>📧</h3><p>Gmail Sell</p></div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">
+      <div class="form-box" style="text-align:center;cursor:pointer;margin:0" onclick="openPage('page-jobs')"><h3>💼</h3><p>Micro Jobs</p></div>
+      <div class="form-box" style="text-align:center;cursor:pointer;margin:0" onclick="openPage('page-spin')"><h3>🎰</h3><p>Spin & Earn</p></div>
     </div>
+    <div class="form-box" style="text-align:center;cursor:pointer" onclick="openPage('page-gmail-sell')"><h3>📧 Gmail Sell</h3><p style="font-size:0.75rem;color:#94a3b8">জিমেইল বিক্রি করে ইনকাম করুন</p></div>
+  </div>
+
+  <!-- Micro Jobs Page -->
+  <div id="page-jobs" class="page">
+    <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+    <h3 style="margin-bottom:12px">💼 কাজের তালিকা (Micro Jobs)</h3>
+    <div id="job-list-container">লোড হচ্ছে...</div>
   </div>
 
   <!-- Spin Page -->
@@ -119,24 +129,24 @@
 
   <!-- Admin Panel -->
   <div id="page-admin" class="page">
-    <h3 style="color:#f59e0b;margin-bottom:12px">🛡️ Admin Panel</h3>
-    <div style="display:flex;gap:5px;margin-bottom:10px">
-      <button class="btn" style="padding:6px;font-size:0.7rem" onclick="loadAdminData('gmail')">Gmail Orders</button>
-      <button class="btn" style="padding:6px;font-size:0.7rem;background:#3b82f6" onclick="loadAdminData('withdraw')">Withdraws</button>
-      <button class="btn" style="padding:6px;font-size:0.7rem;background:#ef4444" onclick="openPage('page-login')">লগআউট</button>
+    <h3 style="color:#f59e0b;margin-bottom:12px">🛡️ Admin Dashboard</h3>
+    <div style="display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap">
+      <button class="btn" style="padding:6px;font-size:0.6rem;flex:1" onclick="loadAdminData('gmail')">Gmail</button>
+      <button class="btn" style="padding:6px;font-size:0.6rem;flex:1;background:#3b82f6" onclick="loadAdminData('withdraw')">Withdraw</button>
+      <button class="btn" style="padding:6px;font-size:0.6rem;flex:1;background:#10b981" onclick="loadAdminData('users')">Users</button>
+      <button class="btn" style="padding:6px;font-size:0.6rem;flex:1;background:#f59e0b" onclick="loadAdminData('postjob')">Post Job</button>
+      <button class="btn" style="padding:6px;font-size:0.6rem;flex:1;background:#ef4444" onclick="openPage('page-login')">লগআউট</button>
     </div>
-    <div class="form-box" style="overflow-x:auto">
+    <div class="form-box" id="admin-content-area" style="overflow-x:auto">
       <table id="admin-table">
         <thead><tr><th>Info</th><th>Details</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
   </div>
-</div>
-
-<script type="module">
+</div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AlzaSyAt87cMTIiJyXtpfIfLiLfZfa7WX1g9Mg",
@@ -155,6 +165,7 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0,0);
+    if(id === 'page-jobs') loadJobsForUser();
   };
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -183,7 +194,7 @@
       const q = query(collection(db, "users"), where("email", "==", email));
       const snap = await getDocs(q);
       if (!snap.empty) return alert('এই ইমেইল দিয়ে অ্যাকাউন্ট আছে!');
-      await addDoc(collection(db, "users"), { name, email, pass, balance: 0, referralBalance: 0, refBy: ref || null });
+      await addDoc(collection(db, "users"), { name, email, pass, balance: 0, referralBalance: 0, refBy: ref || null, blocked: false });
       alert('রেজিস্ট্রেশন সফল!');
       openPage('page-login');
     } catch(e) { alert('ত্রুটি ঘটেছে!'); }
@@ -196,6 +207,8 @@
       const q = query(collection(db, "users"), where("email", "==", email), where("pass", "==", pass));
       const snap = await getDocs(q);
       if (!snap.empty) {
+        let uData = snap.docs[0].data();
+        if(uData.blocked) return alert('আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে!');
         currentUser = email;
         localStorage.setItem('paylix_current', email);
         loadUserHome();
@@ -212,6 +225,30 @@
       const u = snap.docs[0].data();
       document.getElementById('main-bal').innerText = `৳${u.balance || 0}`;
     }
+  };
+
+  window.loadJobsForUser = async function() {
+    const container = document.getElementById('job-list-container');
+    container.innerHTML = 'লোড হচ্ছে...';
+    try {
+      const snap = await getDocs(collection(db, "jobs"));
+      container.innerHTML = '';
+      let count = 0;
+      snap.forEach(d => {
+        let job = d.data();
+        count++;
+        container.innerHTML += `
+          <div class="job-card">
+            <h4>${job.title}</h4>
+            <p style="font-size:0.8rem;color:#a7f3d0;margin:6px 0">${job.desc}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:#f59e0b">
+              <span>পুরস্কার: ৳${job.reward}</span>
+              <a href="${job.link}" target="_blank" style="color:#34d399;text-decoration:underline">কাজ করুন</a>
+            </div>
+          </div>`;
+      });
+      if(count === 0) container.innerHTML = '<p>কোনো কাজ নেই।</p>';
+    } catch(e) { container.innerHTML = '<p>লোডিং এ সমস্যা হয়েছে।</p>'; }
   };
 
   window.submitGmailOrder = async function() {
@@ -240,7 +277,7 @@
     const refBonus = amount * 0.10;   
 
     await updateDoc(doc(db, "users", uDoc.id), { balance: uData.balance - amount });
-    await addDoc(collection(db, "withdraw"), { user: currentUser, method, number, requested: amount, received: userReceive, status: 'pending' });
+    await addDoc(collection(db, "withdraw"), { user: currentUser, method, number, requested: amount, received: userReceive, status: 'pending', docId: uDoc.id });
 
     if (uData.refBy) {
       const refQ = query(collection(db, "users"), where("email", "==", uData.refBy));
@@ -270,26 +307,150 @@
   window.loginAdmin = function() {
     const user = document.getElementById('admin-user').value.trim();
     const pass = document.getElementById('admin-pass').value.trim();
-    
     if (user === 'hey.rafi32@gmail.com' && pass === 'rafi2026') {
       openPage('page-admin');
       loadAdminData('withdraw');
-    } else {
-      alert('ভুল ইমেইল বা পাসওয়ার্ড!');
-    }
+    } else { alert('ভুল ইমেইল বা পাসওয়ার্ড!'); }
   };
 
   window.loadAdminData = async function(type) {
-    const tbody = document.querySelector('#admin-table tbody');
-    tbody.innerHTML = 'লোড হচ্ছে...';
+    const area = document.getElementById('admin-content-area');
+    
+    if(type === 'postjob') {
+      area.innerHTML = `
+        <h4 style="color:#f59e0b;margin-bottom:10px">নতুন জব পোস্ট করুন</h4>
+        <div class="field"><label>জবের শিরোনাম</label><input type="text" id="j-title" placeholder="যেমন: ইউটিউব ভিডিও দেখুন"></div>
+        <div class="field"><label>কাজের বিবরণ</label><textarea id="j-desc" placeholder="বিস্তারিত দিন..." style="background:#0d1b15;color:#fff;border:1px solid #1f4e38;padding:8px;border-radius:8px;width:100%"></textarea></div>
+        <div class="field"><label>পুরস্কার (Reward)</label><input type="number" id="j-reward" placeholder="10"></div>
+        <div class="field"><label>কাজের লিংক</label><input type="text" id="j-link" placeholder="https://..."></div>
+        <button class="btn" style="background:#f59e0b" onclick="submitNewJob()">জব পোস্ট করুন</button>
+      `;
+      return;
+    }
+
+    area.innerHTML = 'লোড হচ্ছে...';
     try {
-      const snap = await getDocs(collection(db, type === 'gmail' ? "gmails" : "withdraw"));
-      tbody.innerHTML = '';
-      snap.forEach(d => {
-        let item = d.data();
-        tbody.innerHTML += `<tr><td><b>${item.user}</b><br>${type==='gmail'?item.gmail:item.number}</td><td>৳${type==='gmail'?item.price:item.requested} (${item.password || item.status})</td></tr>`;
+      if(type === 'users') {
+        const snap = await getDocs(collection(db, "users"));
+        let html = `<table id="admin-table"><thead><tr><th>User</th><th>Action (Balance & Block)</th></tr></thead><tbody>`;
+        snap.forEach(d => {
+          let u = d.data();
+          let uId = d.id;
+          let blockTxt = u.blocked ? 'Unblock' : 'Block';
+          let blockColor = u.blocked ? '#10b981' : '#ef4444';
+          html += `<tr>
+            <td><b>${u.name}</b><br>${u.email}<br>Bal: ৳${u.balance || 0}</td>
+            <td>
+              <div style="display:flex;gap:4px;flex-wrap:wrap">
+                <button class="small-btn" style="background:#10b981" onclick="modifyMoney('${uId}', 50)">+50 ৳</button>
+                <button class="small-btn" style="background:#f59e0b" onclick="modifyMoney('${uId}', -50)">-50 ৳</button>
+                <button class="small-btn" style="background:${blockColor}" onclick="toggleBlockUser('${uId}', ${u.blocked})">${blockTxt}</button>
+              </div>
+            </td>
+          </tr>`;
+        });
+        html += `</tbody></table>`;
+        area.innerHTML = html;
+      } else if(type === 'withdraw') {
+        const snap = await getDocs(collection(db, "withdraw"));
+        let html = `<table id="admin-table"><thead><tr><th>Request</th><th>Action</th></tr></thead><tbody>`;
+        snap.forEach(d => {
+          let item = d.data();
+          let wId = d.id;
+          html += `<tr>
+            <td><b>${item.user}</b><br>${item.method}: ${item.number}<br>Req: ৳${item.requested} (${item.status})</td>
+            <td>
+              ${item.status === 'pending' ? `
+                <button class="small-btn" style="background:#10b981" onclick="actionWithdraw('${wId}', 'approved', '${item.user}', ${item.requested})">Approve</button>
+                <button class="small-btn" style="background:#ef4444" onclick="actionWithdraw('${wId}', 'cancelled', '${item.user}', ${item.requested})">Cancel</button>
+              ` : `<span>${item.status}</span>`}
+            </td>
+          </tr>`;
+        });
+        html += `</tbody></table>`;
+        area.innerHTML = html;
+      } else if(type === 'gmail') {
+        const snap = await getDocs(collection(db, "gmails"));
+        let html = `<table id="admin-table"><thead><tr><th>Gmail</th><th>Password</th></tr></thead><tbody>`;
+        let index = 0;
+        snap.forEach(d => {
+          let item = d.data();
+          index++;
+          let pId = `admin-pass-${index}`;
+          html += `<tr>
+            <td><b>${item.user}</b><br><span style="color:#34d399">${item.gmail}</span></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input type="password" id="${pId}" value="${item.password}" readonly style="background:#0d1b15;color:#fff;border:1px solid #1f4e38;padding:4px;border-radius:4px;width:70px;font-size:0.7rem;">
+                <span onclick="togglePass('${pId}', this)" style="cursor:pointer;font-size:0.9rem;" title="দেখুন">👁️‍🗨️</span>
+              </div>
+            </td>
+          </tr>`;
+        });
+        html += `</tbody></table>`;
+        area.innerHTML = html;
+      }
+    } catch(e) { area.innerHTML = 'ত্রুটি ঘটেছে!'; }
+  };
+
+  window.modifyMoney = async function(userId, amount) {
+    try {
+      const snap = await getDocs(collection(db, "users"));
+      snap.forEach(async (d) => {
+        if(d.id === userId) {
+          let currentBal = d.data().balance || 0;
+          let newBal = currentBal + amount;
+          if(newBal < 0) newBal = 0;
+          await updateDoc(doc(db, "users", userId), { balance: newBal });
+          alert('ব্যালেন্স আপডেট সফল!');
+          loadAdminData('users');
+        }
       });
-    } catch(e) { tbody.innerHTML = `<tr><td colspan="2">ত্রুটি!</td></tr>`; }
+    } catch(e) { alert('ত্রুটি!'); }
+  };
+
+  window.toggleBlockUser = async function(userId, currentStatus) {
+    try {
+      await updateDoc(doc(db, "users", userId), { blocked: !currentStatus });
+      alert('ইউজার স্ট্যাটাস পরিবর্তন হয়েছে!');
+      loadAdminData('users');
+    } catch(e) { alert('ত্রুটি!'); }
+  };
+
+  window.actionWithdraw = async function(wId, status, userEmail, requestedAmt) {
+    try {
+      await updateDoc(doc(db, "withdraw", wId), { status: status });
+      if(status === 'cancelled') {
+        const snap = await getDocs(collection(db, "users"));
+        snap.forEach(async (d) => {
+          if(d.data().email === userEmail) {
+            let refundBal = (d.data().balance || 0) + requestedAmt;
+            await updateDoc(doc(db, "users", d.id), { balance: refundBal });
+          }
+        });
+      }
+      alert(`উইথড্র রিকোয়েস্ট ${status === 'approved' ? 'অ্যাপ্রুভ' : 'ক্যান্সেল'} করা হয়েছে!`);
+      loadAdminData('withdraw');
+    } catch(e) { alert('ত্রুটি!'); }
+  };
+
+  window.submitNewJob = async function() {
+    const title = document.getElementById('j-title').value;
+    const desc = document.getElementById('j-desc').value;
+    const reward = parseFloat(document.getElementById('j-reward').value);
+    const link = document.getElementById('j-link').value;
+    if(!title || !reward || !link) return alert('সব তথ্য দিন!');
+    try {
+      await addDoc(collection(db, "jobs"), { title, desc, reward, link, time: new Date().toLocaleString() });
+      alert('সফলভাবে জব পোস্ট করা হয়েছে!');
+      loadAdminData('withdraw');
+    } catch(e) { alert('ত্রুটি!'); }
+  };
+
+  window.togglePass = function(id, el) {
+    let inp = document.getElementById(id);
+    if (inp.type === "password") { inp.type = "text"; el.innerText = "🔒"; }
+    else { inp.type = "password"; el.innerText = "👁️‍🗨️"; }
   };
 
   window.logoutUser = function() {
@@ -300,3 +461,4 @@
 </script>
 </body>
 </html>
+
