@@ -1,798 +1,794 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paylix - Micro-Task & Earning Platform</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
-        }
-        .glass-card {
-            background: rgba(22, 27, 34, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .spin-wheel {
-            transition: transform 4s cubic-bezier(0.15, 0.99, 0.18, 1);
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-
-    <!-- Firebase App & Firestore SDK (v9 Modular Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paylix - Earn Money Online</title>
+<link rel="icon" href="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png">
+<style>
+  :root{
+    --bg:#160826;
+    --bg2:#1f0b36;
+    --panel:#2a0f47;
+    --panel2:#3a1563;
+    --purple:#8b3dff;
+    --purple2:#b478ff;
+    --accent:#00e0a4;
+    --accent2:#ffd166;
+    --danger:#ff4d6d;
+    --text:#f3ecff;
+    --muted:#b9a5d6;
+    --border:rgba(180,120,255,.22);
+    --shadow:0 10px 40px rgba(139,61,255,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+  html,body{background:var(--bg);color:var(--text);min-height:100vh}
+  body{
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(139,61,255,.25), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, rgba(0,224,164,.12), transparent 60%),
+      var(--bg);
+  }
+  a{color:var(--purple2);text-decoration:none}
+  button{cursor:pointer;font-family:inherit}
+  input,select{font-family:inherit}
+  .hidden{display:none !important}
+  #splash{
+    position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 30%, #3a1563, #160826 70%);
+    z-index:9999;transition:opacity .6s ease, visibility .6s;
+  }
+  #splash img{width:130px;height:130px;border-radius:28px;box-shadow:var(--shadow);animation:pulse 2s infinite}
+  #splash h1{margin-top:20px;font-size:34px;letter-spacing:2px;background:linear-gradient(90deg,#b478ff,#00e0a4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  #splash p{color:var(--muted);margin-top:6px;font-size:13px;letter-spacing:1px}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  .navbar{
+    position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
+    background:rgba(22,8,38,.75);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;padding:10px 16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand img{width:36px;height:36px;border-radius:10px;box-shadow:0 4px 14px rgba(139,61,255,.6)}
+  .brand span{font-weight:800;letter-spacing:1px;font-size:19px;background:linear-gradient(90deg,#b478ff,#00e0a4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-right{display:flex;gap:10px;align-items:center}
+  .btn{
+    border:none;border-radius:12px;padding:11px 18px;font-weight:700;font-size:14px;color:#fff;
+    background:linear-gradient(135deg,var(--purple),#5b1fb0);box-shadow:0 6px 22px rgba(139,61,255,.45);
+    transition:transform .15s, filter .2s;
+  }
+  .btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn.accent{background:linear-gradient(135deg,#00e0a4,#009e74);box-shadow:0 6px 22px rgba(0,224,164,.4);color:#062b20}
+  .btn.gold{background:linear-gradient(135deg,#ffd166,#e0a800);color:#2a1d00;box-shadow:0 6px 22px rgba(255,209,102,.4)}
+  .btn.danger{background:linear-gradient(135deg,#ff4d6d,#a81b35);box-shadow:0 6px 22px rgba(255,77,109,.4)}
+  .btn.ghost{background:transparent;border:1px solid var(--border);box-shadow:none;color:var(--text)}
+  .btn.small{padding:7px 12px;font-size:12px;border-radius:9px}
+  .btn.block{display:block;width:100%}
+  .auth-card{
+    max-width:430px;margin:40px auto;background:linear-gradient(160deg,var(--panel),var(--bg2));
+    border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow);
+  }
+  .auth-card img.logo{width:80px;height:80px;border-radius:20px;display:block;margin:0 auto 14px;box-shadow:var(--shadow)}
+  .auth-card h2{text-align:center;font-size:24px;margin-bottom:6px}
+  .auth-card .sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:.5px;font-weight:600}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--border);
+    background:rgba(255,255,255,.05);color:var(--text);outline:none;font-size:14px;
+  }
+  .field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,61,255,.2)}
+  .switch-line{text-align:center;font-size:13px;color:var(--muted);margin-top:16px}
+  .dash-hero{
+    background:linear-gradient(135deg,#3a1563,#1f0b36);
+    border:1px solid var(--border);border-radius:22px;padding:22px;margin-top:18px;
+    position:relative;overflow:hidden;
+  }
+  .dash-hero::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(0,224,164,.35),transparent 70%);
+  }
+  .dash-hero small{color:var(--muted);letter-spacing:1px;font-size:12px}
+  .balance{font-size:42px;font-weight:800;margin:6px 0;letter-spacing:1px;
+    background:linear-gradient(90deg,#fff,#b478ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .userline{color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
+  .tile{
+    background:linear-gradient(160deg,var(--panel),var(--bg2));
+    border:1px solid var(--border);border-radius:18px;padding:18px;
+    transition:transform .15s;cursor:pointer;
+  }
+  .tile:hover{transform:translateY(-3px);border-color:var(--purple)}
+  .tile .ico{font-size:26px;margin-bottom:8px;display:block}
+  .tile h3{font-size:15px;margin-bottom:4px}
+  .tile p{font-size:12px;color:var(--muted)}
+  .section{margin-top:22px}
+  .section h2{font-size:19px;margin-bottom:12px;letter-spacing:.5px}
+  .card{
+    background:linear-gradient(160deg,var(--panel),var(--bg2));
+    border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px;
+  }
+  .job-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .job-row .title{font-weight:700;font-size:15px}
+  .job-row .desc{font-size:12px;color:var(--muted);margin-top:3px;max-width:520px}
+  .pill{background:rgba(0,224,164,.15);color:var(--accent);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
+  #toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);
+    background:linear-gradient(135deg,var(--purple),#5b1fb0);color:#fff;padding:12px 22px;
+    border-radius:12px;font-weight:600;font-size:14px;box-shadow:var(--shadow);
+    transition:transform .35s ease;z-index:10000;max-width:90%;text-align:center;
+  }
+  #toast.show{transform:translateX(-50%) translateY(0)}
+  #toast.err{background:linear-gradient(135deg,#ff4d6d,#a81b35)}
+  #toast.ok{background:linear-gradient(135deg,#00e0a4,#009e74);color:#062b20}
+  .wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px}
+  #wheel{
+    width:260px;height:260px;border-radius:50%;
+    border:8px solid var(--purple2);
+    box-shadow:0 0 40px rgba(139,61,255,.6), inset 0 0 30px rgba(139,61,255,.4);
+    transition:transform 4s cubic-bezier(.17,.67,.12,1);
+    background:conic-gradient(
+      #8b3dff 0deg 45deg, #3a1563 45deg 90deg,
+      #00e0a4 90deg 135deg, #3a1563 135deg 180deg,
+      #ffd166 180deg 225deg, #3a1563 225deg 270deg,
+      #ff4d6d 270deg 315deg, #3a1563 315deg 360deg
+    );
+    position:relative;
+  }
+  #wheel::after{
+    content:"🎯";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:44px;filter:drop-shadow(0 0 8px rgba(0,0,0,.5));
+  }
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase}
+  .table-wrap{overflow-x:auto;border-radius:14px}
+  .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700}
+  .badge.pending{background:rgba(255,209,102,.2);color:var(--accent2)}
+  .badge.approved{background:rgba(0,224,164,.2);color:var(--accent)}
+  .badge.cancelled{background:rgba(255,77,109,.2);color:var(--danger)}
+  .badge.blocked{background:rgba(255,77,109,.2);color:var(--danger)}
+  .badge.active{background:rgba(0,224,164,.2);color:var(--accent)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .tabs button{
+    background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);
+    padding:9px 16px;border-radius:12px;font-size:13px;font-weight:600;
+  }
+  .tabs button.active{background:linear-gradient(135deg,var(--purple),#5b1fb0);color:#fff;border-color:transparent}
+  .eye{cursor:pointer;user-select:none;font-size:16px}
+  .admin-box .field input{background:rgba(255,255,255,.06)}
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .foot{text-align:center;color:var(--muted);font-size:12px;padding:26px 0 40px}
+  @media(max-width:560px){
+    .balance{font-size:34px}
+    .auth-card{padding:22px}
+  }
+</style>
 </head>
-<body class="min-h-screen pb-10">
+<body>
+<div id="splash">
+  <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix"/>
+  <h1>PAYLIX</h1>
+  <p>Earn • Spin • Withdraw</p>
+</div>
+<div id="app" class="hidden">
+  <div class="navbar">
+    <div class="brand">
+      <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="logo"/>
+      <span>PAYLIX</span>
+    </div>
+    <div class="nav-right">
+      <span id="navUser" style="font-size:13px;color:var(--muted)"></span>
+      <button class="btn ghost small" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+  <div class="wrap" id="page"></div>
+  <div class="foot">© Paylix — Earn Smart. Powered by Paylix.</div>
+</div>
+<div id="toast"></div>
+<script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc,
+  collection, addDoc, getDocs, query, where, orderBy, serverTimestamp, increment
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    <!-- Navbar -->
-    <nav class="glass-card sticky top-0 z-50 px-4 py-3 border-b border-gray-800 flex justify-between items-center max-w-md mx-auto">
-        <div class="flex items-center space-x-2">
-            <div class="w-9 h-9 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
-                P
+const firebaseConfig = {
+  apiKey: "AIzaSyAt87cMTIiJyXtpfIfLiLfZfa7WX1g9Mg", 
+  authDomain: "paylix-586b1.firebaseapp.com",
+  projectId: "paylix-586b1",
+  storageBucket: "paylix-586b1.appspot.com",
+  messagingSenderId: "353074453470",
+  appId: "1:353074453470:web:679e99a4021eeed9499b4f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const ADMIN_EMAIL = "hey.rafi32@gmail.com";
+const ADMIN_PASS  = "rafi2026";
+const SPIN_FEE = 15;
+const FIRST_SPIN_REWARD = 20;
+const GMAIL_SELL_RATE = 15;
+const MIN_WITHDRAW = 100;
+const WITHDRAW_CHARGE = 0.15;
+const REFERRAL_BONUS = 0.10;
+const LOGO = "https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png";
+
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const page = $("#page");
+const state = { user: null, isAdmin: false };
+
+function toast(msg, type=""){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "show " + type;
+  clearTimeout(t._tid);
+  t._tid = setTimeout(()=>{ t.className = t.className.replace("show","").trim(); }, 2800);
+}
+
+function money(n){ return "৳" + Number(n || 0).toFixed(2); }
+function esc(s){ return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+function emailKey(email){ return email.toLowerCase().trim(); }
+function saveSession(email){ localStorage.setItem("paylix_user", emailKey(email)); }
+function getSession(){ return localStorage.getItem("paylix_user"); }
+function clearSession(){ localStorage.removeItem("paylix_user"); }
+
+setTimeout(()=>{
+  const sp = $("#splash");
+  sp.style.opacity = 0; sp.style.visibility = "hidden";
+  setTimeout(()=> sp.remove(), 600);
+  boot();
+}, 1800);
+
+async function boot(){
+  $("#app").classList.remove("hidden");
+  const hash = (location.hash || "").toLowerCase();
+  if (hash === "#admin" || hash === "#adn") { renderAdminLogin(); return; }
+  const email = getSession();
+  if (email) {
+    const snap = await getDoc(doc(db, "users", email));
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data.blocked) {
+        clearSession();
+        toast("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।", "err");
+        renderAuth("login");
+        return;
+      }
+      state.user = { email, ...data };
+      renderDashboard();
+      return;
+    }
+    clearSession();
+  }
+  renderAuth("login");
+}
+
+window.addEventListener("hashchange", ()=>{
+  const hash = (location.hash || "").toLowerCase();
+  if (hash === "#admin" || hash === "#adn") renderAdminLogin();
+  else if (state.user) renderDashboard();
+  else renderAuth("login");
+});
+
+function renderAuth(mode="login"){
+  state.user = null;
+  state.isAdmin = false;
+  $("#navUser").textContent = "";
+  $("#logoutBtn").classList.add("hidden");
+  page.innerHTML = `
+    <div class="auth-card">
+      <img class="logo" src="${LOGO}" alt="Paylix"/>
+      <h2>${mode === "login" ? "Welcome Back" : "Create Account"}</h2>
+      <p class="sub">${mode === "login" ? "Log in to continue earning" : "Join Paylix and start earning today"}</p>
+      ${mode === "register" ? `
+      <div class="field">
+        <label>Full Name</label>
+        <input id="regName" placeholder="Your name" autocomplete="name"/>
+      </div>` : ""}
+      <div class="field">
+        <label>Email</label>
+        <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      ${mode === "register" ? `
+      <div class="field">
+        <label>Referral Email (optional)</label>
+        <input id="regRef" type="email" placeholder="referrer@example.com"/>
+      </div>` : ""}
+      <button class="btn block" id="authSubmit">${mode === "login" ? "Login" : "Register"}</button>
+      <div class="switch-line">
+        ${mode === "login"
+          ? `নতুন? <a href="#" id="switchAuth">Register করুন</a>`
+          : `অ্যাকাউন্ট আছে? <a href="#" id="switchAuth">Login করুন</a>`}
+      </div>
+    </div>
+  `;
+  $("#switchAuth").onclick = (e)=>{ e.preventDefault(); renderAuth(mode === "login" ? "register" : "login"); };
+  $("#authSubmit").onclick = ()=> mode === "login" ? doLogin() : doRegister();
+}async function doRegister(){
+  const name = $("#regName").value.trim();
+  const email = emailKey($("#authEmail").value);
+  const pass = $("#authPass").value;
+  const refEmail = emailKey($("#regRef").value || "");
+  if (!name || !email || !pass) return toast("সব ঘর পূরণ করুন।", "err");
+  if (!/^\S+@\S+\.\S+$/.test(email)) return toast("সঠিক ইমেইল দিন।", "err");
+  if (pass.length < 4) return toast("পাসওয়ার্ড কমপক্ষে ৪ অক্ষর।", "err");
+  if (email === ADMIN_EMAIL) return toast("এই ইমেইল ব্যবহার করা যাবে না।", "err");
+  const ref = await getDoc(doc(db, "users", email));
+  if (ref.exists()) return toast("এই ইমেইলে অ্যাকাউন্ট আছে।", "err");
+  let referredBy = "";
+  if (refEmail) {
+    if (refEmail === email) return toast("নিজেকে রেফার করা যাবে না।", "err");
+    const rSnap = await getDoc(doc(db, "users", refEmail));
+    if (!rSnap.exists()) return toast("রেফার ইমেইল পাওয়া যায়নি।", "err");
+    referredBy = refEmail;
+  }
+  const data = {
+    name, email, password: pass,
+    referredBy,
+    balance: 0,
+    hasSpunBefore: false,
+    blocked: false,
+    totalEarned: 0,
+    createdAt: serverTimestamp()
+  };
+  await setDoc(doc(db, "users", email), data);
+  saveSession(email);
+  state.user = { email, ...data };
+  toast("রেজিস্ট্রেশন সফল! 🎉", "ok");
+  renderDashboard();
+}
+
+async function doLogin(){
+  const email = emailKey($("#authEmail").value);
+  const pass = $("#authPass").value;
+  if (!email || !pass) return toast("ইমেইল ও পাসওয়ার্ড দিন।", "err");
+  const snap = await getDoc(doc(db, "users", email));
+  if (!snap.exists()) return toast("অ্যাকাউন্ট পাওয়া যায়নি।", "err");
+  const data = snap.data();
+  if (data.password !== pass) return toast("পাসওয়ার্ড ভুল।", "err");
+  if (data.blocked) return toast("আপনার অ্যাকাউন্ট ব্লকড।", "err");
+  saveSession(email);
+  state.user = { email, ...data };
+  toast("লগইন সফল!", "ok");
+  renderDashboard();
+}
+
+async function refreshUser(){
+  const snap = await getDoc(doc(db, "users", state.user.email));
+  if (snap.exists()) state.user = { email: state.user.email, ...snap.data() };
+}
+
+async function renderDashboard(){
+  await refreshUser();
+  $("#navUser").textContent = state.user.name || state.user.email;
+  $("#logoutBtn").classList.remove("hidden");
+  const jobsSnap = await getDocs(query(collection(db, "jobs"), orderBy("createdAt", "desc")));
+  const jobs = jobsSnap.docs.map(d=>({ id: d.id, ...d.data() }));
+  page.innerHTML = `
+    <div class="dash-hero">
+      <small>বর্তমান ব্যালেন্স</small>
+      <div class="balance" id="balDisplay">${money(state.user.balance)}</div>
+      <div class="userline">👋 ${esc(state.user.name)} • ${esc(state.user.email)}</div>
+    </div>
+    <div class="grid">
+      <div class="tile" id="goJobs"><span class="ico">💼</span><h3>Micro Jobs</h3><p>কাজ করে আয় করুন</p></div>
+      <div class="tile" id="goGmail"><span class="ico">📧</span><h3>Gmail Sell</h3><p>প্রতি জিমেইলে ৳${GMAIL_SELL_RATE}</p></div>
+      <div class="tile" id="goSpin"><span class="ico">🎡</span><h3>Lucky Spin</h3><p>ফি ৳${SPIN_FEE} • স্পিন করুন</p></div>
+      <div class="tile" id="goWithdraw"><span class="ico">💸</span><h3>Withdraw</h3><p>বিকাশ / নগদ (min ৳${MIN_WITHDRAW})</p></div>
+    </div>
+    <div class="section">
+      <h2>💼 Available Micro Jobs</h2>
+      <div id="jobsList">
+        ${jobs.length ? jobs.map(j => `
+          <div class="card job-row">
+            <div>
+              <div class="title">${esc(j.title)}</div>
+              <div class="desc">${esc(j.description || "")}</div>
             </div>
-            <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">Paylix</span>
-        </div>
-        <div id="navRight" class="flex items-center space-x-3 hidden">
-            <div class="bg-indigo-950/60 border border-indigo-500/30 px-3 py-1 rounded-full flex items-center space-x-1.5 text-sm">
-                <i class="fa-solid fa-wallet text-emerald-400"></i>
-                <span id="userBalance" class="font-bold text-emerald-400">৳0.00</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="pill">৳${Number(j.reward||0).toFixed(2)}</span>
+              <a class="btn small" href="${esc(j.link)}" target="_blank" rel="noopener">কাজ করুন</a>
             </div>
-            <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition">
-                <i class="fa-solid fa-right-from-bracket text-lg"></i>
-            </button>
+          </div>`).join("") : `<div class="card" style="color:var(--muted)">এই মুহূর্তে কোনো কাজ নেই।</div>`}
+      </div>
+    </div>
+    <div class="section">
+      <h2>📊 আমার কার্যক্রম</h2>
+      <div class="card" id="historyCard">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Time</th></tr></thead>
+          <tbody id="historyBody"><tr><td colspan="4" style="color:var(--muted)">লোড হচ্ছে...</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+  `;
+  $("#goJobs").onclick = ()=> page.scrollIntoView({behavior:"smooth"});
+  $("#goGmail").onclick = renderGmailSell;
+  $("#goSpin").onclick = renderSpin;
+  $("#goWithdraw").onclick = renderWithdraw;
+  $("#logoutBtn").onclick = ()=>{ clearSession(); state.user=null; location.hash=""; renderAuth("login"); };
+  loadHistory();
+}
+
+async function loadHistory(){
+  try{
+    const wSnap = await getDocs(query(collection(db, "withdraws"), where("email","==",state.user.email)));
+    const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
+    const rows = [];
+    wSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Withdraw", amount:"-৳"+Number(x.amount||0).toFixed(2), status:x.status, ts:x.createdAt}); });
+    gSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Gmail Sell", amount:"+৳"+Number(x.reward||0).toFixed(2), status:"approved", ts:x.createdAt}); });
+    rows.sort((a,b)=> (b.ts?.seconds||0)-(a.ts?.seconds||0));
+    const tb = $("#historyBody");
+    if (!tb) return;
+    tb.innerHTML = rows.length ? rows.map(r=>`
+      <tr>
+        <td>${esc(r.type)}</td>
+        <td>${esc(r.amount)}</td>
+        <td><span class="badge ${r.status}">${esc(r.status)}</span></td>
+        <td>${r.ts?.toDate ? r.ts.toDate().toLocaleString() : "—"}</td>
+      </tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">কোনো রেকর্ড নেই।</td></tr>`;
+  }catch(e){ console.error(e); }
+}function renderGmailSell(){
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px">
+      <img class="logo" src="${LOGO}"/>
+      <h2>📧 Gmail Sell</h2>
+      <p class="sub">প্রতি জিমেইলের জন্য ৳${GMAIL_SELL_RATE} ইনকাম করুন</p>
+      <div class="field"><label>Gmail Address</label><input id="gEmail" placeholder="example@gmail.com"/></div>
+      <div class="field"><label>Gmail Password</label><input id="gPass" placeholder="••••••••"/></div>
+      <button class="btn accent block" id="gSubmit">সাবমিট করুন</button>
+    </div>`;
+  $("#backBtn").onclick = renderDashboard;
+  $("#gSubmit").onclick = async ()=>{
+    const gEmail = $("#gEmail").value.trim();
+    const gPass = $("#gPass").value.trim();
+    if (!gEmail || !gPass) return toast("সব তথ্য দিন।", "err");
+    if (!/^\S+@\S+\.\S+$/.test(gEmail)) return toast("সঠিক জিমেইল দিন।", "err");
+    await addDoc(collection(db, "gmails"), {
+      email: state.user.email,
+      gmail: gEmail,
+      gmailPass: gPass,
+      reward: GMAIL_SELL_RATE,
+      createdAt: serverTimestamp()
+    });
+    await updateDoc(doc(db,"users",state.user.email), {
+      balance: increment(GMAIL_SELL_RATE),
+      totalEarned: increment(GMAIL_SELL_RATE)
+    });
+    toast(`৳${GMAIL_SELL_RATE} যোগ হয়েছে! ✅`, "ok");
+    renderDashboard();
+  };
+}
+
+function renderSpin(){
+  const spun = !!state.user.hasSpunBefore;
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px;max-width:520px">
+      <h2 style="text-align:center">🎡 Lucky Spin</h2>
+      <p class="sub">স্পিন ফি ৳${SPIN_FEE} • প্রথম স্পিনে নিশ্চিত ৳${FIRST_SPIN_REWARD}</p>
+      <div class="wheel-wrap">
+        <div id="wheel"></div>
+        <div style="color:var(--muted);font-size:13px;text-align:center">
+          ${spun ? "⚠️ আপনি আগে স্পিন করেছেন — পরবর্তী স্পিনে কোনো রিওয়ার্ড নেই।" : "🎁 আপনার প্রথম স্পিন — নিশ্চিত ৳"+FIRST_SPIN_REWARD}
         </div>
-    </nav>
+        <button class="btn gold block" id="spinBtn" style="max-width:260px">Spin Now (৳${SPIN_FEE})</button>
+      </div>
+    </div>`;
+  $("#backBtn").onclick = renderDashboard;
+  let spinning = false;
+  $("#spinBtn").onclick = async ()=>{
+    if (spinning) return;
+    await refreshUser();
+    if (state.user.balance < SPIN_FEE) return toast("পর্যাপ্ত ব্যালেন্স নেই।", "err");
+    spinning = true;
+    const isFirst = !state.user.hasSpunBefore;
+    const reward = isFirst ? FIRST_SPIN_REWARD : 0;
+    const wheel = $("#wheel");
+    const turns = 5 + Math.random()*3;
+    wheel.style.transform = `rotate(${turns*360}deg)`;
+    setTimeout(async ()=>{
+      await updateDoc(doc(db,"users",state.user.email), {
+        balance: increment(reward - SPIN_FEE),
+        totalEarned: increment(reward),
+        hasSpunBefore: true
+      });
+      await addDoc(collection(db,"spins"), {
+        email: state.user.email,
+        fee: SPIN_FEE,
+        reward,
+        createdAt: serverTimestamp()
+      });
+      toast(reward > 0 ? `🎉 আপনি জিতেছেন ৳${reward}!` : `😢 এবার ৳${reward} — আবার চেষ্টা করুন`, reward>0?"ok":"err");
+      spinning = false;
+      renderDashboard();
+    }, 4200);
+  };
+}
 
-    <!-- Main Container -->
-    <main class="max-w-md mx-auto px-4 mt-4">
+function renderWithdraw(){
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px">
+      <h2 style="text-align:center">💸 Withdraw</h2>
+      <p class="sub">সর্বনিম্ন ৳${MIN_WITHDRAW} • ১৫% চার্জ প্রযোজ্য</p>
+      <div class="field">
+        <label>Method</label>
+        <select id="wMethod" style="width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text)">
+          <option value="bKash">bKash</option>
+          <option value="Nagad">Nagad</option>
+        </select>
+      </div>
+      <div class="field"><label>Account Number</label><input id="wNumber" placeholder="01XXXXXXXXX"/></div>
+      <div class="field"><label>Amount (৳)</label><input id="wAmount" type="number" min="${MIN_WITHDRAW}" placeholder="${MIN_WITHDRAW}"/></div>
+      <div class="card" style="background:rgba(255,209,102,.08);border-color:rgba(255,209,102,.3);font-size:13px;color:var(--accent2)">
+        ⚠️ চার্জ ১৫% কাটা হবে। আপনি পাবেন: <b id="wNet">৳0.00</b>
+      </div>
+      <button class="btn accent block" id="wSubmit">Request Withdraw</button>
+    </div>`;
+  $("#backBtn").onclick = renderDashboard;
+  const amtEl = $("#wAmount"), netEl = $("#wNet");
+  amtEl.oninput = ()=>{
+    const a = Number(amtEl.value||0);
+    netEl.textContent = money(a * (1 - WITHDRAW_CHARGE));
+  };
+  $("#wSubmit").onclick = async ()=>{
+    const method = $("#wMethod").value;
+    const number = $("#wNumber").value.trim();
+    const amount = Number(amtEl.value);
+    if (!number || number.length < 11) return toast("সঠিক নাম্বার দিন।", "err");
+    if (!amount || amount < MIN_WITHDRAW) return toast(`সর্বনিম্ন ৳${MIN_WITHDRAW}`, "err");
+    await refreshUser();
+    if (state.user.balance < amount) return toast("পর্যাপ্ত ব্যালেন্স নেই।", "err");
+    await updateDoc(doc(db,"users",state.user.email), { balance: increment(-amount) });
+    await addDoc(collection(db,"withdraws"), {
+      email: state.user.email,
+      name: state.user.name,
+      method, number, amount,
+      netAmount: amount * (1 - WITHDRAW_CHARGE),
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+    toast("উইথড্র রিকোয়েস্ট পাঠানো হয়েছে ✅", "ok");
+    renderDashboard();
+  };
+}
 
-        <!-- AUTH VIEW -->
-        <div id="authView" class="space-y-4">
-            <div class="glass-card p-6 rounded-2xl border border-gray-800 shadow-xl">
-                <div class="flex border-b border-gray-800 mb-6">
-                    <button id="loginTabBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 text-center font-semibold text-indigo-400 border-b-2 border-indigo-500">লগইন</button>
-                    <button id="regTabBtn" onclick="switchAuthTab('reg')" class="flex-1 py-2 text-center font-semibold text-gray-400">রেজিস্ট্রেশন</button>
-                </div>
+function renderAdminLogin(){
+  state.user = null;
+  state.isAdmin = false;
+  $("#navUser").textContent = "";
+  $("#logoutBtn").classList.add("hidden");
+  page.innerHTML = `
+    <div class="auth-card admin-box">
+      <img class="logo" src="${LOGO}"/>
+      <h2>🔐 Admin Login</h2>
+      <p class="sub">সিক্রেট অ্যাডমিন প্যানেল</p>
+      <div class="field">
+        <label>Admin Email</label>
+        <input id="aEmail" type="email" placeholder="Enter email" autocomplete="off"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="aPass" type="password" placeholder="Enter password" autocomplete="off"/>
+      </div>
+      <button class="btn block" id="aLogin">Login</button>
+    </div>`;
+  $("#aLogin").onclick = ()=>{
+    const e = $("#aEmail").value.trim().toLowerCase();
+    const p = $("#aPass").value;
+    if (e === ADMIN_EMAIL && p === ADMIN_PASS) {
+      state.isAdmin = true;
+      toast("Admin লগইন সফল ✅", "ok");
+      renderAdminDashboard();
+    } else {
+      toast("ভুল ক্রেডেনশিয়াল!", "err");
+    }
+  };
+}
 
-                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">ইমেইল ঠিকানা</label>
-                        <input type="email" id="loginEmail" required placeholder="আপনার ইমেইল লিখুন" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">পাসওয়ার্ড</label>
-                        <input type="password" id="loginPassword" required placeholder="পাসওয়ার্ড লিখুন" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition">লগইন করুন</button>
-                </form>
+let adminTab = "users";
+async function renderAdminDashboard(){
+  if (!state.isAdmin) return renderAdminLogin();
+  $("#navUser").textContent = "ADMIN";
+  $("#logoutBtn").classList.remove("hidden");
+  $("#logoutBtn").onclick = ()=>{ state.isAdmin=false; location.hash=""; renderAuth("login"); };
+  page.innerHTML = `
+    <div class="dash-hero">
+      <small>Admin Panel</small>
+      <div class="balance" style="font-size:30px">Paylix Control Center</div>
+      <div class="userline">সিক্রেট অ্যাডমিন ড্যাশবোর্ড</div>
+    </div>
+    <div class="tabs">
+      <button data-tab="users" class="${adminTab==='users'?'active':''}">👥 Users</button>
+      <button data-tab="withdraws" class="${adminTab==='withdraws'?'active':''}">💸 Withdraws</button>
+      <button data-tab="gmails" class="${adminTab==='gmails'?'active':''}">📧 Gmail Orders</button>
+      <button data-tab="postjob" class="${adminTab==='postjob'?'active':''}">➕ Post Job</button>
+    </div>
+    <div id="adminContent"></div>
+  `;
+  $$(".tabs button").forEach(b=> b.onclick = ()=>{ adminTab = b.dataset.tab; renderAdminDashboard(); });
+  if (adminTab === "users") adminUsers();
+  else if (adminTab === "withdraws") adminWithdraws();
+  else if (adminTab === "gmails") adminGmails();
+  else adminPostJob();
+}
 
-                <form id="regForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">সম্পূর্ণ নাম</label>
-                        <input type="text" id="regName" required placeholder="আপনার নাম" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">ইমেইল ঠিকানা</label>
-                        <input type="email" id="regEmail" required placeholder="ইমেইল দিন" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">পাসওয়ার্ড</label>
-                        <input type="password" id="regPassword" required placeholder="পাসওয়ার্ড সেট করুন" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">রেফার ইমেইল (ঐচ্ছিক)</label>
-                        <input type="email" id="regRefer" placeholder="রেফারকারীর ইমেইল (যদি থাকে)" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition">একাউন্ট তৈরি করুন</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- USER DASHBOARD VIEW -->
-        <div id="userDashboard" class="space-y-5 hidden">
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="switchUserTab('jobs')" class="glass-card p-4 rounded-xl text-center border-indigo-500/20 hover:border-indigo-500/50 transition">
-                    <i class="fa-solid fa-list-check text-2xl text-indigo-400 mb-1 block"></i>
-                    <span class="text-sm font-semibold text-gray-200">মাইক্রো জবস</span>
+async function adminUsers(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(collection(db, "users"));
+  const users = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  users.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  c.innerHTML = `
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        ${users.map(u=>`
+          <tr>
+            <td>${esc(u.name||"—")}</td>
+            <td style="font-size:12px">${esc(u.email)}</td>
+            <td><b style="color:var(--accent)">${money(u.balance)}</b></td>
+            <td><span class="badge ${u.blocked?'blocked':'active'}">${u.blocked?'Blocked':'Active'}</span></td>
+            <td>
+              <div class="row-actions">
+                <button class="btn small accent" data-add="${esc(u.email)}">+৳</button>
+                <button class="btn small danger" data-sub="${esc(u.email)}">-৳</button>
+                <button class="btn small ${u.blocked?'gold':'ghost'}" data-block="${esc(u.email)}" data-state="${u.blocked?'0':'1'}">
+                  ${u.blocked?'Unblock':'Block'}
                 </button>
-                <button onclick="switchUserTab('gmail')" class="glass-card p-4 rounded-xl text-center border-purple-500/20 hover:border-purple-500/50 transition">
-                    <i class="fa-solid fa-envelope text-2xl text-amber-400 mb-1 block"></i>
-                    <span class="text-sm font-semibold text-gray-200">জিমেইল সেল</span>
-                </button>
-                <button onclick="switchUserTab('spin')" class="glass-card p-4 rounded-xl text-center border-emerald-500/20 hover:border-emerald-500/50 transition">
-                    <i class="fa-solid fa-arrows-rotate text-2xl text-pink-400 mb-1 block"></i>
-                    <span class="text-sm font-semibold text-gray-200">লাকি স্পিন</span>
-                </button>
-                <button onclick="switchUserTab('withdraw')" class="glass-card p-4 rounded-xl text-center border-blue-500/20 hover:border-blue-500/50 transition">
-                    <i class="fa-solid fa-money-bill-transfer text-2xl text-emerald-400 mb-1 block"></i>
-                    <span class="text-sm font-semibold text-gray-200">উইথড্র</span>
-                </button>
-            </div>
+              </div>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="5" style="color:var(--muted)">কোনো ইউজার নেই।</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  c.querySelectorAll("[data-add]").forEach(b=> b.onclick = async ()=>{
+    const amt = Number(prompt("কত টাকা যোগ করবেন?") || 0);
+    if (!amt) return;
+    await updateDoc(doc(db,"users", b.dataset.add), { balance: increment(amt) });
+    toast("ব্যালেন্স যোগ হয়েছে ✅","ok"); adminUsers();
+  });
+  c.querySelectorAll("[data-sub]").forEach(b=> b.onclick = async ()=>{
+    const amt = Number(prompt("কত টাকা মাইনাস করবেন?") || 0);
+    if (!amt) return;
+    await updateDoc(doc(db,"users", b.dataset.sub), { balance: increment(-amt) });
+    toast("ব্যালেন্স মাইনাস হয়েছে","ok"); adminUsers();
+  });
+  c.querySelectorAll("[data-block]").forEach(b=> b.onclick = async ()=>{
+    const blocked = b.dataset.state === "1";
+    await updateDoc(doc(db,"users", b.dataset.block), { blocked });
+    toast(blocked ? "ব্লক করা হয়েছে" : "আনব্লক করা হয়েছে", "ok"); adminUsers();
+  });
+}
 
-            <div id="tabJobs" class="user-tab-content space-y-3">
-                <h3 class="text-lg font-bold text-gray-200 flex items-center gap-2">
-                    <i class="fa-solid fa-briefcase text-indigo-400"></i> উপলব্ধ কাজসমূহ
-                </h3>
-                <div id="jobsList" class="space-y-3"></div>
-            </div>
-
-            <div id="tabGmail" class="user-tab-content space-y-4 hidden">
-                <div class="glass-card p-5 rounded-2xl border border-amber-500/20">
-                    <h3 class="text-lg font-bold text-amber-400 mb-1 flex items-center gap-2">
-                        <i class="fa-brands fa-google"></i> জিমেইল বিক্রি করুন
-                    </h3>
-                    <p class="text-xs text-gray-400 mb-4">প্রতিটি সঠিক জিমেইল অ্যাকাউন্টের জন্য পাবেন ১৫ টাকা।</p>
-                    <form onsubmit="handleGmailSell(event)" class="space-y-3">
-                        <input type="email" id="sellGmail" required placeholder="জিমেইল এড্রেস" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-amber-500">
-                        <input type="text" id="sellPassword" required placeholder="জিমেইল পাসওয়ার্ড" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-amber-500">
-                        <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg">জমাদান করুন (৳১৫)</button>
-                    </form>
-                </div>
-            </div>
-
-            <div id="tabSpin" class="user-tab-content hidden">
-                <div class="glass-card p-6 rounded-2xl text-center border border-pink-500/20">
-                    <div class="relative w-56 h-56 mx-auto mb-6 flex items-center justify-center">
-                        <div class="absolute -top-2 z-10 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[20px] border-t-red-500"></div>
-                        <div id="wheel" class="spin-wheel w-full h-full rounded-full border-4 border-indigo-500 bg-gradient-to-tr from-purple-900 via-indigo-900 to-slate-900 flex items-center justify-center shadow-2xl">
-                            <div class="text-center">
-                                <i class="fa-solid fa-gift text-4xl text-amber-400 mb-1"></i>
-                                <div class="text-xs font-bold text-gray-300">SPIN & WIN</div>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="handleSpin()" id="spinBtn" class="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold rounded-xl shadow-lg">
-                        ১৫ টাকায় স্পিন করুন
-                    </button>
-                </div>
-            </div>
-
-            <div id="tabWithdraw" class="user-tab-content hidden">
-                <div class="glass-card p-5 rounded-2xl border border-emerald-500/20">
-                    <h3 class="text-lg font-bold text-emerald-400 mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-wallet"></i> টাকা উত্তোলন (Withdraw)
-                    </h3>
-                    <p class="text-xs text-gray-400 mb-4">সর্বনিম্ন উত্তোলন ৳১০০। (১৫% প্রসেসিং চার্জ প্রযোজ্য)</p>
-                    <form onsubmit="handleWithdraw(event)" class="space-y-3">
-                        <div>
-                            <label class="text-xs text-gray-400 mb-1 block">পেমেন্ট মেথড</label>
-                            <select id="withdrawMethod" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-emerald-500">
-                                <option value="bKash">বিকাশ (bKash)</option>
-                                <option value="Upay">উপায় (Upay)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-400 mb-1 block">অ্যাকাউন্ট নম্বর</label>
-                            <input type="text" id="withdrawNumber" required placeholder="017xxxxxxxx" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-emerald-500">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-400 mb-1 block">পরিমাণ (টাকা)</label>
-                            <input type="number" id="withdrawAmount" required min="100" placeholder="সর্বনিম্ন ১০০" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-emerald-500">
-                        </div>
-                        <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg">রিকোয়েস্ট পাঠান</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADMIN LOGIN VIEW -->
-        <div id="adminAuthView" class="space-y-4 hidden">
-            <div class="glass-card p-6 rounded-2xl border border-red-500/30">
-                <div class="text-center mb-6">
-                    <i class="fa-solid fa-user-shield text-4xl text-red-500 mb-2"></i>
-                    <h2 class="text-xl font-bold text-gray-100">সিক্রেট অ্যাডমিন লগইন</h2>
-                </div>
-                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">অ্যাডমিন ইমেইল</label>
-                        <input type="email" id="adminEmail" required placeholder="অ্যাডমিন ইমেইল লিখুন" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 mb-1 block">পাসওয়ার্ড</label>
-                        <input type="password" id="adminPassword" required placeholder="পাসওয়ার্ড লিখুন" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-red-600 to-rose-700 text-white font-semibold rounded-xl shadow-lg">অ্যাডমিন প্যানেলে প্রবেশ</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- ADMIN DASHBOARD VIEW -->
-        <div id="adminDashboard" class="space-y-6 hidden">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                <h2 class="text-lg font-bold text-red-400 flex items-center gap-2">
-                    <i class="fa-solid fa-sliders"></i> অ্যাডমিন কন্ট্রোল প্যানেল
-                </h2>
-                <button onclick="logoutAdmin()" class="px-3 py-1 bg-red-950 border border-red-500/30 text-red-400 rounded-lg text-xs font-semibold">লগআউট</button>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-indigo-500/20">
-                <h3 class="text-sm font-bold text-indigo-400 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> নতুন মাইক্রো জব পোস্ট করুন
-                </h3>
-                <form onsubmit="handlePostJob(event)" class="space-y-3">
-                    <input type="text" id="jobTitle" required placeholder="কাজের শিরোনাম" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                    <input type="url" id="jobLink" required placeholder="কাজের লিংক (URL)" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                    <input type="number" step="0.01" id="jobReward" required placeholder="পেমেন্ট পরিমাণ (টাকা)" class="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                    <button type="submit" class="w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl shadow-md">জব পাবলিশ করুন</button>
-                </form>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-indigo-500/20">
-                <h3 class="text-sm font-bold text-indigo-400 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-tasks"></i> সকল পোস্ট করা মাইক্রো জবস
-                </h3>
-                <div id="adminJobsList" class="space-y-3 max-h-60 overflow-y-auto no-scrollbar"></div>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-emerald-500/20">
-                <h3 class="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-hand-holding-dollar"></i> উইথড্র রিকোয়েস্টসমূহ
-                </h3>
-                <div id="adminWithdrawList" class="space-y-3 max-h-60 overflow-y-auto no-scrollbar"></div>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-amber-500/20">
-                <h3 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-envelope-open-text"></i> জমাকৃত জিমেইল তালিকা
-                </h3>
-                <div id="adminGmailList" class="space-y-3 max-h-60 overflow-y-auto no-scrollbar"></div>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-blue-500/20">
-                <h3 class="text-sm font-bold text-blue-400 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-users"></i> ইউজার ব্যবস্থাপনা
-                </h3>
-                <div id="adminUsersList" class="space-y-3 max-h-72 overflow-y-auto no-scrollbar"></div>
-            </div>
-        </div>
-
-                  </main>
-      <script>
-        const firebaseConfig = {
-            apiKey: "AlzaSyAt87cMTIiJyXtpfIfLiLfZfa7WX1g9Mg",
-            authDomain: "paylix-586b1.firebaseapp.com",
-            projectId: "paylix-586b1",
-            storageBucket: "paylix-586b1.appspot.com",
-            messagingSenderId: "353074453470",
-            appId: "1:353074453470:web:679e99a4021eeed9499b4f"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        let currentUser = null;
-        let isAdminLoggedIn = false;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            checkHashRoute();
-            checkUserSession();
+async function adminWithdraws(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(collection(db, "withdraws"));
+  const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  list.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  c.innerHTML = `
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Method</th><th>Number</th><th>Amount</th><th>Net</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        ${list.map(w=>`
+          <tr>
+            <td style="font-size:12px">${esc(w.email)}</td>
+            <td>${esc(w.method)}</td>
+            <td>${esc(w.number)}</td>
+            <td>${money(w.amount)}</td>
+            <td><b style="color:var(--accent)">${money(w.netAmount)}</b></td>
+            <td><span class="badge ${w.status}">${esc(w.status)}</span></td>
+            <td>
+              <div class="row-actions">
+                ${w.status==="pending" ? `
+                  <button class="btn small accent" data-approve="${w.id}">Approve</button>
+                  <button class="btn small danger" data-cancel="${w.id}" data-amt="${w.amount}" data-email="${esc(w.email)}">Cancel</button>
+                ` : "—"}
+              </div>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="7" style="color:var(--muted)">কোনো উইথড্র রিকোয়েস্ট নেই।</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  c.querySelectorAll("[data-approve]").forEach(b=> b.onclick = async ()=>{
+    const id = b.dataset.approve;
+    const wSnap = await getDoc(doc(db,"withdraws",id));
+    const w = wSnap.data();
+    await updateDoc(doc(db,"withdraws",id), { status:"approved" });
+    const uSnap = await getDoc(doc(db,"users", w.email));
+    const u = uSnap.data();
+    if (u.referredBy) {
+      const refSnap = await getDoc(doc(db,"users", u.referredBy));
+      if (refSnap.exists()) {
+        const bonus = Number(w.amount) * REFERRAL_BONUS;
+        await updateDoc(doc(db,"users", u.referredBy), {
+          balance: increment(bonus),
+          totalEarned: increment(bonus)
         });
+        await addDoc(collection(db,"referralBonuses"), {
+          referrer: u.referredBy, from: w.email, amount: bonus, createdAt: serverTimestamp()
+        });
+      }
+    }
+    toast("Approve হয়েছে ✅", "ok"); adminWithdraws();
+  });
+  c.querySelectorAll("[data-cancel]").forEach(b=> b.onclick = async ()=>{
+    if (!confirm("বাতিল করলে টাকা ইউজারের কাছে ফেরত যাবে। নিশ্চিত?")) return;
+    const id = b.dataset.cancel, amt = Number(b.dataset.amt), email = b.dataset.email;
+    await updateDoc(doc(db,"withdraws", id), { status:"cancelled" });
+    await updateDoc(doc(db,"users", email), { balance: increment(amt) });
+    toast("বাতিল ও রিফান্ড সম্পন্ন", "ok"); adminWithdraws();
+  });
+}
 
-        window.addEventListener('hashchange', checkHashRoute);
+async function adminGmails(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(collection(db, "gmails"));
+  const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  list.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  c.innerHTML = `
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Gmail</th><th>Password</th><th>Reward</th><th>Time</th></tr></thead>
+        <tbody>
+        ${list.map(g=>`
+          <tr>
+            <td style="font-size:12px">${esc(g.email)}</td>
+            <td>${esc(g.gmail)}</td>
+            <td><span class="pw" data-pw="${esc(g.gmailPass)}" data-shown="0">••••••</span>
+              <span class="eye" data-eye="${esc(g.gmailPass)}">👁️‍🗨️</span></td>
+            <td>${money(g.reward)}</td>
+            <td>${g.createdAt?.toDate ? g.createdAt.toDate().toLocaleString() : "—"}</td>
+          </tr>`).join("") || `<tr><td colspan="5" style="color:var(--muted)">কোনো অর্ডার নেই।</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  c.querySelectorAll("[data-eye]").forEach(e=> e.onclick = ()=>{
+    const td = e.closest("td");
+    const span = td.querySelector(".pw");
+    if (span.dataset.shown === "0") { span.textContent = e.dataset.eye; span.dataset.shown = "1"; }
+    else { span.textContent = "••••••"; span.dataset.shown = "0"; }
+  });
+}
 
-        function checkHashRoute() {
-            const hash = window.location.hash;
-            if (hash === '#admin' || hash === '#adn') {
-                hideAllViews();
-                if (isAdminLoggedIn) {
-                    document.getElementById('adminDashboard').classList.remove('hidden');
-                    loadAdminData();
-                } else {
-                    document.getElementById('adminAuthView').classList.remove('hidden');
-                }
-            } else {
-                if (currentUser) {
-                    showDashboard();
-                } else {
-                    hideAllViews();
-                    document.getElementById('authView').classList.remove('hidden');
-                }
-            }
-        }
+function adminPostJob(){
+  const c = $("#adminContent");
+  c.innerHTML = `
+    <div class="auth-card" style="margin-top:0">
+      <h2 style="text-align:center">➕ Post New Job</h2>
+      <div class="field"><label>Job Title</label><input id="jTitle" placeholder="e.g. Subscribe YouTube channel"/></div>
+      <div class="field"><label>Description</label><input id="jDesc" placeholder="Short description"/></div>
+      <div class="field"><label>Link</label><input id="jLink" placeholder="https://..."/></div>
+      <div class="field"><label>Reward (৳)</label><input id="jReward" type="number" min="1" placeholder="5"/></div>
+      <button class="btn accent block" id="jSubmit">Post Job</button>
+    </div>`;
+  $("#jSubmit").onclick = async ()=>{
+    const title = $("#jTitle").value.trim();
+    const description = $("#jDesc").value.trim();
+    const link = $("#jLink").value.trim();
+    const reward = Number($("#jReward").value);
+    if (!title || !link || !reward) return toast("সব ফিল্ড পূরণ করুন।", "err");
+    await addDoc(collection(db, "jobs"), {
+      title, description, link, reward, createdAt: serverTimestamp()
+    });
+    toast("Job পোস্ট হয়েছে ✅", "ok");
+    $("#jTitle").value = $("#jDesc").value = $("#jLink").value = $("#jReward").value = "";
+  };
+}
 
-        function hideAllViews() {
-            document.getElementById('authView').classList.add('hidden');
-            document.getElementById('userDashboard').classList.add('hidden');
-            document.getElementById('adminAuthView').classList.add('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-        }
-
-        function switchAuthTab(tab) {
-            if(tab === 'login') {
-                document.getElementById('loginForm').classList.remove('hidden');
-                document.getElementById('regForm').classList.add('hidden');
-                document.getElementById('loginTabBtn').className = "flex-1 py-2 text-center font-semibold text-indigo-400 border-b-2 border-indigo-500";
-                document.getElementById('regTabBtn').className = "flex-1 py-2 text-center font-semibold text-gray-400";
-            } else {
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('regForm').classList.remove('hidden');
-                document.getElementById('regTabBtn').className = "flex-1 py-2 text-center font-semibold text-indigo-400 border-b-2 border-indigo-500";
-                document.getElementById('loginTabBtn').className = "flex-1 py-2 text-center font-semibold text-gray-400";
-            }
-        }
-
-        async function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim().toLowerCase();
-            const password = document.getElementById('regPassword').value;
-            const referEmail = document.getElementById('regRefer').value.trim().toLowerCase();
-
-            try {
-                const userDoc = await db.collection('users').doc(email).get();
-                if (userDoc.exists) {
-                    alert('এই ইমেইল দিয়ে ইতোমধ্যে অ্যাকাউন্ট তৈরি করা হয়েছে!');
-                    return;
-                }
-
-                const newUser = {
-                    name,
-                    email,
-                    password,
-                    referEmail: referEmail || null,
-                    balance: 0.00,
-                    hasSpunBefore: false,
-                    isBlocked: false,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                await db.collection('users').doc(email).set(newUser);
-                alert('রেজিস্ট্রেশন সফল হয়েছে! এখন লগইন করুন।');
-                switchAuthTab('login');
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-            const password = document.getElementById('loginPassword').value;
-
-            try {
-                const userDoc = await db.collection('users').doc(email).get();
-                if (!userDoc.exists || userDoc.data().password !== password) {
-                    alert('ইমেইল অথবা পাসওয়ার্ড সঠিক নয়!');
-                    return;
-                }
-
-                const userData = userDoc.data();
-                if (userData.isBlocked) {
-                    alert('আপনার অ্যাকাউন্টটি অ্যাডমিন কর্তৃক ব্লক করা হয়েছে!');
-                    return;
-                }
-
-                currentUser = userData;
-                localStorage.setItem('paylix_user', JSON.stringify({ email: currentUser.email }));
-                showDashboard();
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        function checkUserSession() {
-            const saved = localStorage.getItem('paylix_user');
-            if (saved) {
-                const { email } = JSON.parse(saved);
-                db.collection('users').doc(email).onSnapshot(doc => {
-                    if (doc.exists) {
-                        currentUser = doc.data();
-                        if (currentUser.isBlocked) {
-                            logout();
-                            alert('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে!');
-                            return;
-                        }
-                        if (!window.location.hash.includes('admin')) {
-                            showDashboard();
-                        }
-                    }
-                });
-            }
-        }
-
-        function showDashboard() {
-            hideAllViews();
-            document.getElementById('userDashboard').classList.remove('hidden');
-            document.getElementById('navRight').classList.remove('hidden');
-            document.getElementById('userBalance').innerText = `৳${currentUser.balance.toFixed(2)}`;
-            loadJobs();
-        }
-
-        function logout() {
-            currentUser = null;
-            localStorage.removeItem('paylix_user');
-            document.getElementById('navRight').classList.add('hidden');
-            hideAllViews();
-            document.getElementById('authView').classList.remove('hidden');
-        }
-
-        function switchUserTab(tabName) {
-            document.querySelectorAll('.user-tab-content').forEach(el => el.classList.add('hidden'));
-            if(tabName === 'jobs') document.getElementById('tabJobs').classList.remove('hidden');
-            if(tabName === 'gmail') document.getElementById('tabGmail').classList.remove('hidden');
-            if(tabName === 'spin') document.getElementById('tabSpin').classList.remove('hidden');
-            if(tabName === 'withdraw') document.getElementById('tabWithdraw').classList.remove('hidden');
-        }
-
-        function loadJobs() {
-            db.collection('jobs').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                const list = document.getElementById('jobsList');
-                list.innerHTML = '';
-                if(snapshot.empty) {
-                    list.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">বর্তমানে কোনো কাজ উপলব্ধ নেই।</p>`;
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const job = doc.data();
-                    list.innerHTML += `
-                        <div class="glass-card p-4 rounded-xl flex justify-between items-center">
-                            <div>
-                                <h4 class="font-bold text-sm text-gray-200">${job.title}</h4>
-                                <span class="text-xs text-emerald-400 font-semibold">পুরস্কার: ৳${parseFloat(job.reward).toFixed(2)}</span>
-                            </div>
-                            <a href="${job.link}" target="_blank" onclick="completeJob('${doc.id}', ${job.reward})" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow">কাজ শুরু করুন</a>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        async function completeJob(jobId, reward) {
-            const newBal = currentUser.balance + parseFloat(reward);
-            await db.collection('users').doc(currentUser.email).update({ balance: newBal });
-        }
-
-        async function handleGmailSell(e) {
-            e.preventDefault();
-            const gmail = document.getElementById('sellGmail').value.trim();
-            const password = document.getElementById('sellPassword').value.trim();
-
-            try {
-                await db.collection('gmails').add({
-                    userEmail: currentUser.email,
-                    gmail,
-                    password,
-                    status: 'Pending',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                const newBalance = currentUser.balance + 15;
-                await db.collection('users').doc(currentUser.email).update({ balance: newBalance });
-
-                alert('জিমেইল সফলভাবে জমা হয়েছে! ৳১৫ আপনার ব্যালেন্সে যোগ করা হয়েছে।');
-                document.getElementById('sellGmail').value = '';
-                document.getElementById('sellPassword').value = '';
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        async function handleSpin() {
-            if (currentUser.balance < 15) {
-                alert('স্পিন করতে ন্যূনতম ১৫ টাকা ব্যালেন্স প্রয়োজন!');
-                return;
-            }
-
-            const spinBtn = document.getElementById('spinBtn');
-            const wheel = document.getElementById('wheel');
-            spinBtn.disabled = true;
-
-            const randomRot = 1440 + Math.floor(Math.random() * 360);
-            wheel.style.transform = `rotate(${randomRot}deg)`;
-
-            setTimeout(async () => {
-                let winAmount = 0;
-                let isFirstTime = !currentUser.hasSpunBefore;
-
-                if (isFirstTime) {
-                    winAmount = 20;
-                } else {
-                    winAmount = 0;
-                }
-
-                const updatedBalance = (currentUser.balance - 15) + winAmount;
-
-                await db.collection('users').doc(currentUser.email).update({
-                    balance: updatedBalance,
-                    hasSpunBefore: true
-                });
-
-                if (isFirstTime) {
-                    alert('অভিনন্দন! আপনি প্রথম স্পিনে ২০ টাকা জিতেছে!');
-                } else {
-                    alert('দুঃখিত! আপনি ০ টাকা জিতেছেন (১৫ টাকা কেটে নেওয়া হয়েছে)।');
-                }
-
-                wheel.style.transform = `rotate(0deg)`;
-                spinBtn.disabled = false;
-            }, 4000);
-        }
-
-        async function handleWithdraw(e) {
-            e.preventDefault();
-            const method = document.getElementById('withdrawMethod').value;
-            const number = document.getElementById('withdrawNumber').value.trim();
-            const amount = parseFloat(document.getElementById('withdrawAmount').value);
-
-            if (amount < 100) {
-                alert('সর্বনিম্ন ১০০ টাকা উত্তোলন করতে হবে!');
-                return;
-            }
-
-            if (currentUser.balance < amount) {
-                alert('আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!');
-                return;
-            }
-
-            try {
-                const charge = amount * 0.15;
-                const netAmount = amount - charge;
-                const newBal = currentUser.balance - amount;
-
-                await db.collection('users').doc(currentUser.email).update({ balance: newBal });
-
-                await db.collection('withdraws').add({
-                    userEmail: currentUser.email,
-                    referEmail: currentUser.referEmail || null,
-                    method,
-                    number,
-                    amount,
-                    netAmount,
-                    status: 'Pending',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                alert(`৳${amount} উত্তোলনের আবেদন জমা হয়েছে। ১৫% চার্জ কেটে আপনাকে ৳${netAmount.toFixed(2)} পাঠানো হবে।`);
-                document.getElementById('withdrawNumber').value = '';
-                document.getElementById('withdrawAmount').value = '';
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-                function handleAdminLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('adminEmail').value.trim();
-            const password = document.getElementById('adminPassword').value;
-
-            if (email === 'hey.rafi32@gmail.com' && password === 'rafi2026') {
-                isAdminLoggedIn = true;
-                document.getElementById('adminAuthView').classList.add('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                loadAdminData();
-            } else {
-                alert('অ্যাডমিন ইমেইল বা পাসওয়ার্ড ভুল!');
-            }
-        }
-
-        function logoutAdmin() {
-            isAdminLoggedIn = false;
-            window.location.hash = '';
-            checkHashRoute();
-        }
-
-        function loadAdminData() {
-            loadAdminJobs();
-            loadAdminWithdraws();
-            loadAdminGmail();
-            loadAdminUsers();
-        }
-
-        async function handlePostJob(e) {
-            e.preventDefault();
-            const title = document.getElementById('jobTitle').value.trim();
-            const link = document.getElementById('jobLink').value.trim();
-            const reward = parseFloat(document.getElementById('jobReward').value);
-
-            try {
-                await db.collection('jobs').add({
-                    title,
-                    link,
-                    reward,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                alert('জব সফলভাবে পোস্ট করা হয়েছে!');
-                document.getElementById('jobTitle').value = '';
-                document.getElementById('jobLink').value = '';
-                document.getElementById('jobReward').value = '';
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        function loadAdminJobs() {
-            db.collection('jobs').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                const list = document.getElementById('adminJobsList');
-                list.innerHTML = '';
-                if(snapshot.empty) {
-                    list.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">কোনো পোস্ট করা জব নেই।</p>`;
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const job = doc.data();
-                    list.innerHTML += `
-                        <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
-                            <div>
-                                <div class="font-bold text-gray-200">${job.title}</div>
-                                <div class="text-emerald-400">৳${parseFloat(job.reward).toFixed(2)}</div>
-                            </div>
-                            <button onclick="deleteJob('${doc.id}')" class="px-2.5 py-1.5 bg-red-600/20 text-red-400 rounded-lg border border-red-500/30">ডিলিট</button>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        async function deleteJob(jobId) {
-            if(confirm('আপনি কি সত্যিই এই মাইক্রো জবটি মুছে ফেলতে চান?')) {
-                try {
-                    await db.collection('jobs').doc(jobId).delete();
-                    alert('মাইক্রো জবটি সফলভাবে মুছে ফেলা হয়েছে!');
-                } catch(err) {
-                    alert('ত্রুটি: ' + err.message);
-                }
-            }
-        }
-
-        function loadAdminWithdraws() {
-            db.collection('withdraws').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                const list = document.getElementById('adminWithdrawList');
-                list.innerHTML = '';
-                if(snapshot.empty) {
-                    list.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">কোনো পেন্ডিং উইথড্র নেই।</p>`;
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const w = doc.data();
-                    if (w.status === 'Pending') {
-                        list.innerHTML += `
-                            <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800 space-y-2">
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-gray-300 font-semibold">${w.userEmail}</span>
-                                    <span class="text-emerald-400 font-bold">${w.method}: ৳${w.amount}</span>
-                                </div>
-                                <div class="text-xs text-gray-400">নম্বর: ${w.number} | পে আউট: ৳${w.netAmount.toFixed(2)}</div>
-                                <div class="flex gap-2">
-                                    <button onclick="approveWithdraw('${doc.id}', '${w.referEmail}', ${w.amount})" class="flex-1 py-1 bg-emerald-600 text-white rounded text-xs font-semibold">Approve</button>
-                                    <button onclick="cancelWithdraw('${doc.id}', '${w.userEmail}', ${w.amount})" class="flex-1 py-1 bg-red-600 text-white rounded text-xs font-semibold">Cancel</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-            });
-        }
-
-        async function approveWithdraw(id, referEmail, amount) {
-            try {
-                await db.collection('withdraws').doc(id).update({ status: 'Approved' });
-                
-                if (referEmail && referEmail !== 'null') {
-                    const refDoc = await db.collection('users').doc(referEmail).get();
-                    if (refDoc.exists) {
-                        const bonus = amount * 0.10;
-                        const newBal = refDoc.data().balance + bonus;
-                        await db.collection('users').doc(referEmail).update({ balance: newBal });
-                    }
-                }
-                alert('উইথড্র রিকোয়েস্ট অনুমোদিত হয়েছে এবং রেফারার অটোমেটিক বোনাস পেয়েছেন!');
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        async function cancelWithdraw(id, userEmail, amount) {
-            try {
-                await db.collection('withdraws').doc(id).update({ status: 'Cancelled' });
-                const uDoc = await db.collection('users').doc(userEmail).get();
-                if (uDoc.exists) {
-                    const refundBal = uDoc.data().balance + amount;
-                    await db.collection('users').doc(userEmail).update({ balance: refundBal });
-                }
-                alert('উইথড্র বাতিল করে টাকা রিফান্ড দেওয়া হয়েছে!');
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        function loadAdminGmail() {
-            db.collection('gmails').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                const list = document.getElementById('adminGmailList');
-                list.innerHTML = '';
-                if(snapshot.empty) {
-                    list.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">কোনো জিমেইল সাবমিট হয়নি।</p>`;
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const g = doc.data();
-                    const pwdId = `pwd_${doc.id}`;
-                    list.innerHTML += `
-                        <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800 text-xs space-y-1">
-                            <div class="text-gray-400">ইউজার: ${g.userEmail}</div>
-                            <div class="text-amber-400 font-semibold">জিমেইল: ${g.gmail}</div>
-                            <div class="flex items-center gap-2">
-                                <span>পাসওয়ার্ড: <span id="${pwdId}" class="font-mono text-gray-400">••••••••</span></span>
-                                <button onclick="togglePassword('${pwdId}', '${g.password}')" class="text-gray-400 hover:text-gray-200">👁️‍🗨️</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        function togglePassword(elementId, realPassword) {
-            const el = document.getElementById(elementId);
-            if (el.innerText === '••••••••') {
-                el.innerText = realPassword;
-                el.classList.remove('text-gray-400');
-                el.classList.add('text-emerald-400');
-            } else {
-                el.innerText = '••••••••';
-                el.classList.remove('text-emerald-400');
-                el.classList.add('text-gray-400');
-            }
-        }
-
-        function loadAdminUsers() {
-            db.collection('users').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                const list = document.getElementById('adminUsersList');
-                list.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const u = doc.data();
-                    list.innerHTML += `
-                        <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800 text-xs space-y-2">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-bold text-gray-200">${u.name}</div>
-                                    <div class="text-gray-400">${u.email}</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-emerald-400 font-bold">৳${u.balance.toFixed(2)}</div>
-                                    <span class="text-[10px] ${u.isBlocked ? 'text-red-400' : 'text-emerald-400'}">${u.isBlocked ? 'Blocked' : 'Active'}</span>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 pt-1 border-t border-gray-800">
-                                <button onclick="updateUserBalance('${u.email}', 10)" class="flex-1 py-1 bg-emerald-600/20 text-emerald-400 rounded border border-emerald-500/30 font-semibold">+৳১০</button>
-                                <button onclick="updateUserBalance('${u.email}', -10)" class="flex-1 py-1 bg-red-600/20 text-red-400 rounded border border-red-500/30 font-semibold">-৳১০</button>
-                                <button onclick="toggleBlockUser('${u.email}', ${u.isBlocked})" class="flex-1 py-1 bg-gray-800 text-gray-200 rounded font-semibold">${u.isBlocked ? 'Unblock' : 'Block'}</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        async function updateUserBalance(email, amount) {
-            try {
-                const doc = await db.collection('users').doc(email).get();
-                if (doc.exists) {
-                    const currentBal = doc.data().balance;
-                    const newBal = Math.max(0, currentBal + amount);
-                    await db.collection('users').doc(email).update({ balance: newBal });
-                }
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-
-        async function toggleBlockUser(email, currentStatus) {
-            try {
-                await db.collection('users').doc(email).update({ isBlocked: !currentStatus });
-            } catch (err) {
-                alert('ত্রুটি: ' + err.message);
-            }
-        }
-    </script>
+</script>
 </body>
 </html>
