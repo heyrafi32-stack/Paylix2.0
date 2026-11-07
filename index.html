@@ -423,7 +423,7 @@ async function loadHistory(){
     const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
     const rows = [];
     wSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Withdraw", amount:"-৳"+Number(x.amount||0).toFixed(2), status:x.status, ts:x.createdAt}); });
-    gSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Gmail Sell", amount:"+৳"+Number(x.reward||0).toFixed(2), status:"approved", ts:x.createdAt}); });
+    gSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Gmail Sell", amount:"+৳"+Number(x.reward||0).toFixed(2), status:x.status||"pending", ts:x.createdAt}); });
     rows.sort((a,b)=> (b.ts?.seconds||0)-(a.ts?.seconds||0));
     const tb = $("#historyBody");
     if (!tb) return;
@@ -435,13 +435,15 @@ async function loadHistory(){
         <td>${r.ts?.toDate ? r.ts.toDate().toLocaleString() : "—"}</td>
       </tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">কোনো রেকর্ড নেই।</td></tr>`;
   }catch(e){ console.error(e); }
-}function renderGmailSell(){
+}
+
+function renderGmailSell(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
       <img class="logo" src="${LOGO}"/>
       <h2>📧 Gmail Sell</h2>
-      <p class="sub">প্রতি জিমেইলের জন্য ৳${GMAIL_SELL_RATE} ইনকাম করুন</p>
+      <p class="sub">প্রতি জিমেইলের জন্য ৳${GMAIL_SELL_RATE} (অ্যাডমিন Approve করলে যোগ হবে)</p>
       <div class="field"><label>Gmail Address</label><input id="gEmail" placeholder="example@gmail.com"/></div>
       <div class="field"><label>Gmail Password</label><input id="gPass" placeholder="••••••••"/></div>
       <button class="btn accent block" id="gSubmit">সাবমিট করুন</button>
@@ -452,18 +454,17 @@ async function loadHistory(){
     const gPass = $("#gPass").value.trim();
     if (!gEmail || !gPass) return toast("সব তথ্য দিন।", "err");
     if (!/^\S+@\S+\.\S+$/.test(gEmail)) return toast("সঠিক জিমেইল দিন।", "err");
+
     await addDoc(collection(db, "gmails"), {
       email: state.user.email,
       gmail: gEmail,
       gmailPass: gPass,
       reward: GMAIL_SELL_RATE,
+      status: "pending",
       createdAt: serverTimestamp()
     });
-    await updateDoc(doc(db,"users",state.user.email), {
-      balance: increment(GMAIL_SELL_RATE),
-      totalEarned: increment(GMAIL_SELL_RATE)
-    });
-    toast(`৳${GMAIL_SELL_RATE} যোগ হয়েছে! ✅`, "ok");
+    
+    toast("জিমেইল সাবমিট হয়েছে! অ্যাডমিন Approve করলে টাকা যোগ হবে ✅", "ok");
     renderDashboard();
   };
 }
@@ -560,9 +561,7 @@ function renderWithdraw(){
     toast("উইথড্র রিকোয়েস্ট পাঠানো হয়েছে ✅", "ok");
     renderDashboard();
   };
-}
-
-function renderAdminLogin(){
+    }function renderAdminLogin(){
   state.user = null;
   state.isAdmin = false;
   $("#navUser").textContent = "";
@@ -742,7 +741,7 @@ async function adminGmails(){
   c.innerHTML = `
     <div class="card table-wrap">
       <table>
-        <thead><tr><th>User</th><th>Gmail</th><th>Password</th><th>Reward</th><th>Time</th></tr></thead>
+        <thead><tr><th>User</th><th>Gmail</th><th>Password</th><th>Reward</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
         ${list.map(g=>`
           <tr>
@@ -751,8 +750,15 @@ async function adminGmails(){
             <td><span class="pw" data-pw="${esc(g.gmailPass)}" data-shown="0">••••••</span>
               <span class="eye" data-eye="${esc(g.gmailPass)}">👁️‍🗨️</span></td>
             <td>${money(g.reward)}</td>
-            <td>${g.createdAt?.toDate ? g.createdAt.toDate().toLocaleString() : "—"}</td>
-          </tr>`).join("") || `<tr><td colspan="5" style="color:var(--muted)">কোনো অর্ডার নেই।</td></tr>`}
+            <td><span class="badge ${g.status || 'pending'}">${g.status || 'pending'}</span></td>
+            <td>
+              <div class="row-actions">
+                ${g.status === "pending" || !g.status ? `
+                  <button class="btn small accent" data-gapprove="${g.id}" data-gemail="${esc(g.email)}" data-greward="${g.reward}">Approve</button>
+                ` : "—"}
+              </div>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="6" style="color:var(--muted)">কোনো অর্ডার নেই।</td></tr>`}
         </tbody>
       </table>
     </div>`;
@@ -761,6 +767,19 @@ async function adminGmails(){
     const span = td.querySelector(".pw");
     if (span.dataset.shown === "0") { span.textContent = e.dataset.eye; span.dataset.shown = "1"; }
     else { span.textContent = "••••••"; span.dataset.shown = "0"; }
+  });
+  c.querySelectorAll("[data-gapprove]").forEach(b=> b.onclick = async ()=>{
+    if (!confirm("Approve করলে ইউজারের একাউন্টে টাকা যোগ হবে। নিশ্চিত?")) return;
+    const id = b.dataset.gapprove;
+    const userEmail = b.dataset.gemail;
+    const reward = Number(b.dataset.greward);
+    await updateDoc(doc(db, "gmails", id), { status: "approved" });
+    await updateDoc(doc(db, "users", userEmail), { 
+      balance: increment(reward),
+      totalEarned: increment(reward)
+    });
+    toast("Approve হয়েছে এবং টাকা যোগ হয়েছে ✅", "ok");
+    adminGmails();
   });
 }
 
