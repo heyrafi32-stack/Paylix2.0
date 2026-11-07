@@ -2,393 +2,850 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Paylix</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;background:#110a1f;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
-.app{width:100%;max-width:500px;min-height:100vh;padding:20px;padding-bottom:80px}
-.page{display:none;animation:slideIn .3s forwards}.page.active{display:block}
-@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-#page-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;position:fixed;top:0;left:0;width:100%;z-index:999;background:radial-gradient(circle at 20% 10%,#2a1552 0%,#110a1f 100%);transition:opacity .5s}
-.splash-logo{width:130px;animation:zoomGlow 2s infinite alternate;margin-bottom:20px;border-radius:20px}
-@keyframes zoomGlow{0%{transform:scale(.95);filter:drop-shadow(0 0 15px rgba(168,85,247,.4))}100%{transform:scale(1.05);filter:drop-shadow(0 0 35px rgba(168,85,247,.9))}}
-.splash-text{font-size:2rem;font-weight:800;background:linear-gradient(90deg,#c084fc,#a855f7,#7c3aed);-webkit-background-clip:text;color:transparent;letter-spacing:3px}
-.topbar{display:flex;justify-content:space-between;align-items:center;background:#1a0b2e;border-radius:18px;padding:14px 18px;margin-bottom:20px;border:1px solid #3b1d6e}
-.logo{display:flex;align-items:center;gap:8px}.logo img{height:36px;border-radius:8px}
-.logo span{font-size:1.3rem;font-weight:800;color:#fff}
-.balance{background:linear-gradient(135deg,#2a1552,#1a0b2e);border:1px solid #4c1d95;border-radius:22px;padding:24px;margin-bottom:22px}
-.balance-label{font-size:.85rem;color:#b9a4dd;text-transform:uppercase}
-.balance-amount{font-size:2.5rem;font-weight:800;margin:6px 0 16px;color:#fff}
-.btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:12px 20px;font-size:.9rem;color:#fff;width:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);transition:.25s}
-.btn:hover{transform:translateY(-2px)}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:24px}
-.card{background:#1a0b2e;border:1px solid #3b1d6e;border-radius:18px;padding:22px 18px;text-align:center;cursor:pointer;transition:.25s}
-.card:hover{border-color:#a855f7}
-.card .icon{font-size:1.7rem;margin-bottom:10px;display:block}.card .title{font-weight:600;font-size:.95rem}.card .sub{font-size:.75rem;color:#34d399;margin-top:4px;font-weight:bold}
-.sec-title{font-size:1.1rem;font-weight:700;margin-bottom:15px;color:#fff;display:flex;align-items:center;gap:8px}
-.form-box{background:#1a0b2e;border:1px solid #3b1d6e;border-radius:18px;padding:22px}
-.field{margin-bottom:14px}.field label{font-size:.8rem;color:#b9a4dd;display:block;margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;padding:14px;border-radius:10px;border:1px solid #3b1d6e;background:#110a1f;color:#fff;font-size:.95rem;outline:none;resize:none}
-.auth-container{margin-top:5vh}.auth-title{font-size:1.8rem;font-weight:800;margin-bottom:8px;text-align:center}.auth-sub{font-size:.9rem;color:#b9a4dd;margin-bottom:30px;text-align:center}
-.auth-link{text-align:center;margin-top:20px;font-size:.9rem;color:#b9a4dd}.auth-link a{color:#c084fc;font-weight:600;cursor:pointer}
-.back-btn{color:#b9a4dd;font-size:.9rem;cursor:pointer;margin-bottom:16px;font-weight:600}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.8rem}
-th,td{padding:10px;border-bottom:1px solid #3b1d6e;text-align:left}
-th{color:#c084fc}
-.small-btn{padding:6px 10px;font-size:.7rem;width:auto;border-radius:6px;margin-right:5px;border:none;color:#fff;cursor:pointer}
-.btn-red{background:#ef4444}.btn-green{background:#10b981}.btn-blue{background:#3b82f6}
-.task-card{background:#181a20;border:1px solid #2a2d35;border-radius:16px;padding:16px;margin-bottom:16px}
-.task-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
-.task-title-area{display:flex;gap:12px;align-items:center}
-.task-icon{width:45px;height:45px;background:#1a0b2e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:1px solid #3b1d6e}
-.task-title{font-size:1rem;font-weight:700;color:#e2e8f0}
-.task-price{background:#0f291e;color:#34d399;padding:4px 10px;border-radius:20px;font-size:.85rem;font-weight:700;border:1px solid #166534}
-.task-desc{font-size:.85rem;color:#94a3b8;line-height:1.5;margin-bottom:15px}
-.task-slots{font-size:.75rem;color:#64748b;margin-bottom:15px}
-.task-actions{display:flex;gap:10px}
-.btn-start{flex:1;background:transparent;border:1px solid #475569;color:#e2e8f0;padding:10px;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer}
-.btn-submit{flex:1;background:#10b981;border:none;color:#fff;padding:10px;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer}
-.history-item{display:flex;justify-content:space-between;align-items:center;background:#1a0b2e;padding:12px 15px;border-radius:12px;margin-bottom:10px;border:1px solid #3b1d6e}
-.history-info{font-size:.85rem;color:#e2e8f0}
-.history-info small{color:#94a3b8;display:block;margin-top:3px}
-.status-badge{font-size:.7rem;padding:4px 8px;border-radius:6px;font-weight:bold}
-.status-pending{background:#fbbf2420;color:#fbbf24;border:1px solid #fbbf2450}
-.status-approved{background:#10b98120;color:#10b981;border:1px solid #10b98150}
-.status-rejected{background:#ef444420;color:#ef4444;border:1px solid #ef444450}
-.profile-pic{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#6d28d9);margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:2rem}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#f0fdf4;color:#1e293b;display:flex;justify-content:center;overflow-x:hidden}
+.app{width:100%;max-width:480px;min-height:100vh;background:#f0fdf4;position:relative;padding-bottom:75px}
+.page{display:none;animation:fadeIn .25s ease}.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+#page-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;position:fixed;top:0;left:0;width:100%;z-index:999;background:#064e3b;transition:opacity .4s}
+.splash-logo{width:90px;height:90px;border-radius:22px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#fff;font-weight:800;margin-bottom:16px;box-shadow:0 0 40px rgba(16,185,129,.4)}
+.splash-text{font-size:1.8rem;font-weight:800;color:#fff;letter-spacing:1px}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:50}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.1rem}
+.logo span{font-size:1.2rem;font-weight:700;color:#064e3b}
+.header-actions{display:flex;gap:8px}
+.icon-btn{width:36px;height:36px;border-radius:10px;background:#f1f5f9;border:none;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer}
+
+.balance-card{margin:16px;background:linear-gradient(135deg,#059669,#047857);border-radius:18px;padding:20px;color:#fff;position:relative;overflow:hidden}
+.balance-card::before{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:rgba(255,255,255,.08);border-radius:50%}
+.balance-label{font-size:.8rem;opacity:.85;margin-bottom:4px}
+.balance-amount{font-size:2rem;font-weight:800;margin-bottom:14px}
+.balance-actions{display:flex;gap:10px}
+.bal-btn{flex:1;padding:10px;border-radius:10px;border:none;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.bal-btn.primary{background:#fff;color:#047857}
+.bal-btn.secondary{background:rgba(255,255,255,.15);color:#fff}
+
+.section{padding:0 16px 16px}
+.sec-title{font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:#fff;border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;border:1px solid #e2e8f0;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card:active{transform:scale(.97)}
+.card .icon{font-size:1.6rem;margin-bottom:8px;display:block}
+.card .title{font-size:.78rem;font-weight:600;color:#334155}
+
+.form-box{background:#fff;border-radius:16px;padding:18px;border:1px solid #e2e8f0;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{font-size:.78rem;color:#64748b;display:block;margin-bottom:5px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;color:#1e293b;font-size:.95rem;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#10b981;background:#fff}
+.btn{border:none;cursor:pointer;font-weight:600;border-radius:12px;padding:13px 20px;font-size:.95rem;color:#fff;width:100%;background:linear-gradient(90deg,#059669,#10b981);transition:.2s}
+.btn:active{transform:scale(.98)}
+.btn-outline{background:#fff;color:#059669;border:1.5px solid #059669}
+.btn-red{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.btn-sm{padding:8px 14px;font-size:.8rem;width:auto;border-radius:8px}
+
+.auth-container{padding:30px 20px}
+.auth-title{font-size:1.6rem;font-weight:800;color:#064e3b;margin-bottom:6px;text-align:center}
+.auth-sub{font-size:.9rem;color:#64748b;margin-bottom:24px;text-align:center}
+.auth-link{text-align:center;margin-top:18px;font-size:.9rem;color:#64748b}
+.auth-link a{color:#059669;font-weight:600;cursor:pointer}
+
+.back-btn{display:inline-flex;align-items:center;gap:4px;color:#64748b;font-size:.9rem;cursor:pointer;margin:14px 16px 8px;font-weight:600}
+
+.history-item{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:14px;border-radius:12px;margin-bottom:10px;border:1px solid #e2e8f0}
+.history-info{font-size:.88rem;color:#1e293b}
+.history-info small{color:#94a3b8;display:block;margin-top:3px;font-size:.75rem}
+.status-badge{font-size:.7rem;padding:4px 8px;border-radius:6px;font-weight:600}
+.status-pending{background:#fef3c7;color:#d97706}
+.status-approved{background:#d1fae5;color:#059669}
+.status-rejected{background:#fee2e2;color:#dc2626}
+
+.task-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:12px}
+.task-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.task-title{font-size:.95rem;font-weight:700;color:#1e293b}
+.task-price{background:#d1fae5;color:#059669;padding:4px 10px;border-radius:20px;font-size:.8rem;font-weight:700}
+.task-desc{font-size:.82rem;color:#64748b;line-height:1.5;margin-bottom:12px}
+.task-actions{display:flex;gap:8px}
+.btn-start{flex:1;background:#f1f5f9;border:1px solid #e2e8f0;color:#334155;padding:10px;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer}
+.btn-submit{flex:1;background:#059669;border:none;color:#fff;padding:10px;border-radius:10px;font-weight:600;font-size:.85rem;cursor:pointer}
+
+.spin-container{text-align:center;padding:20px 16px}
+.spin-wheel{width:260px;height:260px;border-radius:50%;margin:0 auto 20px;background:conic-gradient(#10b981 0deg 51.4deg,#34d399 51.4deg 102.8deg,#6ee7b7 102.8deg 154.2deg,#a7f3d0 154.2deg 205.6deg,#d1fae5 205.6deg 257deg,#ecfdf5 257deg 308.4deg,#059669 308.4deg 360deg);border:8px solid #064e3b;position:relative;transition:transform 4s cubic-bezier(0.17,0.67,0.12,0.99);box-shadow:0 10px 30px rgba(5,150,105,.25)}
+.spin-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:#064e3b;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.1rem;z-index:2}
+.spin-pointer{width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:20px solid #ef4444;margin:0 auto -8px;position:relative;z-index:3}
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #e2e8f0;display:flex;justify-content:space-around;padding:8px 0 10px;z-index:100}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.7rem;color:#94a3b8;cursor:pointer;padding:4px 12px;font-weight:500}
+.nav-item.active{color:#059669}
+.nav-item .nav-icon{font-size:1.35rem}
+
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th,td{padding:10px 8px;border-bottom:1px solid #e2e8f0;text-align:left}
+th{color:#059669;font-weight:600;background:#f0fdf4}
+
+.welcome-banner{margin:16px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:14px;padding:14px 16px;border:1px solid #a7f3d0}
+.welcome-banner h3{font-size:.95rem;color:#064e3b;margin-bottom:2px}
+.welcome-banner p{font-size:.8rem;color:#047857}
+.empty{text-align:center;color:#94a3b8;font-size:.85rem;padding:20px 0}
+.profile-pic{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff}
 </style>
 </head>
 <body>
 <div class="app">
-<div id="page-splash"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo"><div class="splash-text">PAYLIX</div></div>
-<div id="page-login" class="page"><div class="auth-container"><div style="text-align:center;margin-bottom:20px"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" style="height:70px;border-radius:15px"></div><div class="auth-title">স্বাগতম!</div><div class="auth-sub">লগইন করুন</div><div class="form-box"><div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div><button class="btn" onclick="loginUser()">লগইন</button></div><div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div></div></div>
-<div id="page-register" class="page"><div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div><div class="auth-container" style="margin-top:10px"><div class="auth-title">অ্যাকাউন্ট তৈরি</div><div class="form-box"><div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="তানভীর"></div><div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div><div class="field"><label>রেফার কোড (ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="বন্ধুর রেফার কোড"></div><button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button></div><div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div></div></div>
-<div id="page-home" class="page"><div class="topbar"><div class="logo"><img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png"><span>PAYLIX</span></div></div><div class="balance"><div class="balance-label">💰 ব্যালেন্স</div><div class="balance-amount" id="user-balance">৳ 0.00</div><button class="btn" onclick="openPage('page-withdraw')">💸 Withdraw</button></div><div class="sec-title">মেনু</div><div class="grid"><div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div><div class="sub">৳ ১৫ /টি</div></div><div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div><div class="sub">কাজ করুন</div></div><div class="card" onclick="openPage('page-refer')"><span class="icon">🎁</span><div class="title">Refer</div><div class="sub">বন্ধু ইনভাইট</div></div><div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div><div class="sub">@Owner_Paylix</div></div><div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div><div class="sub">বিকাশ/উপায়</div></div><div class="card" onclick="openPage('page-settings')"><span class="icon">⚙️</span><div class="title">Settings</div><div class="sub">প্রোফাইল</div></div></div><div class="sec-title">📋 আপনার রিকোয়েস্ট সমূহ</div><div id="user-history-list"><div style="text-align:center;color:#b9a4dd;font-size:.85rem">কোনো রিকোয়েস্ট নেই</div></div></div>
-<div id="page-gmail" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">📧 Gmail Sell</div><div class="form-box"><div class="field"><label>Gmail ID (৳ ১৫)</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div><div class="field"><label>Password (৳ ১৫)</label><input type="text" id="gmail-pass" placeholder="••••••••"></div><button class="btn" onclick="submitGmail()">সাবমিট</button></div></div>
-<div id="page-microtask" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎯 Task</div><div id="user-job-list"></div></div>
-<div id="page-job-submit" class="page"><div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div><div class="sec-title">📤 কাজ জমা দিন</div><div class="form-box"><div class="field"><label>কাজের নাম</label><input type="text" id="sub-job-title" readonly style="background:#2a1552;opacity:.8"></div><div class="field"><label>কাজের প্রমাণ (লিংক বা নাম্বার দিন)</label><textarea id="sub-job-proof" rows="3" placeholder="এখানে আপনার কাজের প্রমাণ লিখুন..."></textarea></div><button class="btn btn-green" onclick="submitJobProof()">জমা দিন</button></div></div>
-<div id="page-withdraw" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💸 Withdraw</div><div class="form-box"><div class="field"><label>মেথড</label><select id="w-method"><option>বিকাশ</option><option>উপায়</option></select></div><div class="field"><label>আপনার একাউন্ট নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div><div class="field"><label>টাকার পরিমাণ (সর্বনিম্ন ১০০)</label><input type="number" id="w-amount" placeholder="100"></div><button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট দিন</button></div></div>
-<div id="page-refer" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">🎁 Refer & Earn</div><div class="form-box" style="text-align:center"><span style="font-size:3rem">🤝</span><h3 style="margin:15px 0 8px">বন্ধুদের ইনভাইট করুন</h3><div class="field" style="text-align:left"><label>আপনার রেফার লিংক</label><input type="text" id="ref-link" readonly></div><button class="btn" onclick="copyRefLink()">লিংক কপি করুন</button></div></div>
-<div id="page-settings" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">⚙️ Settings</div><div class="form-box"><div class="profile-pic">👤</div><div class="field"><label>নাম</label><input type="text" id="set-name"></div><button class="btn" onclick="saveSettings()">সেভ</button></div><br><button class="btn" onclick="logoutUser()" style="background:#ef4444">লগ আউট</button></div>
-<div id="page-support" class="page"><div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div><div class="sec-title">💬 Support</div><div class="form-box" style="text-align:center"><a href="https://t.me/Owner_Paylix" target="_blank"><button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button></a></div></div>
-<div id="page-admin-login" class="page"><div class="auth-container"><div class="auth-title">🛡️ Admin Login</div><div class="form-box"><div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div><div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div><button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button></div></div></div>
-<div id="page-admin" class="page"><div class="sec-title">🛡️ ADMIN PANEL</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px"><button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button><button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button><button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button><button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button><button class="btn small-btn" onclick="loadAdminData('users')">Users (Block)</button><button class="btn small-btn btn-blue" onclick="loadAdminData('add_money')">Add Money</button></div><div class="form-box" style="overflow-x:auto;margin-bottom:15px"><table id="admin-table"><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody></tbody></table></div><div id="admin-job-form" class="form-box" style="display:none"><div class="sec-title" style="font-size:.9rem;margin-bottom:10px">Add New Job</div><div class="field"><input type="text" id="job-title" placeholder="Job Title"></div><div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div><div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div><div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div><button class="btn btn-green small-btn" onclick="addJob()">Post Job</button></div><br><button class="btn" onclick="logoutAdmin()" style="background:#ef4444">লগ আউট</button></div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </div><script type="module">
+
+<div id="page-splash">
+  <div class="splash-logo">P</div>
+  <div class="splash-text">PAYLIX</div>
+</div>
+
+<div id="page-login" class="page">
+  <div class="auth-container">
+    <div style="text-align:center;margin-bottom:20px">
+      <div class="splash-logo" style="width:70px;height:70px;font-size:1.8rem;margin:0 auto 10px">P</div>
+    </div>
+    <div class="auth-title">স্বাগতম!</div>
+    <div class="auth-sub">লগইন করুন</div>
+    <div class="form-box">
+      <div class="field"><label>ইমেইল</label><input type="text" id="log-email" placeholder="example@gmail.com"></div>
+      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="log-pass" placeholder="••••••••"></div>
+      <button class="btn" onclick="loginUser()">লগইন</button>
+    </div>
+    <div class="auth-link">নতুন? <a onclick="openPage('page-register')">রেজিস্ট্রেশন</a></div>
+  </div>
+</div>
+
+<div id="page-register" class="page">
+  <div class="back-btn" onclick="openPage('page-login')">← ফিরে যান</div>
+  <div class="auth-container" style="padding-top:10px">
+    <div class="auth-title">অ্যাকাউন্ট তৈরি</div>
+    <div class="form-box">
+      <div class="field"><label>আপনার নাম</label><input type="text" id="reg-name" placeholder="আপনার নাম"></div>
+      <div class="field"><label>ইমেইল</label><input type="text" id="reg-email" placeholder="example@gmail.com"></div>
+      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
+      <div class="field"><label>রেফার কোড (ঐচ্ছিক)</label><input type="text" id="reg-ref" placeholder="বন্ধুর রেফার কোড"></div>
+      <button class="btn" onclick="registerUser()">রেজিস্ট্রেশন</button>
+    </div>
+    <div class="auth-link">অ্যাকাউন্ট আছে? <a onclick="openPage('page-login')">লগইন</a></div>
+  </div>
+</div>
+
+<div id="page-home" class="page">
+  <div class="topbar">
+    <div class="logo"><div class="logo-icon">P</div><span>Paylix</span></div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="loadUserHome()">🔄</button>
+    </div>
+  </div>
+
+  <div class="welcome-banner">
+    <h3>স্বাগতম 👋</h3>
+    <p>আজকের কাজ শুরু করুন ও আয় করুন</p>
+  </div>
+
+  <div class="balance-card">
+    <div class="balance-label">💰 আপনার ব্যালেন্স</div>
+    <div class="balance-amount" id="user-balance">৳ 0.00</div>
+    <div class="balance-actions">
+      <button class="bal-btn secondary" onclick="openPage('page-withdraw')">💸 Withdraw</button>
+      <button class="bal-btn primary" onclick="openPage('page-spin')">🎯 Spin</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">মেনু</div>
+    <div class="grid">
+      <div class="card" onclick="openPage('page-gmail')"><span class="icon">📧</span><div class="title">Gmail Sell</div></div>
+      <div class="card" onclick="openPage('page-microtask')"><span class="icon">🎯</span><div class="title">Microtask</div></div>
+      <div class="card" onclick="openPage('page-spin')"><span class="icon">🎡</span><div class="title">Spin</div></div>
+      <div class="card" onclick="openPage('page-refer')"><span class="icon">🎁</span><div class="title">Refer</div></div>
+      <div class="card" onclick="openPage('page-withdraw')"><span class="icon">💸</span><div class="title">Withdraw</div></div>
+      <div class="card" onclick="openPage('page-support')"><span class="icon">💬</span><div class="title">Support</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">📋 আপনার রিকোয়েস্ট</div>
+    <div id="user-history-list"><div class="empty">কোনো রিকোয়েস্ট নেই</div></div>
+  </div>
+</div>
+
+<div id="page-gmail" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">📧 Gmail Sell (৳১৫ /টি)</div>
+    <div class="form-box">
+      <div class="field"><label>Gmail ID</label><input type="text" id="gmail-id" placeholder="example@gmail.com"></div>
+      <div class="field"><label>Password</label><input type="text" id="gmail-pass" placeholder="••••••••"></div>
+      <button class="btn" onclick="submitGmail()">সাবমিট করুন</button>
+    </div>
+    <p style="font-size:.8rem;color:#64748b;text-align:center">প্রতি ১৫টা অ্যাপ্রুভড Gmail এ ৳২০ বোনাস পাবেন</p>
+  </div>
+</div>
+
+<div id="page-microtask" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">🎯 Microtask</div>
+    <div id="user-job-list"><div class="empty">কোনো কাজ নেই</div></div>
+  </div>
+</div>
+
+<div id="page-job-submit" class="page">
+  <div class="back-btn" onclick="openPage('page-microtask')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">📤 কাজ জমা দিন</div>
+    <div class="form-box">
+      <div class="field"><label>কাজের নাম</label><input type="text" id="sub-job-title" readonly style="background:#f1f5f9"></div>
+      <div class="field"><label>কাজের প্রমাণ (লিংক / নাম্বার)</label><textarea id="sub-job-proof" rows="3" placeholder="এখানে প্রমাণ লিখুন..."></textarea></div>
+      <button class="btn" onclick="submitJobProof()">জমা দিন</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-spin" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="spin-container">
+    <div class="sec-title" style="justify-content:center">🎡 Daily Spin</div>
+    <p style="font-size:.85rem;color:#64748b;margin-bottom:16px">প্রতি স্পিনে ৳১৫ কাটা হবে</p>
+    <div class="spin-pointer"></div>
+    <div class="spin-wheel" id="spin-wheel">
+      <div class="spin-center">GO</div>
+    </div>
+    <button class="btn" id="spin-btn" onclick="doSpin()" style="max-width:220px;margin:0 auto">স্পিন করুন (৳১৫)</button>
+    <div id="spin-result" style="margin-top:16px;font-weight:700;font-size:1.1rem;color:#059669"></div>
+  </div>
+</div>
+
+<div id="page-withdraw" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">💸 Withdraw</div>
+    <div class="form-box">
+      <div class="field"><label>মেথড</label>
+        <select id="w-method"><option>বিকাশ</option><option>উপায়</option></select>
+      </div>
+      <div class="field"><label>অ্যাকাউন্ট নাম্বার</label><input type="number" id="w-number" placeholder="01XXXXXXXXX"></div>
+      <div class="field"><label>টাকার পরিমাণ (সর্বনিম্ন ৳১০০)</label><input type="number" id="w-amount" placeholder="100"></div>
+      <p style="font-size:.78rem;color:#64748b;margin-bottom:12px">⚠️ উইথড্র ফি ১৫% কাটা হবে (১০% রেফারার + ৫% সার্ভিস চার্জ)</p>
+      <button class="btn" onclick="submitWithdraw()">রিকোয়েস্ট দিন</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-refer" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">🎁 Refer & Earn</div>
+    <div class="form-box" style="text-align:center">
+      <div style="font-size:2.8rem;margin-bottom:10px">🤝</div>
+      <h3 style="margin-bottom:6px;color:#064e3b">বন্ধুদের ইনভাইট করুন</h3>
+      <p style="font-size:.85rem;color:#64748b;margin-bottom:16px">আপনার রেফার করা ইউজার উইথড্র করলে আপনি ১০% কমিশন পাবেন</p>
+      <div class="field" style="text-align:left">
+        <label>আপনার রেফার কোড</label>
+        <input type="text" id="ref-link" readonly>
+      </div>
+      <button class="btn" onclick="copyRefLink()">কপি করুন</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-settings" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">⚙️ প্রোফাইল</div>
+    <div class="form-box">
+      <div class="profile-pic">👤</div>
+      <div class="field"><label>নাম</label><input type="text" id="set-name"></div>
+      <button class="btn" onclick="saveSettings()">সেভ করুন</button>
+    </div>
+    <button class="btn btn-red" onclick="logoutUser()" style="margin-top:10px">লগ আউট</button>
+  </div>
+</div>
+
+<div id="page-support" class="page">
+  <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
+  <div class="section">
+    <div class="sec-title">💬 Support</div>
+    <div class="form-box" style="text-align:center">
+      <p style="margin-bottom:16px;color:#64748b">সাপোর্টের জন্য টেলিগ্রামে যোগাযোগ করুন</p>
+      <a href="https://t.me/Owner_Paylix" target="_blank">
+        <button class="btn" style="background:#229ED9">টেলিগ্রাম (@Owner_Paylix)</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin-login" class="page">
+  <div class="auth-container">
+    <div class="auth-title">🛡️ Admin Login</div>
+    <div class="form-box">
+      <div class="field"><label>ইউজারনেম</label><input type="text" id="admin-user" placeholder="admin"></div>
+      <div class="field"><label>পাসওয়ার্ড</label><input type="password" id="admin-pass" placeholder="••••••••"></div>
+      <button class="btn" onclick="loginAdmin()">প্রবেশ করুন</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin" class="page">
+  <div class="section" style="padding-top:16px">
+    <div class="sec-title">🛡️ ADMIN PANEL</div>
+    <div class="admin-grid">
+      <button class="btn btn-sm" onclick="loadAdminData('gmail')">Gmail Orders</button>
+      <button class="btn btn-sm" onclick="loadAdminData('withdraw')">Withdraws</button>
+      <button class="btn btn-sm" onclick="loadAdminData('jobs')">Manage Jobs</button>
+      <button class="btn btn-sm" onclick="loadAdminData('job_subs')">Job Submits</button>
+      <button class="btn btn-sm" onclick="loadAdminData('users')">Users</button>
+      <button class="btn btn-sm" style="background:#3b82f6" onclick="loadAdminData('add_money')">Add Money</button>
+    </div>
+    <div class="form-box" style="overflow-x:auto">
+      <table id="admin-table">
+        <thead><tr><th>Info</th><th>Details</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="admin-job-form" class="form-box" style="display:none;margin-top:12px">
+      <div class="sec-title" style="font-size:.9rem">Add New Job</div>
+      <div class="field"><input type="text" id="job-title" placeholder="Job Title"></div>
+      <div class="field"><input type="text" id="job-price" placeholder="Price (৳)"></div>
+      <div class="field"><input type="text" id="job-link" placeholder="Link (URL)"></div>
+      <div class="field"><input type="text" id="job-slots" placeholder="Total Slots"></div>
+      <button class="btn btn-sm" onclick="addJob()">Post Job</button>
+    </div>
+    <button class="btn btn-red" onclick="logoutAdmin()" style="margin-top:16px">লগ আউট</button>
+  </div>
+</div>
+
+<div class="bottom-nav" id="bottom-nav" style="display:none">
+  <div class="nav-item active" onclick="openPage('page-home')"><div class="nav-icon">🏠</div>Home</div>
+  <div class="nav-item" onclick="openPage('page-microtask')"><div class="nav-icon">🎯</div>Task</div>
+  <div class="nav-item" onclick="openPage('page-spin')"><div class="nav-icon">🎡</div>Spin</div>
+  <div class="nav-item" onclick="openPage('page-refer')"><div class="nav-icon">🎁</div>Refer</div>
+  <div class="nav-item" onclick="openPage('page-settings')"><div class="nav-icon">👤</div>Profile</div>
+</div>
+
+        </div><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
-    authDomain: "paylix-586b1.firebaseapp.com",
-    projectId: "paylix-586b1",
-    storageBucket: "paylix-586b1.firebasestorage.app",
-    messagingSenderId: "353074453470",
-    appId: "1:353074453470:web:679e99a4021eeed9499b4f"
+  apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
+  authDomain: "paylix-586b1.firebaseapp.com",
+  projectId: "paylix-586b1",
+  storageBucket: "paylix-586b1.firebasestorage.app",
+  messagingSenderId: "353074453470",
+  appId: "1:353074453470:web:679e99a4021eeed9499b4f"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 let currentUser = localStorage.getItem('paylix_current') || null;
 let isAdminLogged = false;
 let currentJobToSubmit = null;
-let currentJobUrl = "";
+let isSpinning = false;
 
 window.openPage = function(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    window.scrollTo(0, 0);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+
+  const nav = document.getElementById('bottom-nav');
+  const mainPages = ['page-home','page-microtask','page-spin','page-refer','page-settings'];
+  if (mainPages.includes(id) && currentUser) {
+    nav.style.display = 'flex';
+  } else {
+    nav.style.display = 'none';
+  }
+
+  if (id === 'page-home' && currentUser) loadUserHome();
+  if (id === 'page-microtask' && currentUser) loadJobs();
+  if (id === 'page-refer' && currentUser) {
+    document.getElementById('ref-link').value = currentUser.split('@')[0].toUpperCase();
+  }
+  if (id === 'page-settings' && currentUser) loadSettings();
 };
 
 setTimeout(() => {
-    let splash = document.getElementById('page-splash');
-    if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => {
-            splash.style.display = 'none';
-            if (window.location.hash === '#admin') { window.openPage('page-admin-login'); }
-            else if (currentUser) { window.loadUserHome(); }
-            else { window.openPage('page-login'); }
-        }, 400);
-    }
-}, 1500);
-
-window.loginAdmin = function() {
-    const user = document.getElementById('admin-user').value;
-    const pass = document.getElementById('admin-pass').value;
-    if (user === 'admin' && pass === 'admin123') {
-        isAdminLogged = true;
-        window.openPage('page-admin');
-        window.loadAdminData('gmail');
-    } else { alert('ভুল ইউজারনেম বা পাসওয়ার্ড!'); }
-};
-
-window.logoutAdmin = function() {
-    isAdminLogged = false;
-    history.replaceState(null, null, ' ');
-    window.openPage('page-login');
-};
+  const splash = document.getElementById('page-splash');
+  splash.style.opacity = '0';
+  setTimeout(() => {
+    splash.style.display = 'none';
+    if (window.location.hash === '#admin') openPage('page-admin-login');
+    else if (currentUser) openPage('page-home');
+    else openPage('page-login');
+  }, 400);
+}, 1400);
 
 window.registerUser = async function() {
-    const name = document.getElementById('reg-name').value;
-    const email = document.getElementById('reg-email').value;
-    const pass = document.getElementById('reg-pass').value;
-    const ref = document.getElementById('reg-ref').value;
-    if (!name || !email || !pass) return alert('সব ঘর পূরণ করুন');
-    try {
-        const q = query(collection(db, "users"), where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) return alert('এই ইমেইল দিয়ে অ্যাকাউন্ট আছে!');
-        await addDoc(collection(db, "users"), { name, email, pass, balance: 0, blocked: false, refBy: ref || null });
-        alert('সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে!');
-        window.openPage('page-login');
-    } catch(e) { alert('সার্ভারে সমস্যা! আবার চেষ্টা করুন।'); }
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
+  const pass = document.getElementById('reg-pass').value;
+  const ref = document.getElementById('reg-ref').value.trim();
+  if (!name || !email || !pass) return alert('সব ঘর পূরণ করুন');
+  try {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const snap = await getDocs(q);
+    if (!snap.empty) return alert('এই ইমেইল দিয়ে অ্যাকাউন্ট আছে!');
+    await addDoc(collection(db, "users"), {
+      name, email, pass, balance: 0, blocked: false,
+      refBy: ref || null, gmailCount: 0, createdAt: Date.now()
+    });
+    alert('সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে!');
+    openPage('page-login');
+  } catch(e) { alert('সমস্যা হয়েছে, আবার চেষ্টা করুন'); }
 };
 
 window.loginUser = async function() {
-    const email = document.getElementById('log-email').value;
-    const pass = document.getElementById('log-pass').value;
-    try {
-        const q = query(collection(db, "users"), where("email", "==", email), where("pass", "==", pass));
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-            const userData = querySnapshot.docs[0].data();
-            if (userData.blocked) { return alert('আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে!'); }
-            currentUser = email;
-            localStorage.setItem('paylix_current', email);
-            window.loadUserHome();
-        } else { alert('ভুল ইমেইল বা পাসওয়ার্ড!'); }
-    } catch(e) { alert('সার্ভারে সমস্যা! আবার চেষ্টা করুন।'); }
+  const email = document.getElementById('log-email').value.trim().toLowerCase();
+  const pass = document.getElementById('log-pass').value;
+  try {
+    const q = query(collection(db, "users"), where("email", "==", email), where("pass", "==", pass));
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      const data = snap.docs[0].data();
+      if (data.blocked) return alert('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে!');
+      currentUser = email;
+      localStorage.setItem('paylix_current', email);
+      openPage('page-home');
+    } else alert('ভুল ইমেইল বা পাসওয়ার্ড!');
+  } catch(e) { alert('সার্ভার সমস্যা!'); }
+};
+
+window.logoutUser = function() {
+  currentUser = null;
+  localStorage.removeItem('paylix_current');
+  document.getElementById('bottom-nav').style.display = 'none';
+  openPage('page-login');
 };
 
 window.loadUserHome = async function() {
-    try {
-        const q = query(collection(db, "users"), where("email", "==", currentUser));
-        const userSnap = await getDocs(q);
-        if (userSnap.empty) { window.logoutUser(); return; }
-        const user = userSnap.docs[0].data();
-        document.getElementById('user-balance').innerText = '৳ ' + user.balance;
-        document.getElementById('set-name').value = user.name;
-        document.getElementById('ref-link').value = window.location.origin + window.location.pathname + '?ref=' + user.email;
+  if (!currentUser) return;
+  try {
+    const q = query(collection(db, "users"), where("email", "==", currentUser));
+    const snap = await getDocs(q);
+    if (snap.empty) { logoutUser(); return; }
+    const user = snap.docs[0].data();
+    document.getElementById('user-balance').innerText = '৳ ' + (user.balance || 0).toFixed(2);
 
-        const historyList = document.getElementById('user-history-list');
-        const gmailQuery = query(collection(db, "gmails"), where("user", "==", currentUser));
-        const gmailSnap = await getDocs(gmailQuery);
-        if (gmailSnap.empty) {
-            historyList.innerHTML = '<div style="text-align:center;color:#b9a4dd;font-size:.85rem">কোনো রিকোয়েস্ট নেই</div>';
-        } else {
-            let html = '';
-            gmailSnap.forEach(d => {
-                const g = d.data();
-                let badge = g.status === 'pending' ? '<span class="status-badge status-pending">⏳ পেন্ডিং</span>' : g.status === 'approved' ? '<span class="status-badge status-approved">✅ এপ্রুভড</span>' : '<span class="status-badge status-rejected">❌ রিজেক্টেড</span>';
-                html += `<div class="history-item"><div class="history-info">${g.gmail}<small>Gmail Sell</small></div>${badge}</div>`;
-            });
-            historyList.innerHTML = html;
-        }
+    const histDiv = document.getElementById('user-history-list');
+    histDiv.innerHTML = '<div class="empty">লোড হচ্ছে...</div>';
+    let html = '';
 
-        const jobList = document.getElementById('user-job-list');
-        const jobsSnap = await getDocs(collection(db, "jobs"));
-        if (jobsSnap.empty) {
-            jobList.innerHTML = '<div class="form-box" style="text-align:center;color:#b9a4dd">এখনো কোনো কাজ পোস্ট করা হয়নি।</div>';
-        } else {
-            let html = '';
-            jobsSnap.forEach(d => {
-                const j = d.data();
-                if (j.slots <= 0) return;
-                html += `<div class="task-card"><div class="task-header"><div class="task-title-area"><div class="task-icon">🎯</div><div class="task-title">${j.title}</div></div><div class="task-price">৳${j.price}</div></div><div class="task-desc">${j.desc || 'কাজটি সম্পন্ন করতে নিচের Start Task এ ক্লিক করুন।'}</div><div class="task-slots">${j.slots} slots left</div><div class="task-actions"><button class="btn-start" onclick="startTask('${j.link}')">Start task</button><button class="btn-submit" onclick="openJobSubmit('${j.title}','${d.id}')">Submit</button></div></div>`;
-            });
-            jobList.innerHTML = html;
-        }
-        window.openPage('page-home');
-    } catch(e) { console.log(e); }
+    const gSnap = await getDocs(query(collection(db, "gmails"), where("user", "==", currentUser)));
+    gSnap.forEach(d => {
+      const g = d.data();
+      html += `<div class="history-item">
+        <div class="history-info">Gmail: \( {g.gmail}<small> \){g.status}</small></div>
+        <span class="status-badge status-\( {g.status}"> \){g.status}</span>
+      </div>`;
+    });
+
+    const wSnap = await getDocs(query(collection(db, "withdraws"), where("user", "==", currentUser)));
+    wSnap.forEach(d => {
+      const w = d.data();
+      html += `<div class="history-item">
+        <div class="history-info">Withdraw ৳\( {w.amount}<small> \){w.method} - ${w.number}</small></div>
+        <span class="status-badge status-\( {w.status}"> \){w.status}</span>
+      </div>`;
+    });
+
+    histDiv.innerHTML = html || '<div class="empty">কোনো রিকোয়েস্ট নেই</div>';
+  } catch(e) { console.log(e); }
 };
-
-window.logoutUser = function() { currentUser = null; localStorage.removeItem('paylix_current'); window.openPage('page-login'); };
-window.copyRefLink = function() { let c = document.getElementById("ref-link"); c.select(); document.execCommand("copy"); alert("রেফার লিংক কপি হয়েছে!"); };
 
 window.submitGmail = async function() {
-    const gmail = document.getElementById('gmail-id').value.trim();
-    const pass = document.getElementById('gmail-pass').value.trim();
-    if (!gmail || !pass) return alert('সব তথ্য দিন');
-    try {
-        await addDoc(collection(db, "gmails"), { user: currentUser, gmail: gmail, pass: pass, status: 'pending' });
-        window.loadUserHome();
-        alert('সফলভাবে সাবমিট হয়েছে!');
-    } catch(e) { alert('সার্ভারে সমস্যা!'); }
+  const gmail = document.getElementById('gmail-id').value.trim();
+  const pass = document.getElementById('gmail-pass').value.trim();
+  if (!gmail || !pass) return alert('সব ঘর পূরণ করুন');
+  try {
+    await addDoc(collection(db, "gmails"), {
+      user: currentUser, gmail, pass, status: 'pending', time: Date.now()
+    });
+    alert('Gmail সাবমিট হয়েছে! অ্যাপ্রুভের জন্য অপেক্ষা করুন।');
+    document.getElementById('gmail-id').value = '';
+    document.getElementById('gmail-pass').value = '';
+    openPage('page-home');
+  } catch(e) { alert('সমস্যা হয়েছে!'); }
 };
 
-window.startTask = function(url) {
-    if (!url || url === "") { alert("এই কাজের জন্য কোনো লিংক দেওয়া নেই।"); }
-    else { window.open(url, '_blank'); }
+window.loadJobs = async function() {
+  const list = document.getElementById('user-job-list');
+  list.innerHTML = '<div class="empty">লোড হচ্ছে...</div>';
+  try {
+    const snap = await getDocs(collection(db, "jobs"));
+    let html = '';
+    snap.forEach(d => {
+      const j = d.data();
+      html += `<div class="task-card">
+        <div class="task-header">
+          <div class="task-title">${j.title}</div>
+          <div class="task-price">৳${j.price}</div>
+        </div>
+        <div class="task-desc">${j.desc || 'কাজটি সম্পন্ন করে প্রমাণ জমা দিন'}</div>
+        <div class="task-actions">
+          <button class="btn-start" onclick="window.open('${j.link || '#'}','_blank')">Start Task</button>
+          <button class="btn-submit" onclick="startJobSubmit('\( {d.id}',' \){j.title}',${j.price})">Submit</button>
+        </div>
+      </div>`;
+    });
+    list.innerHTML = html || '<div class="empty">কোনো কাজ নেই</div>';
+  } catch(e) { list.innerHTML = '<div class="empty">লোড করতে সমস্যা</div>'; }
 };
 
-window.openJobSubmit = function(title, docId) {
-    currentJobToSubmit = title; currentJobUrl = docId;
-    document.getElementById('sub-job-title').value = title;
-    document.getElementById('sub-job-proof').value = '';
-    window.openPage('page-job-submit');
+window.startJobSubmit = function(id, title, price) {
+  currentJobToSubmit = { id, title, price };
+  document.getElementById('sub-job-title').value = title;
+  document.getElementById('sub-job-proof').value = '';
+  openPage('page-job-submit');
 };
 
 window.submitJobProof = async function() {
-    const proofText = document.getElementById('sub-job-proof').value.trim();
-    if (!proofText) return alert('অনুগ্রহ করে কাজের প্রমাণ (লিংক বা নাম্বার) লিখে দিন!');
-    try {
-        await addDoc(collection(db, "jobSubs"), { user: currentUser, jobTitle: currentJobToSubmit, proof: proofText, status: 'pending', jobIndex: currentJobUrl });
-        alert('কাজ সফলভাবে জমা হয়েছে! অ্যাডমিন Approve করলে টাকা যোগ হবে।');
-        window.openPage('page-microtask');
-    } catch(e) { alert('সার্ভারে সমস্যা! আবার চেষ্টা করুন।'); }
+  const proof = document.getElementById('sub-job-proof').value.trim();
+  if (!proof) return alert('প্রমাণ লিখুন');
+  if (!currentJobToSubmit) return;
+  try {
+    await addDoc(collection(db, "jobSubs"), {
+      user: currentUser,
+      jobId: currentJobToSubmit.id,
+      jobTitle: currentJobToSubmit.title,
+      price: currentJobToSubmit.price,
+      proof,
+      status: 'pending',
+      time: Date.now()
+    });
+    alert('কাজ জমা দেওয়া হয়েছে!');
+    openPage('page-microtask');
+  } catch(e) { alert('সমস্যা হয়েছে!'); }
+};
+
+window.doSpin = async function() {
+  if (isSpinning) return;
+  if (!currentUser) return;
+
+  const q = query(collection(db, "users"), where("email", "==", currentUser));
+  const snap = await getDocs(q);
+  if (snap.empty) return;
+  const userDoc = snap.docs[0];
+  const user = userDoc.data();
+  if ((user.balance || 0) < 15) return alert('পর্যাপ্ত ব্যালেন্স নেই! (৳১৫ প্রয়োজন)');
+
+  isSpinning = true;
+  document.getElementById('spin-btn').disabled = true;
+  document.getElementById('spin-result').innerText = '';
+
+  const prizes = [
+    { amount: 0, weight: 40 },
+    { amount: 2, weight: 20 },
+    { amount: 5, weight: 15 },
+    { amount: 8, weight: 10 },
+    { amount: 10, weight: 8 },
+    { amount: 15, weight: 5 },
+    { amount: 20, weight: 2 }
+  ];
+  const totalWeight = prizes.reduce((s, p) => s + p.weight, 0);
+  let rand = Math.random() * totalWeight;
+  let selected = prizes[0];
+  for (const p of prizes) {
+    if (rand < p.weight) { selected = p; break; }
+    rand -= p.weight;
+  }
+
+  const wheel = document.getElementById('spin-wheel');
+  const extraSpins = 5 + Math.floor(Math.random() * 3);
+  const deg = extraSpins * 360 + (selected.amount * 18);
+  wheel.style.transform = `rotate(${deg}deg)`;
+
+  setTimeout(async () => {
+    const newBal = (user.balance || 0) - 15 + selected.amount;
+    await updateDoc(userDoc.ref, { balance: newBal });
+    document.getElementById('spin-result').innerText = selected.amount === 0 ? '😞 দুঃখিত, ৳০' : `🎉 আপনি পেয়েছেন ৳${selected.amount}`;
+    document.getElementById('user-balance').innerText = '৳ ' + newBal.toFixed(2);
+    isSpinning = false;
+    document.getElementById('spin-btn').disabled = false;
+  }, 4200);
 };
 
 window.submitWithdraw = async function() {
-    const method = document.getElementById('w-method').value;
-    const number = document.getElementById('w-number').value;
-    const amount = parseInt(document.getElementById('w-amount').value);
-    if (!number || !amount) return alert('সব তথ্য দিন');
-    if (amount < 100) return alert('সর্বনিম্ন ১০০ টাকা');
-    try {
-        const q = query(collection(db, "users"), where("email", "==", currentUser));
-        const userSnap = await getDocs(q);
-        const user = userSnap.docs[0].data();
-        if (user.balance < amount) return alert('পর্যাপ্ত ব্যালেন্স নেই!');
-        await updateDoc(userSnap.docs[0].ref, { balance: user.balance - amount });
-        await addDoc(collection(db, "withdraws"), { user: currentUser, method, number, amount, status: 'pending' });
-        window.loadUserHome();
-        alert('রিকোয়েস্ট পাঠানো হয়েছে!');
-    } catch(e) { alert('সার্ভারে সমস্যা!'); }
+  const method = document.getElementById('w-method').value;
+  const number = document.getElementById('w-number').value.trim();
+  const amount = parseFloat(document.getElementById('w-amount').value);
+  if (!number || !amount) return alert('সব ঘর পূরণ করুন');
+  if (amount < 100) return alert('সর্বনিম্ন উইথড্র ৳১০০');
+
+  try {
+    const q = query(collection(db, "users"), where("email", "==", currentUser));
+    const snap = await getDocs(q);
+    if (snap.empty) return;
+    const userDoc = snap.docs[0];
+    const user = userDoc.data();
+    if ((user.balance || 0) < amount) return alert('পর্যাপ্ত ব্যালেন্স নেই!');
+
+    const fee = amount * 0.15;
+    const referrerShare = amount * 0.10;
+    const adminShare = amount * 0.05;
+    const userReceives = amount - fee;
+
+    await updateDoc(userDoc.ref, { balance: user.balance - amount });
+
+    if (user.refBy) {
+      const allUsers = await getDocs(collection(db, "users"));
+      allUsers.forEach(async (d) => {
+        if (d.data().email.split('@')[0].toUpperCase() === user.refBy.toUpperCase()) {
+          await updateDoc(d.ref, { balance: (d.data().balance || 0) + referrerShare });
+        }
+      });
+    }
+
+    await addDoc(collection(db, "withdraws"), {
+      user: currentUser,
+      method, number, amount,
+      fee, userReceives, referrerShare, adminShare,
+      status: 'pending', time: Date.now()
+    });
+
+    alert(`রিকোয়েস্ট দেওয়া হয়েছে!\nআপনি পাবেন: ৳\( {userReceives.toFixed(2)}\nফি: ৳ \){fee.toFixed(2)}`);
+    openPage('page-home');
+  } catch(e) { console.log(e); alert('সমস্যা হয়েছে!'); }
+};
+
+window.copyRefLink = function() {
+  const input = document.getElementById('ref-link');
+  input.select();
+  document.execCommand('copy');
+  alert('রেফার কোড কপি হয়েছে!');
+};
+
+window.loadSettings = async function() {
+  const q = query(collection(db, "users"), where("email", "==", currentUser));
+  const snap = await getDocs(q);
+  if (!snap.empty) {
+    document.getElementById('set-name').value = snap.docs[0].data().name || '';
+  }
 };
 
 window.saveSettings = async function() {
-    try {
-        const q = query(collection(db, "users"), where("email", "==", currentUser));
-        const userSnap = await getDocs(q);
-        await updateDoc(userSnap.docs[0].ref, { name: document.getElementById('set-name').value });
-        alert('সেভ হয়েছে!');
-    } catch(e) { alert('সার্ভারে সমস্যা!'); }
+  const name = document.getElementById('set-name').value.trim();
+  if (!name) return alert('নাম লিখুন');
+  const q = query(collection(db, "users"), where("email", "==", currentUser));
+  const snap = await getDocs(q);
+  if (!snap.empty) {
+    await updateDoc(snap.docs[0].ref, { name });
+    alert('সেভ হয়েছে!');
+  }
+};
+
+window.loginAdmin = function() {
+  const user = document.getElementById('admin-user').value;
+  const pass = document.getElementById('admin-pass').value;
+  if (user === 'admin' && pass === 'admin123') {
+    isAdminLogged = true;
+    openPage('page-admin');
+    loadAdminData('gmail');
+  } else alert('ভুল ইউজারনেম বা পাসওয়ার্ড!');
+};
+
+window.logoutAdmin = function() {
+  isAdminLogged = false;
+  history.replaceState(null, null, ' ');
+  openPage('page-login');
 };
 
 window.loadAdminData = async function(type) {
-    if (!isAdminLogged) return;
-    const tableBody = document.querySelector('#admin-table tbody');
-    const tableHead = document.querySelector('#admin-table thead');
-    const jobForm = document.getElementById('admin-job-form');
-    tableBody.innerHTML = 'লোড হচ্ছে...';
-    jobForm.style.display = 'none';
+  const tableBody = document.querySelector('#admin-table tbody');
+  const tableHead = document.querySelector('#admin-table thead');
+  const jobForm = document.getElementById('admin-job-form');
+  tableBody.innerHTML = '<tr><td colspan="5">লোড হচ্ছে...</td></tr>';
+  jobForm.style.display = 'none';
 
-    try {
-        if (type === 'gmail') {
-            tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Action</th></tr>';
-            const snap = await getDocs(collection(db, "gmails"));
-            tableBody.innerHTML = `<tr><td colspan="4"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('gmail-row')" style="width:100%;padding:10px;border-radius:8px;border:1px solid #7c3aed;background:#110a1f;color:#fff;outline:none;margin-bottom:10px"></td></tr>`;
-            snap.forEach(d => {
-                const g = d.data();
-                let actionBtn = g.status === 'pending' ? `<button class="btn small-btn btn-green" onclick="approveGmail('${d.id}')">Approve</button> <button class="btn small-btn btn-red" onclick="rejectGmail('${d.id}')">Reject</button>` : g.status === 'approved' ? `<span style="color:#10b981">Approved</span>` : `<span style="color:#ef4444">Rejected</span>`;
-                tableBody.innerHTML += `<tr class="gmail-row" data-search="${g.user.toLowerCase()}"><td>${g.user.split('@')[0]}</td><td>${g.gmail}</td><td>${g.pass}</td><td>${actionBtn}</td></tr>`;
-            });
-        } else if (type === 'job_subs') {
-            tableHead.innerHTML = '<tr><th>User</th><th>Job</th><th>Proof</th><th>Action</th></tr>';
-            const snap = await getDocs(collection(db, "jobSubs"));
-            tableBody.innerHTML = `<tr><td colspan="4"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('jobsubs-row')" style="width:100%;padding:10px;border-radius:8px;border:1px solid #7c3aed;background:#110a1f;color:#fff;outline:none;margin-bottom:10px"></td></tr>`;
-            snap.forEach(d => {
-                const s = d.data();
-                let actionBtn = s.status === 'approved' ? `<span style="color:#10b981">Approved</span>` : s.status === 'rejected' ? `<span style="color:#ef4444">Rejected</span>` : `<button class="btn small-btn btn-green" onclick="approveJobSub('${d.id}')">Approve</button> <button class="btn small-btn btn-red" onclick="rejectJobSub('${d.id}')">Reject</button>`;
-                tableBody.innerHTML += `<tr class="jobsubs-row" data-search="${s.user.toLowerCase()}"><td>${s.user.split('@')[0]}</td><td>${s.jobTitle}</td><td>${s.proof}</td><td>${actionBtn}</td></tr>`;
-            });
-        } else if (type === 'jobs') {
-            jobForm.style.display = 'block';
-            tableHead.innerHTML = '<tr><th>Title</th><th>Price</th><th>Slots</th><th>Action</th></tr>';
-            const snap = await getDocs(collection(db, "jobs"));
-            tableBody.innerHTML = '';
-            snap.forEach(d => {
-                const j = d.data();
-                tableBody.innerHTML += `<tr><td>${j.title}</td><td>৳${j.price}</td><td>${j.slots}</td><td><button class="btn small-btn btn-red" onclick="deleteJob('${d.id}')">Delete</button></td></tr>`;
-            });
-        } else if (type === 'withdraw') {
-            tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Num</th><th>Amt</th><th>Action</th></tr>';
-            const snap = await getDocs(collection(db, "withdraws"));
-            tableBody.innerHTML = `<tr><td colspan="5"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('withdraw-row')" style="width:100%;padding:10px;border-radius:8px;border:1px solid #7c3aed;background:#110a1f;color:#fff;outline:none;margin-bottom:10px"></td></tr>`;
-            snap.forEach(d => {
-                const w = d.data();
-                let actionBtn = w.status === 'approved' ? `<span style="color:#10b981">Paid</span>` : w.status === 'rejected' ? `<span style="color:#ef4444">Rejected</span>` : `<button class="btn small-btn btn-green" onclick="approveWithdraw('${d.id}')">Paid</button> <button class="btn small-btn btn-red" onclick="rejectWithdraw('${d.id}')">Reject</button>`;
-                tableBody.innerHTML += `<tr class="withdraw-row" data-search="${w.user.toLowerCase()}"><td>${w.user.split('@')[0]}</td><td>${w.method}</td><td>${w.number}</td><td>৳${w.amount}</td><td>${actionBtn}</td></tr>`;
-            });
-        } else if (type === 'users') {
-            tableHead.innerHTML = '<tr><th>User Email</th><th>Action</th></tr>';
-            const snap = await getDocs(collection(db, "users"));
-            tableBody.innerHTML = `<tr><td colspan="2"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('user-row')" style="width:100%;padding:10px;border-radius:8px;border:1px solid #7c3aed;background:#110a1f;color:#fff;outline:none;margin-bottom:10px"></td></tr>`;
-            snap.forEach(d => {
-                const u = d.data();
-                tableBody.innerHTML += `<tr class="user-row" data-search="${u.email.toLowerCase()}"><td>${u.email}</td><td><button class="btn small-btn ${u.blocked?'btn-green':'btn-red'}" onclick="toggleBlock('${d.id}',${u.blocked})">${u.blocked?'Unblock':'Block'}</button></td></tr>`;
-            });
-        } else if (type === 'add_money') {
-            tableHead.innerHTML = '<tr><th>Email</th><th>Balance</th><th>Action</th></tr>';
-            const snap = await getDocs(collection(db, "users"));
-            tableBody.innerHTML = `<tr><td colspan="3"><input type="text" id="search-input" placeholder="ইমেইল দিয়ে সার্চ করুন..." onkeyup="searchTable('money-row')" style="width:100%;padding:10px;border-radius:8px;border:1px solid #7c3aed;background:#110a1f;color:#fff;outline:none;margin-bottom:10px"></td></tr>`;
-            snap.forEach(d => {
-                const u = d.data();
-                tableBody.innerHTML += `<tr class="money-row" data-search="${u.email.toLowerCase()}"><td>${u.email}</td><td>৳${u.balance}</td><td><button class="btn small-btn btn-blue" onclick="addMoney('${d.id}',${u.balance})">Add Money</button></td></tr>`;
-            });
-        }
-    } catch(e) { tableBody.innerHTML = 'লোড হতে সমস্যা হয়েছে!'; console.log(e); }
-};
-
-window.searchTable = function(className) {
-    let input = document.getElementById('search-input').value.toLowerCase();
-    document.querySelectorAll('.' + className).forEach(row => {
-        let searchData = row.getAttribute('data-search');
-        row.style.display = searchData.includes(input) ? '' : 'none';
-    });
+  try {
+    if (type === 'gmail') {
+      tableHead.innerHTML = '<tr><th>User</th><th>Gmail</th><th>Pass</th><th>Status</th><th>Action</th></tr>';
+      const snap = await getDocs(collection(db, "gmails"));
+      tableBody.innerHTML = '';
+      snap.forEach(d => {
+        const g = d.data();
+        let btn = g.status === 'pending'
+          ? `<button class="btn btn-sm" style="background:#10b981;margin-right:4px" onclick="approveGmail('${d.id}')">Approve</button>
+             <button class="btn btn-sm btn-red" onclick="rejectGmail('${d.id}')">Reject</button>`
+          : g.status;
+        tableBody.innerHTML += `<tr><td>\( {g.user.split('@')[0]}</td><td> \){g.gmail}</td><td>\( {g.pass}</td><td> \){g.status}</td><td>${btn}</td></tr>`;
+      });
+    }
+    else if (type === 'withdraw') {
+      tableHead.innerHTML = '<tr><th>User</th><th>Method</th><th>Number</th><th>Amount</th><th>Action</th></tr>';
+      const snap = await getDocs(collection(db, "withdraws"));
+      tableBody.innerHTML = '';
+      snap.forEach(d => {
+        const w = d.data();
+        let btn = w.status === 'pending'
+          ? `<button class="btn btn-sm" style="background:#10b981;margin-right:4px" onclick="approveWithdraw('${d.id}')">Paid</button>
+             <button class="btn btn-sm btn-red" onclick="rejectWithdraw('${d.id}')">Reject</button>`
+          : w.status;
+        tableBody.innerHTML += `<tr><td>\( {w.user.split('@')[0]}</td><td> \){w.method}</td><td>\( {w.number}</td><td>৳ \){w.amount}</td><td>${btn}</td></tr>`;
+      });
+    }
+    else if (type === 'jobs') {
+      jobForm.style.display = 'block';
+      tableHead.innerHTML = '<tr><th>Title</th><th>Price</th><th>Slots</th><th>Action</th></tr>';
+      const snap = await getDocs(collection(db, "jobs"));
+      tableBody.innerHTML = '';
+      snap.forEach(d => {
+        const j = d.data();
+        tableBody.innerHTML += `<tr><td>\( {j.title}</td><td>৳ \){j.price}</td><td>\( {j.slots}</td><td><button class="btn btn-sm btn-red" onclick="deleteJob(' \){d.id}')">Delete</button></td></tr>`;
+      });
+    }
+    else if (type === 'job_subs') {
+      tableHead.innerHTML = '<tr><th>User</th><th>Job</th><th>Proof</th><th>Action</th></tr>';
+      const snap = await getDocs(collection(db, "jobSubs"));
+      tableBody.innerHTML = '';
+      snap.forEach(d => {
+        const s = d.data();
+        let btn = s.status === 'pending'
+          ? `<button class="btn btn-sm" style="background:#10b981;margin-right:4px" onclick="approveJobSub('${d.id}')">Approve</button>
+             <button class="btn btn-sm btn-red" onclick="rejectJobSub('${d.id}')">Reject</button>`
+          : s.status;
+        tableBody.innerHTML += `<tr><td>\( {s.user.split('@')[0]}</td><td> \){s.jobTitle}</td><td>\( {s.proof}</td><td> \){btn}</td></tr>`;
+      });
+    }
+    else if (type === 'users') {
+      tableHead.innerHTML = '<tr><th>Email</th><th>Balance</th><th>Action</th></tr>';
+      const snap = await getDocs(collection(db, "users"));
+      tableBody.innerHTML = '';
+      snap.forEach(d => {
+        const u = d.data();
+        tableBody.innerHTML += `<tr>
+          <td>\( {u.email}</td><td>৳ \){u.balance||0}</td>
+          <td><button class="btn btn-sm \( {u.blocked?'':'btn-red'}" onclick="toggleBlock(' \){d.id}',\( {!!u.blocked})"> \){u.blocked?'Unblock':'Block'}</button></td>
+        </tr>`;
+      });
+    }
+    else if (type === 'add_money') {
+      tableHead.innerHTML = '<tr><th>Email</th><th>Balance</th><th>Action</th></tr>';
+      const snap = await getDocs(collection(db, "users"));
+      tableBody.innerHTML = '';
+      snap.forEach(d => {
+        const u = d.data();
+        tableBody.innerHTML += `<tr>
+          <td>\( {u.email}</td><td>৳ \){u.balance||0}</td>
+          <td><button class="btn btn-sm" style="background:#3b82f6" onclick="addMoney('\( {d.id}', \){u.balance||0})">Add</button></td>
+        </tr>`;
+      });
+    }
+  } catch(e) { tableBody.innerHTML = '<tr><td colspan="5">সমস্যা হয়েছে</td></tr>'; console.log(e); }
 };
 
 window.approveGmail = async function(id) {
-    await updateDoc(doc(db, "gmails", id), { status: 'approved' });
-    const gmailSnap = await getDocs(query(collection(db, "gmails"), where("__name__", "==", id)));
-    if (!gmailSnap.empty) {
-        const gData = gmailSnap.docs[0].data();
-        const uQ = query(collection(db, "users"), where("email", "==", gData.user));
-        const uSnap = await getDocs(uQ);
-        if (!uSnap.empty) {
-            await updateDoc(uSnap.docs[0].ref, { balance: (uSnap.docs[0].data().balance || 0) + 15 });
-        }
-    }
-    window.loadAdminData('gmail');
-    alert('Approved! ৳১৫ যোগ হয়েছে।');
+  const gRef = doc(db, "gmails", id);
+  const gSnap = await getDoc(gRef);
+  if (!gSnap.exists()) return;
+  const g = gSnap.data();
+  await updateDoc(gRef, { status: 'approved' });
+
+  const uQ = query(collection(db, "users"), where("email", "==", g.user));
+  const uSnap = await getDocs(uQ);
+  if (!uSnap.empty) {
+    const uDoc = uSnap.docs[0];
+    const u = uDoc.data();
+    let newCount = (u.gmailCount || 0) + 1;
+    let bonus = 0;
+    if (newCount % 15 === 0) bonus = 20;
+    await updateDoc(uDoc.ref, {
+      balance: (u.balance || 0) + 15 + bonus,
+      gmailCount: newCount
+    });
+    if (bonus > 0) alert(`Approved! ৳১৫ + বোনাস ৳২০ যোগ হয়েছে`);
+    else alert('Approved! ৳১৫ যোগ হয়েছে');
+  }
+  loadAdminData('gmail');
 };
 
-window.rejectGmail = async function(id) { await updateDoc(doc(db, "gmails", id), { status: 'rejected' }); window.loadAdminData('gmail'); alert('Rejected!'); };
-window.approveJobSub = async function(id) { await updateDoc(doc(db, "jobSubs", id), { status: 'approved' }); window.loadAdminData('job_subs'); alert('Approved!'); };
-window.rejectJobSub = async function(id) { await updateDoc(doc(db, "jobSubs", id), { status: 'rejected' }); window.loadAdminData('job_subs'); alert('Rejected!'); };
-window.deleteJob = async function(id) { if (confirm('Delete?')) { await deleteDoc(doc(db, "jobs", id)); window.loadAdminData('jobs'); } };
-window.toggleBlock = async function(id, currentStatus) { await updateDoc(doc(db, "users", id), { blocked: !currentStatus }); window.loadAdminData('users'); };
-window.approveWithdraw = async function(id) { await updateDoc(doc(db, "withdraws", id), { status: 'approved' }); window.loadAdminData('withdraw'); alert('Paid!'); };
-window.rejectWithdraw = async function(id) { await updateDoc(doc(db, "withdraws", id), { status: 'rejected' }); window.loadAdminData('withdraw'); alert('Withdraw Rejected!'); };
+window.rejectGmail = async function(id) {
+  await updateDoc(doc(db, "gmails", id), { status: 'rejected' });
+  loadAdminData('gmail');
+  alert('Rejected!');
+};
+
+window.approveJobSub = async function(id) {
+  const sRef = doc(db, "jobSubs", id);
+  const sSnap = await getDoc(sRef);
+  if (!sSnap.exists()) return;
+  const s = sSnap.data();
+  await updateDoc(sRef, { status: 'approved' });
+
+  const uQ = query(collection(db, "users"), where("email", "==", s.user));
+  const uSnap = await getDocs(uQ);
+  if (!uSnap.empty) {
+    const uDoc = uSnap.docs[0];
+    await updateDoc(uDoc.ref, { balance: (uDoc.data().balance || 0) + (s.price || 0) });
+  }
+  loadAdminData('job_subs');
+  alert('Approved!');
+};
+
+window.rejectJobSub = async function(id) {
+  await updateDoc(doc(db, "jobSubs", id), { status: 'rejected' });
+  loadAdminData('job_subs');
+  alert('Rejected!');
+};
+
+window.approveWithdraw = async function(id) {
+  await updateDoc(doc(db, "withdraws", id), { status: 'approved' });
+  loadAdminData('withdraw');
+  alert('Paid!');
+};
+
+window.rejectWithdraw = async function(id) {
+  await updateDoc(doc(db, "withdraws", id), { status: 'rejected' });
+  loadAdminData('withdraw');
+  alert('Rejected!');
+};
+
+window.deleteJob = async function(id) {
+  if (confirm('Delete this job?')) {
+    await deleteDoc(doc(db, "jobs", id));
+    loadAdminData('jobs');
+  }
+};
+
+window.toggleBlock = async function(id, current) {
+  await updateDoc(doc(db, "users", id), { blocked: !current });
+  loadAdminData('users');
+};
 
 window.addMoney = async function(userId, currentBalance) {
-    let amount = prompt("কত টাকা যোগ করতে চান? (শুধু সংখ্যা লিখুন)");
-    if (amount === null || amount === "") return;
-    let parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) return alert('সঠিক পরিমাণ লিখুন!');
-    try {
-        await updateDoc(doc(db, "users", userId), { balance: currentBalance + parsedAmount });
-        alert('সফলভাবে ' + parsedAmount + ' টাকা যোগ করা হয়েছে!');
-        window.loadAdminData('add_money');
-    } catch(e) { alert('টাকা যোগ করতে সমস্যা হয়েছে!'); }
+  const amount = prompt("কত টাকা যোগ করবেন?");
+  if (!amount) return;
+  const val = parseFloat(amount);
+  if (isNaN(val) || val <= 0) return alert('সঠিক সংখ্যা দিন');
+  await updateDoc(doc(db, "users", userId), { balance: currentBalance + val });
+  alert('যোগ করা হয়েছে!');
+  loadAdminData('add_money');
 };
 
 window.addJob = async function() {
-    const title = document.getElementById('job-title').value;
-    const price = document.getElementById('job-price').value;
-    const link = document.getElementById('job-link').value;
-    const slots = document.getElementById('job-slots').value;
-    if (!title || !price || !slots) return alert('সব ঘর পূরণ করুন');
-    try {
-        await addDoc(collection(db, "jobs"), { title, price, link, slots, desc: 'কাজটি সম্পন্ন করতে Start Task এ ক্লিক করুন।' });
-        document.getElementById('job-title').value = '';
-        document.getElementById('job-price').value = '';
-        document.getElementById('job-link').value = '';
-        document.getElementById('job-slots').value = '';
-        window.loadAdminData('jobs');
-        alert('Job Posted!');
-    } catch(e) { alert('সার্ভারে সমস্যা!'); }
+  const title = document.getElementById('job-title').value.trim();
+  const price = document.getElementById('job-price').value.trim();
+  const link = document.getElementById('job-link').value.trim();
+  const slots = document.getElementById('job-slots').value.trim();
+  if (!title || !price) return alert('Title ও Price দিন');
+  await addDoc(collection(db, "jobs"), {
+    title, price: parseFloat(price), link, slots: slots || '100',
+    desc: 'কাজটি সম্পন্ন করে Submit করুন'
+  });
+  document.getElementById('job-title').value = '';
+  document.getElementById('job-price').value = '';
+  document.getElementById('job-link').value = '';
+  document.getElementById('job-slots').value = '';
+  loadAdminData('jobs');
+  alert('Job Posted!');
 };
 </script>
 </body>
