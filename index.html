@@ -444,7 +444,11 @@ async function doLogin(){
   toast("লগইন সফল!", "ok");
   
   if (localStorage.getItem("paylix_joined") === "yes") {
-    renderDashboard();async function refreshUser(){
+    renderDashboard();
+  } else {
+    renderCommunityJoin();
+  }
+}async function refreshUser(){
   const snap = await getDoc(doc(db, "users", state.user.email));
   if (snap.exists()) state.user = { email: state.user.email, ...snap.data() };
 }
@@ -639,7 +643,7 @@ async function loadHistory(){
         <td>${r.ts?.toDate ? r.ts.toDate().toLocaleString() : "—"}</td>
       </tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">কোনো রেকর্ড নেই।</td></tr>`;
   }catch(e){ console.error(e); }
-}function renderGmailSell(){
+  }function renderGmailSell(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
@@ -839,7 +843,7 @@ function renderAdminLogin(){
       toast("ভুল ক্রেডেনশিয়াল!", "err");
     }
   };
-}let adminTab = "users";
+  }let adminTab = "users";
 async function renderAdminDashboard(){
   if (!state.isAdmin) return renderAdminLogin();
   $("#navUser").textContent = "ADMIN";
@@ -1237,7 +1241,3 @@ async function adminIncome(){
 </script>
 </body>
 </html>
-  } else {
-    renderCommunityJoin();
-  }
-}
