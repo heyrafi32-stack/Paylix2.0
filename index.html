@@ -41,8 +41,7 @@
   #splash img{width:130px;height:130px;border-radius:28px;box-shadow:var(--shadow);animation:pulse 2s infinite}
   #splash h1{margin-top:20px;font-size:34px;letter-spacing:2px;background:linear-gradient(90deg,#b478ff,#00e0a4);-webkit-background-clip:text;background-clip:text;color:transparent}
   #splash p{color:var(--muted);margin-top:6px;font-size:13px;letter-spacing:1px}
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}.wrap{max-width:1100px;margin:0 auto;padding:16px}
   .navbar{
     position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
     background:rgba(22,8,38,.75);border-bottom:1px solid var(--border);
@@ -64,8 +63,7 @@
   .btn.danger{background:linear-gradient(135deg,#ff4d6d,#a81b35);box-shadow:0 6px 22px rgba(255,77,109,.4)}
   .btn.ghost{background:transparent;border:1px solid var(--border);box-shadow:none;color:var(--text)}
   .btn.small{padding:7px 12px;font-size:12px;border-radius:9px}
-  .btn.block{display:block;width:100%}
-  .auth-card{
+  .btn.block{display:block;width:100%}.auth-card{
     max-width:430px;margin:40px auto;background:linear-gradient(160deg,var(--panel),var(--bg2));
     border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow);
   }
@@ -92,8 +90,7 @@
   .dash-hero small{color:var(--muted);letter-spacing:1px;font-size:12px}
   .balance{font-size:42px;font-weight:800;margin:6px 0;letter-spacing:1px;
     background:linear-gradient(90deg,#fff,#b478ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .userline{color:var(--muted);font-size:13px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
+  .userline{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
   .tile{
     background:linear-gradient(160deg,var(--panel),var(--bg2));
     border:1px solid var(--border);border-radius:18px;padding:18px;
@@ -121,8 +118,7 @@
   }
   #toast.show{transform:translateX(-50%) translateY(0)}
   #toast.err{background:linear-gradient(135deg,#ff4d6d,#a81b35)}
-  #toast.ok{background:linear-gradient(135deg,#00e0a4,#009e74);color:#062b20}
-  .wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px}
+  #toast.ok{background:linear-gradient(135deg,#00e0a4,#009e74);color:#062b20}.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px}
   #wheel{
     width:260px;height:260px;border-radius:50%;
     border:8px solid var(--purple2);
@@ -147,10 +143,10 @@
   .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700}
   .badge.pending{background:rgba(255,209,102,.2);color:var(--accent2)}
   .badge.approved{background:rgba(0,224,164,.2);color:var(--accent)}
+  .badge.rejected{background:rgba(255,77,109,.2);color:var(--danger)}
   .badge.cancelled{background:rgba(255,77,109,.2);color:var(--danger)}
   .badge.blocked{background:rgba(255,77,109,.2);color:var(--danger)}
-  .badge.active{background:rgba(0,224,164,.2);color:var(--accent)}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .badge.active{background:rgba(0,224,164,.2);color:var(--accent)}  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
   .tabs button{
     background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);
     padding:9px 16px;border-radius:12px;font-size:13px;font-weight:600;
@@ -240,9 +236,7 @@ setTimeout(()=>{
   sp.style.opacity = 0; sp.style.visibility = "hidden";
   setTimeout(()=> sp.remove(), 600);
   boot();
-}, 1800);
-
-async function boot(){
+}, 1800);async function boot(){
   $("#app").classList.remove("hidden");
   const hash = (location.hash || "").toLowerCase();
   if (hash === "#admin" || hash === "#adn") { renderAdminLogin(); return; }
@@ -358,9 +352,7 @@ async function doLogin(){
   state.user = { email, ...data };
   toast("লগইন সফল!", "ok");
   renderDashboard();
-}
-
-async function refreshUser(){
+}async function refreshUser(){
   const snap = await getDoc(doc(db, "users", state.user.email));
   if (snap.exists()) state.user = { email: state.user.email, ...snap.data() };
 }
@@ -415,9 +407,7 @@ async function renderDashboard(){
   $("#goWithdraw").onclick = renderWithdraw;
   $("#logoutBtn").onclick = ()=>{ clearSession(); state.user=null; location.hash=""; renderAuth("login"); };
   loadHistory();
-}
-
-async function loadHistory(){
+  }async function loadHistory(){
   try{
     const wSnap = await getDocs(query(collection(db, "withdraws"), where("email","==",state.user.email)));
     const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
@@ -454,7 +444,6 @@ function renderGmailSell(){
     const gPass = $("#gPass").value.trim();
     if (!gEmail || !gPass) return toast("সব তথ্য দিন।", "err");
     if (!/^\S+@\S+\.\S+$/.test(gEmail)) return toast("সঠিক জিমেইল দিন।", "err");
-
     await addDoc(collection(db, "gmails"), {
       email: state.user.email,
       gmail: gEmail,
@@ -463,7 +452,6 @@ function renderGmailSell(){
       status: "pending",
       createdAt: serverTimestamp()
     });
-    
     toast("জিমেইল সাবমিট হয়েছে! অ্যাডমিন Approve করলে টাকা যোগ হবে ✅", "ok");
     renderDashboard();
   };
@@ -513,9 +501,7 @@ function renderSpin(){
       renderDashboard();
     }, 4200);
   };
-}
-
-function renderWithdraw(){
+}function renderWithdraw(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
@@ -561,7 +547,9 @@ function renderWithdraw(){
     toast("উইথড্র রিকোয়েস্ট পাঠানো হয়েছে ✅", "ok");
     renderDashboard();
   };
-    }function renderAdminLogin(){
+}
+
+function renderAdminLogin(){
   state.user = null;
   state.isAdmin = false;
   $("#navUser").textContent = "";
@@ -755,6 +743,7 @@ async function adminGmails(){
               <div class="row-actions">
                 ${g.status === "pending" || !g.status ? `
                   <button class="btn small accent" data-gapprove="${g.id}" data-gemail="${esc(g.email)}" data-greward="${g.reward}">Approve</button>
+                  <button class="btn small danger" data-greject="${g.id}">Reject</button>
                 ` : "—"}
               </div>
             </td>
@@ -779,6 +768,12 @@ async function adminGmails(){
       totalEarned: increment(reward)
     });
     toast("Approve হয়েছে এবং টাকা যোগ হয়েছে ✅", "ok");
+    adminGmails();
+  });
+  c.querySelectorAll("[data-greject]").forEach(b=> b.onclick = async ()=>{
+    if (!confirm("Reject করলে ইউজার কোনো টাকা পাবে না। নিশ্চিত?")) return;
+    await updateDoc(doc(db, "gmails", b.dataset.greject), { status: "rejected" });
+    toast("অর্ডারটি Reject করা হয়েছে ❌", "err");
     adminGmails();
   });
 }
