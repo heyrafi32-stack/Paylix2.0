@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Apexify - Admin & User Panel</title>
+<title>Apexify - Complete Platform</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
   body{min-height:100vh;background:#0d1b15;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
@@ -75,7 +75,9 @@
   .auth-link span{color:#34d399;font-weight:600;cursor:pointer}
 </style>
 </head>
-<body><div class="app">  
+<body>
+
+<div class="app">  
   <!-- Splash Screen -->
   <div id="page-splash">
     <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" class="splash-logo">
@@ -165,7 +167,7 @@
     <div class="services-grid">
       <div class="service-item" onclick="openPage('page-wallet')"><span>💳</span><p>Wallet</p></div>
       <div class="service-item" onclick="openPage('page-spin')"><span>🎰</span><p>Spin</p></div>
-      <div class="service-item" onclick="openPage('page-task')"><span>📋</span><p>Task</p></div>
+      <div class="service-item" onclick="openPage('page-gmail-sell')"><span>📧</span><p>Gmail Sell</p></div>
       <div class="service-item" onclick="openPage('page-withdraw')"><span>💸</span><p>Withdraw</p></div>
     </div>
   </div>
@@ -192,14 +194,17 @@
     </div>
   </div>
 
-  <!-- Task Page -->
-  <div id="page-task" class="page">
+  <!-- Gmail Sell Page -->
+  <div id="page-gmail-sell" class="page">
     <div class="back-btn" onclick="openPage('page-home')">← ফিরে যান</div>
-    <div class="sec-title" style="margin-top:0">Available Tasks</div>
+    <div class="sec-title" style="margin-top:0">📧 Gmail Sell (মূল্য: ৳১৫)</div>
+    <div class="welcome-banner" style="background:#132e22;border:1px solid #1f4e38;margin-bottom:14px">
+      <p style="color:#a7f3d0;font-size:0.8rem">নতুন জিমেইল তৈরি করে ইমেইল ও পাসওয়ার্ড জমা দিন। অ্যাডমিন চেক করে ব্যালেন্স যুক্ত করে দেবেন।</p>
+    </div>
     <div class="form-box">
-      <h4 style="font-size:0.95rem;margin-bottom:6px">ইউটিউব ভিডিও লাইক ও সাবস্ক্রাইব 👍</h4>
-      <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:12px">ভিডিওটি ২ মিনিট দেখে লাইক ও সাবস্ক্রাইব করুন।</p>
-      <button class="btn" style="padding:8px;font-size:0.8rem" onclick="alert('টাস্ক সাবমিট সফল হয়েছে!')">সাবমিট করুন (+৳২.৩)</button>
+      <div class="field"><label>জিমেইল অ্যাড্রেস</label><input type="email" id="sell-gmail" placeholder="example@gmail.com"></div>
+      <div class="field"><label>জিমেইল পাসওয়ার্ড</label><input type="password" id="sell-gpass" placeholder="পাসওয়ার্ড দিন"></div>
+      <button class="btn" onclick="submitGmailOrder()">জিমেইল জমা দিন (+৳১৫)</button>
     </div>
   </div>
 
@@ -224,7 +229,7 @@
     <div class="services-grid" style="grid-template-columns:repeat(2,1fr)">
       <div class="action-box" onclick="openPage('page-wallet')"><span class="ico">💳</span><h4>Wallet</h4><p>ব্যালেন্স চেক</p></div>
       <div class="action-box" onclick="openPage('page-spin')"><span class="ico">🎰</span><h4>Spin</h4><p>স্পিন করে আয়</p></div>
-      <div class="action-box" onclick="openPage('page-task')"><span class="ico">📋</span><h4>Task</h4><p>মাইক্রো টাস্ক</p></div>
+      <div class="action-box" onclick="openPage('page-gmail-sell')"><span class="ico">📧</span><h4>Gmail Sell</h4><p>জিমেইল বিক্রি</p></div>
       <div class="action-box" onclick="openPage('page-withdraw')"><span class="ico">💸</span><h4>Withdraw</h4><p>টাকা তুলুন</p></div>
     </div>
   </div>
@@ -261,10 +266,7 @@
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:15px">
       <button class="btn small-btn" onclick="loadAdminData('gmail')">Gmail Orders</button>
       <button class="btn small-btn" onclick="loadAdminData('withdraw')">Withdraws</button>
-      <button class="btn small-btn" onclick="loadAdminData('jobs')">Manage Jobs</button>
-      <button class="btn small-btn" onclick="loadAdminData('job_subs')">Job Submits</button>
       <button class="btn small-btn btn-blue" onclick="loadAdminData('users')">Users List</button>
-      <button class="btn small-btn" style="background:#8b5cf6" onclick="loadAdminData('add_money')">Add/Cut Money</button>
     </div>
 
     <div class="form-box" style="overflow-x:auto">
@@ -285,9 +287,9 @@
     <div class="nav-item" onclick="switchTab('page-profile', this)"><span>👤</span>Profile</div>
   </div>
 
-</div><script type="module">
+         </div><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AlzaSyAt87cMTIiJyXtpfIfLiLfZfa7WX1g9Mg",
@@ -399,6 +401,33 @@
     }
   };
 
+  // Gmail Order Submit
+  window.submitGmailOrder = async function() {
+    const gmail = document.getElementById('sell-gmail').value;
+    const gpass = document.getElementById('sell-gpass').value;
+
+    if (!gmail || !gpass) return alert('জিমেইল এবং পাসওয়ার্ড উভয় ঘর পূরণ করুন!');
+
+    try {
+      await addDoc(collection(db, "gmails"), {
+        user: currentUser,
+        gmail: gmail,
+        password: gpass,
+        price: 15,
+        status: 'pending',
+        time: new Date().toLocaleString()
+      });
+
+      alert('জিমেইল সফলভাবে জমা দেওয়া হয়েছে!');
+      document.getElementById('sell-gmail').value = '';
+      document.getElementById('sell-gpass').value = '';
+      openPage('page-home');
+    } catch(e) {
+      alert('সার্ভার সমস্যা! আবার চেষ্টা করুন।');
+    }
+  };
+
+  // Withdraw Function (15% Charge & 10% Refer Bonus)
   window.submitWithdraw = async function() {
     const method = document.getElementById('w-method').value;
     const number = document.getElementById('w-number').value;
@@ -445,6 +474,7 @@
     openPage('page-home');
   };
 
+  // Spin Wheel Algorithm
   window.playSpin = async function() {
     const cost = 15;
     const q = query(collection(db, "users"), where("email", "==", currentUser));
@@ -470,7 +500,7 @@
     loadUserHome();
   };
 
-  // Admin Login with specified Email & Password
+  // Admin Login
   window.loginAdmin = function() {
     const user = document.getElementById('admin-user').value;
     const pass = document.getElementById('admin-pass').value;
@@ -488,6 +518,7 @@
     openPage('page-login');
   };
 
+  // Admin Data Loader with Password Eye-Toggle
   window.loadAdminData = async function(type) {
     const tbody = document.querySelector('#admin-table tbody');
     tbody.innerHTML = 'লোড হচ্ছে...';
@@ -495,25 +526,56 @@
     try {
       if (type === 'withdraw') {
         const snap = await getDocs(collection(db, "withdraw"));
-        tbody.innerHTML = '';
+        tbody.innerHTML = `<tr><th>User & Info</th><th>Amount & Status</th></tr>`;
         snap.forEach(d => {
           let item = d.data();
           tbody.innerHTML += `<tr><td><b>${item.user}</b><br>${item.method}: ${item.number}</td><td>৳${item.requested} (${item.status})</td></tr>`;
         });
+      } else if (type === 'gmail') {
+        const snap = await getDocs(collection(db, "gmails"));
+        tbody.innerHTML = `<tr><th>User & Gmail</th><th>Password & Price</th></tr>`;
+        let index = 0;
+        snap.forEach(d => {
+          let item = d.data();
+          index++;
+          let passId = `admin-pass-${index}`;
+          tbody.innerHTML += `
+            <tr>
+              <td><b>${item.user}</b><br><span style="color:#34d399">${item.gmail}</span></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <input type="password" id="${passId}" value="${item.password}" readonly style="background:#0d1b15;color:#fff;border:1px solid #1f4e38;padding:4px;border-radius:4px;width:100px;font-size:0.75rem;">
+                  <span onclick="toggleAdminPass('${passId}', this)" style="cursor:pointer;font-size:1rem;" title="পাসওয়ার্ড দেখুন">👁️‍🗨️</span>
+                </div>
+                <small style="color:#fbbf24">মূল্য: ৳${item.price}</small>
+              </td>
+            </tr>`;
+        });
+        if(index === 0) tbody.innerHTML = `<tr><td colspan="2">কোনো জিমেইল অর্ডার নেই।</td></tr>`;
       } else if (type === 'users') {
         const snap = await getDocs(collection(db, "users"));
-        tbody.innerHTML = '';
+        tbody.innerHTML = `<tr><th>User Details</th><th>Balance</th></tr>`;
         snap.forEach(d => {
           let u = d.data();
           tbody.innerHTML += `<tr><td><b>${u.name}</b><br>${u.email}</td><td>Bal: ৳${u.balance}</td></tr>`;
         });
-      } else {
-        tbody.innerHTML = `<tr><td colspan="2">ডাটা পাওয়া যায়নি বা সেকশন খালি আছে।</td></tr>`;
       }
     } catch(err) {
-      tbody.innerHTML = `<tr><td colspan="2">লোড করতে সমস্যা হয়েছে।</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="2">ডাটা লোড করতে সমস্যা হয়েছে।</td></tr>`;
     }
-  }
+  };
+
+  // Toggle Password Visibility
+  window.toggleAdminPass = function(fieldId, iconElem) {
+    const passInput = document.getElementById(fieldId);
+    if (passInput.type === "password") {
+      passInput.type = "text";
+      iconElem.innerText = "🔒";
+    } else {
+      passInput.type = "password";
+      iconElem.innerText = "👁️‍🗨️";
+    }
+  };
 
   window.logoutUser = function() {
     localStorage.removeItem('paylix_current');
@@ -521,5 +583,6 @@
     openPage('page-login');
   };
 </script>
+
 </body>
 </html>
