@@ -41,7 +41,8 @@
   #splash img{width:130px;height:130px;border-radius:28px;box-shadow:var(--shadow);animation:pulse 2s infinite}
   #splash h1{margin-top:20px;font-size:34px;letter-spacing:2px;background:linear-gradient(90deg,#b478ff,#00e0a4);-webkit-background-clip:text;background-clip:text;color:transparent}
   #splash p{color:var(--muted);margin-top:6px;font-size:13px;letter-spacing:1px}
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}.wrap{max-width:1100px;margin:0 auto;padding:16px}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
   .navbar{
     position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
     background:rgba(22,8,38,.75);border-bottom:1px solid var(--border);
@@ -63,7 +64,8 @@
   .btn.danger{background:linear-gradient(135deg,#ff4d6d,#a81b35);box-shadow:0 6px 22px rgba(255,77,109,.4)}
   .btn.ghost{background:transparent;border:1px solid var(--border);box-shadow:none;color:var(--text)}
   .btn.small{padding:7px 12px;font-size:12px;border-radius:9px}
-  .btn.block{display:block;width:100%}.auth-card{
+  .btn.block{display:block;width:100%}
+  .auth-card{
     max-width:430px;margin:40px auto;background:linear-gradient(160deg,var(--panel),var(--bg2));
     border:1px solid var(--border);border-radius:22px;padding:28px;box-shadow:var(--shadow);
   }
@@ -90,7 +92,8 @@
   .dash-hero small{color:var(--muted);letter-spacing:1px;font-size:12px}
   .balance{font-size:42px;font-weight:800;margin:6px 0;letter-spacing:1px;
     background:linear-gradient(90deg,#fff,#b478ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .userline{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
+  .userline{color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
   .tile{
     background:linear-gradient(160deg,var(--panel),var(--bg2));
     border:1px solid var(--border);border-radius:18px;padding:18px;
@@ -118,7 +121,8 @@
   }
   #toast.show{transform:translateX(-50%) translateY(0)}
   #toast.err{background:linear-gradient(135deg,#ff4d6d,#a81b35)}
-  #toast.ok{background:linear-gradient(135deg,#00e0a4,#009e74);color:#062b20}.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px}
+  #toast.ok{background:linear-gradient(135deg,#00e0a4,#009e74);color:#062b20}
+  .wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px}
   #wheel{
     width:260px;height:260px;border-radius:50%;
     border:8px solid var(--purple2);
@@ -138,15 +142,17 @@
   }
   table{width:100%;border-collapse:collapse;font-size:13px}
   th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--border)}
-  th{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase}
+  th{color:var(--muted);font-size:11px;letter-spacing:1px;text-transform:uppercase; background: rgba(139,61,255,0.1);}
   .table-wrap{overflow-x:auto;border-radius:14px}
+  table tr:hover { background: rgba(139,61,255,0.05); }
   .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700}
   .badge.pending{background:rgba(255,209,102,.2);color:var(--accent2)}
   .badge.approved{background:rgba(0,224,164,.2);color:var(--accent)}
   .badge.rejected{background:rgba(255,77,109,.2);color:var(--danger)}
   .badge.cancelled{background:rgba(255,77,109,.2);color:var(--danger)}
   .badge.blocked{background:rgba(255,77,109,.2);color:var(--danger)}
-  .badge.active{background:rgba(0,224,164,.2);color:var(--accent)}  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .badge.active{background:rgba(0,224,164,.2);color:var(--accent)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
   .tabs button{
     background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);
     padding:9px 16px;border-radius:12px;font-size:13px;font-weight:600;
@@ -197,7 +203,6 @@ const firebaseConfig = {
   messagingSenderId: "353074453470",
   appId: "1:353074453470:web:679e99a4021eeed9499b4f"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -211,6 +216,11 @@ const WITHDRAW_CHARGE = 0.15;
 const REFERRAL_BONUS = 0.10;
 const LOGO = "https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png";
 
+const TG_USERNAME = "Owner_Paylix";
+const YT_LINK = "https://www.youtube.com/@Owner_of_peylix";
+const TG_GROUP = "https://t.me/paylix_official";
+const TG_CHANNEL = "https://t.me/+PnmC2bJ1VJJiODI1";
+
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 const page = $("#page");
@@ -223,7 +233,6 @@ function toast(msg, type=""){
   clearTimeout(t._tid);
   t._tid = setTimeout(()=>{ t.className = t.className.replace("show","").trim(); }, 2800);
 }
-
 function money(n){ return "৳" + Number(n || 0).toFixed(2); }
 function esc(s){ return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
 function emailKey(email){ return email.toLowerCase().trim(); }
@@ -236,10 +245,19 @@ setTimeout(()=>{
   sp.style.opacity = 0; sp.style.visibility = "hidden";
   setTimeout(()=> sp.remove(), 600);
   boot();
-}, 1800);async function boot(){
+}, 1800);
+
+async function boot(){
   $("#app").classList.remove("hidden");
   const hash = (location.hash || "").toLowerCase();
   if (hash === "#admin" || hash === "#adn") { renderAdminLogin(); return; }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const refParam = urlParams.get('ref');
+  if (refParam) {
+    localStorage.setItem('paylix_ref', refParam);
+  }
+
   const email = getSession();
   if (email) {
     const snap = await getDoc(doc(db, "users", email));
@@ -252,7 +270,12 @@ setTimeout(()=>{
         return;
       }
       state.user = { email, ...data };
-      renderDashboard();
+      
+      if (localStorage.getItem("paylix_joined") === "yes") {
+        renderDashboard();
+      } else {
+        renderCommunityJoin();
+      }
       return;
     }
     clearSession();
@@ -267,6 +290,61 @@ window.addEventListener("hashchange", ()=>{
   else renderAuth("login");
 });
 
+function renderCommunityJoin(){
+  page.innerHTML = `
+    <div class="auth-card" style="margin-top:20px; max-width:480px;">
+      <img class="logo" src="${LOGO}" alt="Paylix"/>
+      <h2 style="text-align:center; color:var(--accent2)">🚀 Join Our Community</h2>
+      <p class="sub">ড্যাশবোর্ডে প্রবেশ করতে নিচের ৩টি স্টেপ সম্পন্ন করুন</p>
+      
+      <div class="card" style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+        <div><b>1. YouTube</b><br><span style="font-size:12px; color:var(--muted)">চ্যানেল সাবস্ক্রাইব করুন</span></div>
+        <a href="${YT_LINK}" target="_blank" class="btn small danger">Subscribe</a>
+      </div>
+      
+      <div class="card" style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+        <div><b>2. Telegram Group</b><br><span style="font-size:12px; color:var(--muted)">গ্রুপে জয়েন করুন</span></div>
+        <a href="${TG_GROUP}" target="_blank" class="btn small accent">Join Group</a>
+      </div>
+      
+      <div class="card" style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+        <div><b>3. Telegram Channel</b><br><span style="font-size:12px; color:var(--muted)">চ্যানেলে জয়েন করুন</span></div>
+        <a href="${TG_CHANNEL}" target="_blank" class="btn small accent">Join Channel</a>
+      </div>
+      
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; background:rgba(255,255,255,0.05); padding:12px; border-radius:10px; border:1px solid var(--border);">
+        <input type="checkbox" id="joinCheck" style="width:20px; height:20px; accent-color:var(--accent); cursor:pointer;" />
+        <label for="joinCheck" style="font-size:13px; cursor:pointer; color:var(--text);">আমি সবগুলোতে জয়েন করেছি</label>
+      </div>
+      
+      <button class="btn accent block" id="verifyJoin" style="opacity:0.5; pointer-events:none;">Verify & Continue</button>
+      
+      <div class="switch-line" style="margin-top:15px;">
+        সাপোর্ট প্রয়োজন? <a href="https://t.me/${TG_USERNAME}" target="_blank">@${TG_USERNAME}</a>
+      </div>
+    </div>
+  `;
+
+  const check = $("#joinCheck");
+  const btn = $("#verifyJoin");
+
+  check.onchange = ()=>{
+    if (check.checked) {
+      btn.style.opacity = "1";
+      btn.style.pointerEvents = "auto";
+    } else {
+      btn.style.opacity = "0.5";
+      btn.style.pointerEvents = "none";
+    }
+  };
+
+  btn.onclick = ()=>{
+    localStorage.setItem("paylix_joined", "yes");
+    toast("ধন্যবাদ! ড্যাশবোর্ড আনলক হয়েছে ✅", "ok");
+    renderDashboard();
+  };
+}
+
 function renderAuth(mode="login"){
   state.user = null;
   state.isAdmin = false;
@@ -277,24 +355,29 @@ function renderAuth(mode="login"){
       <img class="logo" src="${LOGO}" alt="Paylix"/>
       <h2>${mode === "login" ? "Welcome Back" : "Create Account"}</h2>
       <p class="sub">${mode === "login" ? "Log in to continue earning" : "Join Paylix and start earning today"}</p>
+
       ${mode === "register" ? `
       <div class="field">
         <label>Full Name</label>
         <input id="regName" placeholder="Your name" autocomplete="name"/>
       </div>` : ""}
+
       <div class="field">
         <label>Email</label>
         <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email"/>
       </div>
+
       <div class="field">
         <label>Password</label>
         <input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password"/>
       </div>
+
       ${mode === "register" ? `
       <div class="field">
         <label>Referral Email (optional)</label>
-        <input id="regRef" type="email" placeholder="referrer@example.com"/>
+        <input id="regRef" type="email" placeholder="referrer@example.com" value="${localStorage.getItem('paylix_ref') || ''}"/>
       </div>` : ""}
+
       <button class="btn block" id="authSubmit">${mode === "login" ? "Login" : "Register"}</button>
       <div class="switch-line">
         ${mode === "login"
@@ -305,17 +388,22 @@ function renderAuth(mode="login"){
   `;
   $("#switchAuth").onclick = (e)=>{ e.preventDefault(); renderAuth(mode === "login" ? "register" : "login"); };
   $("#authSubmit").onclick = ()=> mode === "login" ? doLogin() : doRegister();
-}async function doRegister(){
+}
+
+async function doRegister(){
   const name = $("#regName").value.trim();
   const email = emailKey($("#authEmail").value);
   const pass = $("#authPass").value;
   const refEmail = emailKey($("#regRef").value || "");
+
   if (!name || !email || !pass) return toast("সব ঘর পূরণ করুন।", "err");
   if (!/^\S+@\S+\.\S+$/.test(email)) return toast("সঠিক ইমেইল দিন।", "err");
   if (pass.length < 4) return toast("পাসওয়ার্ড কমপক্ষে ৪ অক্ষর।", "err");
   if (email === ADMIN_EMAIL) return toast("এই ইমেইল ব্যবহার করা যাবে না।", "err");
+
   const ref = await getDoc(doc(db, "users", email));
   if (ref.exists()) return toast("এই ইমেইলে অ্যাকাউন্ট আছে।", "err");
+
   let referredBy = "";
   if (refEmail) {
     if (refEmail === email) return toast("নিজেকে রেফার করা যাবে না।", "err");
@@ -323,6 +411,7 @@ function renderAuth(mode="login"){
     if (!rSnap.exists()) return toast("রেফার ইমেইল পাওয়া যায়নি।", "err");
     referredBy = refEmail;
   }
+
   const data = {
     name, email, password: pass,
     referredBy,
@@ -336,23 +425,26 @@ function renderAuth(mode="login"){
   saveSession(email);
   state.user = { email, ...data };
   toast("রেজিস্ট্রেশন সফল! 🎉", "ok");
-  renderDashboard();
+  renderCommunityJoin();
 }
 
 async function doLogin(){
   const email = emailKey($("#authEmail").value);
   const pass = $("#authPass").value;
   if (!email || !pass) return toast("ইমেইল ও পাসওয়ার্ড দিন।", "err");
+
   const snap = await getDoc(doc(db, "users", email));
   if (!snap.exists()) return toast("অ্যাকাউন্ট পাওয়া যায়নি।", "err");
   const data = snap.data();
   if (data.password !== pass) return toast("পাসওয়ার্ড ভুল।", "err");
   if (data.blocked) return toast("আপনার অ্যাকাউন্ট ব্লকড।", "err");
+
   saveSession(email);
   state.user = { email, ...data };
   toast("লগইন সফল!", "ok");
-  renderDashboard();
-}async function refreshUser(){
+  
+  if (localStorage.getItem("paylix_joined") === "yes") {
+    renderDashboard();async function refreshUser(){
   const snap = await getDoc(doc(db, "users", state.user.email));
   if (snap.exists()) state.user = { email: state.user.email, ...snap.data() };
 }
@@ -361,36 +453,74 @@ async function renderDashboard(){
   await refreshUser();
   $("#navUser").textContent = state.user.name || state.user.email;
   $("#logoutBtn").classList.remove("hidden");
+
+  let noticeText = "Paylix-এ স্বাগতম! নিয়ম মেনে কাজ করুন।"; 
+  try {
+    const noticeSnap = await getDoc(doc(db, "settings", "notice"));
+    if (noticeSnap.exists()) noticeText = noticeSnap.data().text;
+  } catch(e) {}
+
+  const topSnap = await getDocs(query(collection(db, "users"), orderBy("totalEarned", "desc")));
+  const topUsers = [];
+  topSnap.forEach(d => { if(topUsers.length < 5 && d.data().email !== ADMIN_EMAIL) topUsers.push(d.data()); });
+
   const jobsSnap = await getDocs(query(collection(db, "jobs"), orderBy("createdAt", "desc")));
   const jobs = jobsSnap.docs.map(d=>({ id: d.id, ...d.data() }));
+
   page.innerHTML = `
     <div class="dash-hero">
       <small>বর্তমান ব্যালেন্স</small>
       <div class="balance" id="balDisplay">${money(state.user.balance)}</div>
       <div class="userline">👋 ${esc(state.user.name)} • ${esc(state.user.email)}</div>
     </div>
+
+    <div class="card" style="background:rgba(255,209,102,0.1); border-color:var(--accent2); color:var(--accent2); font-size:13px; margin-top:12px; display:flex; align-items:center; gap:10px;">
+      <span style="font-size:18px;">📢</span> <div>${esc(noticeText)}</div>
+    </div>
+
     <div class="grid">
       <div class="tile" id="goJobs"><span class="ico">💼</span><h3>Micro Jobs</h3><p>কাজ করে আয় করুন</p></div>
       <div class="tile" id="goGmail"><span class="ico">📧</span><h3>Gmail Sell</h3><p>প্রতি জিমেইলে ৳${GMAIL_SELL_RATE}</p></div>
       <div class="tile" id="goSpin"><span class="ico">🎡</span><h3>Lucky Spin</h3><p>ফি ৳${SPIN_FEE} • স্পিন করুন</p></div>
       <div class="tile" id="goWithdraw"><span class="ico">💸</span><h3>Withdraw</h3><p>বিকাশ / নগদ (min ৳${MIN_WITHDRAW})</p></div>
+      <div class="tile" id="goInvite"><span class="ico">🎁</span><h3>Invite Friends</h3><p>বন্ধু রেফার করে ১০% বোনাস নিন</p></div>
+      <div class="tile" id="goSupport"><span class="ico">🎧</span><h3>Support</h3><p>২৪/৭ হেল্প সেন্টার</p></div>
     </div>
+
+    <div class="section">
+      <h2>🏆 Top Earners</h2>
+      <div class="card">
+        ${topUsers.length ? topUsers.map((u, i) => `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border);">
+            <div style="display:flex; gap:10px; align-items:center;">
+              <b style="color:${i===0?'#ffd166':i===1?'#b478ff':i===2?'#00e0a4':'var(--muted)'}; font-size:16px;">#${i+1}</b>
+              <span>${esc(u.name || "User")}</span>
+            </div>
+            <b style="color:var(--accent);">${money(u.totalEarned || 0)}</b>
+          </div>`).join("") : `<div style="color:var(--muted); text-align:center;">কেউ এখনো আয় করেনি।</div>`}
+      </div>
+    </div>
+
     <div class="section">
       <h2>💼 Available Micro Jobs</h2>
       <div id="jobsList">
         ${jobs.length ? jobs.map(j => `
-          <div class="card job-row">
-            <div>
-              <div class="title">${esc(j.title)}</div>
-              <div class="desc">${esc(j.description || "")}</div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
+          <div class="card" style="margin-bottom:10px;">
+            <div class="job-row">
+              <div>
+                <div class="title">${esc(j.title)}</div>
+                <div class="desc">${esc(j.description || "")}</div>
+              </div>
               <span class="pill">৳${Number(j.reward||0).toFixed(2)}</span>
-              <a class="btn small" href="${esc(j.link)}" target="_blank" rel="noopener">কাজ করুন</a>
+            </div>
+            <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+              <a class="btn small" href="${esc(j.link)}" target="_blank" rel="noopener" onclick="startJobTimer('${j.id}')">কাজ করুন</a>
+              <button class="btn small accent" id="jobBtn_${j.id}" onclick="submitJobProof('${j.id}', '${esc(j.title)}', ${j.reward})" disabled style="opacity:0.5;">জমা দিন (৩০s)</button>
             </div>
           </div>`).join("") : `<div class="card" style="color:var(--muted)">এই মুহূর্তে কোনো কাজ নেই।</div>`}
       </div>
     </div>
+
     <div class="section">
       <h2>📊 আমার কার্যক্রম</h2>
       <div class="card" id="historyCard">
@@ -401,18 +531,102 @@ async function renderDashboard(){
       </div>
     </div>
   `;
+
   $("#goJobs").onclick = ()=> page.scrollIntoView({behavior:"smooth"});
   $("#goGmail").onclick = renderGmailSell;
   $("#goSpin").onclick = renderSpin;
   $("#goWithdraw").onclick = renderWithdraw;
+  $("#goInvite").onclick = renderInvite;
+  $("#goSupport").onclick = renderSupport;
   $("#logoutBtn").onclick = ()=>{ clearSession(); state.user=null; location.hash=""; renderAuth("login"); };
+
   loadHistory();
-  }async function loadHistory(){
+}
+
+function renderInvite(){
+  const refLink = window.location.origin + "?ref=" + encodeURIComponent(state.user.email);
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px; text-align:center;">
+      <img class="logo" src="${LOGO}" style="margin:0 auto 14px;"/>
+      <h2>🎁 Invite Friends</h2>
+      <p class="sub">বন্ধুদের রেফার করুন, তার উইথড্র থেকে ১০% বোনাস পান!</p>
+      
+      <div class="card" style="background:rgba(0,224,164,0.1); border-color:var(--accent); margin:20px 0;">
+        <div style="font-size:12px; color:var(--muted); margin-bottom:5px;">আপনার রেফার লিংক</div>
+        <input type="text" id="refLinkInput" value="${refLink}" readonly style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:var(--accent); text-align:center; font-size:12px; outline:none;"/>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <button class="btn block" id="copyBtn">📋 Copy Link</button>
+        <a class="btn block accent" href="https://api.whatsapp.com/send?text=আমি%20Paylix%20থেকে%20টাকা%20আয়%20করছি,%20তুমিও%20যোগ%20দাও:%20${encodeURIComponent(refLink)}" target="_blank">🟢 WhatsApp</a>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+        <a class="btn block" style="background:#1877F2" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(refLink)}" target="_blank">🔵 Facebook</a>
+        <a class="btn block" style="background:linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)" href="https://www.instagram.com/" target="_blank">🟣 Instagram</a>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin-top:16px;">ইনস্টাগ্রামে শেয়ার করতে লিংক কপি করে স্টোরিতে দিন।</p>
+    </div>
+  `;
+  
+  $("#backBtn").onclick = renderDashboard;
+  
+  $("#copyBtn").onclick = ()=>{
+    const input = $("#refLinkInput");
+    input.select();
+    input.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(input.value).then(()=>{
+      toast("লিংক কপি হয়েছে ✅", "ok");
+    }).catch(()=>{
+      toast("কপি করা যায়নি, ম্যানুয়ালি কপি করুন।", "err");
+    });
+  };
+}
+
+function renderSupport(){
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px">
+      <img class="logo" src="${LOGO}"/>
+      <h2 style="text-align:center">🎧 Support Center</h2>
+      <p class="sub">২৪/৭ আপনার সেবায় আমরা আছি</p>
+      
+      <div class="card" style="margin-bottom:12px; text-align:center;">
+        <b>📢 Telegram Admin</b><br>
+        <a href="https://t.me/${TG_USERNAME}" target="_blank" style="color:var(--accent); font-size:18px; font-weight:bold;">@${TG_USERNAME}</a>
+      </div>
+      
+      <div class="card" style="margin-bottom:12px; text-align:center;">
+        <b>👥 Official Group</b><br>
+        <a href="${TG_GROUP}" target="_blank" style="color:var(--accent); font-size:14px;">Join Telegram Group</a>
+      </div>
+      
+      <div class="card" style="text-align:center;">
+        <b>📺 YouTube Channel</b><br>
+        <a href="${YT_LINK}" target="_blank" style="color:var(--accent); font-size:14px;">Subscribe on YouTube</a>
+      </div>
+    </div>`;
+  $("#backBtn").onclick = renderDashboard;
+}
+
+async function loadHistory(){
   try{
     const wSnap = await getDocs(query(collection(db, "withdraws"), where("email","==",state.user.email)));
     const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
     const rows = [];
-    wSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Withdraw", amount:"-৳"+Number(x.amount||0).toFixed(2), status:x.status, ts:x.createdAt}); });
+    wSnap.forEach(d=>{ 
+      const x = d.data(); 
+      let statusText = x.status;
+      if (x.status === "approved" && x.paymentRef) {
+        statusText = `approved (Ref: ${x.paymentRef})`;
+      }
+      rows.push({
+        type: "Withdraw", 
+        amount: "-৳" + Number(x.amount || 0).toFixed(2), 
+        status: statusText, 
+        ts: x.createdAt
+      }); 
+    });
     gSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Gmail Sell", amount:"+৳"+Number(x.reward||0).toFixed(2), status:x.status||"pending", ts:x.createdAt}); });
     rows.sort((a,b)=> (b.ts?.seconds||0)-(a.ts?.seconds||0));
     const tb = $("#historyBody");
@@ -421,13 +635,11 @@ async function renderDashboard(){
       <tr>
         <td>${esc(r.type)}</td>
         <td>${esc(r.amount)}</td>
-        <td><span class="badge ${r.status}">${esc(r.status)}</span></td>
+        <td><span class="badge ${r.status.split(" ")[0]}">${esc(r.status)}</span></td>
         <td>${r.ts?.toDate ? r.ts.toDate().toLocaleString() : "—"}</td>
       </tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">কোনো রেকর্ড নেই।</td></tr>`;
   }catch(e){ console.error(e); }
-}
-
-function renderGmailSell(){
+}function renderGmailSell(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
@@ -501,7 +713,41 @@ function renderSpin(){
       renderDashboard();
     }, 4200);
   };
-}function renderWithdraw(){
+}
+
+window.startJobTimer = function(jobId) {
+  const btn = document.getElementById(`jobBtn_${jobId}`);
+  if (!btn || btn.dataset.started === "1") return;
+  btn.dataset.started = "1";
+  let timeLeft = 30;
+  const interval = setInterval(() => {
+    timeLeft--;
+    btn.textContent = `জমা দিন (${timeLeft}s)`;
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+      btn.textContent = "জমা দিন";
+      btn.disabled = false;
+      btn.style.opacity = "1";
+    }
+  }, 1000);
+};
+
+window.submitJobProof = async function(jobId, title, reward){
+  const proof = prompt("টাস্ক সম্পন্ন করার প্রমাণ (যেমন: আপনার নাম বা আইডি) দিন:");
+  if (!proof) return toast("প্রমাণ ছাড়া জমা দেওয়া যাবে না।", "err");
+  await addDoc(collection(db, "jobProofs"), {
+    userEmail: state.user.email,
+    jobId: jobId,
+    jobTitle: title,
+    proof: proof,
+    reward: Number(reward),
+    status: "pending",
+    createdAt: serverTimestamp()
+  });
+  toast("কাজ জমা হয়েছে! অ্যাডমিন Approve করলে টাকা পাবেন ✅", "ok");
+};
+
+function renderWithdraw(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
@@ -535,6 +781,19 @@ function renderSpin(){
     if (!amount || amount < MIN_WITHDRAW) return toast(`সর্বনিম্ন ৳${MIN_WITHDRAW}`, "err");
     await refreshUser();
     if (state.user.balance < amount) return toast("পর্যাপ্ত ব্যালেন্স নেই।", "err");
+
+    const wSnap = await getDocs(query(collection(db, "withdraws"), where("email","==",state.user.email)));
+    const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
+    const jSnap = await getDocs(query(collection(db, "jobProofs"), where("userEmail","==",state.user.email)));
+    
+    let approvedTasks = 0;
+    gSnap.forEach(d => { if(d.data().status === "approved") approvedTasks++; });
+    jSnap.forEach(d => { if(d.data().status === "approved") approvedTasks++; });
+
+    if (approvedTasks < 1) {
+      return toast("প্রথমে অন্তত ১টি কাজ সম্পন্ন করুন, তারপর টাকা তুলুন।", "err");
+    }
+
     await updateDoc(doc(db,"users",state.user.email), { balance: increment(-amount) });
     await addDoc(collection(db,"withdraws"), {
       email: state.user.email,
@@ -580,33 +839,46 @@ function renderAdminLogin(){
       toast("ভুল ক্রেডেনশিয়াল!", "err");
     }
   };
-}
-
-let adminTab = "users";
+}let adminTab = "users";
 async function renderAdminDashboard(){
   if (!state.isAdmin) return renderAdminLogin();
   $("#navUser").textContent = "ADMIN";
   $("#logoutBtn").classList.remove("hidden");
   $("#logoutBtn").onclick = ()=>{ state.isAdmin=false; location.hash=""; renderAuth("login"); };
+
   page.innerHTML = `
-    <div class="dash-hero">
-      <small>Admin Panel</small>
-      <div class="balance" style="font-size:30px">Paylix Control Center</div>
-      <div class="userline">সিক্রেট অ্যাডমিন ড্যাশবোর্ড</div>
+    <div class="dash-hero" style="background:linear-gradient(135deg, #1f0b36, #160826); border:1px solid #8b3dff;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <small style="color:#b478ff; font-weight:bold; letter-spacing:2px;">MASTER CONTROL</small>
+          <div class="balance" style="font-size:28px; margin-top:5px; background:linear-gradient(90deg,#fff,#00e0a4); -webkit-background-clip:text; color:transparent;">Admin Dashboard</div>
+          <div class="userline">Welcome back, Rafi</div>
+        </div>
+        <div style="font-size:40px; filter:drop-shadow(0 0 10px #8b3dff);">👑</div>
+      </div>
     </div>
-    <div class="tabs">
+    <div class="tabs" style="margin-top:20px; display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
       <button data-tab="users" class="${adminTab==='users'?'active':''}">👥 Users</button>
       <button data-tab="withdraws" class="${adminTab==='withdraws'?'active':''}">💸 Withdraws</button>
       <button data-tab="gmails" class="${adminTab==='gmails'?'active':''}">📧 Gmail Orders</button>
+      <button data-tab="jobProofs" class="${adminTab==='jobProofs'?'active':''}">📝 Job Approvals</button>
       <button data-tab="postjob" class="${adminTab==='postjob'?'active':''}">➕ Post Job</button>
+      <button data-tab="notice" class="${adminTab==='notice'?'active':''}">📢 Notice</button>
+      <button data-tab="rule" class="${adminTab==='rule'?'active':''}">⚙️ Rules</button>
+      <button data-tab="income" class="${adminTab==='income'?'active':''}">💰 My Profit</button>
     </div>
-    <div id="adminContent"></div>
+    <div id="adminContent" style="margin-top:15px;"></div>
   `;
   $$(".tabs button").forEach(b=> b.onclick = ()=>{ adminTab = b.dataset.tab; renderAdminDashboard(); });
+  
   if (adminTab === "users") adminUsers();
   else if (adminTab === "withdraws") adminWithdraws();
   else if (adminTab === "gmails") adminGmails();
-  else adminPostJob();
+  else if (adminTab === "jobProofs") adminJobProofs();
+  else if (adminTab === "postjob") adminPostJob();
+  else if (adminTab === "notice") adminNotice();
+  else if (adminTab === "rule") adminRules();
+  else if (adminTab === "income") adminIncome();
 }
 
 async function adminUsers(){
@@ -690,10 +962,19 @@ async function adminWithdraws(){
       </table>
     </div>`;
   c.querySelectorAll("[data-approve]").forEach(b=> b.onclick = async ()=>{
+    if (!confirm("Approve করলে ইউজারের কাছে Payment Reference ID চলে যাবে। নিশ্চিত?")) return;
+    
     const id = b.dataset.approve;
     const wSnap = await getDoc(doc(db,"withdraws",id));
     const w = wSnap.data();
-    await updateDoc(doc(db,"withdraws",id), { status:"approved" });
+    const refId = "PAY-" + Math.floor(10000 + Math.random() * 90000);
+    
+    await updateDoc(doc(db,"withdraws",id), { 
+      status: "approved",
+      paymentRef: refId,
+      approvedAt: serverTimestamp()
+    });
+
     const uSnap = await getDoc(doc(db,"users", w.email));
     const u = uSnap.data();
     if (u.referredBy) {
@@ -709,7 +990,8 @@ async function adminWithdraws(){
         });
       }
     }
-    toast("Approve হয়েছে ✅", "ok"); adminWithdraws();
+    toast(`Approve হয়েছে! Ref: ${refId}`, "ok"); 
+    adminWithdraws();
   });
   c.querySelectorAll("[data-cancel]").forEach(b=> b.onclick = async ()=>{
     if (!confirm("বাতিল করলে টাকা ইউজারের কাছে ফেরত যাবে। নিশ্চিত?")) return;
@@ -726,6 +1008,7 @@ async function adminGmails(){
   const snap = await getDocs(collection(db, "gmails"));
   const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
   list.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  
   c.innerHTML = `
     <div class="card table-wrap">
       <table>
@@ -751,12 +1034,14 @@ async function adminGmails(){
         </tbody>
       </table>
     </div>`;
+
   c.querySelectorAll("[data-eye]").forEach(e=> e.onclick = ()=>{
     const td = e.closest("td");
     const span = td.querySelector(".pw");
     if (span.dataset.shown === "0") { span.textContent = e.dataset.eye; span.dataset.shown = "1"; }
     else { span.textContent = "••••••"; span.dataset.shown = "0"; }
   });
+
   c.querySelectorAll("[data-gapprove]").forEach(b=> b.onclick = async ()=>{
     if (!confirm("Approve করলে ইউজারের একাউন্টে টাকা যোগ হবে। নিশ্চিত?")) return;
     const id = b.dataset.gapprove;
@@ -770,6 +1055,7 @@ async function adminGmails(){
     toast("Approve হয়েছে এবং টাকা যোগ হয়েছে ✅", "ok");
     adminGmails();
   });
+
   c.querySelectorAll("[data-greject]").forEach(b=> b.onclick = async ()=>{
     if (!confirm("Reject করলে ইউজার কোনো টাকা পাবে না। নিশ্চিত?")) return;
     await updateDoc(doc(db, "gmails", b.dataset.greject), { status: "rejected" });
@@ -778,7 +1064,58 @@ async function adminGmails(){
   });
 }
 
-function adminPostJob(){
+async function adminJobProofs(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(collection(db, "jobProofs"));
+  const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  list.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  
+  c.innerHTML = `
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Job Title</th><th>Proof</th><th>Reward</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        ${list.map(j=>`
+          <tr>
+            <td style="font-size:12px">${esc(j.userEmail)}</td>
+            <td>${esc(j.jobTitle)}</td>
+            <td>${esc(j.proof)}</td>
+            <td>${money(j.reward)}</td>
+            <td><span class="badge ${j.status}">${j.status}</span></td>
+            <td>
+              <div class="row-actions">
+                ${j.status === "pending" ? `
+                  <button class="btn small accent" onclick="approveJob('${j.id}', '${j.userEmail}', ${j.reward})">Approve</button>
+                  <button class="btn small danger" onclick="rejectJob('${j.id}')">Reject</button>
+                ` : "—"}
+              </div>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="6" style="color:var(--muted)">কোনো কাজ জমা পড়েনি।</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+window.approveJob = async function(id, email, reward){
+  if (!confirm("Approve করলে ইউজার টাকা পাবে। নিশ্চিত?")) return;
+  await updateDoc(doc(db, "jobProofs", id), { status: "approved" });
+  await updateDoc(doc(db, "users", email), { 
+    balance: increment(reward),
+    totalEarned: increment(reward)
+  });
+  toast("কাজ Approve হয়েছে এবং টাকা যোগ হয়েছে ✅", "ok");
+  adminJobProofs();
+};
+
+window.rejectJob = async function(id){
+  if (!confirm("Reject করলে ইউজার টাকা পাবে না। নিশ্চিত?")) return;
+  await updateDoc(doc(db, "jobProofs", id), { status: "rejected" });
+  toast("কাজ Reject করা হয়েছে ❌", "err");
+  adminJobProofs();
+};
+
+async function adminPostJob(){
   const c = $("#adminContent");
   c.innerHTML = `
     <div class="auth-card" style="margin-top:0">
@@ -803,6 +1140,104 @@ function adminPostJob(){
   };
 }
 
+async function adminNotice(){
+  const c = $("#adminContent");
+  const snap = await getDoc(doc(db, "settings", "notice"));
+  const currentText = snap.exists() ? snap.data().text : "";
+  
+  c.innerHTML = `
+    <div class="auth-card" style="margin-top:0">
+      <h2 style="text-align:center">📢 Update Notice</h2>
+      <p class="sub">এই নোটিশটি সব ইউজারের ড্যাশবোর্ডে দেখাবে</p>
+      <div class="field">
+        <textarea id="noticeInput" rows="4" style="width:100%; border-radius:11px; padding:12px; background:rgba(255,255,255,.05); color:var(--text); border:1px solid var(--border); outline:none;">${esc(currentText)}</textarea>
+      </div>
+      <button class="btn accent block" id="noticeSubmit">Update Notice</button>
+    </div>`;
+    
+  $("#noticeSubmit").onclick = async ()=>{
+    const txt = $("#noticeInput").value.trim();
+    if (!txt) return toast("নোটিশ খালি রাখা যাবে না!", "err");
+    await setDoc(doc(db, "settings", "notice"), { text: txt });
+    toast("নোটিশ আপডেট হয়েছে ✅", "ok");
+  };
+}
+
+async function adminRules(){
+  const c = $("#adminContent");
+  const snap = await getDoc(doc(db, "settings", "withdrawRule"));
+  const currentMin = snap.exists() ? snap.data().minAmount : MIN_WITHDRAW;
+  
+  c.innerHTML = `
+    <div class="auth-card" style="margin-top:0">
+      <h2 style="text-align:center">⚙️ Withdraw Rule</h2>
+      <div class="field">
+        <label>Minimum Withdraw Amount (৳)</label>
+        <input id="minWithdrawInput" type="number" value="${currentMin}" />
+      </div>
+      <button class="btn accent block" id="ruleSubmit">Save Rule</button>
+    </div>`;
+    
+  $("#ruleSubmit").onclick = async ()=>{
+    const val = Number($("#minWithdrawInput").value);
+    if (val < 50) return toast("কমপক্ষে ৫০ টাকা রাখুন।", "err");
+    await setDoc(doc(db, "settings", "withdrawRule"), { minAmount: val });
+    toast("রুল আপডেট হয়েছে ✅", "ok");
+  };
+}
+
+async function adminIncome(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">হিসাব লোড হচ্ছে...</div>`;
+  
+  const wSnap = await getDocs(collection(db, "withdraws"));
+  let totalWithdrawReq = 0;
+  let totalChargeEarned = 0;
+  
+  wSnap.forEach(d => {
+    const w = d.data();
+    if (w.status === "approved") {
+      totalWithdrawReq += Number(w.amount || 0);
+      totalChargeEarned += Number(w.amount || 0) * WITHDRAW_CHARGE;
+    }
+  });
+
+  const spinSnap = await getDocs(collection(db, "spins"));
+  let totalSpinFee = 0;
+  spinSnap.forEach(d => {
+    totalSpinFee += Number(d.data().fee || 0);
+  });
+
+  c.innerHTML = `
+    <div class="card" style="background:linear-gradient(135deg, #1f0b36, #160826); border:1px solid #00e0a4;">
+      <h3 style="color:#00e0a4; text-align:center; margin-bottom:15px;">📊 Paylix Profit Overview</h3>
+      
+      <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #3a1563;">
+        <span>Withdraw Charge (১৫%):</span>
+        <b style="color:#00e0a4;">${money(totalChargeEarned)}</b>
+      </div>
+      
+      <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #3a1563;">
+        <span>Spin Fees Income:</span>
+        <b style="color:#00e0a4;">${money(totalSpinFee)}</b>
+      </div>
+      
+      <div style="display:flex; justify-content:space-between; padding:15px 10px; margin-top:10px; background:rgba(0,224,164,0.1); border-radius:10px;">
+        <span style="font-weight:bold;">মোট আয় (Approx):</span>
+        <b style="color:#ffd166; font-size:18px;">${money(totalChargeEarned + totalSpinFee)}</b>
+      </div>
+      
+      <div style="display:flex; justify-content:space-between; padding:10px; margin-top:10px; background:rgba(255,77,109,0.1); border-radius:10px;">
+        <span>Total Withdrawn (Users):</span>
+        <b style="color:#ff4d6d;">${money(totalWithdrawReq)}</b>
+      </div>
+    </div>
+  `;
+}
 </script>
 </body>
 </html>
+  } else {
+    renderCommunityJoin();
+  }
+}
