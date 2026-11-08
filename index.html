@@ -145,7 +145,9 @@
             currentUser = null;
             currentView = 'login';
             renderApp();
-        };        window.renderDashboard = function(container) {
+        };
+
+        window.renderDashboard = function(container) {
             container.innerHTML = `
                 <div class="space-y-6">
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex justify-between items-center shadow-xl">
@@ -252,7 +254,7 @@
                 alert(`জিমেইল সফলভাবে জমা হয়েছে! ব্যালেন্সে ৳${rate} যোগ করা হয়েছে।`);
                 renderApp();
             } catch (err) { console.error(err); alert("জিমেইল জমা দিতে সমস্যা হয়েছে।"); }
-              }        window.renderSpin = function(container) {
+        }        window.renderSpin = function(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4 shadow-xl">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">🎡 লাকি স্পিন</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
