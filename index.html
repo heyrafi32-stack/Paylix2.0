@@ -13,14 +13,17 @@
     <div id="app" class="p-4 max-w-4xl mx-auto"></div>
 
     <script>
+        const logoUrl = "https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png";
+        
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyAt87cMTIiJyXtpfIfLiLfZfa7WX1g9Mg",
+            authDomain: "paylix-586b1.firebaseapp.com",
+            projectId: "paylix-586b1",
+            storageBucket: "paylix-586b1.appspot.com",
+            messagingSenderId: "353074453470",
+            appId: "1:353074453470:web:679e99a4021eeed9499b4f"
         };
+        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -50,9 +53,10 @@
 
         function renderLogin(container) {
             container.innerHTML = `
-                <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 mt-10 shadow-2xl">
-                    <h2 class="text-2xl font-bold text-center text-indigo-400">Paylix লগইন</h2>
-                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 mt-10 shadow-2xl text-center">
+                    <img src="${logoUrl}" alt="Paylix Logo" class="w-20 h-20 mx-auto rounded-2xl shadow-lg object-cover">
+                    <h2 class="text-2xl font-bold text-indigo-400">Paylix লগইন</h2>
+                    <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 mb-1">ইমেইল</label>
                             <input type="email" id="login-email" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500">
@@ -63,16 +67,17 @@
                         </div>
                         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl shadow-lg transition">লগইন</button>
                     </form>
-                    <p class="text-xs text-center text-slate-400">অ্যাকাউন্ট নেই? <button onclick="currentView='register'; renderApp();" class="text-indigo-400 font-bold hover:underline">রেজিস্ট্রেশন করুন</button></p>
+                    <p class="text-xs text-slate-400">অ্যাকাউন্ট নেই? <button onclick="currentView='register'; renderApp();" class="text-indigo-400 font-bold hover:underline">রেজিস্ট্রেশন করুন</button></p>
                 </div>
             `;
         }
 
         function renderRegister(container) {
             container.innerHTML = `
-                <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 mt-10 shadow-2xl">
-                    <h2 class="text-2xl font-bold text-center text-indigo-400">Paylix একাউন্ট তৈরি</h2>
-                    <form onsubmit="handleRegister(event)" class="space-y-4">
+                <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 mt-10 shadow-2xl text-center">
+                    <img src="${logoUrl}" alt="Paylix Logo" class="w-20 h-20 mx-auto rounded-2xl shadow-lg object-cover">
+                    <h2 class="text-2xl font-bold text-indigo-400">Paylix একাউন্ট তৈরি</h2>
+                    <form onsubmit="handleRegister(event)" class="space-y-4 text-left">
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 mb-1">আপনার নাম</label>
                             <input type="text" id="reg-name" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500">
@@ -91,7 +96,7 @@
                         </div>
                         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl shadow-lg transition">রেজিস্ট্রেশন</button>
                     </form>
-                    <p class="text-xs text-center text-slate-400">ইতিমধ্যে অ্যাকাউন্ট আছে? <button onclick="currentView='login'; renderApp();" class="text-indigo-400 font-bold hover:underline">লগইন করুন</button></p>
+                    <p class="text-xs text-slate-400">ইতিমধ্যে অ্যাকাউন্ট আছে? <button onclick="currentView='login'; renderApp();" class="text-indigo-400 font-bold hover:underline">লগইন করুন</button></p>
                 </div>
             `;
         }
@@ -138,9 +143,12 @@
             container.innerHTML = `
                 <div class="space-y-6">
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex justify-between items-center shadow-xl">
-                        <div>
-                            <h2 class="text-xl font-bold">${currentUser.name} ${currentUser.isVip ? '👑 VIP' : ''}</h2>
-                            <p class="text-xs text-slate-400">একাউন্ট: ${currentUser.phone}</p>
+                        <div class="flex items-center gap-4">
+                            <img src="${logoUrl}" alt="Logo" class="w-12 h-12 rounded-xl object-cover shadow">
+                            <div>
+                                <h2 class="text-xl font-bold">${currentUser.name} ${currentUser.isVip ? '👑 VIP' : ''}</h2>
+                                <p class="text-xs text-slate-400">একাউন্ট: ${currentUser.phone}</p>
+                            </div>
                         </div>
                         <button onclick="logout()" class="text-xs bg-red-600/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl font-bold hover:bg-red-600/30 transition">লগআউট</button>
                     </div>
@@ -232,7 +240,7 @@
                     renderApp();
                 });
             });
-        }        function renderSpin(container) {
+                }        function renderSpin(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4 shadow-xl">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">🎡 লাকি স্পিন</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
@@ -344,7 +352,7 @@
                     <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" class="block bg-slate-950 border border-slate-800 p-4 rounded-2xl text-red-400 font-bold text-xs hover:border-red-500 transition"><i class="fab fa-youtube"></i> ইউটিউব চ্যানেল</a>
                 </div>
             `;
-        }        function renderAdminPanel(container) {
+                }        function renderAdminPanel(container) {
             container.innerHTML = `
                 <div class="max-w-4xl mx-auto space-y-6">
                     <div class="bg-red-950/40 border border-red-500/30 p-6 rounded-3xl flex justify-between items-center shadow-xl">
@@ -527,7 +535,7 @@
         }
 
         function adminApproveProof(proofId, email, reward) {
-            db.collection("job_proofs").doc(proofId).update({ status: "Approved" }).then(() => {
+            db.collection("job_proofs").doc(proofId).update({ status: "Approved" ).then(() => {
                 db.collection("users").doc(email).get().then(doc => {
                     if(doc.exists) {
                         let bal = doc.data().balance || 0;
