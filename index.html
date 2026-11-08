@@ -303,24 +303,24 @@ function renderCommunityJoin(){
       </div>
       
       <div class="card" style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-        <div><b>2. Telegram Group</b><br><span style="font-size:12px; color:var(--muted)">গ্রুপে জয়েন করুন</span></div>
+        <div><b>2. Telegram Group</b><br><span style="font-size:12px; color:var(--muted)">গ্রুপে জয়েন করুন</span></div>
         <a href="${TG_GROUP}" target="_blank" class="btn small accent">Join Group</a>
       </div>
       
       <div class="card" style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
-        <div><b>3. Telegram Channel</b><br><span style="font-size:12px; color:var(--muted)">চ্যানেলে জয়েন করুন</span></div>
+        <div><b>3. Telegram Channel</b><br><span style="font-size:12px; color:var(--muted)">চ্যানেলে জয়েন করুন</span></div>
         <a href="${TG_CHANNEL}" target="_blank" class="btn small accent">Join Channel</a>
       </div>
       
       <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; background:rgba(255,255,255,0.05); padding:12px; border-radius:10px; border:1px solid var(--border);">
         <input type="checkbox" id="joinCheck" style="width:20px; height:20px; accent-color:var(--accent); cursor:pointer;" />
-        <label for="joinCheck" style="font-size:13px; cursor:pointer; color:var(--text);">আমি সবগুলোতে জয়েন করেছি</label>
+        <label for="joinCheck" style="font-size:13px; cursor:pointer; color:var(--text);">আমি সবগুলোতে জয়েন করেছি</label>
       </div>
       
       <button class="btn accent block" id="verifyJoin" style="opacity:0.5; pointer-events:none;">Verify & Continue</button>
       
       <div class="switch-line" style="margin-top:15px;">
-        সাপোর্ট প্রয়োজন? <a href="https://t.me/${TG_USERNAME}" target="_blank">@${TG_USERNAME}</a>
+        সাপোর্ট প্রয়োজন? <a href="https://t.me/${TG_USERNAME}" target="_blank">@${TG_USERNAME}</a>
       </div>
     </div>
   `;
@@ -340,12 +340,9 @@ function renderCommunityJoin(){
 
   btn.onclick = ()=>{
     localStorage.setItem("paylix_joined", "yes");
-    toast("ধন্যবাদ! ড্যাশবোর্ড আনলক হয়েছে ✅", "ok");
+    toast("ধন্যবাদ! ড্যাশবোর্ড আনলক হয়েছে ✅", "ok");
     renderDashboard();
-  };
-}
-
-function renderAuth(mode="login"){
+  };function renderAuth(mode="login"){
   state.user = null;
   state.isAdmin = false;
   $("#navUser").textContent = "";
@@ -448,12 +445,11 @@ async function doLogin(){
   } else {
     renderCommunityJoin();
   }
-}async function refreshUser(){
-  const snap = await getDoc(doc(db, "users", state.user.email));
-  if (snap.exists()) state.user = { email: state.user.email, ...snap.data() };
 }
 
-async function renderDashboard(){
+async function refreshUser(){
+  const snap = await getDoc(doc(db, "users", state.user.email));
+  if (snap.exists()) state.user = { email: state.user.email, ...snap.data() };async function renderDashboard(){
   await refreshUser();
   $("#navUser").textContent = state.user.name || state.user.email;
   $("#logoutBtn").classList.remove("hidden");
@@ -484,6 +480,8 @@ async function renderDashboard(){
 
     <div class="grid">
       <div class="tile" id="goJobs"><span class="ico">💼</span><h3>Micro Jobs</h3><p>কাজ করে আয় করুন</p></div>
+      <div class="tile" id="goSponsor"><span class="ico">🎁</span><h3>Sponsor Tasks</h3><p>সিপিএ কাজ করে আয় করুন</p></div>
+      <div class="tile" id="goAdMarket"><span class="ico">🛍️</span><h3>Ad Market</h3><p>কাজ দিন বা কাজ করে টাকা নিন</p></div>
       <div class="tile" id="goGmail"><span class="ico">📧</span><h3>Gmail Sell</h3><p>প্রতি জিমেইলে ৳${GMAIL_SELL_RATE}</p></div>
       <div class="tile" id="goSpin"><span class="ico">🎡</span><h3>Lucky Spin</h3><p>ফি ৳${SPIN_FEE} • স্পিন করুন</p></div>
       <div class="tile" id="goWithdraw"><span class="ico">💸</span><h3>Withdraw</h3><p>বিকাশ / নগদ (min ৳${MIN_WITHDRAW})</p></div>
@@ -537,6 +535,8 @@ async function renderDashboard(){
   `;
 
   $("#goJobs").onclick = ()=> page.scrollIntoView({behavior:"smooth"});
+  $("#goSponsor").onclick = renderSponsorTasks;
+  $("#goAdMarket").onclick = renderAdMarket;
   $("#goGmail").onclick = renderGmailSell;
   $("#goSpin").onclick = renderSpin;
   $("#goWithdraw").onclick = renderWithdraw;
@@ -585,9 +585,7 @@ function renderInvite(){
       toast("কপি করা যায়নি, ম্যানুয়ালি কপি করুন।", "err");
     });
   };
-}
-
-function renderSupport(){
+}function renderSupport(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
@@ -617,6 +615,7 @@ async function loadHistory(){
   try{
     const wSnap = await getDocs(query(collection(db, "withdraws"), where("email","==",state.user.email)));
     const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
+    const sSnap = await getDocs(query(collection(db, "sponsorSubs"), where("userEmail","==",state.user.email)));
     const rows = [];
     wSnap.forEach(d=>{ 
       const x = d.data(); 
@@ -632,6 +631,7 @@ async function loadHistory(){
       }); 
     });
     gSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Gmail Sell", amount:"+৳"+Number(x.reward||0).toFixed(2), status:x.status||"pending", ts:x.createdAt}); });
+    sSnap.forEach(d=>{ const x=d.data(); rows.push({type:"Sponsor Task", amount:"+৳"+Number(x.payout||0).toFixed(2), status:x.status, ts:x.createdAt}); });
     rows.sort((a,b)=> (b.ts?.seconds||0)-(a.ts?.seconds||0));
     const tb = $("#historyBody");
     if (!tb) return;
@@ -643,7 +643,9 @@ async function loadHistory(){
         <td>${r.ts?.toDate ? r.ts.toDate().toLocaleString() : "—"}</td>
       </tr>`).join("") : `<tr><td colspan="4" style="color:var(--muted)">কোনো রেকর্ড নেই।</td></tr>`;
   }catch(e){ console.error(e); }
-  }function renderGmailSell(){
+}
+
+function renderGmailSell(){
   page.innerHTML = `
     <button class="btn ghost small" id="backBtn">← Back</button>
     <div class="auth-card" style="margin-top:16px">
@@ -789,10 +791,12 @@ function renderWithdraw(){
     const wSnap = await getDocs(query(collection(db, "withdraws"), where("email","==",state.user.email)));
     const gSnap = await getDocs(query(collection(db, "gmails"), where("email","==",state.user.email)));
     const jSnap = await getDocs(query(collection(db, "jobProofs"), where("userEmail","==",state.user.email)));
+    const sSnap = await getDocs(query(collection(db, "sponsorSubs"), where("userEmail","==",state.user.email)));
     
     let approvedTasks = 0;
     gSnap.forEach(d => { if(d.data().status === "approved") approvedTasks++; });
     jSnap.forEach(d => { if(d.data().status === "approved") approvedTasks++; });
+    sSnap.forEach(d => { if(d.data().status === "approved") approvedTasks++; });
 
     if (approvedTasks < 1) {
       return toast("প্রথমে অন্তত ১টি কাজ সম্পন্ন করুন, তারপর টাকা তুলুন।", "err");
@@ -811,6 +815,206 @@ function renderWithdraw(){
     renderDashboard();
   };
 }
+
+async function renderSponsorTasks(){
+  page.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(query(collection(db, "sponsorTasks"), orderBy("createdAt", "desc")));
+  const tasks = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px; max-width:520px;">
+      <h2 style="text-align:center; color:var(--accent2)">🎁 Sponsor Tasks</h2>
+      <p class="sub">কাজ সম্পন্ন করে ইনস্ট্যান্ট আয় করুন</p>
+      
+      ${tasks.length ? tasks.map(t => `
+        <div class="card" style="margin-bottom:10px;">
+          <div class="job-row">
+            <div><b>${esc(t.title)}</b><br><span class="desc">${esc(t.description)}</span></div>
+            <span class="pill">৳${Number(t.userPayout||0).toFixed(2)}</span>
+          </div>
+          <div style="margin-top:10px; display:flex; gap:8px;">
+            <a class="btn small" href="${esc(t.link)}" target="_blank" rel="noopener">Start Task</a>
+            <button class="btn small accent" onclick="submitSponsorProof('${t.id}', '${esc(t.title)}', ${t.userPayout})">Submit Proof</button>
+          </div>
+        </div>`).join("") : `<div class="card" style="color:var(--muted)">এই মুহূর্তে কোনো কাজ নেই।</div>`}
+    </div>`;
+  $("#backBtn").onclick = renderDashboard;
+}
+
+window.submitSponsorProof = async function(taskId, title, payout){
+  const proof = prompt("কাজটি সম্পন্ন করার প্রমাণ (যেমন: আপনার আইডি বা ইমেইল) দিন:");
+  if (!proof) return toast("প্রমাণ ছাড়া সাবমিট করা যাবে না।", "err");
+
+  await addDoc(collection(db, "sponsorSubs"), {
+    userEmail: state.user.email,
+    taskId: taskId,
+    taskTitle: title,
+    proof: proof,
+    payout: Number(payout),
+    status: "pending",
+    createdAt: serverTimestamp()
+  });
+  toast("কাজ সাবমিট হয়েছে! অ্যাডমিন Approve করলে টাকা যোগ হবে ✅", "ok");
+};
+
+function renderAdMarket(){
+  page.innerHTML = `
+    <button class="btn ghost small" id="backBtn">← Back</button>
+    <div class="auth-card" style="margin-top:16px; max-width:550px;">
+      <h2 style="text-align:center; color:var(--accent2)">🛍️ Paylix Ad Market</h2>
+      <p class="sub">কাজ পোস্ট করুন বা কাজ করে আয় করুন</p>
+      
+      <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <button class="btn accent block" id="tabCreate">➕ কাজ দিন</button>
+        <button class="btn gold block" id="tabDo">💼 কাজ করুন</button>
+      </div>
+      <div id="adContent"></div>
+    </div>`;
+    
+  $("#backBtn").onclick = renderDashboard;
+  $("#tabCreate").onclick = renderCreateAd;
+  $("#tabDo").onclick = renderDoAd;
+  
+  renderDoAd();
+}
+
+function renderCreateAd(){
+  $("#adContent").innerHTML = `
+    <div class="card">
+      <h3 style="color:var(--accent); margin-bottom:10px;">নতুন কাজ পোস্ট করুন</h3>
+      <div class="field"><label>কাজের নাম (যেমন: YouTube Subscribe)</label><input id="adTitle" placeholder="e.g. Subscribe my channel"/></div>
+      <div class="field"><label>কাজের লিংক</label><input id="adLink" placeholder="https://youtube.com/..."/></div>
+      <div class="field"><label>মোট কাজ (কতজন করবে)</label><input id="adSlots" type="number" min="1" placeholder="100"/></div>
+      <div class="field"><label>প্রতি কাজে ইউজার পাবে (৳)</label><input id="adReward" type="number" min="1" placeholder="0.80"/></div>
+      
+      <div class="card" style="background:rgba(255,209,102,.1); color:var(--accent2); font-size:13px; margin:10px 0;">
+        ⚠️ মিনিমাম বাজেট ১০০ টাকা। <br> আপনার মোট খরচ: <b id="adTotal">৳0.00</b>
+      </div>
+      <button class="btn accent block" id="adSubmit">Publish Ad</button>
+    </div>`;
+
+  const slotsEl = $("#adSlots"), rewardEl = $("#adReward"), totalEl = $("#adTotal");
+  const calcTotal = () => {
+    const total = (Number(slotsEl.value)||0) * (Number(rewardEl.value)||0);
+    totalEl.textContent = money(total);
+  };
+  slotsEl.oninput = calcTotal; rewardEl.oninput = calcTotal;
+
+  $("#adSubmit").onclick = async ()=>{
+    const title = $("#adTitle").value.trim();
+    const link = $("#adLink").value.trim();
+    const slots = Number(slotsEl.value);
+    const reward = Number(rewardEl.value);
+    const totalCost = slots * reward;
+
+    if (!title || !link || !slots || !reward) return toast("সব তথ্য দিন।", "err");
+    if (totalCost < 100) return toast("মিনিমাম বাজেট ১০০ টাকা হতে হবে।", "err");
+    
+    await refreshUser();
+    if (state.user.balance < totalCost) return toast(`আপনার ব্যালেন্স কম আছে। দরকার: ${money(totalCost)}`, "err");
+
+    await updateDoc(doc(db,"users",state.user.email), { balance: increment(-totalCost) });
+    await addDoc(collection(db, "adJobs"), {
+      advertiser: state.user.email,
+      title, link, totalSlots: slots, completedSlots: 0, reward, status: "active", createdAt: serverTimestamp()
+    });
+
+    toast("কাজ সফলভাবে পোস্ট হয়েছে! ✅", "ok");
+    renderDoAd();
+  };
+}
+
+async function renderDoAd(){
+  $("#adContent").innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(query(collection(db, "adJobs"), where("status", "==", "active")));
+  let jobs = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  jobs = jobs.filter(j => j.completedSlots < j.totalSlots);
+
+  let html = jobs.length ? jobs.map(j => `
+    <div class="card" style="margin-bottom:10px;">
+      <div class="job-row">
+        <div><b>${esc(j.title)}</b><br><span style="font-size:12px; color:var(--muted)">বাকি আছে: ${j.totalSlots - j.completedSlots} টি</span></div>
+        <span class="pill">৳${j.reward.toFixed(2)}</span>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:8px;">
+        <a class="btn small" href="${esc(j.link)}" target="_blank">কাজ করুন</a>
+        <button class="btn small accent" onclick="openAdProof('${j.id}', '${esc(j.title)}', ${j.reward})">প্রমাণ দিন</button>
+      </div>
+    </div>`).join("") : `<div class="card" style="color:var(--muted); text-align:center;">কোনো কাজ নেই।</div>`;
+  
+  $("#adContent").innerHTML = html;
+}
+
+window.openAdProof = function(jobId, title, reward){
+  $("#adContent").innerHTML = `
+    <div class="card">
+      <h3 style="color:var(--accent); margin-bottom:10px;">প্রমাণ জমা দিন</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">কাজ: ${esc(title)}</p>
+      
+      <div class="field">
+        <label>স্ক্রিনশট আপলোড করুন</label>
+        <input type="file" id="proofImg" accept="image/*" style="width:100%; padding:10px; background:rgba(255,255,255,0.05); border-radius:10px; border:1px solid var(--border); color:#fff;"/>
+      </div>
+      <div class="field">
+        <label>অতিরিক্ত তথ্য (Optional)</label>
+        <input id="proofText" placeholder="যেমন: আমার ইউটিউব নাম Rahim"/>
+      </div>
+      
+      <button class="btn accent block" id="submitProofBtn">Submit Proof</button>
+      <button class="btn ghost block" id="cancelProofBtn" style="margin-top:10px;">Cancel</button>
+    </div>`;  $("#cancelProofBtn").onclick = renderDoAd;
+  
+  $("#submitProofBtn").onclick = async ()=>{
+    const file = $("#proofImg").files[0];
+    const text = $("#proofText").value.trim();
+    if (!file) return toast("স্ক্রিনশট ছাড়া সাবমিট করা যাবে না।", "err");
+
+    toast("আপলোড হচ্ছে... একটু অপেক্ষা করুন", "ok");
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        const MAX_SIZE = 600;
+        if (width > height && width > MAX_SIZE) {
+          height *= MAX_SIZE / width;
+          width = MAX_SIZE;
+        } else if (height > MAX_SIZE) {
+          width *= MAX_SIZE / height;
+          height = MAX_SIZE;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const base64data = canvas.toDataURL('image/jpeg', 0.5);
+
+        await addDoc(collection(db, "adProofs"), {
+          userEmail: state.user.email,
+          jobId: jobId,
+          jobTitle: title,
+          proofImage: base64data,
+          proofText: text,
+          reward: reward,
+          status: "pending",
+          createdAt: serverTimestamp()
+        });
+
+        toast("প্রমাণ জমা হয়েছে! অ্যাডমিন Approve করলে টাকা পাবেন ✅", "ok");
+        renderDoAd();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+};
 
 function renderAdminLogin(){
   state.user = null;
@@ -843,7 +1047,9 @@ function renderAdminLogin(){
       toast("ভুল ক্রেডেনশিয়াল!", "err");
     }
   };
-  }let adminTab = "users";
+}
+
+let adminTab = "users";
 async function renderAdminDashboard(){
   if (!state.isAdmin) return renderAdminLogin();
   $("#navUser").textContent = "ADMIN";
@@ -866,6 +1072,9 @@ async function renderAdminDashboard(){
       <button data-tab="withdraws" class="${adminTab==='withdraws'?'active':''}">💸 Withdraws</button>
       <button data-tab="gmails" class="${adminTab==='gmails'?'active':''}">📧 Gmail Orders</button>
       <button data-tab="jobProofs" class="${adminTab==='jobProofs'?'active':''}">📝 Job Approvals</button>
+      <button data-tab="adProofs" class="${adminTab==='adProofs'?'active':''}">🛍️ Ad Proofs</button>
+      <button data-tab="sponsorTasks" class="${adminTab==='sponsorTasks'?'active':''}">🎁 Add Sponsor</button>
+      <button data-tab="sponsorSubs" class="${adminTab==='sponsorSubs'?'active':''}">✅ Sponsor Subs</button>
       <button data-tab="postjob" class="${adminTab==='postjob'?'active':''}">➕ Post Job</button>
       <button data-tab="notice" class="${adminTab==='notice'?'active':''}">📢 Notice</button>
       <button data-tab="rule" class="${adminTab==='rule'?'active':''}">⚙️ Rules</button>
@@ -879,6 +1088,9 @@ async function renderAdminDashboard(){
   else if (adminTab === "withdraws") adminWithdraws();
   else if (adminTab === "gmails") adminGmails();
   else if (adminTab === "jobProofs") adminJobProofs();
+  else if (adminTab === "adProofs") adminAdProofs();
+  else if (adminTab === "sponsorTasks") adminSponsorTasks();
+  else if (adminTab === "sponsorSubs") adminSponsorSubs();
   else if (adminTab === "postjob") adminPostJob();
   else if (adminTab === "notice") adminNotice();
   else if (adminTab === "rule") adminRules();
@@ -932,9 +1144,7 @@ async function adminUsers(){
     await updateDoc(doc(db,"users", b.dataset.block), { blocked });
     toast(blocked ? "ব্লক করা হয়েছে" : "আনব্লক করা হয়েছে", "ok"); adminUsers();
   });
-}
-
-async function adminWithdraws(){
+    }async function adminWithdraws(){
   const c = $("#adminContent");
   c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
   const snap = await getDocs(collection(db, "withdraws"));
@@ -1068,7 +1278,71 @@ async function adminGmails(){
   });
 }
 
-async function adminJobProofs(){
+async function adminAdProofs(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(collection(db, "adProofs"));
+  const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  list.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  
+  c.innerHTML = `
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Job</th><th>Proof</th><th>Reward</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        ${list.map(p=>`
+          <tr>
+            <td style="font-size:11px">${esc(p.userEmail)}</td>
+            <td>${esc(p.jobTitle)}</td>
+            <td>
+              ${p.proofImage ? `<img src="${p.proofImage}" onclick="window.open(this.src, '_blank')" style="width:60px; height:60px; border-radius:8px; cursor:pointer; object-fit:cover; border:1px solid var(--border);" title="বড় করে দেখতে ক্লিক করুন"/>` : "—"}
+              <div style="font-size:10px; color:var(--muted); margin-top:5px;">${esc(p.proofText || "")}</div>
+            </td>
+            <td>${money(p.reward)}</td>
+            <td><span class="badge ${p.status}">${p.status}</span></td>
+            <td>
+              <div class="row-actions">
+                ${p.status === "pending" ? `
+                  <button class="btn small accent" onclick="approveAdProof('${p.id}', '${p.userEmail}', ${p.reward}, '${p.jobId}')">Approve</button>
+                  <button class="btn small danger" onclick="rejectAdProof('${p.id}')">Reject</button>
+                ` : "—"}
+              </div>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="6" style="color:var(--muted)">কোনো প্রমাণ জমা পড়েনি।</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+window.approveAdProof = async function(proofId, workerEmail, reward, jobId){
+  if (!confirm("Approve করলে ইউজার টাকা পাবে। নিশ্চিত?")) return;
+  
+  await updateDoc(doc(db, "adProofs", proofId), { status: "approved" });
+  await updateDoc(doc(db, "users", workerEmail), { 
+    balance: increment(reward),
+    totalEarned: increment(reward)
+  });
+
+  const jobSnap = await getDoc(doc(db, "adJobs", jobId));
+  if(jobSnap.exists()){
+    const jobData = jobSnap.data();
+    const completed = (jobData.completedSlots || 0) + 1;
+    await updateDoc(doc(db, "adJobs", jobId), { 
+      completedSlots: completed,
+      status: completed >= jobData.totalSlots ? "completed" : "active"
+    });
+  }
+
+  toast("প্রমাণ Approve হয়েছে এবং টাকা যোগ হয়েছে ✅", "ok");
+  adminAdProofs();
+};
+
+window.rejectAdProof = async function(proofId){
+  if (!confirm("Reject করলে ইউজার টাকা পাবে না। নিশ্চিত?")) return;
+  await updateDoc(doc(db, "adProofs", proofId), { status: "rejected" });
+  toast("প্রমাণ Reject করা হয়েছে ❌", "err");
+  adminAdProofs();
+};async function adminJobProofs(){
   const c = $("#adminContent");
   c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
   const snap = await getDocs(collection(db, "jobProofs"));
@@ -1117,6 +1391,82 @@ window.rejectJob = async function(id){
   await updateDoc(doc(db, "jobProofs", id), { status: "rejected" });
   toast("কাজ Reject করা হয়েছে ❌", "err");
   adminJobProofs();
+};
+
+async function adminSponsorTasks(){
+  const c = $("#adminContent");
+  c.innerHTML = `
+    <div class="auth-card" style="margin-top:0">
+      <h2 style="text-align:center">🎁 Post Sponsor Task</h2>
+      <div class="field"><label>Task Title</label><input id="stTitle" placeholder="e.g. Sign Up on XYZ"/></div>
+      <div class="field"><label>Description</label><input id="stDesc" placeholder="Short description"/></div>
+      <div class="field"><label>Offer Link (CPA Link)</label><input id="stLink" placeholder="https://..."/></div>
+      <div class="field"><label>User Payout (৳) (যত টাকা ইউজার পাবে)</label><input id="stPayout" type="number" min="1" placeholder="10"/></div>
+      <button class="btn accent block" id="stSubmit">Post Task</button>
+    </div>`;
+  $("#stSubmit").onclick = async ()=>{
+    const title = $("#stTitle").value.trim();
+    const description = $("#stDesc").value.trim();
+    const link = $("#stLink").value.trim();
+    const userPayout = Number($("#stPayout").value);
+    if (!title || !link || !userPayout) return toast("সব ফিল্ড পূরণ করুন।", "err");
+    await addDoc(collection(db, "sponsorTasks"), {
+      title, description, link, userPayout, createdAt: serverTimestamp()
+    });
+    toast("Sponsor Task পোস্ট হয়েছে ✅", "ok");
+    $("#stTitle").value = $("#stDesc").value = $("#stLink").value = $("#stPayout").value = "";
+  };
+}
+
+async function adminSponsorSubs(){
+  const c = $("#adminContent");
+  c.innerHTML = `<div class="card">লোড হচ্ছে...</div>`;
+  const snap = await getDocs(collection(db, "sponsorSubs"));
+  const list = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+  list.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  
+  c.innerHTML = `
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Task</th><th>Proof</th><th>Payout</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        ${list.map(s=>`
+          <tr>
+            <td style="font-size:12px">${esc(s.userEmail)}</td>
+            <td>${esc(s.taskTitle)}</td>
+            <td>${esc(s.proof)}</td>
+            <td>${money(s.payout)}</td>
+            <td><span class="badge ${s.status}">${s.status}</span></td>
+            <td>
+              <div class="row-actions">
+                ${s.status === "pending" ? `
+                  <button class="btn small accent" onclick="approveSponsor('${s.id}', '${s.userEmail}', ${s.payout})">Approve</button>
+                  <button class="btn small danger" onclick="rejectSponsor('${s.id}')">Reject</button>
+                ` : "—"}
+              </div>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="6" style="color:var(--muted)">কোনো সাবমিশন নেই।</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+window.approveSponsor = async function(id, email, payout){
+  if (!confirm("Approve করলে ইউজার টাকা পাবে। নিশ্চিত?")) return;
+  await updateDoc(doc(db, "sponsorSubs", id), { status: "approved" });
+  await updateDoc(doc(db, "users", email), { 
+    balance: increment(payout),
+    totalEarned: increment(payout)
+  });
+  toast("Sponsor কাজ Approve হয়েছে ✅", "ok");
+  adminSponsorSubs();
+};
+
+window.rejectSponsor = async function(id){
+  if (!confirm("Reject করলে ইউজার টাকা পাবে না। নিশ্চিত?")) return;
+  await updateDoc(doc(db, "sponsorSubs", id), { status: "rejected" });
+  toast("Sponsor কাজ Reject করা হয়েছে ❌", "err");
+  adminSponsorSubs();
 };
 
 async function adminPostJob(){
