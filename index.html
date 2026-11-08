@@ -145,9 +145,7 @@
             currentUser = null;
             currentView = 'login';
             renderApp();
-        };
-
-        window.renderDashboard = function(container) {
+        };        window.renderDashboard = function(container) {
             container.innerHTML = `
                 <div class="space-y-6">
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex justify-between items-center shadow-xl">
@@ -254,7 +252,9 @@
                 alert(`জিমেইল সফলভাবে জমা হয়েছে! ব্যালেন্সে ৳${rate} যোগ করা হয়েছে।`);
                 renderApp();
             } catch (err) { console.error(err); alert("জিমেইল জমা দিতে সমস্যা হয়েছে।"); }
-        }        window.renderSpin = function(container) {
+        }
+
+        window.renderSpin = function(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4 shadow-xl">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">🎡 লাকি স্পিন</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
@@ -336,9 +336,7 @@
                 });
                 document.getElementById('lb-list').innerHTML = html;
             } catch (err) { console.error(err); }
-        };
-
-        window.renderVip = function(container) {
+        };        window.renderVip = function(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4 shadow-xl">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">👑 VIP মেম্বারশিপ</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
@@ -374,7 +372,9 @@
                     <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" class="block bg-slate-950 border border-slate-800 p-4 rounded-2xl text-red-400 font-bold text-xs hover:border-red-500 transition"><i class="fab fa-youtube"></i> ইউটিউব চ্যানেল</a>
                 </div>
             `;
-        };        window.renderAdminPanel = function(container) {
+        };
+
+        window.renderAdminPanel = function(container) {
             container.innerHTML = `
                 <div class="max-w-4xl mx-auto space-y-6">
                     <div class="bg-red-950/40 border border-red-500/30 p-6 rounded-3xl flex justify-between items-center shadow-xl">
