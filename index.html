@@ -47,7 +47,8 @@
                 else if (currentView === 'admin') renderAdminPanel(app);
             }
         }
-                function renderLogin(container) {
+
+        function renderLogin(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 mt-10 shadow-2xl">
                     <h2 class="text-2xl font-bold text-center text-indigo-400">Paylix লগইন</h2>
@@ -93,8 +94,9 @@
                     <p class="text-xs text-center text-slate-400">ইতিমধ্যে অ্যাকাউন্ট আছে? <button onclick="currentView='login'; renderApp();" class="text-indigo-400 font-bold hover:underline">লগইন করুন</button></p>
                 </div>
             `;
-                }
-                function handleLogin(e) {
+        }
+
+        function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
@@ -132,9 +134,7 @@
             currentUser = null;
             currentView = 'login';
             renderApp();
-        }
-
-        function renderDashboard(container) {
+        }        function renderDashboard(container) {
             container.innerHTML = `
                 <div class="space-y-6">
                     <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex justify-between items-center shadow-xl">
@@ -160,7 +160,8 @@
                 </div>
             `;
         }
-                function renderJobs(container) {
+
+        function renderJobs(container) {
             container.innerHTML = `
                 <div class="space-y-6">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">📋 মাইক্রো জবস</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
@@ -199,7 +200,7 @@
             if(!proof) { alert("কাজের প্রমাণ লিখুন।"); return; }
             db.collection("job_proofs").add({
                 jobId, userEmail: currentUser.email, userName: currentUser.name, proof, reward, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => alert("প্রুফ সফলভাবে জমা হয়েছে! অ্যাডমিন যাচাই করে ব্যালেন্স যুক্ত করবেন।"));
+            }).then(() => alert("প্রুফ সফলভাবে জমা হয়েছে!"));
         }
 
         function renderGmail(container) {
@@ -232,7 +233,8 @@
                 });
             });
         }
-                function renderSpin(container) {
+
+        function renderSpin(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4 shadow-xl">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">🎡 লাকি স্পিন</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
@@ -294,7 +296,8 @@
                 });
             });
         }
-                function renderLeaderboard(container) {
+
+        function renderLeaderboard(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto space-y-4">
                     <div class="flex justify-between items-center"><h3 class="text-xl font-bold">🏆 লিডারবোর্ড</h3><button onclick="currentView='dashboard'; renderApp();" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl">ড্যাশবোর্ড</button></div>
@@ -332,7 +335,7 @@
             if(!trxId) { alert("TrxID দিন।"); return; }
             db.collection("vip_requests").add({
                 userEmail: currentUser.email, userName: currentUser.name, trxId, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => alert("ভিআইপি রিকোয়েস্ট জমা হয়েছে! অ্যাডমিন যাচাই করে অনুমোদন করবেন।"));
+            }).then(() => alert("ভিআইপি রিকোয়েস্ট জমা হয়েছে!"));
         }
 
         function renderSupport(container) {
@@ -343,8 +346,7 @@
                     <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" class="block bg-slate-950 border border-slate-800 p-4 rounded-2xl text-red-400 font-bold text-xs hover:border-red-500 transition"><i class="fab fa-youtube"></i> ইউটিউব চ্যানেল</a>
                 </div>
             `;
-        }
-                function renderAdminPanel(container) {
+                }        function renderAdminPanel(container) {
             container.innerHTML = `
                 <div class="max-w-4xl mx-auto space-y-6">
                     <div class="bg-red-950/40 border border-red-500/30 p-6 rounded-3xl flex justify-between items-center shadow-xl">
@@ -378,7 +380,7 @@
         function handleAdminLogin(e) {
             e.preventDefault();
             if (document.getElementById('adm-email').value === "hey.rafi32@gmail.com" && document.getElementById('adm-pass').value === "rafi2026") {
-                localStorage.setItem('paylix_admin", "true");
+                localStorage.setItem('paylix_admin', "true");
                 checkAdminAuth();
             } else { alert("ভুল অ্যাডমিন ইমেইল অথবা পাসওয়ার্ড!"); }
         }
@@ -545,20 +547,6 @@
             db.collection("vip_requests").doc(id).update({ status: "Approved" }).then(() => {
                 db.collection("users").doc(email).update({ isVip: true }).then(() => loadAdminTab('vip'));
             });
-                }
-                function renderAds() {
-            return `
-                <div class="w-full bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 my-4 text-center overflow-hidden shadow-inner">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sponsored Ad</span>
-                        <span class="text-[10px] text-slate-600">Adsterra / Monetag Network</span>
-                    </div>
-                    <div class="py-6 bg-slate-950/80 rounded-xl border border-dashed border-slate-800 text-slate-400 text-xs flex flex-col items-center justify-center space-y-1">
-                        <i class="fas fa-ad text-indigo-400 text-lg"></i>
-                        <span>[Ad Banner Slot - High Revenue Impression Area]</span>
-                    </div>
-                </div>
-            `;
         }
 
         window.addEventListener('DOMContentLoaded', () => {
