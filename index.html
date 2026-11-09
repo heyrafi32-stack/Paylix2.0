@@ -3,187 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paylix - Earn Money Online</title>
+    <title>Paylix - Admin Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: { brand: { cyan: '#06b6d4', purple: '#a855f7', dark: '#0f172a', card: '#1e293b', accent: '#3b82f6' } }
-                }
-            }
-        }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { cyan: '#06b6d4', purple: '#a855f7', dark: '#0f172a', card: '#1e293b', accent: '#3b82f6' } } } } }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Hind Siliguri', sans-serif; background-color: #0b0f19; color: #f8fafc; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between custom-scrollbar pb-16 md:pb-0">
+<body class="min-h-screen flex flex-col pb-10">
 
-    <!-- লগইন এবং রেজিস্ট্রেশন সেকশন -->
-    <div id="auth-section" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+    <!-- ADMIN LOGIN SECTION -->
+    <div id="admin-login-section" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-red-500/30 w-full max-w-md rounded-2xl p-6 shadow-2xl">
             <div class="text-center mb-6">
-                <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix Logo" class="h-16 w-16 mx-auto rounded-full mb-3 shadow-lg shadow-cyan-500/20">
-                <h2 id="auth-title" class="text-2xl font-bold text-white">লগইন করুন</h2>
+                <div class="w-16 h-16 bg-red-500/10 border border-red-500/30 text-red-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">অ্যাডমিন লগইন</h2>
+                <p class="text-xs text-red-400 mt-1">শুধুমাত্র অনুমোদিত ব্যক্তির জন্য</p>
             </div>
             
-            <form id="auth-form" class="space-y-4">
-                <div id="auth-name-group" class="hidden">
-                    <label class="block text-xs text-slate-300 mb-1">আপনার নাম</label>
-                    <input type="text" id="auth-name" placeholder="Full Name" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
-                </div>
+            <form id="admin-login-form" class="space-y-4">
                 <div>
-                    <label class="block text-xs text-slate-300 mb-1">ইমেইল</label>
-                    <input type="email" id="auth-email" required placeholder="example@gmail.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                    <label class="block text-xs text-slate-300 mb-1">অ্যাডমিন ইমেইল</label>
+                    <input type="email" id="admin-email" required placeholder="hey.rafi32@gmail.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-300 mb-1">পাসওয়ার্ড</label>
-                    <input type="password" id="auth-password" required placeholder="********" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                    <input type="password" id="admin-password" required placeholder="rafi2026" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red-500">
                 </div>
-                <p id="auth-error" class="text-red-400 text-xs text-center hidden"></p>
-                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-cyan-500/20">লগইন</button>
+                <p id="admin-error" class="text-red-400 text-xs text-center hidden"></p>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-red-600/20">
+                    <i class="fa-solid fa-lock mr-2"></i> প্রবেশ করুন
+                </button>
             </form>
-            
             <div class="mt-4 text-center">
-                <button type="button" id="auth-toggle-btn" class="text-xs text-cyan-400 hover:underline w-full text-center mt-2 outline-none bg-transparent border-none cursor-pointer">নতুন অ্যাকাউন্ট তৈরি করুন?</button>
+                <a href="index.html" class="text-xs text-cyan-400 hover:underline">ইউজার সাইটে ফিরে যান</a>
             </div>
         </div>
-    </div>
-
-    <!-- মূল অ্যাপ কন্টেন্ট (লগইন করলে দেখা যাবে) -->
-    <div id="main-app" class="hidden flex-col min-h-screen">
+                    </div><!-- MAIN ADMIN DASHBOARD -->
+    <div id="admin-main" class="hidden flex-col min-h-screen">
         
-        <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <header class="sticky top-0 z-40 bg-slate-900 border-b border-red-500/30">
             <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-cyan-500/30">P</div>
-                    <div>
-                        <h1 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent leading-none">Paylix</h1>
-                        <p class="text-[10px] text-slate-400">Gmail Sell & Micro Task</p>
-                    </div>
-                </div>
                 <div class="flex items-center space-x-3">
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center space-x-2">
-                        <i class="fa-solid fa-wallet text-cyan-400 text-sm"></i>
-                        <div>
-                            <span class="text-[10px] text-slate-400 block leading-none">ব্যালেন্স</span>
-                            <span id="nav-balance" class="text-sm font-bold text-emerald-400 leading-tight">৳ 0.00</span>
-                        </div>
+                    <img src="https://i.postimg.cc/PxzQZ9VJ/file-0000000030d882118003721bfa9dff12.png" alt="Paylix Logo" class="h-8 w-8 rounded-full grayscale opacity-80">
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Paylix <span class="text-red-500">Admin</span></h1>
                     </div>
-                    <button onclick="logoutUser()" class="p-2 text-red-400 hover:text-red-300 transition bg-slate-800 rounded-lg border border-slate-700"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs text-slate-400"><i class="fa-solid fa-circle text-emerald-500 text-[10px] mr-1"></i> System Online</span>
+                    <button onclick="adminLogout()" class="text-red-400 hover:text-red-300 text-sm bg-red-500/10 px-3 py-1.5 rounded-lg border border-red-500/20 transition">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> লগআউট
+                    </button>
                 </div>
             </div>
-        </header><!-- নোটিশ বার -->
-        <div id="global-notice-container" class="bg-gradient-to-r from-cyan-950/60 via-purple-950/60 to-slate-950 border-b border-cyan-500/30 px-4 py-2">
-            <div class="max-w-7xl mx-auto flex items-center space-x-3">
-                <span class="bg-cyan-500/20 text-cyan-300 text-[11px] font-bold px-2 py-0.5 rounded border border-cyan-500/30 shrink-0"><i class="fa-solid fa-bullhorn mr-1"></i> নোটিশ</span>
-                <marquee id="notice-text-display" class="text-xs text-slate-200 font-medium">Paylix প্ল্যাটফর্মে আপনাকে স্বাগতম!</marquee>
-            </div>
-        </div>
+        </header>
 
         <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
-            <!-- ড্যাশবোর্ড ট্যাব -->
-            <section id="tab-dashboard" class="space-y-6">
-                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-xl">
-                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white mb-1">স্বাগতম, <span id="dash-user-id" class="text-cyan-400">User</span>!</h2>
-                            <p class="text-xs text-slate-400">প্রতিটি জিমেইল বিক্রি করে ইনস্ট্যান্ট ২০ টাকা আয় করুন।</p>
-                        </div>
-                    </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <div class="text-xs text-slate-400 mb-1">মোট ইউজার</div>
+                    <div id="admin-stat-users" class="text-xl font-bold text-white">0 জন</div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-                        <div class="text-[11px] text-slate-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-wallet text-emerald-400"></i> বর্তমান ব্যালেন্স</div>
-                        <div id="stat-balance" class="text-xl font-bold text-emerald-400">৳ 0.00</div>
-                    </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-                        <div class="text-[11px] text-slate-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-envelope-circle-check text-cyan-400"></i> অনুমোদিত জিমেইল</div>
-                        <div id="stat-approved-gmails" class="text-xl font-bold text-white">0 টি</div>
-                    </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
-                        <div class="text-[11px] text-slate-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-amber-400"></i> পেন্ডিং জিমেইল</div>
-                        <div id="stat-pending-gmails" class="text-xl font-bold text-amber-400">0 টি</div>
-                    </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <div class="text-xs text-slate-400 mb-1">পেন্ডিং জিমেইল</div>
+                    <div id="admin-stat-gmails" class="text-xl font-bold text-amber-400">0 টি</div>
                 </div>
-            </section>
-
-            <!-- জিমেইল সাবমিট ট্যাব -->
-            <section id="tab-gmail" class="hidden space-y-6 max-w-2xl mx-auto">
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fa-solid fa-envelope"></i></div>
-                        <h2 class="text-2xl font-bold text-white">জিমেইল আইডি জমা দিন</h2>
-                    </div>
-                    <form id="gmail-submit-form" class="space-y-4">
-                        <div>
-                            <label class="block text-xs text-slate-300 font-medium mb-1">জিমেইল ইউজারনেম</label>
-                            <input type="email" id="gmail-address" required placeholder="example@gmail.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-300 font-medium mb-1">জিমেইল পাসওয়ার্ড</label>
-                            <input type="text" id="gmail-password" required placeholder="Enter Gmail Password" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
-                        </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-purple-600/20 text-sm">জিমেইল জমা দিন</button>
-                    </form>
-                    <div class="mt-8 border-t border-slate-800 pt-6">
-                        <h4 class="text-sm font-bold text-slate-300 mb-3"><i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> আপনার জমা দেওয়া জিমেইলসমূহ</h4>
-                        <div id="user-gmail-history" class="space-y-2"></div>
-                    </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <div class="text-xs text-slate-400 mb-1">পেন্ডিং উইথড্র</div>
+                    <div id="admin-stat-withdraws" class="text-xl font-bold text-red-400">0 টি</div>
                 </div>
-                                                                           </section>        <!-- উইথড্র ট্যাব -->
-            <section id="tab-withdraw" class="hidden space-y-6 max-w-xl mx-auto">
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                        <h2 class="text-2xl font-bold text-white">উইথড্র রিকোয়েস্ট</h2>
-                    </div>
-                    <form id="withdraw-form" class="space-y-4">
-                        <select id="withdraw-method" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white">
-                            <option value="bKash">bKash (বিকাশ)</option>
-                            <option value="Nagad">Nagad (নগদ)</option>
-                        </select>
-                        <input type="text" id="withdraw-number" required placeholder="017XXXXXXXX" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white">
-                        <input type="number" id="withdraw-amount" min="100" required placeholder="সর্বনিম্ন ১০০" oninput="calculateWithdrawBreakdown()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white">
-                        <div class="bg-slate-950 p-3.5 rounded-xl space-y-1.5 text-xs border border-slate-800">
-                            <div class="flex justify-between text-slate-400"><span>উইথড্র রিকোয়েস্ট:</span><span id="calc-req-amt">৳ 0.00</span></div>
-                            <div class="flex justify-between text-red-400"><span>১৫% অ্যাডমিন চার্জ:</span><span id="calc-fee">৳ 0.00</span></div>
-                            <div class="border-t border-slate-800 pt-1.5 flex justify-between text-emerald-400 font-bold text-sm"><span>আপনি পাবেন:</span><span id="calc-net">৳ 0.00</span></div>
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20 text-sm">উইথড্র পাঠান</button>
-                    </form>
-                    <div class="mt-8 border-t border-slate-800 pt-6">
-                        <h4 class="text-sm font-bold text-slate-300 mb-3"><i class="fa-solid fa-list-check text-cyan-400"></i> আপনার উইথড্র হিস্ট্রি</h4>
-                        <div id="user-withdraw-history" class="space-y-2"></div>
-                    </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <div class="text-xs text-slate-400 mb-1">সিস্টেম স্ট্যাটাস</div>
+                    <div class="text-xl font-bold text-emerald-400">Active</div>
                 </div>
-            </section>
-        </main>
-
-        <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 backdrop-blur-md z-30">
-            <div class="max-w-7xl mx-auto flex justify-around items-center py-2 text-slate-400 text-[11px]">
-                <button onclick="switchTab('dashboard')" class="nav-btn active flex flex-col items-center gap-1 hover:text-cyan-400"><i class="fa-solid fa-house text-base"></i><span>হোম</span></button>
-                <button onclick="switchTab('gmail')" class="nav-btn flex flex-col items-center gap-1 hover:text-cyan-400"><i class="fa-solid fa-envelope text-base"></i><span>জিমেইল</span></button>
-                <button onclick="switchTab('withdraw')" class="nav-btn flex flex-col items-center gap-1 hover:text-cyan-400"><i class="fa-solid fa-wallet text-base"></i><span>উইথড্র</span></button>
             </div>
-        </nav>
+
+            <div class="flex overflow-x-auto gap-2 mb-6 border-b border-slate-800 pb-2 custom-scrollbar">
+                <button onclick="switchAdminTab('adm-gmail')" class="adm-tab bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap border border-red-500/30">জিমেইল স্টক</button>
+                <button onclick="switchAdminTab('adm-withdraw')" class="adm-tab bg-slate-800 text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">উইথড্র রিকোয়েস্ট</button>
+                <button onclick="switchAdminTab('adm-users')" class="adm-tab bg-slate-800 text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">ইউজার ম্যানেজমেন্ট</button>
+                <button onclick="switchAdminTab('adm-settings')" class="adm-tab bg-slate-800 text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">সেটিংস</button>
+            </div>        <div id="adm-gmail" class="adm-section space-y-4">
+                <h3 class="text-lg font-bold text-white mb-2">জমা পড়া জিমেইল স্টক</h3>
+                <div id="admin-gmail-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <div id="adm-withdraw" class="adm-section hidden space-y-4">
+                <h3 class="text-lg font-bold text-white mb-2">উইথড্র রিকোয়েস্ট (বিকাশ/নগদ)</h3>
+                <div id="admin-withdrawals-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <div id="adm-users" class="adm-section hidden space-y-4">
+                <h3 class="text-lg font-bold text-white mb-2">সব ইউজারের লিস্ট</h3>
+                <div id="admin-users-list" class="space-y-3"></div>
+            </div>
+
+            <div id="adm-settings" class="adm-section hidden space-y-8">
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-white mb-4">গ্লোবাল নোটিশ আপডেট</h3>
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <input type="text" id="admin-notice-input" placeholder="নতুন নোটিশ লিখুন..." class="flex-grow bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                        <button onclick="saveGlobalNotice()" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-6 py-3 rounded-xl transition text-sm">আপডেট করুন</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div><script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, getDocs, serverTimestamp, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, onSnapshot, query, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // 🔥 আপনার সঠিক ফায়ারবেস কনফিগ 🔥
         const firebaseConfig = {
             apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
             authDomain: "paylix-586b1.firebaseapp.com",
@@ -197,221 +139,201 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let currentUserData = null;
-        let isLoginMode = true;
-        let unsubscribeUser = null, unsubscribeGmails = null, unsubscribeWths = null, unsubscribeNotice = null;
+        const SECRET_ADMIN_EMAIL = "hey.rafi32@gmail.com";
+        const SECRET_ADMIN_PASS = "rafi2026";
 
-        document.getElementById('auth-toggle-btn').addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            document.getElementById('auth-error').classList.add('hidden');
-            if(isLoginMode) {
-                document.getElementById('auth-title').innerText = "লগইন করুন";
-                document.getElementById('auth-name-group').classList.add('hidden');
-                document.getElementById('auth-submit-btn').innerText = "লগইন";
-                document.getElementById('auth-toggle-btn').innerText = "নতুন অ্যাকাউন্ট তৈরি করুন?";
-            } else {
-                document.getElementById('auth-title').innerText = "রেজিস্ট্রেশন করুন";
-                document.getElementById('auth-name-group').classList.remove('hidden');
-                document.getElementById('auth-submit-btn').innerText = "রেজিস্টার";
-                document.getElementById('auth-toggle-btn').innerText = "আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন";
-            }
-        });
+        const adminLoginSection = document.getElementById('admin-login-section');
+        const adminMain = document.getElementById('admin-main');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const adminError = document.getElementById('admin-error');
 
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
-            const name = document.getElementById('auth-name').value;
-            const btn = document.getElementById('auth-submit-btn');
-            const errorText = document.getElementById('auth-error');
+            const email = document.getElementById('admin-email').value;
+            const pass = document.getElementById('admin-password').value;
+            const btn = adminLoginForm.querySelector('button[type="submit"]');
             
-            btn.innerText = "অপেক্ষা করুন...";
+            adminError.classList.add('hidden');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> চেক করা হচ্ছে...';
             btn.disabled = true;
-            errorText.classList.add('hidden');
+
+            if(email !== SECRET_ADMIN_EMAIL || pass !== SECRET_ADMIN_PASS) {
+                setTimeout(() => {
+                    adminError.innerText = "ভুল ইমেইল বা পাসওয়ার্ড!";
+                    adminError.classList.remove('hidden');
+                    btn.innerHTML = '<i class="fa-solid fa-lock mr-2"></i> প্রবেশ করুন';
+                    btn.disabled = false;
+                }, 500);
+                return;
+            }
 
             try {
-                if(isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    if(!name) throw new Error("আপনার নাম লিখুন!");
-                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                    await setDoc(doc(db, "users", userCred.user.uid), {
-                        uid: userCred.user.uid,
-                        name: name,
-                        email: email,
-                        balance: 0,
-                        approvedCount: 0,
-                        pendingCount: 0,
-                        isBlocked: false,
-                        createdAt: serverTimestamp()
-                    });
-                }
+                await signInWithEmailAndPassword(auth, email, pass);
             } catch (error) {
-                errorText.innerText = "সমস্যা: " + error.message;
-                errorText.classList.remove('hidden');
-                btn.innerText = isLoginMode ? "লগইন" : "রেজিস্টার";
+                adminError.innerText = "ফায়ারবেস এরর: " + error.message;
+                adminError.classList.remove('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-lock mr-2"></i> প্রবেশ করুন';
                 btn.disabled = false;
             }
         });
 
-        window.logoutUser = function() { signOut(auth); }
-
         onAuthStateChanged(auth, async (user) => {
-            if(user) {
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                document.getElementById('main-app').classList.add('flex');
-                
-                unsubscribeUser = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
-                    if(docSnap.exists()) {
-                        currentUserData = docSnap.data();
-                        if(currentUserData.isBlocked) {
-                            alert("আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে!");
-                            signOut(auth);
-                            return;
-                        }
-                        document.getElementById('nav-balance').innerText = `৳ ${(currentUserData.balance || 0).toFixed(2)}`;
-                        document.getElementById('dash-user-id').innerText = currentUserData.name;
-                        document.getElementById('stat-balance').innerText = `৳ ${(currentUserData.balance || 0).toFixed(2)}`;
-                        document.getElementById('stat-approved-gmails').innerText = `${currentUserData.approvedCount || 0} টি`;
-                        document.getElementById('stat-pending-gmails').innerText = `${currentUserData.pendingCount || 0} টি`;
-                    }
-                });
-
-                loadUserHistory(user.uid);
-                loadGlobalNotice();
-
+            if(user && user.email === SECRET_ADMIN_EMAIL) {
+                adminLoginSection.classList.add('hidden');
+                adminMain.classList.remove('hidden');
+                adminMain.classList.add('flex');
+                loadAdminData();
             } else {
-                document.getElementById('auth-section').classList.remove('hidden');
-                document.getElementById('main-app').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('flex');
-                
-                if(unsubscribeUser) unsubscribeUser();
-                if(unsubscribeGmails) unsubscribeGmails();
-                if(unsubscribeWths) unsubscribeWths();
-                if(unsubscribeNotice) unsubscribeNotice();
+                if(user) await signOut(auth);
+                adminLoginSection.classList.remove('hidden');
+                adminMain.classList.add('hidden');
+                adminMain.classList.remove('flex');
+                adminLoginForm.reset();
+                const btn = adminLoginForm.querySelector('button[type="submit"]');
+                btn.innerHTML = '<i class="fa-solid fa-lock mr-2"></i> প্রবেশ করুন';
+                btn.disabled = false;
             }
-        });function loadGlobalNotice() {
-            unsubscribeNotice = onSnapshot(doc(db, "settings", "global_notice"), (docSnap) => {
-                if(docSnap.exists()) {
-                    document.getElementById('notice-text-display').innerText = docSnap.data().text;
-                }
-            });
-        }
-
-        document.getElementById('gmail-submit-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('gmail-address').value;
-            const pass = document.getElementById('gmail-password').value;
-            
-            try {
-                await addDoc(collection(db, "gmail_submissions"), {
-                    userId: auth.currentUser.uid,
-                    userName: currentUserData.name,
-                    gmailEmail: email,
-                    gmailPass: pass,
-                    rate: 20.00,
-                    status: "pending",
-                    createdAt: serverTimestamp()
-                });
-                await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                    pendingCount: (currentUserData.pendingCount || 0) + 1
-                });
-                showToast('জিমেইল জমা হয়েছে!', 'success');
-                document.getElementById('gmail-submit-form').reset();
-            } catch(err) { showToast('সমস্যা: ' + err.message, 'error'); }
         });
 
-        window.calculateWithdrawBreakdown = function() {
-            const amount = parseFloat(document.getElementById('withdraw-amount').value) || 0;
-            const fee = amount * 0.15;
-            const net = amount > 0 ? amount - fee : 0;
-            document.getElementById('calc-req-amt').innerText = `৳ ${amount.toFixed(2)}`;
-            document.getElementById('calc-fee').innerText = `৳ ${fee.toFixed(2)}`;
-            document.getElementById('calc-net').innerText = `৳ ${net.toFixed(2)}`;
-        };
+        window.adminLogout = function() { signOut(auth); }
 
-        document.getElementById('withdraw-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const method = document.getElementById('withdraw-method').value;
-            const number = document.getElementById('withdraw-number').value;
-            const amount = parseFloat(document.getElementById('withdraw-amount').value);
-
-            if(amount > currentUserData.balance) {
-                showToast('পর্যাপ্ত ব্যালেন্স নেই!', 'error'); return;
-            }
-
-            try {
-                await addDoc(collection(db, "withdrawals"), {
-                    userId: auth.currentUser.uid,
-                    userName: currentUserData.name,
-                    method: method,
-                    number: number,
-                    amount: amount,
-                    netAmount: amount * 0.85,
-                    status: "pending",
-                    createdAt: serverTimestamp()
-                });
-                await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                    balance: currentUserData.balance - amount
-                });
-                showToast('উইথড্র রিকোয়েস্ট জমা হয়েছে!', 'success');
-                document.getElementById('withdraw-form').reset();
-                calculateWithdrawBreakdown();
-            } catch(err) { showToast('সমস্যা: ' + err.message, 'error'); }
-        });        function loadUserHistory(uid) {
-            unsubscribeGmails = onSnapshot(query(collection(db, "gmail_submissions")), (snap) => {
-                const container = document.getElementById('user-gmail-history');
+        window.switchAdminTab = function(tabId) {
+            document.querySelectorAll('.adm-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            document.querySelectorAll('.adm-tab').forEach(btn => {
+                btn.classList.remove('bg-red-500/20', 'text-red-400', 'border', 'border-red-500/30');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-slate-300');
+            event.target.classList.add('bg-red-500/20', 'text-red-400', 'border', 'border-red-500/30');
+        }        function loadAdminData() {
+            onSnapshot(query(collection(db, "gmail_submissions")), (snap) => {
+                const container = document.getElementById('admin-gmail-list');
                 container.innerHTML = '';
-                let hasData = false;
+                let pendingCount = 0;
                 snap.forEach(docSnap => {
                     const g = docSnap.data();
-                    if(g.userId === uid) {
-                        hasData = true;
-                        const badge = g.status === 'approved' ? '<span class="text-xs text-emerald-400 font-bold">Approved</span>' : (g.status === 'rejected' ? '<span class="text-xs text-red-400 font-bold">Rejected</span>' : '<span class="text-xs text-amber-400 font-bold">Pending</span>');
+                    if(g.status === 'pending') {
+                        pendingCount++;
                         container.innerHTML += `
-                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
-                                <div><span class="text-slate-200 block">${g.gmailEmail}</span></div>${badge}
-                            </div>`;
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-sm space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-white font-bold">${g.gmailEmail}</span>
+                                    <span class="text-amber-400 font-bold">৳${g.rate}</span>
+                                </div>
+                                <p class="text-slate-400 bg-slate-900 p-2 rounded">Pass: ${g.gmailPass}</p>
+                                <p class="text-xs text-slate-500">ইউজার: ${g.userName}</p>
+                                <div class="flex gap-2 pt-2">
+                                    <button onclick="approveGmail('${docSnap.id}', '${g.userId}')" class="flex-1 bg-emerald-600 text-white px-3 py-2 rounded font-bold text-xs">Approve</button>
+                                    <button onclick="rejectGmail('${docSnap.id}', '${g.userId}')" class="flex-1 bg-red-600 text-white px-3 py-2 rounded font-bold text-xs">Reject</button>
+                                </div>
+                            </div>
+                        `;
                     }
                 });
-                if(!hasData) container.innerHTML = '<p class="text-xs text-slate-500">কোনো জিমেইল নেই।</p>';
+                if(container.innerHTML === '') container.innerHTML = '<p class="text-sm text-slate-500">কোনো পেন্ডিং জিমেইল নেই।</p>';
+                document.getElementById('admin-stat-gmails').innerText = `${pendingCount} টি`;
             });
 
-            unsubscribeWths = onSnapshot(query(collection(db, "withdrawals")), (snap) => {
-                const container = document.getElementById('user-withdraw-history');
+            onSnapshot(query(collection(db, "withdrawals")), (snap) => {
+                const container = document.getElementById('admin-withdrawals-list');
                 container.innerHTML = '';
-                let hasData = false;
+                let pendingWths = 0;
                 snap.forEach(docSnap => {
                     const w = docSnap.data();
-                    if(w.userId === uid) {
-                        hasData = true;
-                        const badge = w.status === 'approved' ? '<span class="text-xs text-emerald-400 font-bold">Paid</span>' : '<span class="text-xs text-amber-400 font-bold">Pending</span>';
+                    if(w.status === 'pending') {
+                        pendingWths++;
                         container.innerHTML += `
-                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
-                                <div><span class="text-slate-200 block">${w.method} - ${w.number}</span><span class="text-slate-500 text-[10px]">৳${w.amount}</span></div>${badge}
-                            </div>`;
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-sm space-y-2">
+                                <div class="flex justify-between">
+                                    <strong class="text-white">${w.userName}</strong>
+                                    <span class="text-red-400 font-bold">৳${w.amount}</span>
+                                </div>
+                                <p class="text-slate-400">মেথড: <b>${w.method}</b> | নম্বর: <b>${w.number}</b></p>
+                                <button onclick="approveWithdrawal('${docSnap.id}')" class="w-full bg-emerald-600 text-white px-3 py-2 rounded font-bold text-xs mt-2">Payment Done (Approve)</button>
+                            </div>
+                        `;
                     }
                 });
-                if(!hasData) container.innerHTML = '<p class="text-xs text-slate-500">কোনো উইথড্র নেই।</p>';
+                if(container.innerHTML === '') container.innerHTML = '<p class="text-sm text-slate-500">কোনো পেন্ডিং উইথড্র নেই।</p>';
+                document.getElementById('admin-stat-withdraws').innerText = `${pendingWths} টি`;
+            });
+
+            onSnapshot(query(collection(db, "users")), (snap) => {
+                const container = document.getElementById('admin-users-list');
+                container.innerHTML = '';
+                let userCount = 0;
+                snap.forEach(docSnap => {
+                    userCount++;
+                    const u = docSnap.data();
+                    const statusColor = u.isBlocked ? 'text-red-400' : 'text-emerald-400';
+                    const statusText = u.isBlocked ? 'Blocked' : 'Active';
+                    container.innerHTML += `
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-sm flex flex-col md:flex-row justify-between md:items-center gap-4">
+                            <div>
+                                <strong class="text-white text-base">${u.name}</strong> <span class="text-slate-500">(${u.email})</span>
+                                <p class="text-slate-400 mt-1">ব্যালেন্স: <b class="text-emerald-400">৳${(u.balance || 0).toFixed(2)}</b></p>
+                                <p class="text-xs mt-1">Status: <b class="${statusColor}">${statusText}</b></p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="editUserBalancePrompt('${docSnap.id}', ${u.balance || 0})" class="bg-cyan-600 text-white px-3 py-1.5 rounded text-xs font-bold">Edit Balance</button>
+                                <button onclick="toggleBlockUser('${docSnap.id}', ${u.isBlocked || false})" class="bg-red-600 text-white px-3 py-1.5 rounded text-xs font-bold">${u.isBlocked ? 'Unblock' : 'Block'}</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('admin-stat-users').innerText = `${userCount} জন`;
             });
         }
 
-        window.switchTab = function(tabId) {
-            ['dashboard', 'gmail', 'withdraw'].forEach(id => {
-                const el = document.getElementById(`tab-${id}`);
-                if(el) el.classList.add('hidden');
-            });
-            const activeTab = document.getElementById(`tab-${tabId}`);
-            if(activeTab) activeTab.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.saveGlobalNotice = async function() {
+            const val = document.getElementById('admin-notice-input').value;
+            if (val) {
+                await setDoc(doc(db, "settings", "global_notice"), { text: val });
+                showToast('নোটিশ আপডেট হয়েছে!', 'success');
+            }
+        }
+
+        window.approveGmail = async function(gmailId, userId) {
+            try {
+                await updateDoc(doc(db, "gmail_submissions", gmailId), { status: "approved" });
+                const userRef = doc(db, "users", userId);
+                const userSnap = await getDoc(userRef);
+                await updateDoc(userRef, { balance: userSnap.data().balance + 20 });
+                showToast('জিমেইল অ্যাপ্রুভড!', 'success');
+            } catch(e) { showToast('সমস্যা: ' + e.message, 'error'); }
+        }
+        window.rejectGmail = async function(gmailId, userId) {
+            await updateDoc(doc(db, "gmail_submissions", gmailId), { status: "rejected" });
+            showToast('জিমেইল রিজেক্টেড।', 'info');
+        }
+
+        window.approveWithdrawal = async function(wthId) {
+            await updateDoc(doc(db, "withdrawals", wthId), { status: "approved" });
+            showToast('উইথড্র পেমেন্ট অ্যাপ্রুভড!', 'success');
+        }
+
+        window.editUserBalancePrompt = async function(userId, currentBal) {
+            const newBal = prompt("নতুন ব্যালেন্স দিন:", currentBal);
+            if (newBal !== null && !isNaN(newBal)) {
+                await updateDoc(doc(db, "users", userId), { balance: parseFloat(newBal) });
+                showToast('ব্যালেন্স আপডেট হয়েছে!', 'success');
+            }
+        }
+
+        window.toggleBlockUser = async function(userId, currentStatus) {
+            try {
+                await updateDoc(doc(db, "users", userId), { isBlocked: !currentStatus });
+                showToast(currentStatus ? 'ইউজার আনব্লক হয়েছে!' : 'ইউজার ব্লক হয়েছে!', 'success');
+            } catch(e) { showToast('সমস্যা: ' + e.message, 'error'); }
         }
 
         window.showToast = function(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             const bgClass = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-red-600' : 'bg-cyan-600');
-            toast.className = `${bgClass} text-white text-xs px-4 py-2.5 rounded-xl shadow-lg mb-2`;
+            toast.className = `${bgClass} text-white text-sm px-5 py-3 rounded-xl shadow-lg mb-2`;
             toast.innerText = message;
             container.appendChild(toast);
             setTimeout(() => { toast.remove(); }, 3000);
