@@ -50,7 +50,8 @@
                 <p class="text-xs text-slate-400 mt-1">Paylix অ্যাকাউন্টে প্রবেশ করুন</p>
             </div>
             
-            <form id="auth-form" class="space-y-4">
+            <!-- এখানে onsubmit যোগ করা হয়েছে -->
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div id="auth-name-group" class="hidden">
                     <label class="block text-xs text-slate-300 mb-1">আপনার নাম</label>
                     <input type="text" id="auth-name" placeholder="Full Name" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
@@ -70,7 +71,8 @@
             </form>
             
             <div class="mt-4 text-center">
-                <span id="auth-toggle-text" class="text-xs text-cyan-400 cursor-pointer hover:underline">নতুন অ্যাকাউন্ট তৈরি করুন?</span>
+                <!-- এখানে onclick যোগ করা হয়েছে -->
+                <span id="auth-toggle-text" onclick="toggleAuthMode()" class="text-xs text-cyan-400 cursor-pointer hover:underline">নতুন অ্যাকাউন্ট তৈরি করুন?</span>
             </div>
         </div>
     </div>
@@ -125,9 +127,7 @@
         </div>
 
         <!-- MAIN CONTENT AREA -->
-        <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
-
-            <!-- TAB 1: DASHBOARD -->
+        <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full"><!-- TAB 1: DASHBOARD -->
             <section id="tab-dashboard" class="space-y-6">
                 <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950/40 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-xl">
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -166,9 +166,7 @@
                         <p class="text-xs text-slate-400">সহজ কাজ সম্পূর্ণ করে জমা দিন এবং ইনকাম করুন।</p>
                     </div>
                 </div>
-                <div id="jobs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Dynamic Jobs will load here -->
-                </div>
+                <div id="jobs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </section>
 
             <!-- TAB 3: SELL GMAIL -->
@@ -189,7 +187,9 @@
                         <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-purple-600/20">জিমেইল সাবমিট করুন</button>
                     </form>
                 </div>
-            </section>        <!-- TAB 4: LEADERBOARD -->
+            </section>
+
+            <!-- TAB 4: LEADERBOARD -->
             <section id="tab-leaderboard" class="hidden space-y-6 max-w-3xl mx-auto">
                 <div class="text-center">
                     <h2 class="text-2xl font-bold text-white flex items-center justify-center gap-2"><i class="fa-solid fa-trophy text-amber-400"></i> রেফারেল লিডারবোর্ড</h2>
@@ -253,9 +253,7 @@
                         <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" class="w-full flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition"><i class="fa-brands fa-youtube text-xl"></i> ইউটিউব চ্যানেল</a>
                     </div>
                 </div>
-            </section>
-
-            <!-- TAB 9: SECRET ADMIN PANEL -->
+            </section>        <!-- TAB 9: SECRET ADMIN PANEL -->
             <section id="tab-admin" class="hidden space-y-6">
                 <div class="bg-slate-900 border border-red-500/40 p-5 rounded-2xl">
                     <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
@@ -366,26 +364,25 @@
         const authForm = document.getElementById('auth-form');
         const authTitle = document.getElementById('auth-title');
         const authNameGroup = document.getElementById('auth-name-group');
-        const authToggleText = document.getElementById('auth-toggle-text');
         const authError = document.getElementById('auth-error');
 
-        authToggleText.addEventListener('click', () => {
+        window.toggleAuthMode = function() {
             isLoginMode = !isLoginMode;
             authError.classList.add('hidden');
             if(isLoginMode) {
                 authTitle.innerText = "লগইন করুন";
                 authNameGroup.classList.add('hidden');
                 authForm.querySelector('button[type="submit"]').innerText = "লগইন";
-                authToggleText.innerText = "নতুন অ্যাকাউন্ট তৈরি করুন?";
+                document.getElementById('auth-toggle-text').innerText = "নতুন অ্যাকাউন্ট তৈরি করুন?";
             } else {
                 authTitle.innerText = "রেজিস্ট্রেশন করুন";
                 authNameGroup.classList.remove('hidden');
                 authForm.querySelector('button[type="submit"]').innerText = "রেজিস্টার";
-                authToggleText.innerText = "আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন";
+                document.getElementById('auth-toggle-text').innerText = "আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন";
             }
-        });
+        }
 
-        authForm.addEventListener('submit', async (e) => {
+        window.handleAuthSubmit = async function(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
@@ -418,7 +415,7 @@
                 btn.innerText = isLoginMode ? "লগইন" : "রেজিস্টার";
                 btn.disabled = false;
             }
-        });
+        }
 
         onAuthStateChanged(auth, async (user) => {
             if(user) {
@@ -434,11 +431,8 @@
                 }
                 loadJobs();
                 loadApps();
-                
-                // অ্যাডমিন ডাটা লোড
                 loadAdminPanelData();
 
-                // সিক্রেট অ্যাডমিন লিংক চেক
                 if(window.location.hash === '#admin') {
                     document.querySelector('[data-tab="admin"]').classList.remove('hidden');
                     switchTab('admin');
@@ -578,16 +572,12 @@
             setTimeout(() => { toast.remove(); }, 3000);
         }
 
-        // ==========================================
-        // SECRET ADMIN PANEL LOGIC
-        // ==========================================
         window.switchAdminSubTab = function(subId) {
             document.querySelectorAll('.adm-sub-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(subId).classList.remove('hidden');
         }
 
         async function loadAdminPanelData() {
-            // জব প্রুফ লোড
             const proofSnap = await getDocs(query(collection(db, "job_submissions"), where("status", "==", "pending")));
             const proofContainer = document.getElementById('admin-proofs-list');
             proofContainer.innerHTML = proofSnap.empty ? '<p class="text-xs text-slate-500">কোনো প্রুফ নেই।</p>' : '';
@@ -608,7 +598,6 @@
                 `;
             });
 
-            // জিমেইল লোড
             const gmailSnap = await getDocs(query(collection(db, "gmail_submissions"), where("status", "==", "pending")));
             const gmailContainer = document.getElementById('admin-gmail-list');
             gmailContainer.innerHTML = gmailSnap.empty ? '<p class="text-xs text-slate-500">কোনো জিমেইল নেই।</p>' : '';
@@ -630,7 +619,6 @@
                 `;
             });
 
-            // উইথড্র লোড
             const wthSnap = await getDocs(query(collection(db, "withdrawals"), where("status", "==", "pending")));
             const wthContainer = document.getElementById('admin-withdrawals-list');
             wthContainer.innerHTML = wthSnap.empty ? '<p class="text-xs text-slate-500">কোনো উইথড্র নেই।</p>' : '';
@@ -648,7 +636,6 @@
                 `;
             });
 
-            // ইউজার লিস্ট লোড
             const usersSnap = await getDocs(collection(db, "users"));
             const usersContainer = document.getElementById('admin-users-list');
             usersContainer.innerHTML = '';
@@ -681,7 +668,7 @@
                 const userRef = doc(db, "users", userId);
                 const userSnap = await getDoc(userRef);
                 await updateDoc(userRef, { balance: userSnap.data().balance + reward });
-                showToast('প্রুফ অ্যাপ্রুভড! ইউজার ব্যালেন্স পেয়েছে।', 'success');
+                showToast('প্রুফ অ্যাপ্রুভড!', 'success');
                 loadAdminPanelData();
             } catch(e) { showToast('সমস্যা: ' + e.message, 'error'); }
         }
