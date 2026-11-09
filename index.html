@@ -23,7 +23,7 @@
         <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-white font-bold text-3xl mx-auto shadow-lg mb-3">P</div>
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">Paylix</h1>
+                <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Paylix</h1>
                 <p class="text-xs text-slate-400 mt-1" id="auth-subtitle">লগইন করে আপনার আয় শুরু করুন</p>
             </div>
 
@@ -33,8 +33,8 @@
                     <input type="text" id="auth-name" placeholder="Your Name" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-cyan-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-300 mb-1">ইমেইল / ইউজারনেম</label>
-                    <input type="text" id="auth-email" required placeholder="you@example.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-cyan-500 outline-none">
+                    <label class="block text-xs text-slate-300 mb-1">ইমেইল</label>
+                    <input type="email" id="auth-email" required placeholder="you@example.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-cyan-500 outline-none">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-300 mb-1">পাসওয়ার্ড</label>
@@ -42,7 +42,6 @@
                 </div>
                 <button type="submit" id="auth-btn" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-cyan-500/20 text-sm">লগইন করুন</button>
             </form>
-
             <div class="mt-4 text-center">
                 <button onclick="toggleAuthMode()" class="text-xs text-cyan-400 hover:text-cyan-300">
                     <span id="auth-toggle-text">নতুন অ্যাকাউন্ট তৈরি করুন</span>
@@ -51,7 +50,7 @@
         </div>
     </div>
 
-    <!-- MAIN APP CONTAINER (Hidden by default until logged in) -->
+    <!-- MAIN APP CONTAINER (Hidden until logged in) -->
     <div id="main-app" class="hidden">
         <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -63,7 +62,6 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <!-- Inbox Icon -->
                     <button onclick="switchTab('inbox')" class="relative p-2 text-slate-300 hover:text-cyan-400 transition bg-slate-800 rounded-lg border border-slate-700">
                         <i class="fa-solid fa-envelope text-lg"></i>
                         <span id="inbox-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
@@ -75,9 +73,7 @@
                             <span id="nav-balance" class="text-sm font-bold text-emerald-400 leading-tight">৳ 0.00</span>
                         </div>
                     </div>
-                    <button onclick="logoutUser()" class="p-2 text-red-400 hover:text-red-300 transition bg-slate-800 rounded-lg border border-slate-700" title="Logout">
-                        <i class="fa-solid fa-power-off"></i>
-                    </button>
+                    <button onclick="logoutUser()" class="p-2 text-red-400 hover:text-red-300 transition bg-slate-800 rounded-lg border border-slate-700"><i class="fa-solid fa-power-off"></i></button>
                 </div>
             </div>
         </header><div id="global-notice-container" class="bg-slate-950 border-b border-cyan-500/30 px-4 py-2">
@@ -88,7 +84,7 @@
         </div>
 
         <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
-            <!-- TAB 1: DASHBOARD -->
+            <!-- DASHBOARD -->
             <section id="tab-dashboard" class="space-y-6">
                 <div class="bg-gradient-to-r from-slate-900 to-indigo-950 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
@@ -100,33 +96,26 @@
                         <button onclick="switchTab('withdraw')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl transition"><i class="fa-solid fa-money-bill-transfer mr-1"></i> উইথড্র নিন</button>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><div class="text-[11px] text-slate-400 mb-1">ব্যালেন্স</div><div id="stat-balance" class="text-xl font-bold text-emerald-400">৳ 0.00</div></div>
                     <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><div class="text-[11px] text-slate-400 mb-1">অনুমোদিত জিমেইল</div><div id="stat-approved-gmails" class="text-xl font-bold text-white">0 টি</div></div>
                     <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><div class="text-[11px] text-slate-400 mb-1">পেন্ডিং জিমেইল</div><div id="stat-pending-gmails" class="text-xl font-bold text-amber-400">0 টি</div></div>
-                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><div class="text-[11px] text-slate-400 mb-1">রেফারেল আয় (১০%)</div><div id="stat-referral-earned" class="text-xl font-bold text-purple-400">৳ 0.00</div></div>
                 </div>
-
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
                     <h3 class="text-lg font-bold text-white mb-3"><i class="fa-solid fa-briefcase text-cyan-400 mr-2"></i>Micro Jobs</h3>
-                    <div id="user-jobs-list" class="space-y-2">
-                        <p class="text-xs text-slate-500">লোড হচ্ছে...</p>
-                    </div>
+                    <div id="user-jobs-list" class="space-y-2"></div>
                 </div>
             </section>
 
-            <!-- TAB: INBOX -->
+            <!-- INBOX -->
             <section id="tab-inbox" class="hidden space-y-6 max-w-2xl mx-auto">
                 <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
                     <h2 class="text-2xl font-bold text-white mb-4"><i class="fa-solid fa-inbox text-cyan-400 mr-2"></i> আপনার ইনবক্স</h2>
-                    <div id="user-inbox-list" class="space-y-3">
-                        <p class="text-xs text-slate-500">কোনো মেসেজ নেই।</p>
-                    </div>
+                    <div id="user-inbox-list" class="space-y-3"></div>
                 </div>
             </section>
 
-            <!-- TAB 2: GMAIL -->
+            <!-- GMAIL -->
             <section id="tab-gmail" class="hidden space-y-6 max-w-2xl mx-auto">
                 <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
                     <h2 class="text-2xl font-bold text-white text-center mb-1">জিমেইল জমা দিন</h2>
@@ -143,15 +132,13 @@
                 </div>
             </section>
 
-            <!-- TAB 3: WITHDRAW -->
+            <!-- WITHDRAW -->
             <section id="tab-withdraw" class="hidden space-y-6 max-w-xl mx-auto">
                 <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
                     <h2 class="text-2xl font-bold text-white text-center mb-1">উইথড্র</h2>
                     <p class="text-xs text-slate-400 text-center mb-6">সর্বনিম্ন ১০০ টাকা (১৫% চার্জ)।</p>
                     <form onsubmit="handleWithdrawSubmit(event)" class="space-y-4">
-                        <select id="withdraw-method" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
-                            <option value="bKash">bKash</option><option value="Nagad">Nagad</option>
-                        </select>
+                        <select id="withdraw-method" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white outline-none"><option value="bKash">bKash</option><option value="Nagad">Nagad</option></select>
                         <input type="text" id="withdraw-number" required placeholder="017XXXXXXXX" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
                         <input type="number" id="withdraw-amount" min="100" required placeholder="Amount (৳)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white outline-none">
                         <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition">রিকোয়েস্ট করুন</button>
@@ -162,39 +149,24 @@
                     </div>
                 </div>
             </section>
-                        </main>    <!-- SECRET ADMIN PANEL SECTION (Hidden inside main app, shown via #admin) -->
+        </main>    <!-- SECRET ADMIN PANEL -->
         <section id="tab-admin" class="hidden max-w-7xl mx-auto px-4 py-6">
             <div class="bg-slate-900 border border-red-500/40 p-5 rounded-2xl shadow-2xl">
                 <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
                     <h2 class="text-xl font-bold text-red-400 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> অ্যাডমিন প্যানেল</h2>
                     <button onclick="switchTab('dashboard')" class="text-xs bg-slate-800 text-white px-3 py-1 rounded">এক্সিট</button>
                 </div>
-                
                 <div class="flex overflow-x-auto gap-2 mb-6 border-b border-slate-800 pb-2 custom-scrollbar">
                     <button onclick="switchAdminTab('adm-users')" class="adm-btn bg-slate-800 text-cyan-400 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">ইউজার</button>
                     <button onclick="switchAdminTab('adm-withdraws')" class="adm-btn bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">উইথড্র</button>
                     <button onclick="switchAdminTab('adm-gmails')" class="adm-btn bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">জিমেইল</button>
                     <button onclick="switchAdminTab('adm-jobs')" class="adm-btn bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">জব পোস্ট</button>
-                    <button onclick="switchAdminTab('adm-inbox')" class="adm-btn bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">মেসেজ পাঠান</button>
+                    <button onclick="switchAdminTab('adm-inbox')" class="adm-btn bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">মেসেজ</button>
                     <button onclick="switchAdminTab('adm-notice')" class="adm-btn bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap">নোটিশ</button>
                 </div>
-
-                <!-- Admin: Users -->
-                <div id="adm-users" class="adm-sec space-y-4">
-                    <div id="admin-user-list" class="space-y-3"></div>
-                </div>
-
-                <!-- Admin: Withdraws -->
-                <div id="adm-withdraws" class="adm-sec hidden space-y-4">
-                    <div id="admin-withdraw-list" class="space-y-3"></div>
-                </div>
-
-                <!-- Admin: Gmails -->
-                <div id="adm-gmails" class="adm-sec hidden space-y-4">
-                    <div id="admin-gmail-list" class="space-y-3"></div>
-                </div>
-
-                <!-- Admin: Jobs -->
+                <div id="adm-users" class="adm-sec space-y-4"><div id="admin-user-list" class="space-y-3"></div></div>
+                <div id="adm-withdraws" class="adm-sec hidden space-y-4"><div id="admin-withdraw-list" class="space-y-3"></div></div>
+                <div id="adm-gmails" class="adm-sec hidden space-y-4"><div id="admin-gmail-list" class="space-y-3"></div></div>
                 <div id="adm-jobs" class="adm-sec hidden space-y-4">
                     <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3 max-w-md mb-4">
                         <h3 class="text-sm font-bold text-white">নতুন জব পোস্ট করুন</h3>
@@ -205,18 +177,14 @@
                     </div>
                     <div id="admin-job-list" class="space-y-3"></div>
                 </div>
-
-                <!-- Admin: Inbox -->
                 <div id="adm-inbox" class="adm-sec hidden space-y-4">
                     <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3 max-w-md">
                         <h3 class="text-sm font-bold text-white">ইউজারকে মেসেজ পাঠান</h3>
-                        <input type="text" id="msg-uid" placeholder="User ID (e.g. USR1001)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                        <input type="email" id="msg-uid" placeholder="User Email" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
                         <textarea id="msg-text" placeholder="আপনার মেসেজ..." rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"></textarea>
                         <button onclick="adminSendMessage()" class="w-full bg-purple-600 text-white font-bold py-2 rounded-lg text-xs">পাঠান</button>
                     </div>
                 </div>
-
-                <!-- Admin: Notice -->
                 <div id="adm-notice" class="adm-sec hidden space-y-4">
                     <div class="flex gap-2">
                         <input type="text" id="admin-notice-input" placeholder="নতুন নোটিশ..." class="flex-grow bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
@@ -226,7 +194,6 @@
             </div>
         </section>
 
-        <!-- BOTTOM NAVIGATION -->
         <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 z-30">
             <div class="max-w-7xl mx-auto flex justify-around items-center py-2 text-slate-400 text-[11px]">
                 <button onclick="switchTab('dashboard')" class="nav-btn active flex flex-col items-center gap-1" data-tab="dashboard"><i class="fa-solid fa-house text-base"></i>হোম</button>
@@ -236,9 +203,8 @@
             </div>
         </nav>
     </div>
-
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
-    <script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, query, where, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -249,7 +215,6 @@
           messagingSenderId: "353074453470",
           appId: "1:353074453470:web:d76fd7b84d35e6c1499b4f"
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const ADMIN_EMAIL = "hey.rafi32@gmail.com";
@@ -257,30 +222,31 @@
 
         let currentUser = null;
         let isRegisterMode = false;
-        let allUsers = [];
-        let allJobs = [];
-        let allGmails = [];
-        let allWithdraws = [];
-        let myMessages = [];
+        let allUsers = [], allJobs = [], allGmails = [], allWithdraws = [], myMessages = [];
 
-        // UI initialization
-        document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
             const savedUser = localStorage.getItem('paylix_session');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                showMainApp();
+            if (savedUser) { currentUser = JSON.parse(savedUser); showMainApp(); }
+            if (window.location.hash === '#admin' || window.location.hash === '#adn') {
+                if (currentUser && currentUser.email === ADMIN_EMAIL) {
+                    document.getElementById('auth-screen').classList.add('hidden');
+                    document.getElementById('main-app').classList.remove('hidden');
+                    switchTab('admin');
+                } else {
+                    alert("শুধুমাত্র অ্যাডমিন এই পেজে ঢুকতে পারবে।");
+                }
             }
         });
 
-        function toggleAuthMode() {
+        window.toggleAuthMode = function() {
             isRegisterMode = !isRegisterMode;
             document.getElementById('name-field').classList.toggle('hidden', !isRegisterMode);
             document.getElementById('auth-subtitle').innerText = isRegisterMode ? "নতুন অ্যাকাউন্ট তৈরি করুন" : "লগইন করে আপনার আয় শুরু করুন";
             document.getElementById('auth-btn').innerText = isRegisterMode ? "রেজিস্টার করুন" : "লগইন করুন";
             document.getElementById('auth-toggle-text').innerText = isRegisterMode ? "আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন" : "নতুন অ্যাকাউন্ট তৈরি করুন";
-        }
+        };
 
-        async function handleAuth(e) {
+        window.handleAuth = async function(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email').value.trim().toLowerCase();
             const pass = document.getElementById('auth-pass').value;
@@ -288,11 +254,13 @@
 
             if (isRegisterMode) {
                 if (!name) return showToast('নাম দিন', 'error');
+                if (email === ADMIN_EMAIL) return showToast('এই ইমেইল ব্যবহার করা যাবে না', 'error');
+                
                 const userRef = doc(db, 'users', email);
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) return showToast('এই ইমেইলে অ্যাকাউন্ট আছে', 'error');
 
-                const newUser = { uid: email, name, email, password: pass, balance: 0, approvedGmails: 0, pendingGmails: 0, referralEarned: 0, blocked: false };
+                const newUser = { name, email, password: pass, balance: 0, approvedGmails: 0, pendingGmails: 0, referralEarned: 0, blocked: false };
                 await setDoc(userRef, newUser);
                 currentUser = newUser;
                 localStorage.setItem('paylix_session', JSON.stringify(currentUser));
@@ -304,35 +272,34 @@
                 if (!userSnap.exists()) return showToast('অ্যাকাউন্ট পাওয়া যায়নি', 'error');
                 const userData = userSnap.data();
                 if (userData.password !== pass) return showToast('পাসওয়ার্ড ভুল', 'error');
-                if (userData.blocked) return showToast('আপনার অ্যাকাউন্ট ব্লকড', 'error');
+                if (userData.blocked) return showToast('অ্যাকাউন্ট ব্লকড', 'error');
                 
                 currentUser = userData;
                 localStorage.setItem('paylix_session', JSON.stringify(currentUser));
                 showMainApp();
                 showToast('লগইন সফল', 'success');
             }
-        }
+        };
 
-        function logoutUser() {
+        window.logoutUser = function() {
             localStorage.removeItem('paylix_session');
             currentUser = null;
             document.getElementById('main-app').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
-        }
+            window.location.hash = "";
+        };
 
         function showMainApp() {
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('dash-user-name').innerText = currentUser.name;
             
-            if (currentUser.email === ADMIN_EMAIL && currentUser.password === ADMIN_PASS) {
-                if (window.location.hash === '#admin') switchTab('admin');
-                setupAdminListeners();
-            }
-            setupUserListeners();
-        }function setupUserListeners() {
-            const uRef = doc(db, 'users', currentUser.email);
-            onSnapshot(uRef, (snap) => {
+            setupListeners();
+            if (currentUser.email === ADMIN_EMAIL) setupAdminListeners();
+        }
+
+        function setupListeners() {
+            onSnapshot(doc(db, 'users', currentUser.email), (snap) => {
                 if (snap.exists()) {
                     currentUser = snap.data();
                     localStorage.setItem('paylix_session', JSON.stringify(currentUser));
@@ -340,219 +307,148 @@
                     document.getElementById('stat-balance').innerText = `৳ ${currentUser.balance.toFixed(2)}`;
                     document.getElementById('stat-approved-gmails').innerText = `${currentUser.approvedGmails || 0} টি`;
                     document.getElementById('stat-pending-gmails').innerText = `${currentUser.pendingGmails || 0} টি`;
-                    document.getElementById('stat-referral-earned').innerText = `৳ ${currentUser.referralEarned.toFixed(2)}`;
                 }
             });
-
+            onSnapshot(doc(db, 'settings', 'notice'), (snap) => {
+                if (snap.exists()) document.getElementById('notice-text-display').innerText = snap.data().text;
+            });
             onSnapshot(collection(db, 'jobs'), (snap) => {
-                allJobs = [];
-                snap.forEach(doc => allJobs.push({ id: doc.id, ...doc.data() }));
-                renderUserJobs();
+                allJobs = []; snap.forEach(doc => allJobs.push({ id: doc.id, ...doc.data() }));
+                document.getElementById('user-jobs-list').innerHTML = allJobs.map(j => `
+                    <div class="bg-slate-950 p-3 rounded-xl flex justify-between items-center text-xs">
+                        <div><b class="text-white">${j.title}</b><br><span class="text-slate-400">৳${j.reward}</span></div>
+                        <a href="${j.link}" target="_blank" class="bg-cyan-600 text-white px-3 py-1.5 rounded-lg">কাজ করুন</a>
+                    </div>`).join('') || '<p class="text-xs text-slate-500">কোনো কাজ নেই।</p>';
             });
-
             onSnapshot(collection(db, 'gmails'), (snap) => {
-                allGmails = [];
-                snap.forEach(doc => allGmails.push({ id: doc.id, ...doc.data() }));
-                renderUserGmails();
+                allGmails = []; snap.forEach(doc => allGmails.push({ id: doc.id, ...doc.data() }));
+                const my = allGmails.filter(g => g.userId === currentUser.email);
+                document.getElementById('user-gmail-history').innerHTML = my.map(g => `
+                    <div class="bg-slate-950 p-2 rounded flex justify-between text-xs">
+                        <span>${g.gmail}</span>
+                        <span class="${g.status === 'approved' ? 'text-emerald-400' : 'text-amber-400'}">${g.status}</span>
+                    </div>`).join('') || '<p class="text-xs text-slate-500">কোনো জিমেইল নেই।</p>';
             });
-
             onSnapshot(collection(db, 'withdraws'), (snap) => {
-                allWithdraws = [];
-                snap.forEach(doc => allWithdraws.push({ id: doc.id, ...doc.data() }));
-                renderUserWithdraws();
+                allWithdraws = []; snap.forEach(doc => allWithdraws.push({ id: doc.id, ...doc.data() }));
+                const my = allWithdraws.filter(w => w.userId === currentUser.email);
+                document.getElementById('user-withdraw-history').innerHTML = my.map(w => `
+                    <div class="bg-slate-950 p-2 rounded flex justify-between text-xs">
+                        <span>৳${w.amount} (${w.method})</span>
+                        <span class="${w.status === 'approved' ? 'text-emerald-400' : 'text-amber-400'}">${w.status}</span>
+                    </div>`).join('') || '<p class="text-xs text-slate-500">কোনো উইথড্র নেই।</p>';
             });
-
             onSnapshot(query(collection(db, 'messages'), where('to', '==', currentUser.email)), (snap) => {
-                myMessages = [];
-                snap.forEach(doc => myMessages.push({ id: doc.id, ...doc.data() }));
-                renderUserInbox();
+                myMessages = []; snap.forEach(doc => myMessages.push({ id: doc.id, ...doc.data() }));
+                const badge = document.getElementById('inbox-badge');
+                if (myMessages.length > 0) {
+                    badge.classList.remove('hidden'); badge.innerText = myMessages.length;
+                    document.getElementById('user-inbox-list').innerHTML = myMessages.map(m => `
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 mb-2">
+                            <p class="text-xs text-slate-300">${m.text}</p>
+                        </div>`).join('');
+                } else { badge.classList.add('hidden'); document.getElementById('user-inbox-list').innerHTML = '<p class="text-xs text-slate-500">কোনো মেসেজ নেই।</p>'; }
             });
         }
 
-        function renderUserJobs() {
-            const container = document.getElementById('user-jobs-list');
-            container.innerHTML = allJobs.length ? allJobs.map(j => `
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
-                    <div><b class="text-white">${j.title}</b><br><span class="text-slate-400">রিওয়ার্ড: ৳${j.reward}</span></div>
-                    <a href="${j.link}" target="_blank" class="bg-cyan-600 text-white px-3 py-1.5 rounded-lg">কাজ করুন</a>
-                </div>`).join('') : '<p class="text-xs text-slate-500">কোনো কাজ নেই।</p>';
-        }
-
-        function renderUserGmails() {
-            const myGmails = allGmails.filter(g => g.userId === currentUser.email);
-            document.getElementById('user-gmail-history').innerHTML = myGmails.map(g => `
-                <div class="bg-slate-950 p-2 rounded border border-slate-800 flex justify-between text-xs">
-                    <span>${g.gmail}</span>
-                    <span class="${g.status === 'approved' ? 'text-emerald-400' : 'text-amber-400'}">${g.status}</span>
-                </div>`).join('') || '<p class="text-xs text-slate-500">কোনো জিমেইল জমা দেয়নি।</p>';
-        }
-
-        function renderUserWithdraws() {
-            const myW = allWithdraws.filter(w => w.userId === currentUser.email);
-            document.getElementById('user-withdraw-history').innerHTML = myW.map(w => `
-                <div class="bg-slate-950 p-2 rounded border border-slate-800 flex justify-between text-xs">
-                    <span>৳${w.amount} (${w.method})</span>
-                    <span class="${w.status === 'approved' ? 'text-emerald-400' : 'text-amber-400'}">${w.status}</span>
-                </div>`).join('') || '<p class="text-xs text-slate-500">কোনো উইথড্র নেই।</p>';
-        }
-
-        function renderUserInbox() {
-            const container = document.getElementById('user-inbox-list');
-            const badge = document.getElementById('inbox-badge');
-            if (myMessages.length > 0) {
-                badge.classList.remove('hidden');
-                badge.innerText = myMessages.length;
-                container.innerHTML = myMessages.map(m => `
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <p class="text-xs text-slate-300">${m.text}</p>
-                        <span class="text-[10px] text-slate-500 block mt-1">${new Date(m.time).toLocaleString()}</span>
-                    </div>`).join('');
-            } else {
-                badge.classList.add('hidden');
-                container.innerHTML = '<p class="text-xs text-slate-500">কোনো মেসেজ নেই।</p>';
-            }
-        }
-
-        // --- Admin Logic ---
         function setupAdminListeners() {
             onSnapshot(collection(db, 'users'), (snap) => {
-                allUsers = [];
-                snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
-                renderAdminUsers();
+                allUsers = []; snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
+                document.getElementById('admin-user-list').innerHTML = allUsers.map(u => `
+                    <div class="bg-slate-950 p-3 rounded flex justify-between items-center text-xs mb-2">
+                        <div><b class="text-cyan-400">${u.email}</b> | ৳${u.balance.toFixed(2)}</div>
+                        <div class="flex gap-1">
+                            <button onclick="adminAddBalance('${u.email}')" class="bg-emerald-600 px-2 py-1 rounded text-white">+৳</button>
+                            <button onclick="adminToggleBlock('${u.email}', ${u.blocked})" class="bg-red-600 px-2 py-1 rounded text-white">${u.blocked ? 'Unblock' : 'Block'}</button>
+                        </div>
+                    </div>`).join('');
             });
             onSnapshot(collection(db, 'jobs'), (snap) => {
-                allJobs = [];
-                snap.forEach(doc => allJobs.push({ id: doc.id, ...doc.data() }));
-                renderAdminJobs();
+                allJobs = []; snap.forEach(doc => allJobs.push({ id: doc.id, ...doc.data() }));
+                document.getElementById('admin-job-list').innerHTML = allJobs.map(j => `
+                    <div class="bg-slate-950 p-3 rounded flex justify-between items-center text-xs mb-2">
+                        <div><b>${j.title}</b> (৳${j.reward})</div>
+                        <button onclick="adminDeleteJob('${j.id}')" class="bg-red-600 px-2 py-1 rounded text-white">ডিলিট</button>
+                    </div>`).join('');
             });
             onSnapshot(collection(db, 'gmails'), (snap) => {
-                allGmails = [];
-                snap.forEach(doc => allGmails.push({ id: doc.id, ...doc.data() }));
-                renderAdminGmails();
+                allGmails = []; snap.forEach(doc => allGmails.push({ id: doc.id, ...doc.data() }));
+                document.getElementById('admin-gmail-list').innerHTML = allGmails.map(g => `
+                    <div class="bg-slate-950 p-3 rounded text-xs mb-2 flex justify-between items-center">
+                        <div><b class="text-cyan-400">${g.gmail}</b><br>Pass: ${g.password}</div>
+                        <div class="flex gap-1">
+                            <button onclick="adminApproveGmail('${g.id}', '${g.userId}')" class="bg-emerald-600 px-2 py-1 rounded text-white">Approve</button>
+                            <button onclick="adminRejectGmail('${g.id}')" class="bg-red-600 px-2 py-1 rounded text-white">Reject</button>
+                        </div>
+                    </div>`).join('');
             });
             onSnapshot(collection(db, 'withdraws'), (snap) => {
-                allWithdraws = [];
-                snap.forEach(doc => allWithdraws.push({ id: doc.id, ...doc.data() }));
-                renderAdminWithdraws();
+                allWithdraws = []; snap.forEach(doc => allWithdraws.push({ id: doc.id, ...doc.data() }));
+                document.getElementById('admin-withdraw-list').innerHTML = allWithdraws.map(w => `
+                    <div class="bg-slate-950 p-3 rounded text-xs mb-2 flex justify-between items-center">
+                        <div><b>${w.userId}</b> - ৳${w.amount}</div>
+                        <div class="flex gap-1">
+                            <button onclick="adminApproveWithdraw('${w.id}')" class="bg-emerald-600 px-2 py-1 rounded text-white">Approve</button>
+                            <button onclick="adminRejectWithdraw('${w.id}')" class="bg-red-600 px-2 py-1 rounded text-white">Reject</button>
+                        </div>
+                    </div>`).join('');
             });
         }
 
-        function renderAdminUsers() {
-            document.getElementById('admin-user-list').innerHTML = allUsers.map(u => `
-                <div class="bg-slate-950 p-3 rounded border border-slate-800 flex justify-between items-center text-xs mb-2">
-                    <div><b class="text-cyan-400">${u.email}</b> | ৳${u.balance.toFixed(2)}</div>
-                    <div class="flex gap-1">
-                        <button onclick="adminAddBalance('${u.email}')" class="bg-emerald-600 px-2 py-1 rounded text-white">+৳</button>
-                        <button onclick="adminToggleBlock('${u.email}', ${u.blocked})" class="bg-red-600 px-2 py-1 rounded text-white">${u.blocked ? 'Unblock' : 'Block'}</button>
-                    </div>
-                </div>`).join('');
-        }
-
-        function renderAdminJobs() {
-            document.getElementById('admin-job-list').innerHTML = allJobs.map(j => `
-                <div class="bg-slate-950 p-3 rounded border border-slate-800 flex justify-between items-center text-xs mb-2">
-                    <div><b>${j.title}</b> (৳${j.reward})</div>
-                    <button onclick="adminDeleteJob('${j.id}')" class="bg-red-600 px-2 py-1 rounded text-white">ডিলিট</button>
-                </div>`).join('');
-        }
-
-        function renderAdminGmails() {
-            document.getElementById('admin-gmail-list').innerHTML = allGmails.map(g => `
-                <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs mb-2 flex justify-between items-center">
-                    <div>
-                        <b class="text-cyan-400">${g.gmail}</b><br>
-                        <span class="text-slate-300">Pass: ${g.password}</span>
-                    </div>
-                    <div class="flex gap-1">
-                        <button onclick="adminApproveGmail('${g.id}', '${g.userId}')" class="bg-emerald-600 px-2 py-1 rounded text-white">Approve</button>
-                        <button onclick="adminRejectGmail('${g.id}')" class="bg-red-600 px-2 py-1 rounded text-white">Reject</button>
-                    </div>
-                </div>`).join('');
-        }
-
-        function renderAdminWithdraws() {
-            document.getElementById('admin-withdraw-list').innerHTML = allWithdraws.map(w => `
-                <div class="bg-slate-950 p-3 rounded border border-slate-800 text-xs mb-2 flex justify-between items-center">
-                    <div><b>${w.userId}</b> - ৳${w.amount} (${w.method})</div>
-                    <div class="flex gap-1">
-                        <button onclick="adminApproveWithdraw('${w.id}')" class="bg-emerald-600 px-2 py-1 rounded text-white">Approve</button>
-                        <button onclick="adminRejectWithdraw('${w.id}')" class="bg-red-600 px-2 py-1 rounded text-white">Reject</button>
-                    </div>
-                </div>`).join('');
-        }        window.adminAddBalance = async function(email) {
+        window.adminAddBalance = async function(email) {
             const amt = parseFloat(prompt("কত টাকা যোগ করবেন?"));
             if (!amt) return;
             const u = allUsers.find(x => x.email === email);
             await updateDoc(doc(db, 'users', email), { balance: u.balance + amt });
-            showToast('ব্যালেন্স আপডেট হয়েছে', 'success');
+            showToast('ব্যালেন্স আপডেট', 'success');
         };
-
         window.adminToggleBlock = async function(email, blocked) {
             await updateDoc(doc(db, 'users', email), { blocked: !blocked });
-            showToast(blocked ? 'আনব্লক হয়েছে' : 'ব্লক হয়েছে', 'success');
+            showToast(blocked ? 'আনব্লক' : 'ব্লক', 'success');
         };
-
         window.adminDeleteJob = async function(id) {
-            if (confirm("ডিলিট করবেন?")) {
-                await deleteDoc(doc(db, 'jobs', id));
-                showToast('জব ডিলিট হয়েছে', 'success');
-            }
+            if (confirm("ডিলিট?")) await deleteDoc(doc(db, 'jobs', id));
         };
-
         window.adminApproveGmail = async function(id, userId) {
-            const g = allGmails.find(x => x.id === id);
             await updateDoc(doc(db, 'gmails', id), { status: 'approved' });
             const uRef = doc(db, 'users', userId);
             const u = (await getDoc(uRef)).data();
             await updateDoc(uRef, { balance: u.balance + 20, approvedGmails: (u.approvedGmails||0) + 1 });
             showToast('জিমেইল অ্যাপ্রুভড', 'success');
         };
-
         window.adminRejectGmail = async function(id) {
             await updateDoc(doc(db, 'gmails', id), { status: 'rejected' });
-            showToast('জিমেইল রিজেক্টেড', 'info');
         };
-
         window.adminApproveWithdraw = async function(id) {
             await updateDoc(doc(db, 'withdraws', id), { status: 'approved' });
             showToast('উইথড্র অ্যাপ্রুভড', 'success');
         };
-
         window.adminRejectWithdraw = async function(id) {
             await updateDoc(doc(db, 'withdraws', id), { status: 'rejected' });
-            showToast('উইথড্র রিজেক্টেড', 'info');
         };
-
         window.adminPostJob = async function() {
             const title = document.getElementById('job-title').value.trim();
             const link = document.getElementById('job-link').value.trim();
             const reward = parseFloat(document.getElementById('job-reward').value);
             if (!title || !link || !reward) return showToast('সব ঘর পূরণ করুন', 'error');
             await addDoc(collection(db, 'jobs'), { title, link, reward });
-            document.getElementById('job-title').value = '';
-            document.getElementById('job-link').value = '';
-            document.getElementById('job-reward').value = '';
-            showToast('জব পোস্ট হয়েছে', 'success');
+            document.getElementById('job-title').value = ''; document.getElementById('job-link').value = ''; document.getElementById('job-reward').value = '';
+            showToast('জব পোস্ট হয়েছে', 'success');
         };
-
         window.adminSendMessage = async function() {
             const to = document.getElementById('msg-uid').value.trim();
             const text = document.getElementById('msg-text').value.trim();
-            if (!to || !text) return showToast('ইউজার আইডি ও মেসেজ দিন', 'error');
-            await addDoc(collection(db, 'messages'), { to: to, text: text, time: Date.now() });
+            if (!to || !text) return showToast('সব দিন', 'error');
+            await addDoc(collection(db, 'messages'), { to, text, time: Date.now() });
             document.getElementById('msg-text').value = '';
-            showToast('মেসেজ পাঠানো হয়েছে', 'success');
+            showToast('মেসেজ পাঠানো হয়েছে', 'success');
         };
-
         window.saveGlobalNotice = async function() {
             const txt = document.getElementById('admin-notice-input').value.trim();
             if (!txt) return;
             await setDoc(doc(db, 'settings', 'notice'), { text: txt });
-            document.getElementById('notice-text-display').innerText = txt;
             showToast('নোটিশ আপডেটেড', 'success');
         };
-
-        // User Actions
         window.handleGmailSubmit = async function(e) {
             e.preventDefault();
             const gmail = document.getElementById('gmail-address').value.trim();
@@ -561,48 +457,35 @@
             const uRef = doc(db, 'users', currentUser.email);
             await updateDoc(uRef, { pendingGmails: (currentUser.pendingGmails||0) + 1 });
             document.getElementById('gmail-form').reset();
-            showToast('জমা হয়েছে!', 'success');
+            showToast('জমা হয়েছে!', 'success');
         };
-
         window.handleWithdrawSubmit = async function(e) {
             e.preventDefault();
             const method = document.getElementById('withdraw-method').value;
             const number = document.getElementById('withdraw-number').value.trim();
             const amount = parseFloat(document.getElementById('withdraw-amount').value);
-            if (amount < 100) return showToast('সর্বনিম্ন ১০০ টাকা', 'error');
+            if (amount < 100) return showToast('সর্বনিম্ন ১০০', 'error');
             if (amount > currentUser.balance) return showToast('ব্যালেন্স কম', 'error');
-            
             await addDoc(collection(db, 'withdraws'), { userId: currentUser.email, method, number, amount, status: 'pending' });
             await updateDoc(doc(db, 'users', currentUser.email), { balance: currentUser.balance - amount });
             document.getElementById('withdraw-amount').value = '';
-            showToast('রিকোয়েস্ট পাঠানো হয়েছে', 'success');
+            showToast('রিকোয়েস্ট পাঠানো হয়েছে', 'success');
         };
-
-        // Navigation
         window.switchTab = function(tab) {
             document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
-            const target = document.getElementById(`tab-${tab}`);
-            if (target) target.classList.remove('hidden');
-            
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                if (b.dataset.tab === tab) b.classList.add('text-cyan-400');
-                else b.classList.remove('text-cyan-400');
-            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.dataset.tab === tab ? b.classList.add('text-cyan-400') : b.classList.remove('text-cyan-400'));
         };
-
         window.switchAdminTab = function(tabId) {
             document.querySelectorAll('.adm-sec').forEach(s => s.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
         };
-
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
             const div = document.createElement('div');
-            const bg = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-red-600' : 'bg-cyan-600');
-            div.className = `${bg} text-white px-4 py-2 rounded shadow mb-2 text-sm transition`;
-            div.innerText = msg;
-            container.appendChild(div);
-            setTimeout(() => { div.remove(); }, 3000);
+            div.className = `${type === 'success' ? 'bg-emerald-600' : 'bg-red-600'} text-white px-4 py-2 rounded shadow mb-2 text-sm`;
+            div.innerText = msg; container.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
         }
     </script>
 </body>
