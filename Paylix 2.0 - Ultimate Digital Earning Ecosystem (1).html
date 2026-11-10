@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paylix 2.0 - The Ultimate Digital Earning & Micro-Task Ecosystem</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkGreen: '#0A192F',
+                        cardGreen: '#112222',
+                        cardGreenHover: '#1a3333',
+                        neonGreen: '#00FF7F',
+                        neonGreenHover: '#00cc66',
+                        accentGreen: '#4ADE80',
+                        goldYellow: '#FACC15',
+                        goldYellowHover: '#eab308'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A192F;
+            color: #F8FAFC;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A192F;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a4c;
+            border-radius: 3px;
+        }
+        .glow-neon {
+            box-shadow: 0 0 15px rgba(0, 255, 127, 0.2);
+        }
+        .glow-gold {
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
+        }
+        .glass-card {
+            background: rgba(17, 34, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 222, 128, 0.15);
+            border-radius: 14px;
+        }
+        @keyframes spinWheel {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(3600deg); }
+        }
+        .spinning {
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.35, 1);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between selection:bg-neonGreen selection:text-darkGreen">
+
+    <!-- Toast Notification Modal / Banner -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-200%] transition-transform duration-300 glass-card px-5 py-3 border-l-4 border-neonGreen text-sm font-medium flex items-center space-x-3 shadow-2xl">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-neonGreen text-lg"></i>
+        <span id="toast-msg">Operation successful!</span>
+    </div>
+
+    <!-- Custom Modal Container -->
+    <div id="custom-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full p-6 relative border border-neonGreen/30 animate-scaleUp">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Top Navigation / Header -->
+    <header class="sticky top-0 z-40 bg-darkGreen/90 backdrop-blur-md border-b border-gray-800 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neonGreen to-accentGreen flex items-center justify-center font-bold text-darkGreen text-xl shadow-lg glow-neon">
+                P
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-wide text-white flex items-center gap-1.5">
+                    Paylix <span class="text-xs px-2 py-0.5 bg-neonGreen/20 text-neonGreen rounded-full font-semibold border border-neonGreen/30">v2.0</span>
+                </h1>
+                <p class="text-xs text-gray-400" id="header-user-id">ID: Loading...</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <!-- Balance pill -->
+            <div class="flex items-center bg-cardGreen px-3.5 py-1.5 rounded-full border border-goldYellow/30 glow-gold">
+                <i class="fa-solid fa-wallet text-goldYellow mr-2 text-sm"></i>
+                <span id="header-balance" class="font-bold text-goldYellow text-sm">0.00 BDT</span>
+            </div>
+
+            <!-- Inbox Bell -->
+            <button onclick="switchTab('inbox')" class="relative p-2.5 rounded-xl bg-cardGreen border border-gray-800 text-gray-300 hover:text-neonGreen transition">
+                <i class="fa-solid fa-bell text-lg"></i>
+                <span id="inbox-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
+            </button>
+
+            <!-- Admin Toggle Button (Visible if admin) -->
+            <button id="admin-nav-btn" onclick="openAdminPanel()" class="hidden px-3 py-1.5 bg-red-500/20 border border-red-500/50 text-red-400 rounded-xl text-xs font-semibold hover:bg-red-500/30 transition">
+                <i class="fa-solid fa-shield-halved mr-1"></i> Admin
+            </button>
+        </div>
+    </header>
+
+    <!-- Global Notice Marquee Bar -->
+    <div id="notice-banner" class="bg-cardGreen/90 border-b border-gray-800/80 px-4 py-2 text-xs text-neonGreen flex items-center space-x-2 overflow-hidden">
+        <i class="fa-solid fa-bullhorn text-goldYellow shrink-0 animate-bounce"></i>
+        <div class="whitespace-nowrap overflow-hidden text-ellipsis">
+            <span id="global-notice-text">Welcome to Paylix 2.0! Complete micro-tasks, exchange Gmails, spin & win daily rewards!</span>
+        </div>
+    </div>
+
+    <!-- Main Viewport Container -->
+    <main class="flex-1 overflow-y-auto pb-24 pt-4 px-4 max-w-4xl mx-auto w-full">
+
+        <!-- AUTH SCREEN (Shown if not logged in) -->
+        <section id="auth-section" class="hidden min-h-[75vh] flex items-center justify-center">
+            <div class="glass-card p-8 max-w-md w-full shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-32 h-32 bg-neonGreen/10 rounded-full blur-2xl"></div>
+                
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-neonGreen to-accentGreen rounded-2xl mx-auto flex items-center justify-center text-darkGreen text-3xl font-black mb-3 shadow-lg glow-neon">
+                        P
+                    </div>
+                    <h2 class="text-2xl font-bold text-white" id="auth-title">Welcome to Paylix</h2>
+                    <p class="text-xs text-gray-400 mt-1">The Ultimate Digital Earning & Micro-Task Ecosystem</p>
+                </div>
+
+                <!-- Auth Tabs -->
+                <div class="flex bg-darkGreen/80 p-1 rounded-xl mb-6 border border-gray-800">
+                    <button onclick="setAuthMode('login')" id="tab-login" class="flex-1 py-2 text-xs font-semibold rounded-lg bg-neonGreen text-darkGreen transition shadow">Login</button>
+                    <button onclick="setAuthMode('register')" id="tab-register" class="flex-1 py-2 text-xs font-semibold rounded-lg text-gray-400 transition">Register</button>
+                </div>
+
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                    <div id="name-field-container" class="hidden">
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="auth-name" placeholder="John Doe" class="w-full bg-darkGreen/90 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-neonGreen">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Email Address</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"><i class="fa-solid fa-envelope"></i></span>
+                            <input type="email" id="auth-email" required placeholder="user@example.com" class="w-full bg-darkGreen/90 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-neonGreen">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-darkGreen/90 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-neonGreen">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-neonGreen text-darkGreen font-bold rounded-xl hover:bg-neonGreenHover transition shadow-lg glow-neon text-sm">
+                        Login to Account
+                    </button>
+                </form>
+
+                <div class="mt-5 text-center">
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-gray-800"></div>
+                        <span class="flex-shrink mx-4 text-gray-500 text-xs">Or continue with</span>
+                        <div class="flex-grow border-t border-gray-800"></div>
+                    </div>
+
+                    <button onclick="handleGoogleSignIn()" class="mt-2 w-full py-2.5 bg-cardGreen border border-gray-700 rounded-xl text-white text-xs font-semibold hover:bg-cardGreenHover transition flex items-center justify-center space-x-2">
+                        <i class="fa-brands fa-google text-red-400"></i>
+                        <span>Google Authentication</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN APP CONTENT (Shown when logged in) -->
+        <div id="app-container" class="hidden space-y-6">
+
+            <!-- TAB 1: HOME -->
+            <div id="tab-content-home" class="space-y-6">
+                <!-- User Profile Banner Card -->
+                <div class="glass-card p-6 relative overflow-hidden bg-gradient-to-r from-cardGreen to-[#132c2c] border-neonGreen/30">
+                    <div class="absolute right-0 top-0 translate-x-6 -translate-y-6 w-32 h-32 bg-neonGreen/10 rounded-full blur-xl"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div id="user-avatar" class="w-12 h-12 rounded-2xl bg-neonGreen text-darkGreen font-bold text-xl flex items-center justify-center shadow-md">
+                                U
+                            </div>
+                            <div>
+                                <h3 id="user-display-name" class="font-bold text-lg text-white">Loading...</h3>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span id="user-badge-pill" class="px-2 py-0.5 bg-gray-700 text-gray-300 text-[10px] font-semibold rounded-md uppercase">Free Member</span>
+                                    <span class="text-xs text-gray-400" id="user-display-id">ID: ...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="openVipModal()" class="px-3.5 py-2 bg-gradient-to-r from-goldYellow to-yellow-600 text-darkGreen text-xs font-extrabold rounded-xl shadow hover:brightness-110 transition flex items-center gap-1.5 glow-gold">
+                            <i class="fa-solid fa-crown"></i> VIP Pass
+                        </button>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-3 gap-3 pt-2 border-t border-gray-800">
+                        <div class="bg-darkGreen/60 p-3 rounded-xl border border-gray-800">
+                            <p class="text-[11px] text-gray-400 font-medium">Main Balance</p>
+                            <p id="stat-balance" class="text-base font-extrabold text-goldYellow mt-0.5">0.00 BDT</p>
+                        </div>
+                        <div class="bg-darkGreen/60 p-3 rounded-xl border border-gray-800">
+                            <p class="text-[11px] text-gray-400 font-medium">Total Earned</p>
+                            <p id="stat-total-earned" class="text-base font-extrabold text-neonGreen mt-0.5">0.00 BDT</p>
+                        </div>
+                        <div class="bg-darkGreen/60 p-3 rounded-xl border border-gray-800">
+                            <p class="text-[11px] text-gray-400 font-medium">Tasks Done</p>
+                            <p id="stat-tasks-done" class="text-base font-extrabold text-white mt-0.5">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Hub (Mini Cards) -->
+                <div>
+                    <h4 class="text-sm font-bold text-gray-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-neonGreen"></i> Quick Earning Hub
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button onclick="switchTab('task')" class="glass-card p-4 text-left hover:border-neonGreen transition group">
+                            <div class="w-10 h-10 rounded-xl bg-neonGreen/20 text-neonGreen flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-list-check text-lg"></i>
+                            </div>
+                            <h5 class="font-bold text-sm text-white">Micro Tasks</h5>
+                            <p class="text-[11px] text-gray-400 mt-0.5">Earn per task</p>
+                        </button>
+
+                        <button onclick="switchTab('gmail')" class="glass-card p-4 text-left hover:border-neonGreen transition group">
+                            <div class="w-10 h-10 rounded-xl bg-accentGreen/20 text-accentGreen flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-at text-lg"></i>
+                            </div>
+                            <h5 class="font-bold text-sm text-white">Gmail Market</h5>
+                            <p class="text-[11px] text-gray-400 mt-0.5">20 BDT per email</p>
+                        </button>
+
+                        <button onclick="openSpinModal()" class="glass-card p-4 text-left hover:border-goldYellow transition group">
+                            <div class="w-10 h-10 rounded-xl bg-goldYellow/20 text-goldYellow flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-rotate text-lg"></i>
+                            </div>
+                            <h5 class="font-bold text-sm text-white">Lucky Spin</h5>
+                            <p class="text-[11px] text-gray-400 mt-0.5">Spin & Win BDT</p>
+                        </button>
+
+                        <button onclick="openPostTaskModal()" class="glass-card p-4 text-left hover:border-accentGreen transition group">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-bullhorn text-lg"></i>
+                            </div>
+                            <h5 class="font-bold text-sm text-white">Post Task</h5>
+                            <p class="text-[11px] text-gray-400 mt-0.5">Sponsor work</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Referral & Leaderboard Card -->
+                <div class="glass-card p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-goldYellow"></i> Referral Contest & Leaderboard
+                        </h4>
+                        <span class="text-[11px] bg-goldYellow/10 text-goldYellow px-2 py-0.5 rounded-full border border-goldYellow/30">Prize: 500 BDT</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">Invite friends using your unique link. The top referrer at the end of the month wins 500 BDT bonus!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="ref-link-input" readonly value="https://paylix-586b1.web.app/?ref=PLX-..." class="flex-1 bg-darkGreen border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-300 font-mono">
+                        <button onclick="copyRefLink()" class="px-4 py-2 bg-neonGreen text-darkGreen font-bold rounded-xl text-xs hover:bg-neonGreenHover transition">Copy</button>
+                    </div>
+
+                    <div id="leaderboard-list" class="space-y-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: GMAIL MARKETPLACE -->
+            <div id="tab-content-gmail" class="hidden space-y-6">
+                <div class="glass-card p-6 border-accentGreen/30">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-accentGreen/20 text-accentGreen rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-at"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">Gmail Marketplace</h3>
+                            <p class="text-xs text-gray-400">Submit fresh Gmail & Password. Admin reviews & credits <span class="text-neonGreen font-bold">20 BDT</span>.</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="submitGmailAccount(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Gmail Address</label>
+                            <input type="email" id="submit-gmail" required placeholder="example@gmail.com" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentGreen">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Gmail Password</label>
+                            <input type="text" id="submit-gmail-pass" required placeholder="password123" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accentGreen">
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-accentGreen text-darkGreen font-bold rounded-xl hover:bg-emerald-400 transition text-sm shadow">
+                            Submit Gmail for 20 BDT Reward
+                        </button>
+                    </form>
+                </div>
+
+                <div class="glass-card p-5">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center justify-between">
+                        <span>Your Submitted Gmails</span>
+                        <span id="user-gmails-count" class="text-xs text-gray-400">0 submitted</span>
+                    </h4>
+                    <div id="user-gmails-list" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: TASK ZONE -->
+            <div id="tab-content-task" class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-neonGreen"></i> Micro-Task Hub
+                        </h3>
+                        <p class="text-xs text-gray-400">Complete tasks, wait for 30s timer, submit text proof to earn.</p>
+                    </div>
+                    <button onclick="openPostTaskModal()" class="px-3 py-1.5 bg-cardGreen border border-neonGreen/30 text-neonGreen rounded-xl text-xs font-semibold hover:bg-cardGreenHover transition">
+                        <i class="fa-solid fa-plus mr-1"></i> Post Task
+                    </button>
+                </div>
+
+                <div id="tasks-list" class="space-y-3">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- TAB 4: WITHDRAW SYSTEM -->
+            <div id="tab-content-withdraw" class="space-y-6">
+                <div class="glass-card p-6 border-goldYellow/30">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-goldYellow/20 text-goldYellow rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">Withdraw Earnings</h3>
+                            <p class="text-xs text-gray-400">Min withdraw: <span class="text-goldYellow font-bold">100 BDT</span>. Standard charge: 15% (VIP: 5%).</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="submitWithdrawRequest(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Select Payment Method</label>
+                            <select id="withdraw-method" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-goldYellow">
+                                <option value="bKash">bKash (Personal)</option>
+                                <option value="Nagad">Nagad (Personal)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Account Number</label>
+                            <input type="text" id="withdraw-number" required placeholder="017xxxxxxxx" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-goldYellow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Amount (BDT)</label>
+                            <input type="number" id="withdraw-amount" min="100" required placeholder="100" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-goldYellow">
+                            <p class="text-[11px] text-gray-400 mt-1">Note: <span id="withdraw-fee-rate">15%</span> service charge will be deducted.</p>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-goldYellow text-darkGreen font-extrabold rounded-xl hover:bg-goldYellowHover transition text-sm shadow">
+                            Request Withdrawal
+                        </button>
+                    </form>
+                </div>
+
+                <div class="glass-card p-5">
+                    <h4 class="text-sm font-bold text-white mb-3">Withdrawal History</h4>
+                    <div id="withdraw-history-list" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: PROFILE -->
+            <div id="tab-content-profile" class="space-y-6">
+                <div class="glass-card p-6">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div id="profile-avatar" class="w-16 h-16 rounded-2xl bg-neonGreen text-darkGreen font-extrabold text-2xl flex items-center justify-center shadow-lg">
+                            U
+                        </div>
+                        <div>
+                            <h3 id="profile-name" class="font-bold text-xl text-white">Loading...</h3>
+                            <p id="profile-email" class="text-xs text-gray-400">email@example.com</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="px-2.5 py-0.5 bg-darkGreen border border-gray-700 text-xs font-mono text-neonGreen rounded-lg" id="profile-userid">ID: ...</span>
+                                <span id="profile-vip-status" class="px-2.5 py-0.5 bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg">Free Tier</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 pt-4 border-t border-gray-800">
+                        <button onclick="openVipModal()" class="w-full py-3 bg-cardGreen border border-goldYellow/40 rounded-xl text-goldYellow font-bold text-xs flex items-center justify-center space-x-2 hover:bg-cardGreenHover transition">
+                            <i class="fa-solid fa-crown"></i>
+                            <span>Upgrade to VIP Membership (100 BDT/mo)</span>
+                        </button>
+
+                        <button onclick="handleLogout()" class="w-full py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 font-bold text-xs flex items-center justify-center space-x-2 hover:bg-red-500/20 transition">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout Account</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Support & Links Card -->
+                <div class="glass-card p-5 space-y-3">
+                    <h4 class="text-sm font-bold text-white mb-2">Official Channels & Support</h4>
+                    <a href="https://t.me/paylix_official" target="_blank" class="flex items-center justify-between p-3 bg-darkGreen rounded-xl border border-gray-800 hover:border-neonGreen transition text-xs text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-telegram text-sky-400 text-base"></i> Telegram Channel</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-gray-500"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" class="flex items-center justify-between p-3 bg-darkGreen rounded-xl border border-gray-800 hover:border-red-500 transition text-xs text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-youtube text-red-500 text-base"></i> YouTube Channel</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-gray-500"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TAB 6: GLOBAL INBOX -->
+            <div id="tab-content-inbox" class="hidden space-y-6">
+                <div class="glass-card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-inbox text-neonGreen"></i> Global Inbox & Notifications
+                        </h3>
+                        <span class="text-xs text-gray-400">Admin Broadcasts</span>
+                    </div>
+                    <div id="inbox-messages-list" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: ADMIN PANEL (Secret View) -->
+            <div id="tab-content-admin" class="hidden space-y-6">
+                <div class="glass-card p-6 border-red-500/40 bg-[#151922]">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">Admin Control Center</h3>
+                                <p class="text-xs text-red-400">Restricted Owner Access Only (#admin)</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('home')" class="px-4 py-2 bg-cardGreen border border-gray-700 text-gray-300 rounded-xl text-xs font-bold hover:bg-gray-800 transition">
+                            Exit Admin
+                        </button>
+                    </div>
+
+                    <!-- Admin Sub-tabs -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6">
+                        <button onclick="switchAdminSubTab('users')" id="admin-subtab-users" class="py-2.5 px-3 bg-red-500 text-white rounded-xl text-xs font-bold shadow transition">Users Mgmt</button>
+                        <button onclick="switchAdminSubTab('gmails')" id="admin-subtab-gmails" class="py-2.5 px-3 bg-cardGreen border border-gray-800 text-gray-300 rounded-xl text-xs font-bold transition">Gmail Approvals</button>
+                        <button onclick="switchAdminSubTab('withdraws')" id="admin-subtab-withdraws" class="py-2.5 px-3 bg-cardGreen border border-gray-800 text-gray-300 rounded-xl text-xs font-bold transition">Withdraw Requests</button>
+                        <button onclick="switchAdminSubTab('tasks')" id="admin-subtab-tasks" class="py-2.5 px-3 bg-cardGreen border border-gray-800 text-gray-300 rounded-xl text-xs font-bold transition">Task Controller</button>
+                        <button onclick="switchAdminSubTab('notices')" id="admin-subtab-notices" class="py-2.5 px-3 bg-cardGreen border border-gray-800 text-gray-300 rounded-xl text-xs font-bold transition">Global Broadcast</button>
+                    </div>
+
+                    <!-- ADMIN SUB: USERS -->
+                    <div id="admin-section-users" class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-bold text-white">Registered Users List</h4>
+                            <input type="text" id="admin-user-search" oninput="renderAdminUsers()" placeholder="Search by name/ID..." class="bg-darkGreen border border-gray-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-red-500">
+                        </div>
+                        <div id="admin-users-list" class="space-y-2 max-h-96 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- ADMIN SUB: GMAIL APPROVALS -->
+                    <div id="admin-section-gmails" class="space-y-4 hidden">
+                        <h4 class="text-sm font-bold text-white">Pending Gmail Submissions</h4>
+                        <div id="admin-gmails-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- ADMIN SUB: WITHDRAW REQUESTS -->
+                    <div id="admin-section-withdraws" class="space-y-4 hidden">
+                        <h4 class="text-sm font-bold text-white">Pending Withdrawal Requests</h4>
+                        <div id="admin-withdraws-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- ADMIN SUB: TASKS CONTROLLER -->
+                    <div id="admin-section-tasks" class="space-y-4 hidden">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-bold text-white">Active Micro Jobs & Proofs</h4>
+                            <button onclick="openPostTaskModal()" class="px-3 py-1.5 bg-neonGreen text-darkGreen rounded-xl text-xs font-bold">Post New Task</button>
+                        </div>
+                        <div id="admin-tasks-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- ADMIN SUB: NOTICES -->
+                    <div id="admin-section-notices" class="space-y-4 hidden">
+                        <h4 class="text-sm font-bold text-white">Broadcast Global Notice & Inbox Message</h4>
+                        <form onsubmit="handleAdminBroadcast(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-300 mb-1">Notice / Announcement Title</label>
+                                <input type="text" id="broadcast-title" required placeholder="Important Update..." class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-300 mb-1">Message Body</label>
+                                <textarea id="broadcast-body" rows="3" required placeholder="Write message for all users..." class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-red-500"></textarea>
+                            </div>
+                            <button type="submit" class="py-2.5 px-5 bg-red-500 text-white font-bold rounded-xl text-xs hover:bg-red-600 transition">Broadcast to All Users</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Sticky Navigation Bar (Mobile-First) -->
+    <nav id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-cardGreen/95 backdrop-blur-md border-t border-gray-800 py-2 px-6 flex justify-around items-center">
+        <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-neonGreen transition">
+            <i class="fa-solid fa-house text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Home</span>
+        </button>
+        <button onclick="switchTab('gmail')" id="nav-btn-gmail" class="flex flex-col items-center text-gray-400 hover:text-neonGreen transition">
+            <i class="fa-solid fa-at text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Gmail</span>
+        </button>
+        <button onclick="switchTab('task')" id="nav-btn-task" class="flex flex-col items-center text-gray-400 hover:text-neonGreen transition">
+            <i class="fa-solid fa-list-check text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Task</span>
+        </button>
+        <button onclick="switchTab('withdraw')" id="nav-btn-withdraw" class="flex flex-col items-center text-gray-400 hover:text-neonGreen transition">
+            <i class="fa-solid fa-wallet text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Withdraw</span>
+        </button>
+        <button onclick="switchTab('profile')" id="nav-btn-profile" class="flex flex-col items-center text-gray-400 hover:text-neonGreen transition">
+            <i class="fa-solid fa-user text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Profile</span>
+        </button>
+    </nav>
+
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Configuration & State variables
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
+            authDomain: "paylix-586b1.firebaseapp.com",
+            projectId: "paylix-586b1",
+            storageBucket: "paylix-586b1.firebasestorage.app",
+            messagingSenderId: "353074453470",
+            appId: "1:353074453470:web:026fc4a6768eb6d9499b4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'paylix-default-app';
+
+        // Admin Email
+        const ADMIN_EMAIL = "admin@paylix.com";
+
+        // Application State
+        let currentUser = null;
+        let userData = {
+            uid: '',
+            uniqueId: '',
+            name: '',
+            email: '',
+            balance: 0,
+            totalEarned: 0,
+            tasksDone: 0,
+            isVip: false,
+            isBlocked: false,
+            isAdmin: false,
+            createdAt: Date.now()
+        };
+
+        let currentAuthMode = 'login';
+        let allUsersCache = [];
+        let gmailsCache = [];
+        let tasksCache = [];
+        let withdrawsCache = [];
+        let inboxCache = [];
+        let activeTimerInterval = null;
+
+        // Expose functions globally to HTML
+        window.switchTab = switchTab;
+        window.setAuthMode = setAuthMode;
+        window.handleAuthSubmit = handleAuthSubmit;
+        window.handleGoogleSignIn = handleGoogleSignIn;
+        window.handleLogout = handleLogout;
+        window.openVipModal = openVipModal;
+        window.buyVipMembership = buyVipMembership;
+        window.openSpinModal = openSpinModal;
+        window.spinWheelAction = spinWheelAction;
+        window.openPostTaskModal = openPostTaskModal;
+        window.submitPostTask = submitPostTask;
+        window.submitGmailAccount = submitGmailAccount;
+        window.submitWithdrawRequest = submitWithdrawRequest;
+        window.openTaskDetailModal = openTaskDetailModal;
+        window.submitTaskProof = submitTaskProof;
+        window.copyRefLink = copyRefLink;
+        window.openAdminPanel = openAdminPanel;
+        window.switchAdminSubTab = switchAdminSubTab;
+        window.renderAdminUsers = renderAdminUsers;
+        window.toggleUserBlock = toggleUserBlock;
+        window.adjustUserBalance = adjustUserBalance;
+        window.reviewGmail = reviewGmail;
+        window.reviewWithdraw = reviewWithdraw;
+        window.deleteTask = deleteTask;
+        window.handleAdminBroadcast = handleAdminBroadcast;
+        window.closeModal = closeModal;
+
+        // Initialize App Auth State Listener
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Check hash for admin entrance (#admin)
+            if (window.location.hash === '#admin') {
+                setTimeout(() => openAdminPanel(), 800);
+            }
+
+            window.addEventListener('hashchange', () => {
+                if (window.location.hash === '#admin') {
+                    openAdminPanel();
+                }
+            });
+
+            // Auth state
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    await fetchUserData(user.uid, user.email, user.displayName);
+                    showAppScreen();
+                    startRealtimeListeners();
+                } else {
+                    showAuthScreen();
+                }
+            });
+
+            // Initial seed tasks if empty
+            setTimeout(() => checkAndSeedInitialData(), 1500);
+        });
+
+        async function fetchUserData(uid, email, displayName) {
+            const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', uid);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                userData = userSnap.get();
+                // Check admin status
+                if (email === ADMIN_EMAIL || userData.email === ADMIN_EMAIL) {
+                    userData.isAdmin = true;
+                }
+            } else {
+                // Generate unique Paylix ID e.g. PLX-102938
+                const randomNum = Math.floor(100000 + Math.random() * 900000);
+                const uniqueId = `PLX-${randomNum}`;
+                const isAdmin = email === ADMIN_EMAIL;
+
+                userData = {
+                    uid: uid,
+                    uniqueId: uniqueId,
+                    name: displayName || email.split('@')[0],
+                    email: email,
+                    balance: 50.00, // Welcome bonus
+                    totalEarned: 50.00,
+                    tasksDone: 0,
+                    isVip: false,
+                    isBlocked: false,
+                    isAdmin: isAdmin,
+                    createdAt: Date.now()
+                };
+                await setDoc(userRef, userData);
+            }
+
+            if (userData.isBlocked) {
+                showToast("Your account has been restricted/blocked by Admin.", "error");
+                signOut(auth);
+                return;
+            }
+
+            updateUIHeader();
+        }
+
+        function updateUIHeader() {
+            document.getElementById('header-user-id').innerText = `ID: ${userData.uniqueId || 'PLX-...'}`;
+            document.getElementById('header-balance').innerText = `${Number(userData.balance).toFixed(2)} BDT`;
+            document.getElementById('stat-balance').innerText = `${Number(userData.balance).toFixed(2)} BDT`;
+            document.getElementById('stat-total-earned').innerText = `${Number(userData.totalEarned).toFixed(2)} BDT`;
+            document.getElementById('stat-tasks-done').innerText = userData.tasksDone;
+
+            document.getElementById('user-display-name').innerText = userData.name;
+            document.getElementById('user-display-id').innerText = `ID: ${userData.uniqueId}`;
+            document.getElementById('user-avatar').innerText = userData.name.charAt(0).toUpperCase();
+            
+            document.getElementById('profile-name').innerText = userData.name;
+            document.getElementById('profile-email').innerText = userData.email;
+            document.getElementById('profile-userid').innerText = `ID: ${userData.uniqueId}`;
+            document.getElementById('profile-avatar').innerText = userData.name.charAt(0).toUpperCase();
+
+            const vipBadge = document.getElementById('user-badge-pill');
+            const profileVip = document.getElementById('profile-vip-status');
+            if (userData.isVip) {
+                vipBadge.innerText = "VIP MEMBER";
+                vipBadge.className = "px-2 py-0.5 bg-goldYellow text-darkGreen text-[10px] font-extrabold rounded-md uppercase";
+                profileVip.innerText = "VIP Member (5% Fee)";
+                profileVip.className = "px-2.5 py-0.5 bg-goldYellow/20 text-goldYellow border border-goldYellow/30 text-xs font-bold rounded-lg";
+                document.getElementById('withdraw-fee-rate').innerText = "5%";
+            } else {
+                vipBadge.innerText = "FREE TIER";
+                vipBadge.className = "px-2 py-0.5 bg-gray-700 text-gray-300 text-[10px] font-semibold rounded-md uppercase";
+                profileVip.innerText = "Free Tier (15% Fee)";
+                profileVip.className = "px-2.5 py-0.5 bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg";
+                document.getElementById('withdraw-fee-rate').innerText = "15%";
+            }
+
+            document.getElementById('ref-link-input').value = `https://paylix-586b1.web.app/?ref=${userData.uniqueId}`;
+
+            if (userData.isAdmin) {
+                document.getElementById('admin-nav-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('admin-nav-btn').classList.add('hidden');
+            }
+        }
+
+        // Realtime Firestore Listeners
+        function startRealtimeListeners() {
+            // Users list for leaderboard & admin
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'users'), (snapshot) => {
+                allUsersCache = [];
+                snapshot.forEach(docSnap => allUsersCache.push(docSnap.data()));
+                renderLeaderboard();
+                if (userData.isAdmin) renderAdminUsers();
+            }, (err) => console.error(err));
+
+            // Gmails
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'gmails'), (snapshot) => {
+                gmailsCache = [];
+                snapshot.forEach(docSnap => gmailsCache.push({ id: docSnap.id, ...docSnap.data() }));
+                renderUserGmails();
+                if (userData.isAdmin) renderAdminGmails();
+            }, (err) => console.error(err));
+
+            // Tasks
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'tasks'), (snapshot) => {
+                tasksCache = [];
+                snapshot.forEach(docSnap => tasksCache.push({ id: docSnap.id, ...docSnap.data() }));
+                renderTasks();
+                if (userData.isAdmin) renderAdminTasks();
+            }, (err) => console.error(err));
+
+            // Withdraws
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'withdraws'), (snapshot) => {
+                withdrawsCache = [];
+                snapshot.forEach(docSnap => withdrawsCache.push({ id: docSnap.id, ...docSnap.data() }));
+                renderWithdrawHistory();
+                if (userData.isAdmin) renderAdminWithdraws();
+            }, (err) => console.error(err));
+
+            // Inbox / Broadcasts
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'inbox'), (snapshot) => {
+                inboxCache = [];
+                snapshot.forEach(docSnap => inboxCache.push({ id: docSnap.id, ...docSnap.data() }));
+                renderInbox();
+            }, (err) => console.error(err));
+        }
+
+        // Seed initial data if empty
+        async function checkAndSeedInitialData() {
+            try {
+                // Check tasks
+                // (Handled natively by default)
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Navigation Switcher
+        function switchTab(tabName) {
+            const tabs = ['home', 'gmail', 'task', 'withdraw', 'profile', 'inbox', 'admin'];
+            tabs.forEach(t => {
+                const contentEl = document.getElementById(`tab-content-${t}`);
+                if (contentEl) {
+                    if (t === tabName) {
+                        contentEl.classList.remove('hidden');
+                    } else {
+                        contentEl.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Update bottom nav active state
+            const navButtons = ['home', 'gmail', 'task', 'withdraw', 'profile'];
+            navButtons.forEach(b => {
+                const btnEl = document.getElementById(`nav-btn-${b}`);
+                if (btnEl) {
+                    if (b === tabName) {
+                        btnEl.className = "flex flex-col items-center text-neonGreen transition";
+                    } else {
+                        btnEl.className = "flex flex-col items-center text-gray-400 hover:text-neonGreen transition";
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Auth Mode Switcher
+        function setAuthMode(mode) {
+            currentAuthMode = mode;
+            const loginBtn = document.getElementById('tab-login');
+            const regBtn = document.getElementById('tab-register');
+            const nameContainer = document.getElementById('name-field-container');
+            const submitBtn = document.getElementById('auth-submit-btn');
+
+            if (mode === 'login') {
+                loginBtn.className = "flex-1 py-2 text-xs font-semibold rounded-lg bg-neonGreen text-darkGreen transition shadow";
+                regBtn.className = "flex-1 py-2 text-xs font-semibold rounded-lg text-gray-400 transition";
+                nameContainer.classList.add('hidden');
+                submitBtn.innerText = "Login to Account";
+            } else {
+                regBtn.className = "flex-1 py-2 text-xs font-semibold rounded-lg bg-neonGreen text-darkGreen transition shadow";
+                loginBtn.className = "flex-1 py-2 text-xs font-semibold rounded-lg text-gray-400 transition";
+                nameContainer.classList.remove('hidden');
+                submitBtn.innerText = "Create Account (+50 BDT Bonus)";
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const name = document.getElementById('auth-name').value;
+
+            try {
+                if (currentAuthMode === 'register') {
+                    const res = await createUserWithEmailAndPassword(auth, email, password);
+                    showToast("Account created successfully with 50 BDT bonus!");
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showToast("Logged in successfully!");
+                }
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        async function handleGoogleSignIn() {
+            try {
+                const provider = new GoogleAuthProvider();
+                await signInWithPopup(auth, provider);
+                showToast("Google sign-in successful!");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        async function handleLogout() {
+            await signOut(auth);
+            showToast("Logged out successfully.");
+        }
+
+        function showAuthScreen() {
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('bottom-nav').classList.add('hidden');
+            document.getElementById('notice-banner').classList.add('hidden');
+        }
+
+        function showAppScreen() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('bottom-nav').classList.remove('flex');
+            document.getElementById('bottom-nav').classList.remove('hidden');
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.getElementById('notice-banner').classList.remove('hidden');
+            switchTab('home');
+        }
+
+        // Leaderboard Rendering
+        function renderLeaderboard() {
+            const listEl = document.getElementById('leaderboard-list');
+            if (!listEl) return;
+            const sorted = [...allUsersCache].sort((a, b) => b.totalEarned - a.totalEarned).slice(0, 5);
+            
+            if (sorted.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">No leaderboard entries yet.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = sorted.map((u, index) => `
+                <div class="flex items-center justify-between p-2.5 bg-darkGreen rounded-xl border border-gray-800 text-xs">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full font-bold flex items-center justify-center text-[10px] ${index === 0 ? 'bg-goldYellow text-darkGreen' : index === 1 ? 'bg-gray-300 text-darkGreen' : index === 2 ? 'bg-amber-600 text-white' : 'bg-gray-800 text-gray-400'}">${index + 1}</span>
+                        <div>
+                            <p class="font-bold text-white">${u.name}</p>
+                            <p class="text-[10px] text-gray-400 font-mono">${u.uniqueId}</p>
+                        </div>
+                    </div>
+                    <span class="font-bold text-neonGreen">${Number(u.totalEarned).toFixed(2)} BDT</span>
+                </div>
+            `).join('');
+        }
+
+        // Gmail Marketplace
+        async function submitGmailAccount(e) {
+            e.preventDefault();
+            const gmail = document.getElementById('submit-gmail').value;
+            const pass = document.getElementById('submit-gmail-pass').value;
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'gmails'), {
+                    uid: currentUser.uid,
+                    userName: userData.name,
+                    userUniqueId: userData.uniqueId,
+                    gmail: gmail,
+                    password: pass,
+                    status: 'pending', // pending, approved, rejected
+                    createdAt: Date.now()
+                });
+                showToast("Gmail submitted successfully for verification!");
+                document.getElementById('submit-gmail').value = '';
+                document.getElementById('submit-gmail-pass').value = '';
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        function renderUserGmails() {
+            const listEl = document.getElementById('user-gmails-list');
+            const countEl = document.getElementById('user-gmails-count');
+            if (!listEl) return;
+
+            const myGmails = gmailsCache.filter(g => g.uid === currentUser?.uid);
+            if (countEl) countEl.innerText = `${myGmails.length} submitted`;
+
+            if (myGmails.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">You haven't submitted any Gmails yet.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = myGmails.map(g => `
+                <div class="p-3 bg-darkGreen rounded-xl border border-gray-800 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-white">${g.gmail}</p>
+                        <p class="text-[10px] text-gray-400">Status: <span class="font-semibold ${g.status === 'approved' ? 'text-neonGreen' : g.status === 'rejected' ? 'text-red-400' : 'text-goldYellow'}">${g.status.toUpperCase()}</span></p>
+                    </div>
+                    ${g.status === 'approved' ? '<span class="text-xs font-bold text-neonGreen">+20 BDT Credited</span>' : '<span class="text-xs text-gray-500">Pending Review</span>'}
+                </div>
+            `).join('');
+        }
+
+        // Micro-Task Zone
+        function renderTasks() {
+            const listEl = document.getElementById('tasks-list');
+            if (!listEl) return;
+
+            // Default demo tasks if none exist
+            let tasks = tasksCache;
+            if (tasks.length === 0) {
+                tasks = [
+                    { id: 't1', title: 'Subscribe YouTube Channel & Bell Icon', reward: 10, link: 'https://youtube.com', proofInstruction: 'Enter your YouTube Channel Name or Username' },
+                    { id: 't2', title: 'Join Telegram Community & Say Hello', reward: 8, link: 'https://t.me/paylix_official', proofInstruction: 'Enter your Telegram Username (e.g. @username)' },
+                    { id: 't3', title: 'Like & Follow Facebook Official Page', reward: 10, link: 'https://facebook.com', proofInstruction: 'Enter your Facebook Profile Name/Link' }
+                ];
+            }
+
+            listEl.innerHTML = tasks.map(t => `
+                <div class="glass-card p-4 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] px-2 py-0.5 bg-neonGreen/10 text-neonGreen rounded font-semibold">Micro Job</span>
+                        <h4 class="font-bold text-sm text-white mt-1">${t.title}</h4>
+                        <p class="text-xs text-goldYellow font-bold mt-0.5">Reward: ${t.reward} BDT</p>
+                    </div>
+                    <button onclick="openTaskDetailModal('${t.id}', '${encodeURIComponent(t.title)}', ${t.reward}, '${encodeURIComponent(t.link)}', '${encodeURIComponent(t.proofInstruction || 'Enter proof text')}')" class="px-4 py-2 bg-neonGreen text-darkGreen font-bold rounded-xl text-xs hover:bg-neonGreenHover transition shadow">
+                        Do Task
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openTaskDetailModal(id, titleEnc, reward, linkEnc, proofEnc) {
+            const title = decodeURIComponent(titleEnc);
+            const link = decodeURIComponent(linkEnc);
+            const proofInstruction = decodeURIComponent(proofEnc);
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <h3 class="font-bold text-lg text-white mb-2">${title}</h3>
+                <p class="text-xs text-gray-400 mb-4">Reward: <span class="text-goldYellow font-bold">${reward} BDT</span></p>
+                
+                <div class="space-y-4">
+                    <a href="${link}" target="_blank" onclick="startTaskTimer()" class="block w-full py-3 bg-cardGreen border border-neonGreen/40 rounded-xl text-neonGreen text-center font-bold text-xs hover:bg-cardGreenHover transition">
+                        <i class="fa-solid fa-external-link mr-1"></i> 1. Click Here to Open Task Link
+                    </a>
+
+                    <div id="timer-box" class="p-3 bg-darkGreen rounded-xl border border-gray-800 text-center">
+                        <p class="text-xs text-gray-400">Mandatory Timer (Stay on link):</p>
+                        <p id="countdown-timer" class="text-xl font-black text-goldYellow mt-1">30s</p>
+                    </div>
+
+                    <div id="proof-input-container" class="opacity-40 pointer-events-none transition">
+                        <label class="block text-xs font-medium text-gray-300 mb-1">${proofInstruction}</label>
+                        <input type="text" id="task-proof-text" placeholder="Type your proof text here..." class="w-full bg-darkGreen border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-neonGreen">
+                    </div>
+
+                    <button onclick="submitTaskProof('${id}', ${reward})" id="submit-proof-btn" disabled class="w-full py-3 bg-gray-700 text-gray-400 font-bold rounded-xl transition text-sm cursor-not-allowed">
+                        Submit Proof (Locked)
+                    </button>
+                </div>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function startTaskTimer() {
+            if (activeTimerInterval) clearInterval(activeTimerInterval);
+            let timeLeft = 30;
+            const timerEl = document.getElementById('countdown-timer');
+            const proofContainer = document.getElementById('proof-input-container');
+            const submitBtn = document.getElementById('submit-proof-btn');
+
+            activeTimerInterval = setInterval(() => {
+                timeLeft--;
+                if (timerEl) timerEl.innerText = `${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(activeTimerInterval);
+                    if (timerEl) timerEl.innerText = "Completed! Submit Proof.";
+                    if (proofContainer) {
+                        proofContainer.classList.remove('opacity-40', 'pointer-events-none');
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.className = "w-full py-3 bg-neonGreen text-darkGreen font-bold rounded-xl hover:bg-neonGreenHover transition text-sm shadow cursor-pointer";
+                        submitBtn.innerText = "Submit Proof & Claim Reward";
+                    }
+                }
+            }, 1000);
+        }
+
+        async function submitTaskProof(taskId, reward) {
+            const proofText = document.getElementById('task-proof-text').value.trim();
+            if (!proofText) {
+                showToast("Please enter text proof!", "error");
+                return;
+            }
+
+            try {
+                // Add completion record
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'taskProofs'), {
+                    uid: currentUser.uid,
+                    userName: userData.name,
+                    userUniqueId: userData.uniqueId,
+                    taskId: taskId,
+                    proofText: proofText,
+                    reward: reward,
+                    status: 'approved', // Instant or pending admin verification
+                    createdAt: Date.now()
+                });
+
+                // Credit balance immediately
+                const newBalance = Number(userData.balance) + Number(reward);
+                const newTotalEarned = Number(userData.totalEarned) + Number(reward);
+                const newTasksDone = Number(userData.tasksDone) + 1;
+
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser.uid);
+                await updateDoc(userRef, {
+                    balance: newBalance,
+                    totalEarned: newTotalEarned,
+                    tasksDone: newTasksDone
+                });
+
+                userData.balance = newBalance;
+                userData.totalEarned = newTotalEarned;
+                userData.tasksDone = newTasksDone;
+                updateUIHeader();
+
+                closeModal();
+                showToast(`Task completed! +${reward} BDT added to balance.`);
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        // Withdraw System
+        async function submitWithdrawRequest(e) {
+            e.preventDefault();
+            const method = document.getElementById('withdraw-method').value;
+            const number = document.getElementById('withdraw-number').value;
+            const amount = Number(document.getElementById('withdraw-amount').value);
+
+            if (amount < 100) {
+                showToast("Minimum withdrawal is 100 BDT", "error");
+                return;
+            }
+
+            if (amount > userData.balance) {
+                showToast("Insufficient balance!", "error");
+                return;
+            }
+
+            const feeRate = userData.isVip ? 0.05 : 0.15;
+            const fee = amount * feeRate;
+            const netAmount = amount - fee;
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'withdraws'), {
+                    uid: currentUser.uid,
+                    userName: userData.name,
+                    userUniqueId: userData.uniqueId,
+                    method: method,
+                    number: number,
+                    amount: amount,
+                    fee: fee,
+                    netAmount: netAmount,
+                    status: 'pending',
+                    createdAt: Date.now()
+                });
+
+                // Deduct from balance
+                const newBalance = userData.balance - amount;
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser.uid);
+                await updateDoc(userRef, { balance: newBalance });
+                userData.balance = newBalance;
+                updateUIHeader();
+
+                showToast("Withdrawal request submitted successfully!");
+                document.getElementById('withdraw-number').value = '';
+                document.getElementById('withdraw-amount').value = '';
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        function renderWithdrawHistory() {
+            const listEl = document.getElementById('withdraw-history-list');
+            if (!listEl) return;
+
+            const myWithdraws = withdrawsCache.filter(w => w.uid === currentUser?.uid);
+            if (myWithdraws.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-3">No withdrawal history yet.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = myWithdraws.map(w => `
+                <div class="p-3 bg-darkGreen rounded-xl border border-gray-800 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-white">${w.method}: ${w.number}</p>
+                        <p class="text-[10px] text-gray-400">Amount: ${w.amount} BDT (Net: ${w.netAmount} BDT)</p>
+                    </div>
+                    <span class="font-semibold ${w.status === 'approved' ? 'text-neonGreen' : w.status === 'rejected' ? 'text-red-400' : 'text-goldYellow'}">${w.status.toUpperCase()}</span>
+                </div>
+            `).join('');
+        }
+
+        // Lucky Spin Modal
+        function openSpinModal() {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="text-center">
+                    <h3 class="font-bold text-xl text-white mb-1"><i class="fa-solid fa-rotate text-goldYellow"></i> Lucky Spin & Win</h3>
+                    <p class="text-xs text-gray-400 mb-6">Spin fee: <span class="text-goldYellow font-bold">10 BDT</span>. Win up to 20 BDT!</p>
+                    
+                    <div class="relative w-48 h-48 mx-auto mb-6 flex items-center justify-center rounded-full border-4 border-goldYellow/50 bg-darkGreen shadow-2xl">
+                        <div id="wheel-inner" class="w-full h-full rounded-full flex items-center justify-center font-bold text-white text-sm bg-gradient-to-tr from-cardGreen via-[#163333] to-darkGreen transition-transform duration-1000">
+                            🎡 PAYLIX WHEEL
+                        </div>
+                        <div class="absolute -top-3 w-4 h-6 bg-goldYellow clip-path-triangle"></div>
+                    </div>
+
+                    <button onclick="spinWheelAction()" id="spin-btn" class="w-full py-3 bg-goldYellow text-darkGreen font-extrabold rounded-xl hover:bg-goldYellowHover transition text-sm shadow glow-gold">
+                        Spin Now (Cost: 10 BDT)
+                    </button>
+                </div>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        async function spinWheelAction() {
+            if (userData.balance < 10) {
+                showToast("Insufficient balance for spin (Need 10 BDT)", "error");
+                return;
+            }
+
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
+
+            // Deduct spin fee
+            const newBalance = userData.balance - 10;
+            const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser.uid);
+            await updateDoc(userRef, { balance: newBalance });
+            userData.balance = newBalance;
+            updateUIHeader();
+
+            const wheel = document.getElementById('wheel-inner');
+            const randomRotation = 1800 + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${randomRotation}deg)`;
+            wheel.style.transition = "transform 3.5s cubic-bezier(0.15, 0.85, 0.35, 1)";
+
+            setTimeout(async () => {
+                // Probabilities: Try Again (40%), 5 BDT (30%), 10 BDT (20%), 20 BDT (10%)
+                const rand = Math.random() * 100;
+                let prize = 0;
+                let msg = "Try Again! Better luck next time.";
+
+                if (rand > 40 && rand <= 70) {
+                    prize = 5;
+                    msg = "Congratulations! You won 5 BDT!";
+                } else if (rand > 70 && rand <= 90) {
+                    prize = 10;
+                    msg = "Awesome! You won 10 BDT!";
+                } else if (rand > 90) {
+                    prize = 20;
+                    msg = "JACKPOT! You won 20 BDT!";
+                }
+
+                if (prize > 0) {
+                    const updatedBalance = userData.balance + prize;
+                    const updatedTotal = userData.totalEarned + prize;
+                    await updateDoc(userRef, { balance: updatedBalance, totalEarned: updatedTotal });
+                    userData.balance = updatedBalance;
+                    userData.totalEarned = updatedTotal;
+                    updateUIHeader();
+                }
+
+                showToast(msg, prize > 0 ? 'success' : 'error');
+                spinBtn.disabled = false;
+                spinBtn.innerText = "Spin Again (10 BDT)";
+            }, 3600);
+        }
+
+        // VIP Membership Modal
+        function openVipModal() {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="text-center">
+                    <div class="w-14 h-14 bg-goldYellow/20 text-goldYellow rounded-2xl mx-auto flex items-center justify-center text-2xl mb-3">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-white mb-1">VIP Membership Pass</h3>
+                    <p class="text-xs text-gray-400 mb-4">Monthly Subscription: <span class="text-goldYellow font-bold">100 BDT</span></p>
+
+                    <div class="text-left bg-darkGreen p-4 rounded-xl border border-gray-800 space-y-2 mb-6 text-xs text-gray-300">
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-neonGreen"></i> Withdraw charge reduced from 15% to 5%</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-neonGreen"></i> Access to exclusive High-Paying Micro Tasks</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-neonGreen"></i> Priority VIP badge on leaderboard</p>
+                    </div>
+
+                    <button onclick="buyVipMembership()" class="w-full py-3 bg-gradient-to-r from-goldYellow to-yellow-600 text-darkGreen font-extrabold rounded-xl hover:brightness-110 transition text-sm shadow glow-gold">
+                        Upgrade Now (100 BDT)
+                    </button>
+                </div>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        async function buyVipMembership() {
+            if (userData.isVip) {
+                showToast("You are already a VIP Member!", "error");
+                return;
+            }
+
+            if (userData.balance < 100) {
+                showToast("Insufficient balance for VIP subscription (Need 100 BDT)", "error");
+                return;
+            }
+
+            try {
+                const newBalance = userData.balance - 100;
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser.uid);
+                await updateDoc(userRef, { balance: newBalance, isVip: true });
+
+                userData.balance = newBalance;
+                userData.isVip = true;
+                updateUIHeader();
+                closeModal();
+                showToast("Congratulations! You are now a VIP Member.");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        // Post Custom Task Modal
+        function openPostTaskModal() {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <h3 class="font-bold text-lg text-white mb-1"><i class="fa-solid fa-bullhorn text-neonGreen"></i> Sponsor / Post Micro Task</h3>
+                <p class="text-xs text-gray-400 mb-4">Platform fee: 20% automatically deducted.</p>
+
+                <form onsubmit="submitPostTask(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Task Title</label>
+                        <input type="text" id="post-title" required placeholder="e.g. Subscribe my channel" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neonGreen">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Task Link</label>
+                        <input type="url" id="post-link" required placeholder="https://..." class="w-full bg-darkGreen border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neonGreen">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Reward per Worker (BDT)</label>
+                        <input type="number" id="post-reward" min="5" required placeholder="10" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neonGreen">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Proof Instruction</label>
+                        <input type="text" id="post-proof" required placeholder="e.g. Enter your username" class="w-full bg-darkGreen border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neonGreen">
+                    </div>
+                    <button type="submit" class="w-full py-2.5 bg-neonGreen text-darkGreen font-bold rounded-xl text-xs hover:bg-neonGreenHover transition shadow">
+                        Publish Task
+                    </button>
+                </form>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        async function submitPostTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const link = document.getElementById('post-link').value;
+            const reward = Number(document.getElementById('post-reward').value);
+            const proofInstruction = document.getElementById('post-proof').value;
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tasks'), {
+                    title: title,
+                    link: link,
+                    reward: reward,
+                    proofInstruction: proofInstruction,
+                    sponsorUid: currentUser.uid,
+                    createdAt: Date.now()
+                });
+                closeModal();
+                showToast("Task posted successfully!");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        // Inbox & Notifications
+        function renderInbox() {
+            const listEl = document.getElementById('inbox-messages-list');
+            const badgeEl = document.getElementById('inbox-badge');
+            if (!listEl) return;
+
+            if (inboxCache.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">No global messages or notices found.</p>`;
+                if (badgeEl) badgeEl.classList.add('hidden');
+                return;
+            }
+
+            if (badgeEl) {
+                badgeEl.innerText = inboxCache.length;
+                badgeEl.classList.remove('hidden');
+            }
+
+            listEl.innerHTML = inboxCache.map(m => `
+                <div class="p-4 bg-darkGreen rounded-xl border border-gray-800 space-y-1">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-sm text-white">${m.title}</h4>
+                        <span class="text-[10px] text-gray-500">${new Date(m.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <p class="text-xs text-gray-300">${m.body}</p>
+                </div>
+            `).join('');
+
+            // Also update top notice marquee
+            if (inboxCache.length > 0) {
+                const latest = inboxCache[inboxCache.length - 1];
+                const noticeText = document.getElementById('global-notice-text');
+                if (noticeText) noticeText.innerText = `${latest.title}: ${latest.body}`;
+            }
+        }
+
+        // ADMIN PANEL METHODS
+        function openAdminPanel() {
+            if (!userData.isAdmin && currentUser?.email !== ADMIN_EMAIL) {
+                showToast("Unauthorized! Admin access only.", "error");
+                return;
+            }
+            switchTab('admin');
+            switchAdminSubTab('users');
+        }
+
+        function switchAdminSubTab(subTab) {
+            const subs = ['users', 'gmails', 'withdraws', 'tasks', 'notices'];
+            subs.forEach(s => {
+                const el = document.getElementById(`admin-section-${s}`);
+                const btn = document.getElementById(`admin-subtab-${s}`);
+                if (el) {
+                    if (s === subTab) {
+                        el.classList.remove('hidden');
+                        if (btn) btn.className = "py-2.5 px-3 bg-red-500 text-white rounded-xl text-xs font-bold shadow transition";
+                    } else {
+                        el.classList.add('hidden');
+                        if (btn) btn.className = "py-2.5 px-3 bg-cardGreen border border-gray-800 text-gray-300 rounded-xl text-xs font-bold transition";
+                    }
+                }
+            });
+        }
+
+        function renderAdminUsers() {
+            const listEl = document.getElementById('admin-users-list');
+            const searchVal = document.getElementById('admin-user-search')?.value.toLowerCase() || '';
+            if (!listEl) return;
+
+            const filtered = allUsersCache.filter(u => u.name.toLowerCase().includes(searchVal) || u.uniqueId.toLowerCase().includes(searchVal) || u.email.toLowerCase().includes(searchVal));
+
+            listEl.innerHTML = filtered.map(u => `
+                <div class="p-3 bg-darkGreen rounded-xl border border-gray-800 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-white">${u.name} <span class="text-[10px] text-gray-400 font-mono">(${u.uniqueId})</span></p>
+                        <p class="text-[10px] text-gray-400">${u.email} | Bal: <span class="text-goldYellow font-bold">${u.balance} BDT</span></p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="adjustUserBalance('${u.uid}', ${u.balance})" class="px-2 py-1 bg-cardGreen border border-gray-700 rounded text-[10px] text-neonGreen font-semibold">Balance</button>
+                        <button onclick="toggleUserBlock('${u.uid}', ${u.isBlocked})" class="px-2 py-1 ${u.isBlocked ? 'bg-neonGreen text-darkGreen' : 'bg-red-500/20 text-red-400'} rounded text-[10px] font-semibold">${u.isBlocked ? 'Unblock' : 'Block'}</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function toggleUserBlock(uid, currentStatus) {
+            try {
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', uid);
+                await updateDoc(userRef, { isBlocked: !currentStatus });
+                showToast("User status updated successfully.");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        async function adjustUserBalance(uid, currentBal) {
+            const newBalStr = prompt("Enter new balance amount (BDT):", currentBal);
+            if (newBalStr === null) return;
+            const newBal = Number(newBalStr);
+            if (isNaN(newBal)) return;
+
+            try {
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', uid);
+                await updateDoc(userRef, { balance: newBal });
+                showToast("User balance updated.");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        function renderAdminGmails() {
+            const listEl = document.getElementById('admin-gmails-list');
+            if (!listEl) return;
+
+            const pending = gmailsCache.filter(g => g.status === 'pending');
+            if (pending.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">No pending Gmails for review.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = pending.map(g => `
+                <div class="p-3 bg-darkGreen rounded-xl border border-gray-800 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-white">${g.gmail} / <span class="text-goldYellow font-mono">${g.password}</span></p>
+                        <p class="text-[10px] text-gray-400">User: ${g.userName} (${g.userUniqueId})</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="reviewGmail('${g.id}', 'approved', '${g.uid}')" class="px-3 py-1 bg-neonGreen text-darkGreen font-bold rounded text-xs">Approve (+20)</button>
+                        <button onclick="reviewGmail('${g.id}', 'rejected', '${g.uid}')" class="px-3 py-1 bg-red-500 text-white font-bold rounded text-xs">Reject</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function reviewGmail(id, status, targetUid) {
+            try {
+                const gmailRef = doc(db, 'artifacts', appId, 'public', 'data', 'gmails', id);
+                await updateDoc(gmailRef, { status: status });
+
+                if (status === 'approved') {
+                    // Credit 20 BDT to user
+                    const targetUser = allUsersCache.find(u => u.uid === targetUid);
+                    if (targetUser) {
+                        const newBal = Number(targetUser.balance) + 20;
+                        const newEarned = Number(targetUser.totalEarned) + 20;
+                        const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', targetUid);
+                        await updateDoc(userRef, { balance: newBal, totalEarned: newEarned });
+                    }
+                }
+                showToast(`Gmail submission ${status}!`);
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        function renderAdminWithdraws() {
+            const listEl = document.getElementById('admin-withdraws-list');
+            if (!listEl) return;
+
+            const pending = withdrawsCache.filter(w => w.status === 'pending');
+            if (pending.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">No pending withdrawal requests.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = pending.map(w => `
+                <div class="p-3 bg-darkGreen rounded-xl border border-gray-800 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-white">${w.method}: ${w.number}</p>
+                        <p class="text-[10px] text-gray-400">User: ${w.userName} (${w.userUniqueId}) | Net: <span class="text-goldYellow font-bold">${w.netAmount} BDT</span> (Fee: ${w.fee})</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="reviewWithdraw('${w.id}', 'approved', '${w.uid}', 0)" class="px-3 py-1 bg-neonGreen text-darkGreen font-bold rounded text-xs">Approve</button>
+                        <button onclick="reviewWithdraw('${w.id}', 'rejected', '${w.uid}', ${w.amount})" class="px-3 py-1 bg-red-500 text-white font-bold rounded text-xs">Reject (Refund)</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function reviewWithdraw(id, status, targetUid, refundAmount) {
+            try {
+                const wRef = doc(db, 'artifacts', appId, 'public', 'data', 'withdraws', id);
+                await updateDoc(wRef, { status: status });
+
+                if (status === 'rejected' && refundAmount > 0) {
+                    // Refund balance
+                    const targetUser = allUsersCache.find(u => u.uid === targetUid);
+                    if (targetUser) {
+                        const newBal = Number(targetUser.balance) + Number(refundAmount);
+                        const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', targetUid);
+                        await updateDoc(userRef, { balance: newBal });
+                    }
+                }
+                showToast(`Withdrawal request ${status}!`);
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        function renderAdminTasks() {
+            const listEl = document.getElementById('admin-tasks-list');
+            if (!listEl) return;
+
+            if (tasksCache.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">No tasks posted.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = tasksCache.map(t => `
+                <div class="p-3 bg-darkGreen rounded-xl border border-gray-800 flex items-center justify-between text-xs">
+                    <div>
+                        <p class="font-bold text-white">${t.title}</p>
+                        <p class="text-[10px] text-goldYellow font-bold">Reward: ${t.reward} BDT</p>
+                    </div>
+                    <button onclick="deleteTask('${t.id}')" class="px-3 py-1 bg-red-500/20 text-red-400 font-bold rounded text-xs">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        async function deleteTask(id) {
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tasks', id));
+                showToast("Task deleted successfully.");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        async function handleAdminBroadcast(e) {
+            e.preventDefault();
+            const title = document.getElementById('broadcast-title').value;
+            const body = document.getElementById('broadcast-body').value;
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inbox'), {
+                    title: title,
+                    body: body,
+                    createdAt: Date.now()
+                });
+                showToast("Global notice broadcasted successfully!");
+                document.getElementById('broadcast-title').value = '';
+                document.getElementById('broadcast-body').value = '';
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        // Modal Helpers
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            if (activeTimerInterval) clearInterval(activeTimerInterval);
+        }
+
+        function copyRefLink() {
+            const input = document.getElementById('ref-link-input');
+            input.select();
+            document.execCommand('copy');
+            showToast("Referral link copied to clipboard!");
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.innerText = msg;
+            if (type === 'success') {
+                toast.className = "fixed top-5 right-5 z-50 transform translate-y-0 transition-transform duration-300 glass-card px-5 py-3 border-l-4 border-neonGreen text-sm font-medium flex items-center space-x-3 shadow-2xl";
+                iconEl.className = "fa-solid fa-circle-check text-neonGreen text-lg";
+            } else {
+                toast.className = "fixed top-5 right-5 z-50 transform translate-y-0 transition-transform duration-300 glass-card px-5 py-3 border-l-4 border-red-500 text-sm font-medium flex items-center space-x-3 shadow-2xl";
+                iconEl.className = "fa-solid fa-circle-exclamation text-red-500 text-lg";
+            }
+
+            setTimeout(() => {
+                toast.className = "fixed top-5 right-5 z-50 transform translate-y-[-200%] transition-transform duration-300 glass-card px-5 py-3 border-l-4 border-neonGreen text-sm font-medium flex items-center space-x-3 shadow-2xl";
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
