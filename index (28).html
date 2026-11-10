@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paylix - Modern Earn & Task Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            dark: '#022c22'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bottom-nav-shadow { box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06); }
+        .emerald-gradient { background: linear-gradient(135deg, #064e3b 0%, #047857 100%); }
+        .emerald-card { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); }
+        .glass-btn { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen font-sans pb-20 antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- SplashScreen -->
+    <div id="splash-screen" class="fixed inset-0 bg-[#044e3b] z-50 flex flex-col items-center justify-center space-y-4 transition-opacity duration-500">
+        <div class="bg-gradient-to-tr from-emerald-400 to-teal-300 p-4 rounded-3xl shadow-2xl">
+            <div class="bg-[#044e3b] text-emerald-400 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shadow-inner">
+                P
+            </div>
+        </div>
+        <h1 class="text-3xl font-black tracking-wider text-white">Paylix</h1>
+        <div class="w-8 h-8 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Auth Screen (Login / Register) -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-40 flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-100 rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <div class="inline-block bg-[#064e3b] text-emerald-400 p-4 rounded-2xl font-black text-3xl shadow-lg mb-1">
+                    P
+                </div>
+                <h2 class="text-2xl font-black text-slate-800">Paylix এ স্বাগতম</h2>
+                <p class="text-xs text-slate-500">অ্যাকোউন্টে প্রবেশ করতে লগইন বা সাইন আপ করুন</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleUserLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">ইমেইল এড্রেস</label>
+                    <input type="email" id="user-email-login" placeholder="আপনার ইমেইল" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">পাসওয়ার্ড</label>
+                    <input type="password" id="user-pass-login" placeholder="পাসওয়ার্ড" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <button type="submit" class="w-full bg-[#047857] hover:bg-[#065f46] text-white py-3 rounded-2xl font-bold transition shadow-lg text-sm">লগইন করুন</button>
+                <p class="text-xs text-center text-slate-500">অ্যাকাউন্ট নেই? <button type="button" onclick="toggleAuthMode(true)" class="text-emerald-600 font-bold underline">রেজিস্টার করুন</button></p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" onsubmit="handleUserRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">আপনার নাম (ইউজারনেম)</label>
+                    <input type="text" id="user-name-reg" placeholder="আপনার পুরো নাম" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">ইমেইল এড্রেস</label>
+                    <input type="email" id="user-email-reg" placeholder="ইমেইল এড্রেস" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">নতুন পাসওয়ার্ড</label>
+                    <input type="password" id="user-pass-reg" placeholder="পাসওয়ার্ড" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">রেফারেল কোড (ঐচ্ছিক)</label>
+                    <input type="text" id="user-ref-reg" placeholder="রেফার কোড থাকলে দিন" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm uppercase">
+                </div>
+                <button type="submit" class="w-full bg-[#047857] hover:bg-[#065f46] text-white py-3 rounded-2xl font-bold transition shadow-lg text-sm">রেজিস্টার করুন</button>
+                <p class="text-xs text-center text-slate-500">অ্যাকাউন্ট আছে? <button type="button" onclick="toggleAuthMode(false)" class="text-emerald-600 font-bold underline">লগইন করুন</button></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Mobile Application Container -->
+    <div id="app" class="max-w-md mx-auto min-h-screen bg-slate-50 flex flex-col relative shadow-xl hidden">
+        
+        <!-- App Header Bar -->
+        <header class="bg-white px-5 py-3.5 flex items-center justify-between sticky top-0 z-30 border-b border-slate-100">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-[#064e3b] text-emerald-400 flex items-center justify-center font-black text-lg shadow-md">
+                    P
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-800">Paylix</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="window.location.reload()" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-rotate text-sm"></i>
+                </button>
+                <button onclick="openSupportModal()" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-headset text-sm"></i>
+                </button>
+                <button onclick="alert('কোনো নতুন বিজ্ঞপ্তি নেই।')" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition relative">
+                    <i class="fa-solid fa-bell text-sm"></i>
+                    <span class="w-2 h-2 bg-red-500 rounded-full absolute top-2 right-2 border border-white"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Live Broadcast Bar -->
+        <div id="system-broadcast" class="bg-emerald-900 text-emerald-100 px-4 py-2 text-xs flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-bullhorn text-emerald-400 animate-pulse"></i>
+            <span id="broadcast-text" class="truncate font-medium">Paylix প্ল্যাটফর্মে স্বাগতম।</span>
+        </div>
+
+        <!-- Scrollable Main View Container -->
+        <main class="flex-grow p-4 space-y-5 overflow-y-auto">
+            
+            <!-- VIEW 1: HOME PAGE -->
+            <div id="view-home" class="space-y-5">
+                <!-- Welcome Banner Card -->
+                <div class="emerald-gradient text-white p-5 rounded-3xl space-y-2 shadow-lg shadow-emerald-900/10 relative overflow-hidden">
+                    <div class="flex justify-between items-center relative z-10">
+                        <div class="space-y-0.5">
+                            <h3 class="text-lg font-bold flex items-center">Welcome, <span id="dash-user-name" class="ml-1">User</span> 👋</h3>
+                            <p class="text-xs text-emerald-100/90">Refer 3 people today to unlock a bonus</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Status Badge -->
+                <div class="bg-white p-3.5 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span class="text-xs font-semibold text-slate-600">Account status</span>
+                    </div>
+                    <span id="home-account-badge" class="bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-bold">Active</span>
+                </div>
+
+                <!-- Total Asset Card (Live Dynamic Data) -->
+                <div class="emerald-card text-white p-6 rounded-3xl space-y-4 shadow-xl shadow-emerald-900/20">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-emerald-200/90 font-medium tracking-wide">Total asset value</span>
+                        <span class="bg-white/10 px-3 py-1 rounded-full text-xs font-bold flex items-center">BDT <i class="fa-solid fa-chevron-right text-[10px] ml-1.5 opacity-60"></i></span>
+                    </div>
+                    <div>
+                        <h2 id="home-total-asset" class="text-3xl font-black tracking-tight">৳0.00</h2>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
+                        <div class="bg-white/10 p-2.5 rounded-2xl">
+                            <p class="text-[10px] text-emerald-200">Available</p>
+                            <p id="home-available-bal" class="text-xs font-bold">৳0.00</p>
+                        </div>
+                        <div class="bg-white/10 p-2.5 rounded-2xl">
+                            <p class="text-[10px] text-emerald-200">Salary</p>
+                            <p id="home-salary-bal" class="text-xs font-bold">৳0</p>
+                        </div>
+                        <div class="bg-white/10 p-2.5 rounded-2xl">
+                            <p class="text-[10px] text-emerald-200">Referral</p>
+                            <p id="home-referral-bal" class="text-xs font-bold">৳0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deposit & Withdraw Quick Actions -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="openDepositModal()" class="bg-[#059669] hover:bg-[#047857] text-white p-4 rounded-3xl flex items-center justify-between shadow-md transition group">
+                        <div class="text-left space-y-0.5">
+                            <h4 class="font-bold text-sm">Deposit</h4>
+                            <p class="text-[10px] text-emerald-100">bKash / Nagad</p>
+                        </div>
+                        <div class="w-9 h-9 rounded-2xl bg-white/20 flex items-center justify-center text-lg">+</div>
+                    </button>
+                    <button onclick="openWithdrawModal()" class="bg-white border border-slate-200 hover:border-emerald-500 p-4 rounded-3xl flex items-center justify-between shadow-sm transition group">
+                        <div class="text-left space-y-0.5">
+                            <h4 class="font-bold text-sm text-slate-800">Withdraw</h4>
+                            <p class="text-[10px] text-slate-400">To your wallet</p>
+                        </div>
+                        <div class="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Today Income & Refers Summary -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-1">
+                        <p class="text-xs text-slate-400 font-medium">Today's income</p>
+                        <h4 id="home-today-income" class="text-xl font-bold text-emerald-600">+৳0</h4>
+                    </div>
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-1">
+                        <p class="text-xs text-slate-400 font-medium">Total referrals</p>
+                        <h4 id="home-total-refers" class="text-xl font-bold text-slate-800">0</h4>
+                    </div>
+                </div>
+
+                <!-- Services Banner -->
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-slate-800">Main Services</h4>
+                    <div class="grid grid-cols-4 gap-3 text-center">
+                        <button onclick="switchTab('services')" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1.5">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg"><i class="fa-solid fa-envelope"></i></div>
+                            <span class="text-[11px] font-semibold text-slate-700">Gmail Sell</span>
+                        </button>
+                        <button onclick="switchTab('tasks')" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1.5">
+                            <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg"><i class="fa-solid fa-list-check"></i></div>
+                            <span class="text-[11px] font-semibold text-slate-700">Task</span>
+                        </button>
+                        <button onclick="openWithdrawModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1.5">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-wallet"></i></div>
+                            <span class="text-[11px] font-semibold text-slate-700">Withdraw</span>
+                        </button>
+                        <button onclick="switchTab('profile')" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1.5">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-lg"><i class="fa-solid fa-user"></i></div>
+                            <span class="text-[11px] font-semibold text-slate-700">Profile</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: WALLET PAGE -->
+            <div id="view-wallet" class="hidden space-y-5">
+                <h3 class="text-xl font-black text-slate-800">My Wallet</h3>
+                
+                <div class="emerald-card text-white p-6 rounded-3xl space-y-4 shadow-xl">
+                    <p class="text-xs text-emerald-200 uppercase tracking-wider font-semibold">DEPOSIT BALANCE</p>
+                    <h2 id="wallet-deposit-bal" class="text-4xl font-black">৳0</h2>
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="openDepositModal()" class="flex-1 bg-white text-[#047857] py-2.5 rounded-2xl font-bold text-xs shadow hover:bg-emerald-50 transition">+ Deposit</button>
+                        <button onclick="openWithdrawModal()" class="flex-1 glass-btn text-white py-2.5 rounded-2xl font-bold text-xs shadow hover:bg-white/20 transition">↓ Withdraw</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-slate-800">Payment accounts</h4>
+                        <span class="text-[11px] text-slate-400">Used for withdrawals</span>
+                    </div>
+
+                    <!-- bKash Account Card -->
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden">
+                        <div class="w-1.5 h-full bg-pink-500 absolute top-0 left-0"></div>
+                        <div class="flex justify-between items-center pl-2">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-2xl bg-pink-500 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-pink-500/20">b</div>
+                                <div>
+                                    <h5 class="font-bold text-sm text-slate-800">bKash</h5>
+                                    <p class="text-[10px] text-slate-400">Personal account</p>
+                                </div>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-700 text-[10px] px-2.5 py-1 rounded-full font-bold flex items-center"><i class="fa-solid fa-check mr-1"></i> Verified</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-dashed border-slate-200 ml-2">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">ACCOUNT NUMBER</p>
+                            <p id="wallet-bkash-num" class="text-sm font-black text-slate-800 tracking-wider">01310127317</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Saved & locked — withdrawals will be sent to this number.</p>
+                        </div>
+                    </div>
+
+                    <!-- Nagad Account Card -->
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden">
+                        <div class="w-1.5 h-full bg-orange-500 absolute top-0 left-0"></div>
+                        <div class="flex justify-between items-center pl-2">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-orange-500/20">N</div>
+                                <div>
+                                    <h5 class="font-bold text-sm text-slate-800">Nagad</h5>
+                                    <p class="text-[10px] text-slate-400">Not added yet</p>
+                                </div>
+                            </div>
+                            <button onclick="alert('নগদ নম্বর যুক্ত করার জন্য কাস্টমার সাপোর্টে যোগাযোগ করুন।')" class="bg-slate-100 text-slate-600 text-[10px] px-2.5 py-1 rounded-full font-bold">Add</button>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-dashed border-slate-200 ml-2">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold font-mono">Nagad number</p>
+                            <p class="text-xs font-bold text-slate-400">+88 01XXXXXXXXX</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: TASKS PAGE -->
+            <div id="view-tasks" class="hidden space-y-5">
+                <h3 class="text-xl font-black text-slate-800">Task</h3>
+                <div id="task-list-container" class="space-y-4"></div>
+            </div>
+
+            <!-- VIEW 4: SERVICES PAGE -->
+            <div id="view-services" class="hidden space-y-5">
+                <h3 class="text-xl font-black text-slate-800">All Services</h3>
+
+                <div class="emerald-gradient text-white p-5 rounded-3xl shadow-lg space-y-1">
+                    <h4 class="font-bold text-base flex items-center"><i class="fa-solid fa-box-open mr-2"></i> Subscription Packages</h4>
+                    <p class="text-xs text-emerald-100">Invest and earn every day</p>
+                </div>
+
+                <!-- Working Buttons Grid -->
+                <div class="grid grid-cols-4 gap-3 text-center">
+                    <button onclick="switchTab('wallet')" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-emerald-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg"><i class="fa-solid fa-wallet"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Wallet</span>
+                    </button>
+                    <button onclick="openSalaryModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-teal-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg"><i class="fa-solid fa-bullseye"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Salary</span>
+                    </button>
+                    <button onclick="openLeaderboardModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-amber-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg"><i class="fa-solid fa-trophy"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Leaderboard</span>
+                    </button>
+                    <button onclick="switchTab('tasks')" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-emerald-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg"><i class="fa-solid fa-list-check"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Task</span>
+                    </button>
+                    <button onclick="openWithdrawModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-emerald-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-arrow-down"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Withdraw</span>
+                    </button>
+                    <button onclick="openReferralModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-sky-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg"><i class="fa-solid fa-share-nodes"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Network</span>
+                    </button>
+                    <button onclick="openRedeemModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-emerald-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg"><i class="fa-solid fa-gift"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">Redeem Code</span>
+                    </button>
+                    <button onclick="openHistoryModal()" class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center space-y-1 hover:border-slate-500 transition">
+                        <div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <span class="text-[10px] font-semibold text-slate-700">History</span>
+                    </button>
+                </div>
+
+                <!-- Specialized Sell Section Grid -->
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-slate-800">Earn Services</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Gmail Sell (Dynamic Rate) -->
+                        <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-7 h-7 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center font-bold text-xs">@</div>
+                                <div>
+                                    <h5 class="font-bold text-xs text-slate-800">Gmail Sell</h5>
+                                    <p id="gmail-rate-tag" class="text-[9px] text-emerald-600 font-bold">রেট: ৳১৫-২০</p>
+                                </div>
+                            </div>
+                            <form onsubmit="submitGmailToFirestore(event)" class="space-y-1.5 pt-1">
+                                <input type="email" id="gmail-input-email" required placeholder="Gmail address" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+                                <input type="text" id="gmail-input-pass" required placeholder="Password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+                                <button type="submit" class="w-full bg-[#047857] hover:bg-[#065f46] text-white py-1.5 rounded-xl text-[11px] font-bold transition">Submit</button>
+                            </form>
+                        </div>
+
+                        <!-- Facebook Sell (Rate ৳1) -->
+                        <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-7 h-7 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs"><i class="fa-brands fa-facebook-f"></i></div>
+                                <div>
+                                    <h5 class="font-bold text-xs text-slate-800">Facebook Sell</h5>
+                                    <p class="text-[9px] text-emerald-600 font-bold">রেট: ৳১.০০</p>
+                                </div>
+                            </div>
+                            <form onsubmit="submitSocialAccount(event, 'Facebook', 1.00)" class="space-y-1.5 pt-1">
+                                <input type="text" id="fb-input-uid" required placeholder="UID / Email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+                                <input type="text" id="fb-input-pass" required placeholder="Password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded-xl text-[11px] font-bold transition">Submit FB</button>
+                            </form>
+                        </div>
+
+                        <!-- Instagram Sell (Rate ৳1) -->
+                        <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-7 h-7 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center font-bold text-xs"><i class="fa-brands fa-instagram"></i></div>
+                                <div>
+                                    <h5 class="font-bold text-xs text-slate-800">Insta Sell</h5>
+                                    <p class="text-[9px] text-emerald-600 font-bold">রেট: ৳১.০০</p>
+                                </div>
+                            </div>
+                            <form onsubmit="submitSocialAccount(event, 'Instagram', 1.00)" class="space-y-1.5 pt-1">
+                                <input type="text" id="insta-input-user" required placeholder="Username" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+                                <input type="text" id="insta-input-pass" required placeholder="Password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] text-slate-800">
+                                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-1.5 rounded-xl text-[11px] font-bold transition">Submit Insta</button>
+                            </form>
+                        </div>
+
+                        <!-- Unlimited Gmail Create (Demo Card) -->
+                        <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-2 flex flex-col justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-7 h-7 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-infinity"></i></div>
+                                <div>
+                                    <h5 class="font-bold text-xs text-slate-800">Unlimited Gmail</h5>
+                                    <p class="text-[9px] text-slate-400 font-medium">Auto Generator</p>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-slate-500">আনলিমিটেড জিমেইল ট্রিক পেতে জয়েন করুন।</p>
+                            <button onclick="openUnlimitedModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-1.5 rounded-xl text-[11px] font-bold">Open Tool</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 5: PROFILE PAGE -->
+            <div id="view-profile" class="hidden space-y-5">
+                <div class="flex flex-col items-center space-y-2 text-center pt-2">
+                    <div class="w-20 h-20 rounded-full bg-[#064e3b] text-emerald-400 flex items-center justify-center font-black text-3xl shadow-xl relative">
+                        <span id="profile-avatar-letter">M</span>
+                        <div class="w-6 h-6 rounded-full bg-emerald-500 border-2 border-white absolute bottom-0 right-0 flex items-center justify-center text-white text-[10px]">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 id="profile-name-display" class="text-lg font-black text-slate-800">User</h3>
+                        <p id="profile-id-display" class="text-xs font-mono text-slate-400">PB-UKON7M · Silver <i class="fa-regular fa-copy cursor-pointer ml-1" onclick="copyReferralLink()"></i></p>
+                    </div>
+                    <span id="profile-status-badge" class="bg-emerald-100 text-emerald-800 text-xs px-3 py-0.5 rounded-full font-bold">Active</span>
+                </div>
+
+                <!-- Dynamic Revenue Dashboard Grid -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-1">
+                        <p class="text-[11px] text-slate-400 font-medium">Total revenue</p>
+                        <h4 id="profile-total-rev" class="text-xl font-extrabold text-slate-800">৳0.00</h4>
+                    </div>
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-1">
+                        <p class="text-[11px] text-slate-400 font-medium">Main balance</p>
+                        <h4 id="profile-main-bal" class="text-xl font-extrabold text-emerald-600">৳0.00</h4>
+                    </div>
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-1">
+                        <p class="text-[11px] text-slate-400 font-medium">Salary balance</p>
+                        <h4 id="profile-salary-bal" class="text-xl font-extrabold text-slate-800">৳0</h4>
+                    </div>
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-1">
+                        <p class="text-[11px] text-slate-400 font-medium">Referral balance</p>
+                        <h4 id="profile-referral-bal" class="text-xl font-extrabold text-slate-800">৳0.00</h4>
+                    </div>
+                </div>
+
+                <!-- Profile Links -->
+                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm divide-y divide-slate-100">
+                    <button onclick="switchTab('wallet')" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-wallet text-sm"></i></div>
+                            <span class="text-sm font-semibold text-slate-700">My Wallet</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
+                    </button>
+                    <button onclick="openReferralModal()" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-share-nodes text-sm"></i></div>
+                            <span class="text-sm font-semibold text-slate-700">My Network</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
+                    </button>
+                    <button onclick="openSupportModal()" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-headset text-sm"></i></div>
+                            <span class="text-sm font-semibold text-slate-700">Support</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
+                    </button>
+                    <button onclick="handleUserLogout()" class="w-full p-4 flex items-center justify-between text-red-600 hover:bg-red-50 transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-2xl bg-red-50 flex items-center justify-center"><i class="fa-solid fa-right-from-bracket text-sm"></i></div>
+                            <span class="text-sm font-bold">Log out</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Fixed Bottom Navigation Bar -->
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 py-2 px-6 flex justify-between items-center z-40 bottom-nav-shadow">
+            <button onclick="switchTab('home')" id="bnav-home" class="flex flex-col items-center space-y-1 text-[#047857]">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] font-bold">Home</span>
+            </button>
+            <button onclick="switchTab('wallet')" id="bnav-wallet" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-emerald-600">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[10px] font-bold">Wallet</span>
+            </button>
+            <button onclick="switchTab('tasks')" id="bnav-tasks" class="bg-[#059669] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-emerald-600/30 -mt-6 hover:scale-105 transition">
+                <i class="fa-solid fa-calendar-check text-xl"></i>
+            </button>
+            <button onclick="switchTab('services')" id="bnav-services" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-emerald-600">
+                <i class="fa-solid fa-table-cells text-lg"></i>
+                <span class="text-[10px] font-bold">Services</span>
+            </button>
+            <button onclick="switchTab('profile')" id="bnav-profile" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-emerald-600">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="text-[10px] font-bold">Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- MODAL 1: WITHDRAW MODAL -->
+    <div id="withdraw-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-5 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-black text-lg text-slate-800 flex items-center">
+                    <i class="fa-solid fa-arrow-down text-emerald-600 mr-2"></i> Withdraw money
+                </h3>
+                <button onclick="closeWithdrawModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+
+            <form onsubmit="handleUserWithdraw(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">পেমেন্ট মেথড</label>
+                    <select id="withdraw-method" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800">
+                        <option value="bKash">bKash (বিকাশ)</option>
+                        <option value="Nagad">Nagad (নগদ)</option>
+                        <option value="Upay">Upay (উপায়)</option>
+                        <option value="Rocket">Rocket (রকেট)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">আপনার নম্বর (টাকা নেওয়ার নম্বর)</label>
+                    <input type="text" id="withdraw-number" placeholder="01XXXXXXXXX" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">টাকার পরিমাণ (৳)</label>
+                    <input type="number" id="withdraw-amount" placeholder="50" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800">
+                </div>
+                <button type="submit" class="w-full bg-[#047857] hover:bg-[#065f46] text-white py-3 rounded-2xl font-bold transition text-xs shadow-lg">Submit withdraw request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: DEPOSIT MODAL WITH EXACT 2 PAYMENT NUMBERS -->
+    <div id="deposit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-black text-lg text-slate-800 flex items-center">
+                    <i class="fa-solid fa-plus text-emerald-600 mr-2"></i> Deposit Balance
+                </h3>
+                <button onclick="closeDepositModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+
+            <!-- Deposit Instructions with 2 Official Numbers -->
+            <div class="space-y-3">
+                <!-- Option 1: bKash & Nagad -->
+                <div class="bg-pink-50 border border-pink-200 p-3.5 rounded-2xl space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-pink-800">bKash & Nagad Send Money</span>
+                        <span class="bg-pink-200 text-pink-900 text-[9px] px-2 py-0.5 rounded-full font-bold">Personal</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-pink-200">
+                        <span class="font-mono font-bold text-sm text-slate-800">01780757201</span>
+                        <button onclick="copyNumber('01780757201')" class="bg-pink-600 text-white text-[10px] px-3 py-1 rounded-lg font-bold">কপি</button>
+                    </div>
+                </div>
+
+                <!-- Option 2: Upay & Rocket -->
+                <div class="bg-purple-50 border border-purple-200 p-3.5 rounded-2xl space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-purple-800">Upay & Rocket Send Money</span>
+                        <span class="bg-purple-200 text-purple-900 text-[9px] px-2 py-0.5 rounded-full font-bold">Personal</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-purple-200">
+                        <span class="font-mono font-bold text-sm text-slate-800">01310127317</span>
+                        <button onclick="copyNumber('01310127317')" class="bg-purple-600 text-white text-[10px] px-3 py-1 rounded-lg font-bold">কপি</button>
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="handleUserDepositSubmit(event)" class="space-y-3 pt-1">
+                <select id="deposit-method-select" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs">
+                    <option value="bKash (01780757201)">bKash (01780757201)</option>
+                    <option value="Nagad (01780757201)">Nagad (01780757201)</option>
+                    <option value="Upay (01310127317)">Upay (01310127317)</option>
+                    <option value="Rocket (01310127317)">Rocket (01310127317)</option>
+                </select>
+                <input type="text" id="deposit-trxid" placeholder="Transaction ID (TrxID)" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs">
+                <input type="number" id="deposit-amount" placeholder="Amount (৳)" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs">
+                <button type="submit" class="w-full bg-[#047857] text-white py-3 rounded-2xl font-bold text-xs shadow-lg">Submit Deposit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: REDEEM CODE MODAL (ALWAYS FAILS LOGIC) -->
+    <div id="redeem-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-black text-lg text-slate-800 flex items-center"><i class="fa-solid fa-gift text-emerald-600 mr-2"></i> Redeem Code</h3>
+                <button onclick="closeRedeemModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+            <p class="text-xs text-slate-500">বিশেষ প্রোমো কোড দিয়ে ব্যালেন্স বোনাস ক্লেইম করুন।</p>
+            <form onsubmit="handleRedeemSubmit(event)" class="space-y-3">
+                <input type="text" id="redeem-input-code" placeholder="Enter redeem code" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs uppercase font-mono tracking-wider">
+                <button type="submit" class="w-full bg-[#047857] text-white py-3 rounded-2xl font-bold text-xs">Claim Code</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: PAYMENT HISTORY MODAL -->
+    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+                <h3 class="font-black text-lg text-slate-800 flex items-center"><i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-2"></i> Transaction History</h3>
+                <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+            <div id="history-list-body" class="space-y-2 overflow-y-auto flex-grow text-xs">
+                <div class="text-center text-slate-400 py-6">হিস্ট্রি লোড হচ্ছে...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: ENHANCED REFERRAL NETWORK MODAL (SHOWS REFERRED USERS & CODE) -->
+    <div id="referral-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+                <h3 class="font-black text-lg text-slate-800 flex items-center"><i class="fa-solid fa-share-nodes text-sky-600 mr-2"></i> My Network & Referral</h3>
+                <button onclick="closeReferralModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+            
+            <!-- Referral Code & Link Box -->
+            <div class="space-y-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shrink-0">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-semibold text-slate-600">আপনার রেফার কোড:</span>
+                    <span id="network-ref-code-display" class="font-mono font-black text-emerald-600 text-sm bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">LOADING</span>
+                </div>
+                <label class="block text-[11px] font-semibold text-slate-500">রেফারেল লিংক</label>
+                <div class="flex gap-2">
+                    <input type="text" id="my-referral-link" readonly class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono" value="https://paylix20.vercel.app">
+                    <button onclick="copyReferralLink()" class="bg-[#047857] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#065f46]">কপি</button>
+                </div>
+            </div>
+
+            <!-- Referred Users List -->
+            <div class="space-y-2 flex-grow overflow-y-auto">
+                <h4 class="text-xs font-bold text-slate-700 flex justify-between items-center">
+                    <span>রেফার করা মেম্বারসমূহ</span>
+                    <span id="ref-count-badge" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">0 জন</span>
+                </h4>
+                <div id="referred-users-container" class="space-y-2 text-xs">
+                    <div class="text-center text-slate-400 py-4">কোনো রেফার পাওয়া যায়নি।</div>
+                </div>
+            </div>
+
+            <div class="bg-red-50 border border-red-200 p-2.5 rounded-2xl text-[10px] text-red-700 shrink-0">
+                ⚠️ <strong>ওয়ার্নিং:</strong> কোনো ফেক রেফার করলে আইডি ব্লক (Banned) করা হবে।
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 6: SALARY MODAL -->
+    <div id="salary-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-black text-lg text-slate-800 flex items-center"><i class="fa-solid fa-bullseye text-teal-600 mr-2"></i> Monthly Salary Program</h3>
+                <button onclick="closeSalaryModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+            <div class="bg-teal-50 border border-teal-200 p-4 rounded-2xl space-y-2 text-xs text-teal-900">
+                <h4 class="font-bold text-sm">মাসিক স্যালারি পাওয়ার নিয়ম:</h4>
+                <p>• ২০ জন সক্রিয় ইউজারকে রেফার করলে প্রতি মাসে ৳১,০০০ স্যালারি।</p>
+                <p>• ৫০ জন সক্রিয় ইউজারকে রেফার করলে প্রতি মাসে ৳৩,০০০ স্যালারি।</p>
+            </div>
+            <button onclick="alert('স্যালারি ক্লেইম করার যোগ্যতা অর্জন করেননি।')" class="w-full bg-teal-600 text-white py-3 rounded-2xl font-bold text-xs">Claim Salary</button>
+        </div>
+    </div>
+
+    <!-- MODAL 7: LEADERBOARD MODAL -->
+    <div id="leaderboard-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+                <h3 class="font-black text-lg text-slate-800 flex items-center"><i class="fa-solid fa-trophy text-amber-500 mr-2"></i> Top Earner Leaderboard</h3>
+                <button onclick="closeLeaderboardModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+            <div id="leaderboard-list-container" class="space-y-2 overflow-y-auto flex-grow text-xs">
+                <div class="text-center text-slate-400 py-6">লিডারবোর্ড লোড হচ্ছে...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 8: UNLIMITED GMAIL TOOL MODAL -->
+    <div id="unlimited-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-black text-lg text-slate-800 flex items-center"><i class="fa-solid fa-infinity text-purple-600 mr-2"></i> Unlimited Gmail Generator</h3>
+                <button onclick="closeUnlimitedModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500">✕</button>
+            </div>
+            <p class="text-xs text-slate-600">আপনার মূল জিমেইল ইউজারনেম দিয়ে ডট ট্রিক লিংক তৈরি করুন:</p>
+            <input type="text" id="unlimited-base-email" placeholder="example@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs">
+            <button onclick="generateUnlimitedTrick()" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-bold text-xs">Generate Emails</button>
+            <div id="unlimited-output-box" class="bg-slate-50 p-3 rounded-2xl border border-slate-200 hidden max-h-32 overflow-y-auto text-[11px] font-mono text-slate-700 space-y-1"></div>
+        </div>
+    </div>
+
+    <!-- SECRET PAYLIX ADMIN PANEL MODAL -->
+    <div id="admin-modal" class="fixed inset-0 bg-[#070a12]/95 backdrop-blur-xl hidden z-50 overflow-y-auto">
+        <div class="min-h-screen flex flex-col md:flex-row">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="w-full md:w-64 bg-[#0d121f] border-r border-slate-800/80 p-6 flex flex-col justify-between shrink-0">
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3 bg-gradient-to-r from-purple-600/20 to-indigo-600/20 p-3.5 rounded-2xl border border-purple-500/30">
+                        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white w-9 h-9 rounded-xl flex items-center justify-center font-black text-xl shadow-lg">P</div>
+                        <div>
+                            <h3 class="font-black text-white text-base tracking-wide">Paylix</h3>
+                            <p class="text-[10px] text-slate-400 font-medium">Admin Panel</p>
+                        </div>
+                    </div>
+
+                    <nav class="space-y-1.5 text-xs font-medium">
+                        <button onclick="switchAdminTab('dashboard')" id="adm-nav-dashboard" class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg transition">
+                            <span class="flex items-center space-x-3"><i class="fa-solid fa-house w-5 text-center"></i><span>Dashboard</span></span>
+                        </button>
+                        <button onclick="switchAdminTab('users')" id="adm-nav-users" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+                            <span class="flex items-center space-x-3"><i class="fa-solid fa-users w-5 text-center"></i><span>All User & Bal Control</span></span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                        <button onclick="switchAdminTab('gmail')" id="adm-nav-gmail" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+                            <span class="flex items-center space-x-3"><i class="fa-solid fa-envelope w-5 text-center"></i><span>Gmail & Social Submissions</span></span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                        <button onclick="switchAdminTab('withdraw')" id="adm-nav-withdraw" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+                            <span class="flex items-center space-x-3"><i class="fa-solid fa-money-bill-transfer w-5 text-center"></i><span>Withdraw & Deposit Req</span></span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                        <button onclick="switchAdminTab('content')" id="adm-nav-content" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 transition">
+                            <span class="flex items-center space-x-3"><i class="fa-solid fa-briefcase w-5 text-center"></i><span>Post Tasks</span></span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </nav>
+                </div>
+
+                <div class="mt-6 border-t border-slate-800/80 pt-4">
+                    <button onclick="logoutAdmin()" class="w-full flex items-center space-x-3 px-4 py-2 rounded-xl text-red-400 hover:bg-red-500/10 transition text-xs font-semibold">
+                        <i class="fa-solid fa-right-from-bracket"></i><span>Logout Admin</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Admin Content Area -->
+            <div class="flex-grow flex flex-col min-w-0 bg-[#090d16]">
+                <header class="bg-[#0d121f] border-b border-slate-800/80 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+                    <h3 class="text-sm font-bold text-white">Paylix Super Admin Dashboard</h3>
+                    <button onclick="toggleAdminModal(false)" class="bg-slate-800 text-slate-300 p-2 rounded-xl text-xs">✕ Close</button>
+                </header>
+
+                <div class="p-6 overflow-y-auto space-y-6 flex-grow">
+                    
+                    <!-- TAB 1: DASHBOARD OVERVIEW -->
+                    <div id="adm-view-dashboard" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-white space-y-2">
+                                <p class="text-xs text-slate-400">Total Users</p>
+                                <h3 id="stat-all-users" class="text-2xl font-black">0</h3>
+                            </div>
+                            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-white space-y-2">
+                                <p class="text-xs text-slate-400">Total Account Submissions</p>
+                                <h3 id="stat-all-gmail" class="text-2xl font-black">0</h3>
+                            </div>
+                            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-white space-y-2">
+                                <p class="text-xs text-slate-400">Pending Withdraws</p>
+                                <h3 id="stat-withdraw-reqs" class="text-2xl font-black">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: ALL USERS (ADD/MINUS BALANCE + INSTANT BLOCK FOR FAKE REFER) -->
+                    <div id="adm-view-users" class="hidden space-y-6">
+                        <h3 class="text-xl font-bold text-white">রেজিস্টার্ড ইউজার ও ব্যালেন্স কন্ট্রোল (অ্যাড/মাইনাস/ব্লক)</h3>
+                        <div class="bg-[#111726] p-5 rounded-3xl border border-slate-800 overflow-x-auto">
+                            <table class="w-full text-left text-slate-300 text-xs">
+                                <thead class="bg-slate-900 text-slate-400">
+                                    <tr>
+                                        <th class="p-3">ইউজার নাম</th>
+                                        <th class="p-3">ইমেইল</th>
+                                        <th class="p-3">রেফার বাই</th>
+                                        <th class="p-3">ব্যালেন্স</th>
+                                        <th class="p-3">স্ট্যাটাস</th>
+                                        <th class="p-3">ব্যালেন্স অ্যাড/মাইনাস</th>
+                                        <th class="p-3">ব্লক (ফেক রেফার প্রতিরোধ)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-list-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: ACCOUNT SUBMISSIONS (GMAIL, FB, INSTA) -->
+                    <div id="adm-view-gmail" class="hidden space-y-6">
+                        <h3 class="text-xl font-bold text-white">একাউন্ট সাবমিশন (Gmail, FB, Insta)</h3>
+                        <div class="bg-[#111726] p-5 rounded-3xl border border-slate-800 overflow-x-auto">
+                            <table class="w-full text-left text-slate-300 text-xs">
+                                <thead class="bg-slate-900 text-slate-400">
+                                    <tr>
+                                        <th class="p-3">টাইপ</th>
+                                        <th class="p-3">ইউজারনেম/ইমেইল</th>
+                                        <th class="p-3">পাসওয়ার্ড</th>
+                                        <th class="p-3">সাবমিটকারী</th>
+                                        <th class="p-3">স্ট্যাটাস</th>
+                                        <th class="p-3 text-center">অ্যাকশন</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-gmail-list-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: WITHDRAW REQUESTS -->
+                    <div id="adm-view-withdraw" class="hidden space-y-6">
+                        <h3 class="text-xl font-bold text-white">উইথড্র ও ডিপোজিট রিকোয়েস্ট</h3>
+                        <div class="bg-[#111726] p-5 rounded-3xl border border-slate-800 overflow-x-auto">
+                            <table class="w-full text-left text-slate-300 text-xs">
+                                <thead class="bg-slate-900 text-slate-400">
+                                    <tr>
+                                        <th class="p-3">ইউজার</th>
+                                        <th class="p-3">মেথড</th>
+                                        <th class="p-3">নম্বর</th>
+                                        <th class="p-3">পরিমাণ</th>
+                                        <th class="p-3">স্ট্যাটাস</th>
+                                        <th class="p-3 text-center">অ্যাকশন</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-withdraw-list-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: MICROTASK POST -->
+                    <div id="adm-view-content" class="hidden space-y-6">
+                        <h3 class="text-xl font-bold text-white">নতুন টাস্ক পোস্ট করুন</h3>
+                        <form onsubmit="adminPostTaskToFirestore(event)" class="space-y-4 max-w-md">
+                            <input type="text" id="admin-task-title" placeholder="টাস্ক টাইটেল" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white">
+                            <input type="number" id="admin-task-reward" placeholder="রিওয়ার্ড (৳)" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white">
+                            <input type="text" id="admin-task-category" placeholder="ক্যাটাগরি" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white">
+                            <button type="submit" class="w-full bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold">পোস্ট করুন</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
+            authDomain: "paylix-586b1.firebaseapp.com",
+            projectId: "paylix-586b1",
+            storageBucket: "paylix-586b1.firebasestorage.app",
+            messagingSenderId: "353074453470",
+            appId: "1:353074453470:web:026fc4a6768eb6d9499b4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.auth = auth;
+        window.db = db;
+        window.currentUserDoc = null;
+        window.allCachedUsers = [];
+        window.allCachedGmail = [];
+        window.allCachedWithdraws = [];
+
+        // Hide Splash Screen
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) splash.classList.add('opacity-0', 'pointer-events-none');
+        }, 1000);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+
+                onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+                    if (docSnap.exists()) {
+                        window.currentUserDoc = docSnap.data();
+                        window.currentUserDoc.uid = user.uid;
+                        if (window.currentUserDoc.isBlocked) {
+                            alert('⚠️ আপনার অ্যাকাউন্টটি ফেক রেফার বা জালিয়াতির কারণে ব্লক (Banned) করা হয়েছে!');
+                            signOut(auth);
+                            return;
+                        }
+                        updateUserUI(window.currentUserDoc);
+                        loadReferredMembers(window.currentUserDoc.referralCode);
+                    }
+                });
+
+                onSnapshot(collection(db, "tasks"), (snapshot) => {
+                    let tasks = [];
+                    snapshot.forEach(d => tasks.push({ id: d.id, ...d.data() }));
+                    renderRealTasks(tasks);
+                });
+
+                onSnapshot(collection(db, "users"), (snapshot) => {
+                    let usersList = [];
+                    snapshot.forEach(d => {
+                        let uData = d.data();
+                        uData.uid = uData.uid || d.id;
+                        usersList.push(uData);
+                    });
+                    window.allCachedUsers = usersList;
+                    updateAdminStatsAndTables(usersList, window.allCachedGmail, window.allCachedWithdraws);
+                    renderLeaderboard(usersList);
+                });
+
+                onSnapshot(collection(db, "gmail_submissions"), (snapshot) => {
+                    let gmailList = [];
+                    snapshot.forEach(d => gmailList.push({ id: d.id, ...d.data() }));
+                    window.allCachedGmail = gmailList;
+                    updateAdminStatsAndTables(window.allCachedUsers, gmailList, window.allCachedWithdraws);
+                });
+
+                onSnapshot(collection(db, "withdraw_requests"), (snapshot) => {
+                    let withdrawList = [];
+                    snapshot.forEach(d => withdrawList.push({ id: d.id, ...d.data() }));
+                    window.allCachedWithdraws = withdrawList;
+                    updateAdminStatsAndTables(window.allCachedUsers, window.allCachedGmail, withdrawList);
+                    renderUserHistory(withdrawList);
+                });
+
+            } else {
+                document.getElementById('auth-screen').classList.remove('hidden');
+                document.getElementById('app').classList.add('hidden');
+            }
+        });
+
+        window.handleUserRegister = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('user-name-reg').value;
+            const email = document.getElementById('user-email-reg').value;
+            const pass = document.getElementById('user-pass-reg').value;
+            const inputRefCode = document.getElementById('user-ref-reg').value.trim();
+            const referralCode = name.replace(/\s+/g, '').toLowerCase() + Math.floor(1000 + Math.random() * 9000);
+
+            try {
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", res.user.uid), {
+                    uid: res.user.uid,
+                    name: name,
+                    email: email,
+                    balance: 0.00,
+                    referralCode: referralCode,
+                    referredByCode: inputRefCode || '',
+                    totalRefers: 0,
+                    isPremium: false,
+                    isBlocked: false,
+                    createdAt: new Date().toISOString()
+                });
+
+                alert('রেজিস্ট্রেশন সফল হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        window.handleUserLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('user-email-login').value;
+            const pass = document.getElementById('user-pass-login').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                alert('ইমেইল বা পাসওয়ার্ড ভুল!');
+            }
+        };
+
+        window.handleUserLogout = () => signOut(auth);
+
+        // LOAD REFERRED USERS IN NETWORK MODAL
+        function loadReferredMembers(myRefCode) {
+            if (!myRefCode) return;
+            const q = query(collection(db, "users"), where("referredByCode", "==", myRefCode));
+            onSnapshot(q, (snapshot) => {
+                const refContainer = document.getElementById('referred-users-container');
+                const countBadge = document.getElementById('ref-count-badge');
+                refContainer.innerHTML = '';
+                
+                let count = 0;
+                snapshot.forEach(docSnap => {
+                    count++;
+                    const u = docSnap.data();
+                    const div = document.createElement('div');
+                    div.className = 'bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex justify-between items-center';
+                    div.innerHTML = `
+                        <div>
+                            <p class="font-bold text-slate-800 text-xs">${u.name || 'User'}</p>
+                            <p class="text-[10px] text-slate-400">${u.email || ''}</p>
+                        </div>
+                        <span class="bg-emerald-100 text-emerald-800 text-[9px] px-2 py-0.5 rounded-full font-bold">Joined</span>
+                    `;
+                    refContainer.appendChild(div);
+                });
+
+                countBadge.innerText = `${count} জন`;
+                if(count === 0) {
+                    refContainer.innerHTML = '<div class="text-center text-slate-400 py-4">কোনো রেফার পাওয়া যায়নি। আপনার রেফার কোড ব্যবহার করে বন্ধুদের ইনভাইট করুন!</div>';
+                }
+            });
+        }
+
+        // GMAIL SUBMISSION
+        window.submitGmailToFirestore = async (e) => {
+            e.preventDefault();
+            if (window.currentUserDoc && window.currentUserDoc.isBlocked) {
+                alert('আপনার অ্যাকাউন্ট ব্লক করা আছে!');
+                return;
+            }
+
+            const gmail = document.getElementById('gmail-input-email').value;
+            const pass = document.getElementById('gmail-input-pass').value;
+
+            try {
+                await addDoc(collection(db, "gmail_submissions"), {
+                    type: 'Gmail',
+                    gmail: gmail,
+                    password: pass,
+                    submittedBy: auth.currentUser ? auth.currentUser.email : 'Guest',
+                    userUid: auth.currentUser ? auth.currentUser.uid : '',
+                    status: 'pending',
+                    rate: 15.00,
+                    submittedAt: new Date().toLocaleString()
+                });
+
+                document.getElementById('gmail-input-email').value = '';
+                document.getElementById('gmail-input-pass').value = '';
+                alert(`সফল! জিমেইল জমা হয়েছে। অ্যাডমিন ভেরিফাই করলে অ্যাকাউন্টে টাকা যোগ হবে।`);
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        // FB & INSTAGRAM SUBMISSION
+        window.submitSocialAccount = async (e, type, rate) => {
+            e.preventDefault();
+            if (window.currentUserDoc && window.currentUserDoc.isBlocked) {
+                alert('আপনার অ্যাকাউন্ট ব্লক করা আছে!');
+                return;
+            }
+
+            let inputUser = '', inputPass = '';
+            if(type === 'Facebook') {
+                inputUser = document.getElementById('fb-input-uid').value;
+                inputPass = document.getElementById('fb-input-pass').value;
+            } else {
+                inputUser = document.getElementById('insta-input-user').value;
+                inputPass = document.getElementById('insta-input-pass').value;
+            }
+
+            try {
+                await addDoc(collection(db, "gmail_submissions"), {
+                    type: type,
+                    gmail: inputUser,
+                    password: inputPass,
+                    submittedBy: auth.currentUser ? auth.currentUser.email : 'Guest',
+                    userUid: auth.currentUser ? auth.currentUser.uid : '',
+                    status: 'pending',
+                    rate: rate,
+                    submittedAt: new Date().toLocaleString()
+                });
+
+                if(type === 'Facebook') {
+                    document.getElementById('fb-input-uid').value = '';
+                    document.getElementById('fb-input-pass').value = '';
+                } else {
+                    document.getElementById('insta-input-user').value = '';
+                    document.getElementById('insta-input-pass').value = '';
+                }
+                alert(`সফল! ${type} একাউন্ট জমা হয়েছে। ভেরিফাই শেষে ৳${rate.toFixed(2)} যোগ হবে।`);
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        // WITHDRAW SUBMISSION
+        window.handleUserWithdraw = async (e) => {
+            e.preventDefault();
+            if (!window.currentUserDoc) return;
+            if (window.currentUserDoc.isBlocked) {
+                alert('আপনার অ্যাকাউন্ট ব্লক করা আছে!');
+                return;
+            }
+
+            const method = document.getElementById('withdraw-method').value;
+            const number = document.getElementById('withdraw-number').value;
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const currentBalance = window.currentUserDoc.balance || 0;
+
+            if (amount < 50) {
+                alert('সর্বনিম্ন উইথড্র পরিমাণ ৳৫০.০০ টাকা!');
+                return;
+            }
+
+            if (amount > currentBalance) {
+                alert('আপনার ওয়ালেটে পর্যাপ্ত ব্যালেন্স নেই!');
+                return;
+            }
+
+            try {
+                const uRef = doc(db, "users", window.currentUserDoc.uid);
+                await updateDoc(uRef, { balance: currentBalance - amount });
+
+                await addDoc(collection(db, "withdraw_requests"), {
+                    type: 'Withdraw',
+                    userUid: window.currentUserDoc.uid,
+                    userEmail: window.currentUserDoc.email,
+                    method: method,
+                    number: number,
+                    amount: amount,
+                    status: 'pending',
+                    requestedAt: new Date().toLocaleString()
+                });
+
+                document.getElementById('withdraw-number').value = '';
+                document.getElementById('withdraw-amount').value = '';
+                closeWithdrawModal();
+                alert('উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        // DEPOSIT SUBMISSION
+        window.handleUserDepositSubmit = async (e) => {
+            e.preventDefault();
+            if (!window.currentUserDoc) return;
+            const method = document.getElementById('deposit-method-select').value;
+            const trxid = document.getElementById('deposit-trxid').value;
+            const amount = parseFloat(document.getElementById('deposit-amount').value);
+
+            try {
+                await addDoc(collection(db, "withdraw_requests"), {
+                    type: 'Deposit',
+                    userUid: window.currentUserDoc.uid,
+                    userEmail: window.currentUserDoc.email,
+                    method: method,
+                    number: `TrxID: ${trxid}`,
+                    amount: amount,
+                    status: 'pending',
+                    requestedAt: new Date().toLocaleString()
+                });
+
+                document.getElementById('deposit-trxid').value = '';
+                document.getElementById('deposit-amount').value = '';
+                closeDepositModal();
+                alert('ডিপোজিট ট্রানজেকশন জমা হয়েছে! ভেরিফাই হলে টাকা যোগ হবে।');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        // REDEEM CODE (ALWAYS FAILS LOGIC)
+        window.handleRedeemSubmit = (e) => {
+            e.preventDefault();
+            const code = document.getElementById('redeem-input-code').value;
+            alert(`❌ ' ${code} ' কোডটি সঠিক নয় বা এর মেয়াদ শেষ হয়ে গেছে!`);
+            document.getElementById('redeem-input-code').value = '';
+        };
+
+        // ADMIN FEATURE: BALANCE ADJUSTMENT (+ OR -)
+        window.adminAdjustUserBalance = async (uid, changeAmount) => {
+            if (!uid || uid === 'undefined') {
+                alert('ত্রুটি: ইউজারের UID পাওয়া যায়নি!');
+                return;
+            }
+            try {
+                const uRef = doc(db, "users", uid);
+                const uSnap = await getDoc(uRef);
+                if (uSnap.exists()) {
+                    const currentBal = uSnap.data().balance || 0;
+                    const newBal = Math.max(0, currentBal + changeAmount);
+                    await updateDoc(uRef, { balance: newBal });
+                    alert(`ইউজারের ব্যালেন্স সফলভাবে আপডেট করা হয়েছে। নতুন ব্যালেন্স: ৳${newBal.toFixed(2)}`);
+                }
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        // ADMIN FEATURE: BLOCK USER (INSTANT BAN FOR FAKE REFER)
+        window.adminToggleUserBlock = async (uid, blockStatus) => {
+            if (!uid || uid === 'undefined') {
+                alert('ত্রুটি: ইউজারের UID পাওয়া যায়নি!');
+                return;
+            }
+            try {
+                await updateDoc(doc(db, "users", uid), { isBlocked: blockStatus });
+                alert(blockStatus ? 'ইউজার সফলভাবে ব্লক (Banned) করা হয়েছে!' : 'ইউজার আনব্লক করা হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        window.adminApproveGmail = async (docId, userUid, rate) => {
+            try {
+                await updateDoc(doc(db, "gmail_submissions", docId), { status: 'approved' });
+
+                if (userUid) {
+                    const uRef = doc(db, "users", userUid);
+                    const uSnap = await getDoc(uRef);
+                    if (uSnap.exists()) {
+                        const currentBal = uSnap.data().balance || 0;
+                        await updateDoc(uRef, { balance: currentBal + (rate || 1.00) });
+                    }
+                }
+                alert('অ্যাপ্রুভ করা হয়েছে এবং ইউজারের অ্যাকাউন্টে টাকা যোগ হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        window.adminRejectGmail = async (docId) => {
+            try {
+                await updateDoc(doc(db, "gmail_submissions", docId), { status: 'rejected' });
+                alert('রিজেক্ট করা হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        window.adminApproveWithdraw = async (docId, type, userUid, amount) => {
+            try {
+                await updateDoc(doc(db, "withdraw_requests", docId), { status: 'approved' });
+                if (type === 'Deposit' && userUid) {
+                    const uRef = doc(db, "users", userUid);
+                    const uSnap = await getDoc(uRef);
+                    if (uSnap.exists()) {
+                        const currentBal = uSnap.data().balance || 0;
+                        await updateDoc(uRef, { balance: currentBal + amount });
+                    }
+                }
+                alert(`${type} রিকোয়েস্ট সফলভাবে অ্যাপ্রুভ করা হয়েছে!`);
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        window.adminRejectWithdraw = async (docId, type, userUid, amount) => {
+            try {
+                await updateDoc(doc(db, "withdraw_requests", docId), { status: 'rejected' });
+                if (type === 'Withdraw' && userUid) {
+                    const uRef = doc(db, "users", userUid);
+                    const uSnap = await getDoc(uRef);
+                    if (uSnap.exists()) {
+                        const currentBal = uSnap.data().balance || 0;
+                        await updateDoc(uRef, { balance: currentBal + amount });
+                    }
+                }
+                alert('রিকোয়েস্ট রিজেক্ট করা হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        window.adminPostTaskToFirestore = async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('admin-task-title').value;
+            const reward = parseFloat(document.getElementById('admin-task-reward').value);
+            const category = document.getElementById('admin-task-category').value;
+
+            try {
+                await addDoc(collection(db, "tasks"), {
+                    title: title,
+                    reward: reward,
+                    category: category,
+                    createdAt: new Date().toISOString()
+                });
+                document.getElementById('admin-task-title').value = '';
+                document.getElementById('admin-task-reward').value = '';
+                document.getElementById('admin-task-category').value = '';
+                alert('টাস্ক পোস্ট হয়েছে!');
+            } catch (err) {
+                alert('ত্রুটি: ' + err.message);
+            }
+        };
+
+        // UPDATE LIVE USER DYNAMIC BALANCE & REVENUE
+        function updateUserUI(uData) {
+            if(!uData) return;
+            const userBalVal = (uData.balance || 0).toFixed(2);
+            document.getElementById('dash-user-name').innerText = uData.name || 'User';
+            
+            document.getElementById('home-total-asset').innerText = `৳${userBalVal}`;
+            document.getElementById('home-available-bal').innerText = `৳${userBalVal}`;
+            document.getElementById('wallet-deposit-bal').innerText = `৳${userBalVal}`;
+            document.getElementById('profile-name-display').innerText = uData.name || 'User';
+            document.getElementById('profile-avatar-letter').innerText = (uData.name || 'U').charAt(0).toUpperCase();
+            document.getElementById('profile-total-rev').innerText = `৳${userBalVal}`;
+            document.getElementById('profile-main-bal').innerText = `৳${userBalVal}`;
+            document.getElementById('home-total-refers').innerText = uData.totalRefers || 0;
+            
+            const myRefCode = uData.referralCode || 'USER';
+            document.getElementById('network-ref-code-display').innerText = myRefCode;
+            
+            const refLink = `https://paylix20.vercel.app/?ref=${myRefCode}`;
+            const refInput = document.getElementById('my-referral-link');
+            if (refInput) refInput.value = refLink;
+        }
+
+        function renderRealTasks(taskList) {
+            const container = document.getElementById('task-list-container');
+            container.innerHTML = '';
+            if(taskList.length === 0) {
+                container.innerHTML = '<div class="text-center text-slate-400 py-8 text-xs">কোনো মাইক্রো-টাস্ক নেই।</div>';
+                return;
+            }
+            taskList.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between';
+                div.innerHTML = `
+                    <div class="space-y-1">
+                        <span class="bg-emerald-50 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">${t.category}</span>
+                        <h4 class="font-bold text-sm text-slate-800">${t.title}</h4>
+                        <p class="text-emerald-600 font-extrabold text-xs">৳${t.reward}.00</p>
+                    </div>
+                    <button onclick="alert('টাস্ক রিকোয়েস্ট গৃহীত হয়েছে!')" class="bg-[#059669] hover:bg-[#047857] text-white px-4 py-2 rounded-2xl text-xs font-bold transition">Start</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderLeaderboard(uList) {
+            const container = document.getElementById('leaderboard-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const sortedUsers = [...uList].sort((a, b) => (b.balance || 0) - (a.balance || 0)).slice(0, 10);
+            
+            sortedUsers.forEach((u, idx) => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 p-3 rounded-2xl border border-slate-200 flex justify-between items-center';
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full ${idx === 0 ? 'bg-amber-400 text-white' : (idx === 1 ? 'bg-slate-300 text-slate-700' : 'bg-amber-700 text-white')} flex items-center justify-center font-bold text-xs">${idx + 1}</span>
+                        <div>
+                            <p class="font-bold text-slate-800">${u.name || 'User'}</p>
+                            <p class="text-[10px] text-slate-400">PB-${(u.uid||'').substring(0, 5)}</p>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm">৳${(u.balance || 0).toFixed(2)}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderUserHistory(withdrawList) {
+            const body = document.getElementById('history-list-body');
+            if (!body || !auth.currentUser) return;
+            const myHistory = withdrawList.filter(w => w.userUid === auth.currentUser.uid);
+            
+            body.innerHTML = '';
+            if (myHistory.length === 0) {
+                body.innerHTML = '<div class="text-center text-slate-400 py-6">কোনো পেমেন্ট হিস্ট্রি পাওয়া যায়নি।</div>';
+                return;
+            }
+
+            myHistory.forEach(item => {
+                const div = document.createElement('div');
+                const isDeposit = item.type === 'Deposit';
+                const statusColor = item.status === 'approved' ? 'text-emerald-600' : (item.status === 'rejected' ? 'text-red-500' : 'text-amber-500');
+                
+                div.className = 'bg-slate-50 p-3 rounded-2xl border border-slate-200 flex justify-between items-center';
+                div.innerHTML = `
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="font-bold text-slate-800">${item.type || 'Withdraw'}</span>
+                            <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-mono">${item.method}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">${item.requestedAt || ''}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-black text-sm ${isDeposit ? 'text-emerald-600' : 'text-slate-800'}">${isDeposit ? '+' : '-'}৳${item.amount}.00</p>
+                        <p class="text-[10px] font-bold ${statusColor} capitalize">${item.status || 'pending'}</p>
+                    </div>
+                `;
+                body.appendChild(div);
+            });
+        }
+
+        function updateAdminStatsAndTables(uList, gList, wList) {
+            document.getElementById('stat-all-users').innerText = uList.length;
+            document.getElementById('stat-all-gmail').innerText = gList.length;
+            document.getElementById('stat-withdraw-reqs').innerText = wList.filter(w => w.status === 'pending').length;
+
+            // Render Users Table with Balance Control + Block
+            const userBody = document.getElementById('admin-users-list-body');
+            userBody.innerHTML = '';
+            uList.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-slate-800';
+                let userId = u.uid || '';
+                let blockText = u.isBlocked ? 'আনব্লক' : 'ব্লক (Banned)';
+                let blockClass = u.isBlocked ? 'bg-emerald-600/30 text-emerald-400' : 'bg-red-600/30 text-red-400';
+
+                tr.innerHTML = `
+                    <td class="p-3 font-medium">${u.name || '-'}</td>
+                    <td class="p-3 text-slate-400">${u.email}</td>
+                    <td class="p-3 text-amber-400 font-mono">${u.referredByCode || 'None'}</td>
+                    <td class="p-3 font-bold text-emerald-400">৳${(u.balance||0).toFixed(2)}</td>
+                    <td class="p-3">${u.isBlocked ? '<span class="text-red-400 font-bold">ব্লকড</span>' : '<span class="text-emerald-400 font-bold">অ্যাক্টিভ</span>'}</td>
+                    <td class="p-3 flex gap-1">
+                        <button onclick="adminAdjustUserBalance('${userId}', 10)" class="bg-emerald-600/30 hover:bg-emerald-600 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold">+৳10</button>
+                        <button onclick="adminAdjustUserBalance('${userId}', 50)" class="bg-emerald-600/30 hover:bg-emerald-600 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold">+৳50</button>
+                        <button onclick="adminAdjustUserBalance('${userId}', -10)" class="bg-amber-600/30 hover:bg-amber-600 text-amber-400 px-2 py-1 rounded text-[10px] font-bold">-৳10</button>
+                    </td>
+                    <td class="p-3">
+                        <button onclick="adminToggleUserBlock('${userId}', ${!u.isBlocked})" class="${blockClass} px-3 py-1 rounded text-[10px] font-bold">${blockText}</button>
+                    </td>
+                `;
+                userBody.appendChild(tr);
+            });
+
+            // Render Submissions Table
+            const gmailBody = document.getElementById('admin-gmail-list-body');
+            gmailBody.innerHTML = '';
+            gList.forEach(g => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-slate-800';
+                let actions = (g.status === 'pending' || !g.status) ? `
+                    <button onclick="adminApproveGmail('${g.id}', '${g.userUid}', ${g.rate || 1.00})" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold mr-1">Approve</button>
+                    <button onclick="adminRejectGmail('${g.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold">Reject</button>
+                ` : `<span class="text-slate-500 text-[10px]">${g.status}</span>`;
+
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-sky-400">${g.type || 'Gmail'}</td>
+                    <td class="p-3 text-indigo-400 font-bold">${g.gmail}</td>
+                    <td class="p-3 text-amber-400 font-mono">${g.password}</td>
+                    <td class="p-3 text-slate-400">${g.submittedBy}</td>
+                    <td class="p-3 font-bold">${g.status || 'pending'}</td>
+                    <td class="p-3 text-center">${actions}</td>
+                `;
+                gmailBody.appendChild(tr);
+            });
+
+            // Render Withdraw Table
+            const withdrawBody = document.getElementById('admin-withdraw-list-body');
+            withdrawBody.innerHTML = '';
+            wList.forEach(w => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-slate-800';
+                let actions = (w.status === 'pending' || !w.status) ? `
+                    <button onclick="adminApproveWithdraw('${w.id}', '${w.type || 'Withdraw'}', '${w.userUid}', ${w.amount})" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold mr-1">Approve</button>
+                    <button onclick="adminRejectWithdraw('${w.id}', '${w.type || 'Withdraw'}', '${w.userUid}', ${w.amount})" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold">Reject</button>
+                ` : `<span class="text-slate-500 text-[10px]">${w.status}</span>`;
+
+                tr.innerHTML = `
+                    <td class="p-3 text-indigo-400 font-bold">${w.userEmail}</td>
+                    <td class="p-3 text-sky-400 font-bold">${w.type || 'Withdraw'} (${w.method})</td>
+                    <td class="p-3 font-mono text-white">${w.number}</td>
+                    <td class="p-3 font-black text-emerald-400">৳${w.amount}.00</td>
+                    <td class="p-3 font-bold">${w.status || 'pending'}</td>
+                    <td class="p-3 text-center">${actions}</td>
+                `;
+                withdrawBody.appendChild(tr);
+            });
+        }
+    </script>
+
+    <!-- Navigation & UI Switches Script -->
+    <script>
+        function toggleAuthMode(isRegister) {
+            if(isRegister) {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('register-form').classList.remove('hidden');
+            } else {
+                document.getElementById('register-form').classList.add('hidden');
+                document.getElementById('login-form').classList.remove('hidden');
+            }
+        }
+
+        function switchTab(tabName) {
+            ['home', 'wallet', 'tasks', 'services', 'profile'].forEach(t => {
+                const el = document.getElementById('view-' + t);
+                const btn = document.getElementById('bnav-' + t);
+                if(el) el.classList.add('hidden');
+                if(btn) {
+                    if (t === 'tasks') {
+                        btn.className = "bg-[#059669] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-emerald-600/30 -mt-6 hover:scale-105 transition";
+                    } else {
+                        btn.className = "flex flex-col items-center space-y-1 text-slate-400 hover:text-emerald-600";
+                    }
+                }
+            });
+
+            const targetEl = document.getElementById('view-' + tabName);
+            const targetBtn = document.getElementById('bnav-' + tabName);
+            if(targetEl) targetEl.classList.remove('hidden');
+            if(targetBtn && tabName !== 'tasks') {
+                targetBtn.className = "flex flex-col items-center space-y-1 text-[#047857]";
+            }
+        }
+
+        function openWithdrawModal() { document.getElementById('withdraw-modal').classList.remove('hidden'); }
+        function closeWithdrawModal() { document.getElementById('withdraw-modal').classList.add('hidden'); }
+        function openDepositModal() { document.getElementById('deposit-modal').classList.remove('hidden'); }
+        function closeDepositModal() { document.getElementById('deposit-modal').classList.add('hidden'); }
+        function openRedeemModal() { document.getElementById('redeem-modal').classList.remove('hidden'); }
+        function closeRedeemModal() { document.getElementById('redeem-modal').classList.add('hidden'); }
+        function openHistoryModal() { document.getElementById('history-modal').classList.remove('hidden'); }
+        function closeHistoryModal() { document.getElementById('history-modal').classList.add('hidden'); }
+        function openReferralModal() { document.getElementById('referral-modal').classList.remove('hidden'); }
+        function closeReferralModal() { document.getElementById('referral-modal').classList.add('hidden'); }
+        function openSalaryModal() { document.getElementById('salary-modal').classList.remove('hidden'); }
+        function closeSalaryModal() { document.getElementById('salary-modal').classList.add('hidden'); }
+        function openLeaderboardModal() { document.getElementById('leaderboard-modal').classList.remove('hidden'); }
+        function closeLeaderboardModal() { document.getElementById('leaderboard-modal').classList.add('hidden'); }
+        function openUnlimitedModal() { document.getElementById('unlimited-modal').classList.remove('hidden'); }
+        function closeUnlimitedModal() { document.getElementById('unlimited-modal').classList.add('hidden'); }
+
+        function openSupportModal() { window.open('https://t.me/Owner_Paylix', '_blank'); }
+
+        function copyNumber(numText) {
+            navigator.clipboard.writeText(numText);
+            alert('সেন্ড মানি নম্বর কপি করা হয়েছে: ' + numText);
+        }
+
+        function copyReferralLink() {
+            const refInput = document.getElementById('my-referral-link');
+            refInput.select();
+            navigator.clipboard.writeText(refInput.value);
+            alert('রেফারেল লিংক কপি করা হয়েছে!');
+        }
+
+        function generateUnlimitedTrick() {
+            const email = document.getElementById('unlimited-base-email').value.trim();
+            const box = document.getElementById('unlimited-output-box');
+            if(!email || !email.includes('@gmail.com')) {
+                alert('সঠিক জিমেইল আইডি দিন!');
+                return;
+            }
+            const parts = email.split('@');
+            const name = parts[0];
+            
+            let list = [];
+            for(let i = 1; i < name.length; i++) {
+                list.push(`${name.slice(0, i)}.${name.slice(i)}@gmail.com`);
+            }
+            
+            box.innerHTML = list.map(item => `<div>• ${item}</div>`).join('');
+            box.classList.remove('hidden');
+        }
+
+        function toggleAdminModal(show) {
+            if(show) {
+                document.getElementById('admin-modal').classList.remove('hidden');
+            } else {
+                document.getElementById('admin-modal').classList.add('hidden');
+            }
+        }
+
+        function switchAdminTab(tab) {
+            ['dashboard', 'users', 'gmail', 'withdraw', 'content'].forEach(t => {
+                const el = document.getElementById('adm-view-' + t);
+                if(el) el.classList.add('hidden');
+            });
+            const targetEl = document.getElementById('adm-view-' + tab);
+            if(targetEl) targetEl.classList.remove('hidden');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                toggleAdminModal(true);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            if (window.location.hash === '#secret-admin') {
+                toggleAdminModal(true);
+            }
+        });
+
+        function logoutAdmin() {
+            toggleAdminModal(false);
+            alert('অ্যাডমিন প্যানেল থেকে লগআউট করা হয়েছে।');
+        }
+    </script>
+</body>
+</html>
