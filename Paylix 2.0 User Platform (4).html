@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paylix 2.0 - Earn & Microtasks</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        purple: {
+                            950: '#0f0720',
+                            900: '#1b0d3a',
+                            800: '#2a1254',
+                            700: '#3d1a75',
+                            600: '#5c22b5',
+                            500: '#7e22ce',
+                            400: '#a855f7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Firebase SDK Compat v9 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0c051a; color: #f3e8ff; }
+        .glass-card { background: rgba(27, 13, 58, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.15); }
+        .glass-input { background: rgba(15, 7, 32, 0.6); border: 1px solid rgba(168, 85, 247, 0.25); }
+        .glass-input:focus { border-color: #a855f7; outline: none; box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); }
+        .purple-gradient-btn { background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%); }
+        .purple-gradient-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .purple-gradient-card { background: linear-gradient(135deg, #3d1a75 0%, #1b0d3a 100%); border: 1px solid rgba(168, 85, 247, 0.3); }
+        .glow-effect { box-shadow: 0 0 25px rgba(126, 34, 206, 0.35); }
+    </style>
+</head>
+<body class="min-h-screen selection:bg-purple-500 selection:text-white flex justify-center items-start">
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col space-y-2 w-11/12 max-w-sm pointer-events-none"></div>
+
+    <!-- MAIN MOBILE CONTAINER -->
+    <div id="appContainer" class="w-full max-w-md min-h-screen bg-purple-950 relative shadow-2xl flex flex-col justify-between border-x border-purple-900/50">
+        
+        <!-- HEADER -->
+        <header class="bg-purple-900/80 backdrop-blur-md text-white p-4 sticky top-0 z-40 border-b border-purple-800/40 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 purple-gradient-btn rounded-2xl flex items-center justify-center text-xl shadow-lg glow-effect">
+                    <i class="fa-solid fa-gem text-white"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-300 via-purple-100 to-purple-400">Paylix 2.0</h1>
+                    <p class="text-[10px] text-purple-300/70 font-medium">Earn & Microtasks</p>
+                </div>
+            </div>
+            <div id="headerActions">
+                <!-- Dynamic actions -->
+            </div>
+        </header>
+
+        <!-- MAIN DYNAMIC CONTENT -->
+        <main id="mainContent" class="flex-1 p-4 overflow-y-auto pb-24">
+            <!-- Rendered by JS -->
+        </main>
+
+        <!-- BOTTOM NAV BAR -->
+        <nav id="bottomNav" class="hidden bg-purple-900/90 backdrop-blur-xl border-t border-purple-800/50 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-40 px-4 py-3 flex justify-around items-center shadow-2xl">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center text-purple-400 transition">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] font-medium mt-1">হোম</span>
+            </button>
+            <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center text-purple-300/50 hover:text-purple-300 transition">
+                <i class="fa-solid fa-layer-group text-lg"></i>
+                <span class="text-[10px] font-medium mt-1">টাস্ক</span>
+            </button>
+            <button onclick="switchTab('gmail')" id="nav-gmail" class="flex flex-col items-center text-purple-300/50 hover:text-purple-300 transition">
+                <i class="fa-solid fa-envelope-open-text text-lg"></i>
+                <span class="text-[10px] font-medium mt-1">জিমেইল সেল</span>
+            </button>
+            <button onclick="switchTab('withdraw')" id="nav-withdraw" class="flex flex-col items-center text-purple-300/50 hover:text-purple-300 transition">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[10px] font-medium mt-1">উইথড্র</span>
+            </button>
+            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-purple-300/50 hover:text-purple-300 transition">
+                <i class="fa-solid fa-user-gear text-lg"></i>
+                <span class="text-[10px] font-medium mt-1">প্রোফাইল</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // FIREBASE INITIALIZATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtY87cMTIiJyXtpflfLiLfZfa7WX1g9Mg",
+            authDomain: "paylix-586b1.firebaseapp.com",
+            projectId: "paylix-586b1",
+            storageBucket: "paylix-586b1.firebasestorage.app",
+            messagingSenderId: "353074453470",
+            appId: "1:353074453470:web:026fc4a6768eb6d9499b4f",
+            databaseURL: "https://paylix-586b1-default-rtdb.firebaseio.com"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        // APP STATE
+        let currentUser = JSON.parse(localStorage.getItem('paylix_user_session')) || null;
+        let currentTab = 'dashboard';
+        let usersDataCache = {};
+        let gmailsDataCache = {};
+
+        // TOAST NOTIFIER
+        function showToast(message, isError = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `p-3.5 rounded-2xl text-xs font-semibold text-white shadow-xl pointer-events-auto flex items-center space-x-2 transition-all duration-300 border ${isError ? 'bg-rose-950/90 border-rose-500/50 text-rose-200' : 'bg-purple-900/90 border-purple-500/50 text-purple-100'}`;
+            toast.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-xmark text-rose-400' : 'fa-circle-check text-purple-400'}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        // INITIAL LOAD & LISTENERS
+        window.addEventListener('DOMContentLoaded', () => {
+            initFirebaseListeners();
+            if (currentUser) {
+                renderApp();
+            } else {
+                renderAuthPage(false);
+            }
+        });
+
+        function initFirebaseListeners() {
+            db.ref('users').on('value', (snapshot) => {
+                usersDataCache = snapshot.val() || {};
+                if (currentUser && usersDataCache[currentUser.phone]) {
+                    currentUser = usersDataCache[currentUser.phone];
+                    localStorage.setItem('paylix_user_session', JSON.stringify(currentUser));
+                    if (currentTab === 'dashboard' || currentTab === 'profile') {
+                        switchTab(currentTab);
+                    }
+                }
+            });
+
+            db.ref('gmailSubmissions').on('value', (snapshot) => {
+                gmailsDataCache = snapshot.val() || {};
+                if (currentTab === 'gmail') {
+                    renderGmailTask();
+                }
+            });
+        }
+
+        // AUTHENTICATION (LOGIN & REGISTRATION)
+        function renderAuthPage(isRegister = false) {
+            document.getElementById('bottomNav').classList.add('hidden');
+            document.getElementById('headerActions').innerHTML = '';
+
+            const html = `
+                <div class="py-8 px-2 space-y-6 animate-fadeIn">
+                    <div class="text-center space-y-2">
+                        <div class="w-20 h-20 purple-gradient-btn text-white rounded-3xl mx-auto flex items-center justify-center text-3xl shadow-xl glow-effect mb-3">
+                            <i class="fa-solid fa-sparkles"></i>
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-white">${isRegister ? 'নতুন অ্যাকাউন্ট খুলুন' : 'লগইন করুন'}</h2>
+                        <p class="text-xs text-purple-300/70">Paylix 2.0-এ সাইন আপ করে ইনকাম শুরু করুন</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl space-y-4 shadow-2xl">
+                        ${isRegister ? `
+                            <div>
+                                <label class="block text-xs font-semibold text-purple-200 mb-1">আপনার পূর্ণ নাম</label>
+                                <input type="text" id="authName" placeholder="রহিম উদ্দিন" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                            </div>
+                        ` : ''}
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">মোবাইল নম্বর</label>
+                            <input type="tel" id="authPhone" placeholder="01XXXXXXXXX" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">পাসওয়ার্ড</label>
+                            <input type="password" id="authPass" placeholder="••••••••" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                        </div>
+                        ${isRegister ? `
+                            <div>
+                                <label class="block text-xs font-semibold text-purple-200 mb-1">রেফারেল কোড (ঐচ্ছিক)</label>
+                                <input type="text" id="authRef" placeholder="রেফার কোড থাকলে দিন" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                            </div>
+                        ` : ''}
+
+                        <button onclick="${isRegister ? 'submitRegister()' : 'submitLogin()'}" class="w-full purple-gradient-btn text-white font-bold py-3.5 rounded-2xl shadow-lg glow-effect transition mt-2">
+                            ${isRegister ? 'অ্যাকাউন্ট তৈরি করুন' : 'লগইন করুন'}
+                        </button>
+
+                        <div class="text-center pt-2">
+                            <button onclick="renderAuthPage(${!isRegister})" class="text-xs text-purple-300 hover:text-purple-100 font-medium transition">
+                                ${isRegister ? 'ইতিমধ্যে অ্যাকাউন্ট আছে? লগইন করুন' : 'অ্যাকাউন্ট নেই? নতুন অ্যাকাউন্ট খুলুন'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        async function submitRegister() {
+            const name = document.getElementById('authName').value.trim();
+            const phone = document.getElementById('authPhone').value.trim();
+            const pass = document.getElementById('authPass').value.trim();
+            const refCode = document.getElementById('authRef').value.trim();
+
+            if (!name || !phone || !pass) {
+                showToast('সব তথ্য সঠিকভাবে দিন!', true);
+                return;
+            }
+            if (phone.length < 11) {
+                showToast('সঠিক মোবাইল নম্বর দিন!', true);
+                return;
+            }
+
+            const snap = await db.ref('users/' + phone).once('value');
+            if (snap.exists()) {
+                showToast('এই নম্বরে ইতিমধ্যে অ্যাকাউন্ট আছে!', true);
+                return;
+            }
+
+            let referrerPhone = '';
+            if (refCode) {
+                for (let p in usersDataCache) {
+                    if (usersDataCache[p].myRefCode === refCode) {
+                        referrerPhone = p;
+                        break;
+                    }
+                }
+            }
+
+            const newUser = {
+                name: name,
+                phone: phone,
+                password: pass,
+                balance: 0,
+                totalEarned: 0,
+                referralEarnings: 0,
+                myRefCode: 'PX-' + Math.floor(10000 + Math.random() * 90000),
+                referredBy: referrerPhone,
+                createdAt: new Date().toISOString()
+            };
+
+            await db.ref('users/' + phone).set(newUser);
+
+            if (referrerPhone && usersDataCache[referrerPhone]) {
+                const refUser = usersDataCache[referrerPhone];
+                await db.ref('users/' + referrerPhone).update({
+                    balance: (refUser.balance || 0) + 10,
+                    referralEarnings: (refUser.referralEarnings || 0) + 10
+                });
+            }
+
+            currentUser = newUser;
+            localStorage.setItem('paylix_user_session', JSON.stringify(currentUser));
+            showToast('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!');
+            renderApp();
+        }
+
+        async function submitLogin() {
+            const phone = document.getElementById('authPhone').value.trim();
+            const pass = document.getElementById('authPass').value.trim();
+
+            if (!phone || !pass) {
+                showToast('নম্বর এবং পাসওয়ার্ড লিখুন!', true);
+                return;
+            }
+
+            const snap = await db.ref('users/' + phone).once('value');
+            if (!snap.exists()) {
+                showToast('অ্যাকাউন্ট খুঁজে পাওয়া যায়নি!', true);
+                return;
+            }
+
+            const u = snap.val();
+            if (u.password !== pass) {
+                showToast('ভুল পাসওয়ার্ড দিয়েছেন!', true);
+                return;
+            }
+
+            currentUser = u;
+            localStorage.setItem('paylix_user_session', JSON.stringify(currentUser));
+            showToast('লগইন সফল হয়েছে!');
+            renderApp();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('paylix_user_session');
+            showToast('লগআউট হয়েছে');
+            renderAuthPage(false);
+        }
+
+        // MAIN APP DASHBOARD & NAVIGATION
+        function renderApp() {
+            document.getElementById('bottomNav').classList.remove('hidden');
+            document.getElementById('headerActions').innerHTML = `
+                <button onclick="handleLogout()" class="w-8 h-8 rounded-xl bg-purple-800/60 hover:bg-rose-900/60 text-purple-200 hover:text-rose-200 border border-purple-700/50 flex items-center justify-center transition">
+                    <i class="fa-solid fa-power-off text-xs"></i>
+                </button>
+            `;
+            switchTab(currentTab);
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            ['dashboard', 'tasks', 'gmail', 'withdraw', 'profile'].forEach(t => {
+                const el = document.getElementById('nav-' + t);
+                if (el) {
+                    if (t === tab) {
+                        el.className = "flex flex-col items-center text-purple-300 transition scale-110 font-bold";
+                    } else {
+                        el.className = "flex flex-col items-center text-purple-300/40 hover:text-purple-300 transition";
+                    }
+                }
+            });
+
+            if (tab === 'dashboard') renderDashboard();
+            else if (tab === 'tasks') renderTasks();
+            else if (tab === 'gmail') renderGmailTask();
+            else if (tab === 'withdraw') renderWithdraw();
+            else if (tab === 'profile') renderProfile();
+        }
+
+        // 1. DASHBOARD
+        function renderDashboard() {
+            const html = `
+                <div class="space-y-5 animate-fadeIn">
+                    <!-- BALANCE CARD -->
+                    <div class="purple-gradient-card p-6 rounded-3xl relative overflow-hidden shadow-2xl glow-effect">
+                        <div class="absolute -right-6 -bottom-6 text-purple-500/10 text-9xl font-black pointer-events-none">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <p class="text-xs text-purple-300/80 font-medium">বর্তমান ব্যালেন্স</p>
+                        <h2 class="text-3xl font-extrabold text-white mt-1">৳ ${(currentUser.balance || 0).toFixed(2)}</h2>
+                        <div class="mt-5 pt-4 border-t border-purple-500/20 flex justify-between text-xs">
+                            <div>
+                                <span class="text-purple-300/60 block">মোট আয়:</span>
+                                <span class="font-bold text-purple-200">৳ ${(currentUser.totalEarned || 0).toFixed(2)}</span>
+                            </div>
+                            <div>
+                                <span class="text-purple-300/60 block">রেফার আয়:</span>
+                                <span class="font-bold text-purple-200">৳ ${(currentUser.referralEarnings || 0).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QUICK ACTIONS -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="switchTab('gmail')" class="glass-card p-4 rounded-3xl text-left border border-purple-500/20 hover:border-purple-400 transition group">
+                            <div class="w-10 h-10 rounded-2xl purple-gradient-btn flex items-center justify-center text-white text-base mb-3 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-envelope-open-text"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-white">জিমেইল সেল</h4>
+                            <p class="text-[10px] text-purple-300/60 mt-0.5">প্রতিটি জিমেইল ৳২০ টাকা</p>
+                        </button>
+                        <button onclick="switchTab('tasks')" class="glass-card p-4 rounded-3xl text-left border border-purple-500/20 hover:border-purple-400 transition group">
+                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-base mb-3 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-white">মাইক্রো টাস্ক</h4>
+                            <p class="text-[10px] text-purple-300/60 mt-0.5">সহজ কাজ সম্পাদন</p>
+                        </button>
+                    </div>
+
+                    <!-- REFERRAL BOX -->
+                    <div class="glass-card p-5 rounded-3xl border border-purple-500/20">
+                        <h3 class="font-bold text-sm text-white mb-1 flex items-center">
+                            <i class="fa-solid fa-user-plus text-purple-400 mr-2"></i> বন্ধুদের রেফার করুন
+                        </h3>
+                        <p class="text-xs text-purple-300/60 mb-3">প্রতি সফল রেফারে পাবেন ৳১০ ইনস্ট্যান্ট বোনাস!</p>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" readonly value="${currentUser.myRefCode}" id="refCodeInput" class="w-full glass-input px-3.5 py-2.5 rounded-2xl text-xs font-mono font-bold text-purple-200">
+                            <button onclick="copyRefCode()" class="purple-gradient-btn text-white px-4 py-2.5 rounded-2xl text-xs font-bold transition">কপি</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function copyRefCode() {
+            const input = document.getElementById('refCodeInput');
+            input.select();
+            document.execCommand('copy');
+            showToast('রেফার কোড কপি হয়েছে!');
+        }
+
+        // 2. TASKS
+        function renderTasks() {
+            const html = `
+                <div class="space-y-4 animate-fadeIn">
+                    <div class="glass-card p-5 rounded-3xl">
+                        <h2 class="font-extrabold text-base text-white mb-1">মাইক্রো টাস্ক তালিকা</h2>
+                        <p class="text-xs text-purple-300/60">কাজগুলো সম্পন্ন করে দ্রুত রিওয়ার্ড অর্জন করুন।</p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-3xl flex items-center justify-between border border-purple-500/20">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-sky-500/20 text-sky-400 rounded-2xl flex items-center justify-center text-lg border border-sky-500/30">
+                                <i class="fa-brands fa-telegram"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-white">টেলিগ্রাম চ্যানেলে জয়েন</h4>
+                                <p class="text-[10px] text-purple-300/60">পুরস্কার: ৳৫ টাকা</p>
+                            </div>
+                        </div>
+                        <a href="https://t.me/paylix_official" target="_blank" onclick="showToast('টাস্ক সম্পন্ন সাবমিট করা হয়েছে!')" class="purple-gradient-btn text-white text-xs px-4 py-2 rounded-xl font-bold shadow transition">সম্পন্ন</a>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-3xl flex items-center justify-between border border-purple-500/20">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-rose-500/20 text-rose-400 rounded-2xl flex items-center justify-center text-lg border border-rose-500/30">
+                                <i class="fa-brands fa-youtube"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-white">ইউটিউব সাবস্ক্রাইব</h4>
+                                <p class="text-[10px] text-purple-300/60">পুরস্কার: ৳১০ টাকা</p>
+                            </div>
+                        </div>
+                        <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" onclick="showToast('টাস্ক সম্পন্ন সাবমিট করা হয়েছে!')" class="purple-gradient-btn text-white text-xs px-4 py-2 rounded-xl font-bold shadow transition">সম্পন্ন</a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // 3. GMAIL TASK
+        function renderGmailTask() {
+            const html = `
+                <div class="space-y-4 animate-fadeIn">
+                    <div class="purple-gradient-card p-6 rounded-3xl shadow-xl">
+                        <h2 class="font-extrabold text-lg text-white mb-1">জিমেইল সেল করুন</h2>
+                        <p class="text-xs text-purple-200/80">প্রতিটি সঠিক জিমেইল সাবমিটের জন্য অ্যাডমিন অনুমোদনে পাবেন: <span class="font-bold underline text-white">৳২০ টাকা</span></p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl space-y-4 border border-purple-500/20">
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">জিমেইল অ্যাড্রেস</label>
+                            <input type="email" id="gmailAddress" placeholder="example@gmail.com" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">পাসওয়ার্ড</label>
+                            <input type="text" id="gmailPass" placeholder="জিমেইলের পাসওয়ার্ড" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                        </div>
+                        <button onclick="submitGmail()" class="w-full purple-gradient-btn text-white font-bold py-3.5 rounded-2xl shadow-lg glow-effect transition">
+                            জিমেইল সাবমিট করুন (৳২০)
+                        </button>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-3xl border border-purple-500/20 space-y-3">
+                        <h3 class="font-bold text-xs text-white">আপনার সাবমিশন হিস্ট্রি</h3>
+                        <div id="gmailHistoryList" class="space-y-2"></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+            loadGmailHistory();
+        }
+
+        async function submitGmail() {
+            const email = document.getElementById('gmailAddress').value.trim();
+            const pass = document.getElementById('gmailPass').value.trim();
+
+            if (!email || !pass) {
+                showToast('জিমেইল এবং পাসওয়ার্ড লিখুন!', true);
+                return;
+            }
+            if (!email.includes('@gmail.com')) {
+                showToast('সঠিক জিমেইল অ্যাড্রেস দিন!', true);
+                return;
+            }
+
+            const id = 'GM-' + Date.now();
+            const payload = {
+                id: id,
+                userPhone: currentUser.phone,
+                userName: currentUser.name,
+                email: email,
+                pass: pass,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            };
+
+            await db.ref('gmailSubmissions/' + id).set(payload);
+            showToast('জিমেইল সাবমিট করা হয়েছে!');
+            document.getElementById('gmailAddress').value = '';
+            document.getElementById('gmailPass').value = '';
+            loadGmailHistory();
+        }
+
+        function loadGmailHistory() {
+            const container = document.getElementById('gmailHistoryList');
+            if (!container) return;
+
+            let myItems = [];
+            for (let id in gmailsDataCache) {
+                if (gmailsDataCache[id].userPhone === currentUser.phone) {
+                    myItems.push(gmailsDataCache[id]);
+                }
+            }
+
+            if (myItems.length === 0) {
+                container.innerHTML = `<p class="text-xs text-purple-300/40 text-center py-2">কোনো সাবমিশন নেই</p>`;
+                return;
+            }
+
+            container.innerHTML = myItems.map(item => `
+                <div class="flex justify-between items-center bg-purple-900/30 p-3 rounded-2xl border border-purple-800/30 text-xs">
+                    <div>
+                        <span class="font-bold text-white block">${item.email}</span>
+                        <span class="text-[10px] text-purple-300/50">${item.date}</span>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold ${item.status === 'approved' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : (item.status === 'rejected' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30')}">
+                        ${item.status === 'approved' ? 'গৃহীত (৳২০)' : (item.status === 'rejected' ? 'বাতিল' : 'পেন্ডিং')}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        // 4. WITHDRAW
+        function renderWithdraw() {
+            const html = `
+                <div class="space-y-4 animate-fadeIn">
+                    <div class="glass-card p-6 rounded-3xl border border-purple-500/20 space-y-4">
+                        <h2 class="font-extrabold text-base text-white mb-1">উইথড্র রিকোয়েস্ট</h2>
+                        <p class="text-xs text-purple-300/60 mb-2">সর্বনিম্ন উইথড্র: ৳১০০ টাকা। ২০% সার্ভিস চার্জ প্রযোজ্য।</p>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">পেমেন্ট মেথড</label>
+                            <select id="wdMethod" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white">
+                                <option value="bKash" class="bg-purple-950">বিকাশ (bKash)</option>
+                                <option value="Nagad" class="bg-purple-950">নগদ (Nagad)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">অ্যাকাউন্ট নম্বর</label>
+                            <input type="tel" id="wdAccount" placeholder="01XXXXXXXXX" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">টাকার পরিমাণ (৳)</label>
+                            <input type="number" id="wdAmount" placeholder="100" class="w-full glass-input px-4 py-3 rounded-2xl text-xs text-white placeholder-purple-400/40">
+                        </div>
+                        <button onclick="submitWithdraw()" class="w-full purple-gradient-btn text-white font-bold py-3.5 rounded-2xl shadow-lg glow-effect transition">
+                            উইথড্র পাঠান
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        async function submitWithdraw() {
+            const method = document.getElementById('wdMethod').value;
+            const account = document.getElementById('wdAccount').value.trim();
+            const amount = parseFloat(document.getElementById('wdAmount').value);
+
+            if (!account || isNaN(amount)) {
+                showToast('সব তথ্য সঠিকভাবে দিন!', true);
+                return;
+            }
+            if (amount < 100) {
+                showToast('সর্বনিম্ন উইথড্র ১০০ টাকা!', true);
+                return;
+            }
+            if ((currentUser.balance || 0) < amount) {
+                showToast('আপনার পর্যাপ্ত ব্যালেন্স নেই!', true);
+                return;
+            }
+
+            const reqId = 'WD-' + Date.now();
+            const payload = {
+                id: reqId,
+                userPhone: currentUser.phone,
+                userName: currentUser.name,
+                method: method,
+                account: account,
+                amount: amount,
+                netAmount: amount * 0.8,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            };
+
+            await db.ref('users/' + currentUser.phone).update({ balance: currentUser.balance - amount });
+            await db.ref('withdrawRequests/' + reqId).set(payload);
+
+            showToast('উইথড্র রিকোয়েস্ট সফল হয়েছে!');
+            switchTab('dashboard');
+        }
+
+        // 5. PROFILE
+        function renderProfile() {
+            const html = `
+                <div class="space-y-4 animate-fadeIn">
+                    <div class="glass-card p-6 rounded-3xl text-center border border-purple-500/20">
+                        <div class="w-20 h-20 purple-gradient-btn text-white rounded-full mx-auto flex items-center justify-center text-3xl font-extrabold mb-3 shadow-lg">
+                            ${currentUser.name.charAt(0)}
+                        </div>
+                        <h2 class="text-lg font-extrabold text-white">${currentUser.name}</h2>
+                        <p class="text-xs text-purple-300/60 mt-0.5">${currentUser.phone}</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-3xl border border-purple-500/20 space-y-3 text-xs">
+                        <div class="flex justify-between py-2 border-b border-purple-800/40">
+                            <span class="text-purple-300/60">মাই রেফার কোড:</span>
+                            <span class="font-bold text-purple-200">${currentUser.myRefCode}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-purple-800/40">
+                            <span class="text-purple-300/60">মোট অর্জিত আয়:</span>
+                            <span class="font-bold text-purple-300">৳ ${(currentUser.totalEarned || 0).toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <span class="text-purple-300/60">সহায়তা (টেলিগ্রাম):</span>
+                            <a href="https://t.me/Owner_Paylix" target="_blank" class="font-bold text-purple-400 hover:underline">অ্যাডমিন সাপোর্ট</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
