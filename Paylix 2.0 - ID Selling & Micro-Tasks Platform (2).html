@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paylix 2.0 - আইডি সেল ও মাইক্রো-টাস্ক প্ল্যাটফর্ম</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .emerald-glow {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-28">
+
+    <!-- Toast Notification Box -->
+    <div id="toast-container" class="fixed top-3 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-sm pointer-events-none flex flex-col gap-2"></div>
+
+    <!-- Header Navbar -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+            <img src="https://i.postimg.cc/GhGy6PzX/Screenshot-2026-11-04-20-05-59-350-com-openai-chatgpt-edit.jpg" alt="Paylix Logo" class="w-9 h-9 rounded-xl object-cover border border-emerald-500/30">
+            <div>
+                <h1 class="text-base font-bold tracking-tight text-white leading-none">Paylix <span class="text-emerald-400">2.0</span></h1>
+                <p class="text-[10px] text-slate-400 font-medium">আইডি সেল ও মাইক্রো-টাস্ক</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button onclick="downloadAppFile()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition text-xs font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-download"></i> সেভ
+            </button>
+            <div id="header-balance-pill" class="hidden items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 px-3 py-1.5 rounded-full">
+                <i class="fa-solid fa-wallet text-emerald-400 text-xs"></i>
+                <span class="text-xs font-bold text-emerald-400">৳<span id="header-balance">0.00</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 w-full max-w-md mx-auto px-4 pt-4 space-y-4">
+
+        <!-- AUTHENTICATION VIEW -->
+        <section id="auth-view" class="space-y-4">
+            <div class="glass-card rounded-2xl p-6 shadow-xl emerald-glow space-y-4">
+                <div class="text-center">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 text-2xl font-extrabold mb-3 shadow-lg">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Paylix 2.0-এ স্বাগতম</h2>
+                    <p class="text-xs text-slate-400 mt-1">আপনার আইডি সেল করুন এবং টাস্ক করে ইনকাম করুন</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-900 rounded-xl border border-slate-800">
+                    <button id="tab-login" onclick="switchAuthTab('login')" class="py-2 text-xs font-semibold rounded-lg bg-emerald-500 text-slate-950 transition">লগইন</button>
+                    <button id="tab-register" onclick="switchAuthTab('register')" class="py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition">রেজিস্ট্রেশন</button>
+                </div>
+
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
+                    <div id="name-field-container" class="hidden">
+                        <label class="block text-xs font-medium text-slate-300 mb-1">পূর্ণ নাম</label>
+                        <input type="text" id="auth-name" placeholder="আপনার নাম লিখুন" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">ইমেইল ঠিকানা</label>
+                        <input type="email" id="auth-email" required placeholder="email@gmail.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">পাসওয়ার্ড</label>
+                        <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-emerald-500">
+                    </div>
+                    <button type="submit" id="auth-submit-btn" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg transition">প্রবেশ করুন</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- DASHBOARD & VIEWS -->
+        <div id="app-views" class="hidden space-y-4">
+
+            <!-- HOME VIEW (ID Selling & Notice & Support) -->
+            <section id="view-home" class="space-y-4">
+                
+                <!-- Admin Global Notice Board -->
+                <div id="global-notice-card" class="glass-card rounded-2xl p-4 border border-amber-500/30 bg-amber-500/10 space-y-1.5 hidden">
+                    <div class="flex items-center gap-2 text-xs font-bold text-amber-400">
+                        <i class="fa-solid fa-bullhorn animate-bounce"></i> অ্যাডমিন নোটিশ
+                    </div>
+                    <p id="global-notice-text" class="text-xs text-slate-200 leading-relaxed"></p>
+                </div>
+
+                <!-- Support Links -->
+                <div class="glass-card rounded-2xl p-4 border border-blue-500/30 bg-blue-500/10 space-y-2.5">
+                    <div class="flex items-center gap-2 text-xs font-bold text-white">
+                        <i class="fa-solid fa-headset text-blue-400 text-sm"></i> অফিশিয়াল সাপোর্ট ও চ্যানেল
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <a href="https://t.me/paylix_official" target="_blank" class="px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold text-center flex items-center justify-center gap-1.5 transition shadow-md">
+                            <i class="fa-brands fa-telegram text-sm"></i> টেলিগ্রাম গ্রুপ
+                        </a>
+                        <a href="https://www.youtube.com/@Owner_of_peylix" target="_blank" class="px-3 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold text-center flex items-center justify-center gap-1.5 transition shadow-md">
+                            <i class="fa-brands fa-youtube text-sm"></i> ইউটিউব চ্যানেল
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Balance Summary Card -->
+                <div class="rounded-2xl bg-gradient-to-br from-emerald-600 to-slate-900 p-5 shadow-xl border border-emerald-400/20 flex justify-between items-center">
+                    <div>
+                        <p class="text-emerald-100 text-xs">স্বাগতম, <span id="user-greeting-name" class="font-bold">মেম্বার</span></p>
+                        <h2 class="text-2xl font-extrabold text-white mt-1">৳ <span id="main-balance">0.00</span></h2>
+                    </div>
+                    <button onclick="refreshUserData()" class="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition"><i class="fa-solid fa-rotate text-xs"></i></button>
+                </div>
+
+                <!-- ID Selling Sectors -->
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-id-badge text-emerald-400"></i> আইডি সেল ক্যাটাগরি (সেক্টর)
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Gmail ID -->
+                        <div onclick="openSubmitIdModal('Gmail', 15)" class="glass-card rounded-2xl p-4 cursor-pointer hover:border-emerald-500 transition group shadow-md">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <div class="w-8 h-8 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center text-sm group-hover:scale-110 transition"><i class="fa-brands fa-google"></i></div>
+                                <h4 class="text-xs font-bold text-white">Gmail ID</h4>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 font-extrabold">রেট: ৳১৫ / পিস</p>
+                        </div>
+
+                        <!-- TikTok ID -->
+                        <div onclick="openSubmitIdModal('TikTok', 2)" class="glass-card rounded-2xl p-4 cursor-pointer hover:border-emerald-500 transition group shadow-md">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <div class="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-sm group-hover:scale-110 transition"><i class="fa-brands fa-tiktok"></i></div>
+                                <h4 class="text-xs font-bold text-white">TikTok ID</h4>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 font-extrabold">রেট: ৳২ / পিস</p>
+                        </div>
+
+                        <!-- Facebook ID -->
+                        <div onclick="openSubmitIdModal('Facebook', 2)" class="glass-card rounded-2xl p-4 cursor-pointer hover:border-emerald-500 transition group shadow-md">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm group-hover:scale-110 transition"><i class="fa-brands fa-facebook"></i></div>
+                                <h4 class="text-xs font-bold text-white">Facebook ID</h4>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 font-extrabold">রেট: ৳২ / পিস</p>
+                        </div>
+
+                        <!-- Instagram ID -->
+                        <div onclick="openSubmitIdModal('Instagram', 2)" class="glass-card rounded-2xl p-4 cursor-pointer hover:border-emerald-500 transition group shadow-md">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm group-hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></div>
+                                <h4 class="text-xs font-bold text-white">Instagram ID</h4>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 font-extrabold">রেট: ৳২ / পিস</p>
+                        </div>
+
+                        <!-- Telegram ID -->
+                        <div onclick="openSubmitIdModal('Telegram', 2)" class="glass-card rounded-2xl p-4 cursor-pointer hover:border-emerald-500 transition group col-span-2 shadow-md">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-sm group-hover:scale-110 transition"><i class="fa-brands fa-telegram"></i></div>
+                                <h4 class="text-xs font-bold text-white">Telegram ID</h4>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 font-extrabold">রেট: ৳২ / পিস</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MICRO-TASKS VIEW -->
+            <section id="view-tasks" class="hidden space-y-4">
+                <div class="glass-card rounded-2xl p-5 space-y-3 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-emerald-400"></i> মাইক্রো-টাস্ক কাজসমূহ
+                        </h3>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full font-semibold">লাইভ কাজ</span>
+                    </div>
+                    
+                    <div id="tasks-list-container" class="space-y-3">
+                        <!-- Dynamic Tasks Will Load Here -->
+                        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <h4 class="text-xs font-bold text-white">ইউটিউব চ্যানেল সাবস্ক্রাইব করুন</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">রিওয়ার্ড: <span class="text-emerald-400 font-bold">৳৫.০০</span></p>
+                            </div>
+                            <button onclick="openTaskProofModal('ইউটিউব চ্যানেল সাবস্ক্রাইব করুন', 5)" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition">কাজ করুন</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WALLET VIEW (Binance / Bkash / Nagad) -->
+            <section id="view-wallet" class="hidden space-y-4">
+                <div class="glass-card rounded-2xl p-5 space-y-4 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-wallet text-emerald-400"></i> টাকা তুলুন (Withdraw)
+                        </h3>
+                        <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-semibold">মিনিমাম উইথড্র: ৳৫০</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 text-center space-y-1">
+                        <p class="text-xs text-slate-400">মেইন ব্যালেন্স</p>
+                        <h3 class="text-2xl font-extrabold text-emerald-400">৳ <span id="wallet-balance">0.00</span></h3>
+                    </div>
+
+                    <form onsubmit="handleWithdrawRequest(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">পেমেন্ট মেথড</label>
+                            <select id="withdraw-method" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none">
+                                <option value="Bkash">বিকাশ (Bkash)</option>
+                                <option value="Nagad">নগদ (Nagad)</option>
+                                <option value="Binance">বাইনান্স (Binance ID / Email)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">অ্যাকাউন্ট নম্বর / বাইনান্স আইডি</label>
+                            <input type="text" id="withdraw-account" required placeholder="নম্বর বা আইডি দিন" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none">
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg transition">উইথড্র রিকোয়েস্ট পাঠান</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- PROFILE VIEW -->
+            <section id="view-profile" class="hidden space-y-4">
+                <div class="glass-card rounded-2xl p-5 space-y-4 text-center shadow-xl">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl font-bold border border-emerald-500/30 shadow-inner">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 id="profile-name" class="text-sm font-bold text-white">মেম্বার</h3>
+                        <p id="profile-email" class="text-xs text-slate-400 mt-0.5">email@gmail.com</p>
+                    </div>
+                    <button onclick="handleLogout()" class="w-full py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 font-bold text-xs border border-red-500/30 transition">লগআউট করুন</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-slate-800 px-4 py-3 max-w-md mx-auto flex items-center justify-around">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center gap-1 text-emerald-400 transition">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="text-[10px] font-semibold">হোম</span>
+        </button>
+        <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-list-check text-base"></i>
+            <span class="text-[10px] font-semibold">টাস্ক</span>
+        </button>
+        <button onclick="switchTab('wallet')" id="nav-wallet" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-wallet text-base"></i>
+            <span class="text-[10px] font-semibold">ওয়ালেট</span>
+        </button>
+        <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-user text-base"></i>
+            <span class="text-[10px] font-semibold">প্রোফাইল</span>
+        </button>
+    </nav>
+
+    <!-- Modal for ID Submission -->
+    <div id="submit-id-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-2xl p-5 w-full max-w-xs space-y-3.5 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 id="modal-title" class="text-xs font-bold text-white">আইডি জমা দিন</h3>
+                <button onclick="closeSubmitIdModal()" class="text-slate-400 text-sm hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleIdSubmissionSubmit(event)" class="space-y-3">
+                <input type="hidden" id="id-platform" value="Gmail">
+                <input type="hidden" id="id-rate" value="15">
+                <div>
+                    <label class="block text-[11px] text-slate-300 mb-1">ইউজারনেম / ইমেইল</label>
+                    <input type="text" id="sub-username" required placeholder="ইউজারনেম দিন" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-300 mb-1">পাসওয়ার্ড</label>
+                    <input type="text" id="sub-password" required placeholder="পাসওয়ার্ড দিন" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg transition">জমা দিন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Task Proof Submission -->
+    <div id="task-proof-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-2xl p-5 w-full max-w-xs space-y-3.5 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 id="task-modal-title" class="text-xs font-bold text-white">কাজের প্রুফ দিন</h3>
+                <button onclick="closeTaskProofModal()" class="text-slate-400 text-sm hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleTaskProofSubmit(event)" class="space-y-3">
+                <input type="hidden" id="task-title-input">
+                <input type="hidden" id="task-reward-input">
+                <div>
+                    <label class="block text-[11px] text-slate-300 mb-1">প্রুফ বিবরণ / স্ক্রিনশট লিংক</label>
+                    <textarea id="task-proof-details" required rows="3" placeholder="কাজের প্রমাণ বা স্ক্রিনশট লিংক দিন" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg transition">প্রুফ সাবমিট করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const SUPABASE_URL = "https://anjcdqlqgpswnunvohqv.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_m1yemwF67ZU-V62ctivrdw_o9K8zGk5";
+        let supabaseClient = null;
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        } catch(e) {}
+
+        let currentUser = null;
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const alertBox = document.createElement('div');
+            alertBox.className = 'glass-card bg-slate-900/95 border border-emerald-500/40 text-white text-xs px-3.5 py-3 rounded-xl shadow-xl flex items-center gap-2.5';
+            alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i><span>${msg}</span>`;
+            container.appendChild(alertBox);
+            setTimeout(() => alertBox.remove(), 3000);
+        }
+
+        let authMode = 'login';
+        function switchAuthTab(mode) {
+            authMode = mode;
+            const loginBtn = document.getElementById('tab-login');
+            const regBtn = document.getElementById('tab-register');
+            const nameContainer = document.getElementById('name-field-container');
+            const submitBtn = document.getElementById('auth-submit-btn');
+
+            if (mode === 'login') {
+                loginBtn.className = 'py-2 text-xs font-semibold rounded-lg bg-emerald-500 text-slate-950 transition';
+                regBtn.className = 'py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition';
+                nameContainer.classList.add('hidden');
+                submitBtn.textContent = 'প্রবেশ করুন';
+            } else {
+                regBtn.className = 'py-2 text-xs font-semibold rounded-lg bg-emerald-500 text-slate-950 transition';
+                loginBtn.className = 'py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition';
+                nameContainer.classList.remove('hidden');
+                submitBtn.textContent = 'একাউন্ট তৈরি করুন';
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value.trim();
+            const name = document.getElementById('auth-name').value.trim() || 'মেম্বার';
+
+            localStorage.setItem('paylix_email', email);
+            localStorage.setItem('paylix_name', name);
+            syncUser(email, name);
+            showToast('সফলভাবে প্রবেশ করা হয়েছে!');
+        }
+
+        function syncUser(email, name) {
+            currentUser = { email, name };
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('app-views').classList.remove('hidden');
+            document.getElementById('bottom-nav').classList.remove('hidden');
+            document.getElementById('header-balance-pill').classList.remove('hidden');
+            document.getElementById('header-balance-pill').classList.add('flex');
+            
+            document.getElementById('user-greeting-name').textContent = name;
+            document.getElementById('profile-name').textContent = name;
+            document.getElementById('profile-email').textContent = email;
+
+            loadGlobalNotice();
+        }
+
+        function switchTab(tab) {
+            ['home', 'tasks', 'wallet', 'profile'].forEach(t => {
+                const el = document.getElementById(`view-${t}`);
+                if (el) el.classList.add('hidden');
+                const btn = document.getElementById(`nav-${t}`);
+                if (btn) btn.className = 'flex flex-col items-center gap-1 text-slate-400 hover:text-white transition';
+            });
+            const targetView = document.getElementById(`view-${tab}`);
+            if (targetView) targetView.classList.remove('hidden');
+            const targetBtn = document.getElementById(`nav-${tab}`);
+            if (targetBtn) targetBtn.className = 'flex flex-col items-center gap-1 text-emerald-400 transition';
+        }
+
+        function refreshUserData() {
+            showToast('ডাটা রিফ্রেশ করা হয়েছে!');
+        }
+
+        function openSubmitIdModal(platform, rate) {
+            document.getElementById('id-platform').value = platform;
+            document.getElementById('id-rate').value = rate;
+            document.getElementById('modal-title').textContent = `${platform} আইডি জমা দিন (৳${rate})`;
+            document.getElementById('submit-id-modal').classList.remove('hidden');
+        }
+
+        function closeSubmitIdModal() {
+            document.getElementById('submit-id-modal').classList.add('hidden');
+        }
+
+        async function handleIdSubmissionSubmit(e) {
+            e.preventDefault();
+            const platform = document.getElementById('id-platform').value;
+            closeSubmitIdModal();
+            showToast(`${platform} আইডি সফলভাবে সাবমিট হয়েছে!`);
+            document.getElementById('sub-username').value = '';
+            document.getElementById('sub-password').value = '';
+        }
+
+        function openTaskProofModal(title, reward) {
+            document.getElementById('task-modal-title').textContent = title;
+            document.getElementById('task-title-input').value = title;
+            document.getElementById('task-reward-input').value = reward;
+            document.getElementById('task-proof-modal').classList.remove('hidden');
+        }
+
+        function closeTaskProofModal() {
+            document.getElementById('task-proof-modal').classList.add('hidden');
+        }
+
+        async function handleTaskProofSubmit(e) {
+            e.preventDefault();
+            closeTaskProofModal();
+            showToast('কাজের প্রুফ সফলভাবে জমা দেওয়া হয়েছে!');
+            document.getElementById('task-proof-details').value = '';
+        }
+
+        async function handleWithdrawRequest(e) {
+            e.preventDefault();
+            const currentBal = parseFloat(document.getElementById('wallet-balance').textContent) || 0;
+            if (currentBal < 50) {
+                showToast('দুঃখিত! মিনিমাম উইথড্র ৫০ টাকা হতে হবে।');
+                return;
+            }
+            showToast('উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!');
+            document.getElementById('withdraw-account').value = '';
+        }
+
+        async function loadGlobalNotice() {
+            // Simulated notice check or Supabase fetch
+            const noticeCard = document.getElementById('global-notice-card');
+            const noticeText = document.getElementById('global-notice-text');
+            // If admin sets notice, show it here.
+            const savedNotice = localStorage.getItem('paylix_admin_notice');
+            if (savedNotice) {
+                noticeText.textContent = savedNotice;
+                noticeCard.classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        function downloadAppFile() {
+            const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Paylix_2.0.html';
+            a.click();
+            showToast('ফাইল ডাউনলোড হয়েছে!');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedEmail = localStorage.getItem('paylix_email');
+            if (savedEmail) {
+                syncUser(savedEmail, localStorage.getItem('paylix_name') || 'মেম্বার');
+            }
+        });
+    </script>
+</body>
+</html>
